@@ -89,6 +89,7 @@ SchafKopf::SchafKopf()
     
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
 	connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+	//connect(kapp, SIGNAL(aboutToQuit()), this, SLOT(endGame()));
     
     connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
     connect(m_game,SIGNAL(gameStarted()),this,SLOT(enableControls()));
@@ -142,7 +143,7 @@ void SchafKopf::setupActions()
 	connect(m_actQuit, SIGNAL( activated() ), kapp, SLOT( quit() ));
 	m_actQuit->plug(mnuGame);
 	
-    connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+    //connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
 
     KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
     KStdAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
@@ -173,8 +174,8 @@ void SchafKopf::realNewGame()
 
 void SchafKopf::endGame()
 {
-    m_game->endGame();
     disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
+	m_game->endGame();
 }
 
 void SchafKopf::showStich()
@@ -183,7 +184,7 @@ void SchafKopf::showStich()
         return;
         
     if( !m_stichdlg )
-        m_stichdlg = new StichDlg( m_game, 0 );
+		m_stichdlg = new StichDlg( m_game, this );
 
     m_stichdlg->show();
 }
