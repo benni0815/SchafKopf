@@ -317,7 +317,7 @@ bool Game::isHigher( Card* card, Card* high )
 
     return false;
 */
-	return evalCard(card, &m_gameinfo) < evalCard(high, &m_gameinfo);
+	return evalCard(card, &m_gameinfo) > evalCard(high, &m_gameinfo);
 }
 
 void Game::gameResults()
