@@ -68,10 +68,6 @@ class Game : public QObject
         void endGame(void);
         
     private:
-        /** give cards to the player and begin a new gameinfo
-          */
-        void start();
-        
         bool terminated;
         Player *m_players[PLAYERS];
         CardList m_allcards;
@@ -82,7 +78,10 @@ class Game : public QObject
                 
         GameCanvas *m_canvas;
         
-        int highestCard();
+		/** give cards to the player and begin a new gameinfo
+		 */
+		void start();
+		int highestCard();
         void gameResults();
 		
         /** find a player who wants to playerPlayedCard 
@@ -91,7 +90,7 @@ class Game : public QObject
           * and false when no one wants to playerPlayedCard
           * and a new game should be started
           */
-       bool setupGameInfo();
+       bool setupGameInfo(Player *players[]);
 };
 
 #endif

@@ -54,9 +54,6 @@ Card *ComputerPlayer::play()
 	CardList* allowed=0;
     if( m_game->currStich()->isEmpty() )
         allowed=book->possibleCards();
-    else
-        allowed=allowedCards();
-        
     if( !allowed )
         allowed=allowedCards();
         

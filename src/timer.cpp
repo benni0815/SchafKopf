@@ -40,7 +40,8 @@ void Timer::block( int seconds )
 
 void Timer::returnLoop()
 {
-    EXIT_LOOP();
+	qDebug("timeout over...");
+	EXIT_LOOP();
 }
 
 #include "timer.moc"

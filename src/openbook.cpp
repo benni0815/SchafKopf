@@ -25,7 +25,6 @@
 #include "gameinfo.h"
 #include "player.h"
 
-
 /* A few macros which make it quite simple to build macros for openbook rules */
 #define RULE( function, description, condition, eval ) \
     CardList* function ( CardList* allowed, Game* game ) \
@@ -56,7 +55,7 @@ namespace OpeningRules
         bool player;
     };
     
-    RULE( player1, "davon-laufen - hÃ¤ngt von allowedCards ab und lÃ¤uft nicht mit dem zehner davon", 
+    RULE( player1, "davon-laufen - hängt von allowedCards ab und läuft nicht mit dem zehner davon", 
         ( info->mode() == GameInfo::RUFSPIEL && 
           !allowed->contains( info->color(), Card::SAU ) ),
         ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )
@@ -107,13 +106,14 @@ OpenBook::OpenBook( Player* player, Game* game )
 {
     m_self = player;
     m_game = game;
-    
+	m_playedCards=new CardList[4];    
     connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int,Card*) ) );
 }
 
 
 OpenBook::~OpenBook()
 {
+	delete[] m_playedCards;
 }
 
 CardList* OpenBook::possibleCards()
@@ -162,5 +162,6 @@ CardList* OpenBook::possibleCards()
 void OpenBook::cardPlayed( unsigned int player, Card* card )
 {
     // todo: move this in to an own class later
-    Player* p = m_game->findId( player );
+    // Player* p = m_game->findId( player );
+	m_playedCards[player].append(card);
 }
