@@ -363,8 +363,8 @@ bool Game::setupGameInfoForced()
     if( Settings::instance()->doublerHasToPlay() )
     {
         // if someone has doubled he is forced to player
-        // only the first one who is doubled is forced to play
-        for( i=0;i<PLAYERS;i++ )
+        // if more players have doubled the last one has to play
+        for( i=PLAYERS-1;i<=0;i-- )
             if( m_players[i]->geklopft() )
             {
                 m_canvas->information( i18n("%1 has doubled and has to play now.").arg( m_players[i]->name() ) );
