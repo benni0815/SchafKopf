@@ -27,6 +27,8 @@ checkAutoconf()
     AUTOCONF="`$WHICH autoconf2.50`"
   elif test -x "`$WHICH autoconf-2.59`" ; then
     AUTOCONF="`$WHICH autoconf-2.59`"
+  elif test -x "`$WHICH autoconf-2.58`" ; then
+    AUTOCONF="`$WHICH autoconf-2.58`"
   fi
 
 }
@@ -51,6 +53,8 @@ checkAutoheader()
     AUTOHEADER="`$WHICH autoheader2.50`"
   elif test -x "`$WHICH autoheader-2.59`" ; then
     AUTOHEADER="`$WHICH autoheader-2.59`"
+  elif test -x "`$WHICH autoheader-2.58`" ; then
+    AUTOHEADER="`$WHICH autoheader-2.58`"
   fi
 }
 
