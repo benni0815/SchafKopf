@@ -165,8 +165,8 @@ void GameCanvas::positionObjects(bool redraw)
 QPoint GameCanvas::getStichPosition( int player )
 {
     QPoint p;
-    int w = canvas()->width()-DIST;
-    int h = canvas()->height()-DIST;
+    int w = canvas()->width();//-DIST;
+    int h = canvas()->height();//-DIST;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
     int cx = w/2;
@@ -175,14 +175,14 @@ QPoint GameCanvas::getStichPosition( int player )
     switch( player ) 
     {
         case 0:
-            p = QPoint(cx, cy+(cardh/2)); break;
+            p = QPoint(cx-(cardw/2), cy); break;
         case 1:
-            p = QPoint(cx-cardw, cy); break;
+            p = QPoint(cx-(3*cardw/2), cy-(cardh/2)); break;
         case 2:
-            p = QPoint(cx, cy-(cardh/2)); break;
+            p = QPoint(cx-(cardw/2), cy-(cardh)); break;
         case 3:
         default:
-            p = QPoint(cx+cardw, cy); break;
+            p = QPoint(cx+(cardw/2), cy-(cardh/2)); break;
     };
         
     return p;
