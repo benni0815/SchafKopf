@@ -127,9 +127,11 @@ bool GameInfo::istTrumpf(Card *card) const
         case GameInfo::WENZ:
                 if(card->card()==Card::UNTER || card->color()==color())
                     return true;
+                break;
         case GameInfo::DACHS:
                 if(card->card()==Card::SAU || card->card()==Card::ZEHN)
                     return true;
+                break;
         default:
                 break;
     };

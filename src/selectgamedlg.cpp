@@ -122,11 +122,11 @@ void SelectGameDlg::enableControls()
     }
     else if( checkDachs->isChecked() )
     {
-        checkHerz->setChecked( false );
-        checkGras->setChecked( false );
-        checkEichel->setChecked( false );
-        checkSchellen->setChecked( false );
-        checkFarblos->setChecked( true );
+        checkHerz->setEnabled( false );
+        checkGras->setEnabled( false );
+        checkEichel->setEnabled( false );
+        checkSchellen->setEnabled( false );
+        checkFarblos->setEnabled( true );
     }
     else
     {
@@ -140,7 +140,7 @@ void SelectGameDlg::enableControls()
 
 void SelectGameDlg::updatePreview()
 {
-    unsigned int i = 0;
+    int i = 0;
     int x = 0, y = 0;
     CardList list;
     CardList trumpf;
@@ -157,13 +157,14 @@ void SelectGameDlg::updatePreview()
     QPixmap pix(c.pixmap()->width()*4,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
-    for(i=0;i<trumpf.count();i++)
+    for(i=trumpf.count()-1;i>=0;i--)
     {
         QPixmap* pixmap = trumpf.at(i)->pixmap();
         p.drawPixmap( x, y, *pixmap );
         x += pixmap->width();
         
-        if(!((i+1)%4))
+        int pos = trumpf.count() - i;
+        if(!(pos+1)%4)
         {
             x = 0;
             y += pixmap->height();
@@ -171,6 +172,7 @@ void SelectGameDlg::updatePreview()
     }
         
     p.end();
+    pix.resize( pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
     preview->setPixmap( pix );
     
 }

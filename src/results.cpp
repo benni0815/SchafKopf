@@ -51,11 +51,14 @@ QString Results::result()
     else
         s = m_gameinfo->spieler()->name() + QString(i18n(" looses with %1 Points%2.") ).arg( m_points ).arg( schneider + schwarz );
     
-    if( positive )
-        s += m_gameinfo->spieler()->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
-    else
-        s += m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
-        
+    if( m_laufende )
+    {
+        if( positive )
+            s += m_gameinfo->spieler()->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
+        else
+            s += m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
+    }
+    
     return s;
 }
 
@@ -73,6 +76,14 @@ void Results::parse()
     m_schneider = (m_points < 31 || m_points > 90 );
 
     m_parsed = true;
+    
+    // ab 2 laufende bei wenz und geier
+    if( m_gameinfo->mode() == GameInfo::GEIER || m_gameinfo->mode() == GameInfo::WENZ )
+        m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
+    // sonst ab 3 laufenden
+    else if( m_gameinfo->mode() == GameInfo::STICHT || m_gameinfo->mode() == GameInfo::RAMSCH 
+          || m_gameinfo->mode() == GameInfo::DACHS || m_gameinfo->mode() == GameInfo::RUFSPIEL )
+        m_laufende = ( m_laufende >= 3 || m_laufende <= -3 ) ? m_laufende : 0;
     
     m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
 }
