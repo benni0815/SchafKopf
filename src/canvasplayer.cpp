@@ -33,7 +33,7 @@
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */
-#define CHEAT
+//#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"
@@ -165,7 +165,10 @@ void CanvasPlayer::init(int i)
     #ifdef CHEAT
             c->setFrontVisible( true );
     #else            
-            c->setFrontVisible( m_player->rtti() == Player::HUMAN );
+            if( m_player->rtti() == Player::HUMAN )
+                c->setFrontVisible( (z < 4 || m_player->hasDoubled() ) );
+            else
+                c->setFrontVisible( false );
     #endif
         }
         m_name->show();

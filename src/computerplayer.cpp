@@ -40,6 +40,8 @@ ComputerPlayer::~ComputerPlayer()
 void ComputerPlayer::klopfen()
 {
     m_geklopft = false;
+    
+    Player::klopfen();
 }
 
 Card *ComputerPlayer::play()

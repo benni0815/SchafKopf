@@ -39,6 +39,9 @@ class QResizeEvent;
 class GameCanvas : public QCanvasView
 {
     Q_OBJECT
+    
+    enum { YES, NO };
+    
     public:
         GameCanvas(QCanvas* c,QWidget *parent = 0, const char *name = 0);
         ~GameCanvas();
@@ -50,6 +53,14 @@ class GameCanvas : public QCanvasView
           */
         void cardForbidden( Card* card );
 
+        /** ask the user a question and allow him to make a decision
+          */
+        bool questionYesNo( const QString & message );
+        
+        /** display an information message to the user
+          */
+        void information( const QString & message );
+          
     public slots:
         void redrawPlayers();
         
@@ -63,7 +74,8 @@ class GameCanvas : public QCanvasView
         void positionObjects(bool redraw=true);
         
         void cardClicked( QCanvasItem* item );
-
+        void yesNoClicked( QCanvasItem* item );
+        
         void slotPlayerPlayedCard( unsigned int player, Card *c );
         void slotPlayerMadeStich(unsigned int);
         
@@ -77,12 +89,18 @@ class GameCanvas : public QCanvasView
         /** Create QCanvasItem's for all Cards 
           */
         void createObjects();
+        int m_result;
         QPoint getStichPosition( int player );
         
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
         QCanvasItem* m_item; // currently clicked item
-        
+
+        QCanvasText* m_message;
+        QCanvasText* m_yes;
+        QCanvasText* m_no;
+        QCanvasText* m_ok;
+                
         Game* m_game;
 };
 

@@ -96,6 +96,18 @@ void Game::gameLoop()
 	Card *c;
     Timer timer;
     
+    // cards should be given to the player now
+    // it's time to ask wether he wants to double
+    // or not
+    for(i=0;i<PLAYERS && !terminated;i++)
+    {
+        m_players[i]->klopfen();
+        if( m_players[i]->geklopft() )   
+            m_canvas->information( i18n("%1 has doubled.").arg( m_players[i]->name() ) );
+    }
+    
+    m_canvas->redrawPlayers();
+    
     // find a player you can playercards
     // and setup m_gameinfo    
     if( !setupGameInfo() )
@@ -274,7 +286,7 @@ void Game::gameResults()
     for( unsigned int i=0;i<PLAYERS;i++)
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     
-    KMessageBox::information( 0, r->result() );
+    m_canvas->information( r->result() );
     // TODO:
     // BIG TODO:
     // IT CRASHES WITH THIS LINE UNCOMMENTED
@@ -297,12 +309,14 @@ bool Game::setupGameInfo()
         {
             info->setSpieler( m_players[i] );
             games.append( info );
-        }
+            m_canvas->information( i18n("%1 has a game.").arg( m_players[i]->name() ) );
+        } else
+            m_canvas->information( i18n("%1 has no game.").arg( m_players[i]->name() ) );
     }
     
     if( games.isEmpty() )
     {
-        KMessageBox::information( 0, i18n("No one wants to play. Cards will thrown together.") );
+        m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
         return false;
     } 
     else
@@ -332,7 +346,7 @@ bool Game::setupGameInfo()
     }
     
     m_laufende = m_gameinfo.laufende();
-    KMessageBox::information( 0, m_gameinfo.toString() );
+    m_canvas->information( m_gameinfo.toString() );
     return true;
 }
 

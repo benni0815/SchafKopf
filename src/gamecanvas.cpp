@@ -25,8 +25,10 @@
 #include "game.h"
 #include "player.h"
 #include "settings.h"
+#include "timer.h"
 
 #include <kapplication.h>
+#include <klocale.h>
 #include <qtimer.h>
 
 #define NUMCARDS 8
@@ -43,6 +45,20 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     
     m_game = NULL;
     m_item = NULL;
+        
+    QFont f( "Helvetica", 24 );
+    
+    m_message = new QCanvasText( QString::null, f, canvas() );;
+    m_yes = new QCanvasText( i18n("Yes"), f, canvas() );;
+    m_no = new QCanvasText( i18n("No"), f, canvas() );;
+    m_ok = new QCanvasText( i18n("OK"), f, canvas() );
+    
+    m_message->setColor( Qt::yellow );
+    m_yes->setColor( Qt::yellow );
+    m_no->setColor( Qt::yellow );
+    m_ok->setColor( Qt::yellow );
+    
+    m_result = 0;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     canvas()->setAdvancePeriod( 200 );
@@ -51,8 +67,8 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
 	connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
-}
-    
+    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
+}    
 
 GameCanvas::~GameCanvas()
 {
@@ -129,6 +145,15 @@ void GameCanvas::positionObjects(bool redraw)
         QPoint p = getStichPosition(i);
         m_stich[i]->move( (int)p.x(), (int)p.y() );
     }
+
+    m_message->move( ( canvas()->width() - m_message->boundingRect().width() )/2,
+                   (( canvas()->height() - m_message->boundingRect().height() ) / 2) - m_message->boundingRect().height() );
+    m_ok->move( ( canvas()->width() - m_ok->boundingRect().width() )/2,
+                     m_message->y() + m_message->boundingRect().height() );
+    m_yes->move( m_message->x(), 
+                 m_message->y() + m_message->boundingRect().height() );
+    m_no->move( m_message->x() + m_message->boundingRect().width() - m_no->boundingRect().width(), 
+                m_message->y() + m_message->boundingRect().height() );
     
     if(redraw)
     {
@@ -226,8 +251,6 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
 
 void GameCanvas::redrawPlayers()
 {
-    // Maybe we should call this from a QTimer::singleShot( 100 )
-    // so that all events are processed, will surely save us a crash!
 	unsigned int i = 0;
 	
     for(i=0;i<PLAYERS;i++)
@@ -254,6 +277,71 @@ void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
         emit clicked( m_item );
         m_item = NULL;
     }
+}
+
+bool GameCanvas::questionYesNo( const QString & message )
+{
+    m_result = NO;
+    
+    m_message->setText( message );
+    m_message->show();
+    m_yes->show();
+    m_no->show();
+
+    positionObjects();
+    
+    canvas()->update();
+    ENTER_LOOP();
+    
+    m_message->hide();
+    m_yes->hide();
+    m_no->hide();
+    
+    canvas()->update();
+        
+    return ( m_result == YES );
+}
+
+void GameCanvas::yesNoClicked( QCanvasItem* item )
+{
+    if( m_message && ((m_yes && m_no) || m_ok ))
+    {
+        if( item == m_yes )
+        {
+            m_result = YES;
+            EXIT_LOOP();
+        }
+        else if( item == m_no )
+        {
+            m_result = NO;
+            EXIT_LOOP();
+        }
+        else if( item == m_ok )
+        {
+            m_result = NO;
+            EXIT_LOOP();
+        }
+    }
+}
+
+void GameCanvas::information( const QString & message )
+{
+    m_message->setText( message );
+    
+    m_message->show();
+    m_ok->show();
+
+    positionObjects();
+    
+    canvas()->update();
+    ENTER_LOOP();
+
+    m_message->hide();
+    m_ok->hide();
+        
+    canvas()->update();
+        
+    return;
 }
 
 #include "gamecanvas.moc"

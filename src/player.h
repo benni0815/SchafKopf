@@ -17,7 +17,7 @@ class Player
         Player(Game* game);
         ~Player();
 
-        virtual void klopfen() = 0;
+        virtual void klopfen();
         virtual Card *play() = 0;
         virtual GameInfo* gameInfo() = 0;
         
@@ -38,8 +38,8 @@ class Player
         virtual int rtti() const = HUMAN;
         const unsigned int id() const { return m_id; }
 
-        bool geklopft() const { return m_geklopft; };
-
+        bool geklopft() const { return m_geklopft; }
+        bool hasDoubled() const { return m_has_doubled; }
 
 	CardList *allowedCards();
 	void removeTrumpf(CardList* liste);
@@ -53,7 +53,9 @@ class Player
         QString m_name;
 
         bool m_geklopft;
-
+        // is set to true as soon as klopfed()
+        // was called
+        bool m_has_doubled;
         unsigned int m_id;
     
     private:

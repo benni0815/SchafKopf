@@ -19,6 +19,7 @@ Player::Player(Game* game)
     m_id=def_id++;
     m_cards = NULL;
     
+    m_has_doubled = false;
     m_geklopft = false;
 }
 
@@ -46,16 +47,23 @@ CardList *Player::cards() const
 void Player::setCards( CardList *cards)
 {
     delete m_cards;
+    
+    m_has_doubled = false;
+    m_geklopft = false;
+    
     m_cards=cards;
 
-    klopfen();
-    
     sortCards();
 }
 
 void Player::sortCards()
 {
     m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
+}
+
+void Player::klopfen()
+{
+    m_has_doubled = true;
 }
 
 void Player::DebugCardOutput(Card* card)

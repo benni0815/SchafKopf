@@ -28,7 +28,6 @@
 #include "timer.h"
 
 #include <klocale.h>
-#include <kmessagebox.h>
 
 HumanPlayer::HumanPlayer(Game* game)
  : QObject( 0, 0 ), Player(game)
@@ -44,6 +43,8 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
+    m_geklopft = m_game->canvas()->questionYesNo( i18n("Do you want to double?") );
+    Player::klopfen();
 }
 
 Card *HumanPlayer::play()
@@ -60,8 +61,7 @@ Card *HumanPlayer::play()
 
 GameInfo* HumanPlayer::gameInfo()
 {
-    int m = KMessageBox::questionYesNo( 0, i18n("Do you want to play?") );
-    if( m == KMessageBox::Yes )
+    if( m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
     {
         SelectGameDlg sgd( m_cards, 0, "sgd" );
         if( sgd.exec() == QDialog::Accepted )
