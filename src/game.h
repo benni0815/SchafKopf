@@ -42,6 +42,7 @@ class Game : public QObject
             int color;
             __mode mode;
             Player *spieler;
+            Player *mitspieler;
         };
 
         Game(QObject *parent = 0, const char *name = 0);
@@ -80,6 +81,7 @@ class Game : public QObject
         
         int highestCard();
         bool isHigher( Card* card, Card* high );
+        void gameResults();
 };
 
 #endif

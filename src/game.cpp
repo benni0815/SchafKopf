@@ -26,7 +26,7 @@
 #include "settings.h"
 #include "timer.h"
 
-#include <setjmp.h>
+#include <kmessagebox.h>
 
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
@@ -54,10 +54,24 @@ Game::Game(QObject *parent, const char *name)
     m_gameinfo.color=Card::EICHEL;
     m_gameinfo.mode=Game::RUFSPIEL;
     m_gameinfo.spieler=m_players[0];
+    m_gameinfo.mitspieler=0;
     
-    Card c( Card::SAU, Card::EICHEL );
-    if( istTrumpf( &c ))
-        qDebug("JJJAAAA");
+    // finde den mitspieler:
+    if( m_gameinfo.mode==Game::RUFSPIEL ) 
+    {
+        Card sau( Card::SAU, static_cast<enum Card::color>(m_gameinfo.color) );
+        for( unsigned int i=0;i<PLAYERS;i++ )
+        {
+            for( unsigned int z=0;z<CARD_CNT/PLAYERS;z++ )
+                if( m_players[i]->cards()->at(z)->isEqual( &sau ) )
+                {
+                    m_gameinfo.mitspieler=m_players[i];
+                    break;
+                }
+            if(m_gameinfo.mitspieler)
+                break;
+        }
+    }
 }
 
 
@@ -104,6 +118,9 @@ void Game::gameLoop()
         for(a=0;a<PLAYERS;a++)
             m_players[a]=tmp[(a+index)%PLAYERS];
     }
+    
+    if( !terminated )
+        gameResults();
     
     m_currstich.clear();
     emit clearStich();
@@ -250,6 +267,21 @@ bool Game::isHigher( Card* card, Card* high )
     }
 
     return false;
+}
+
+void Game::gameResults()
+{
+    // TODO: handle schneider + schwarz ....
+    // sauberen code...
+    int points = m_gameinfo.spieler->stiche()->points();
+    if( m_gameinfo.mitspieler )
+        points += m_gameinfo.mitspieler->stiche()->points();
+        
+        
+    if( points > 60 )
+        KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" gewinnt mit %1 Punkten.").arg( points ) );
+    else
+        KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" verliert mit %1 Punkten.").arg( points ) );
 }
 
 #include "game.moc"
