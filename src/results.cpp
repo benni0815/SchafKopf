@@ -33,10 +33,20 @@
 
 Results::Results()
 {
-    m_laufende = 0;
     m_gameinfo = NULL;
     m_game = NULL;
-    m_parsed = false;
+    
+    init();
+}
+
+void Results::init()
+{
+    m_laufende = 0;
+    m_schneider = false;
+    m_schwarz = false;
+    
+    m_winners.clear();
+    m_losers.clear();
 }
 
 QString Results::result()
@@ -78,8 +88,7 @@ void Results::parse()
 {
     int i;
 
-    if( m_parsed )
-        return;
+    init();
         
     if( m_gameinfo->mode() == GameInfo::RAMSCH )
     {
@@ -138,9 +147,7 @@ void Results::parse()
                     m_game->findIndex( i ) != m_gameinfo->mitspieler() )
                     m_winners.append( m_game->findIndex( i ) );
         }
-        
-        m_parsed = true;
-        
+                
         // ab 2 laufende bei wenz und geier
         if( m_gameinfo->mode() == GameInfo::GEIER || m_gameinfo->mode() == GameInfo::WENZ )
             m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
@@ -180,6 +187,8 @@ double Results::points( Player* player )
         m = r->solo; // SOLO = 20cent
     else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
         m = r->rufspiel;
+    else if( m_gameinfo->mode() == GameInfo::RAMSCH )
+        m = r->ramsch;
         
     m += m_schneider ? r->schneider : 0.0;
     m += m_schwarz ? r->schwarz : 0.0;
@@ -196,12 +205,12 @@ double Results::points( Player* player )
     if( m_winners.count() == 1 )
     {
         if( m_winners.containsRef( player ) )
-            m *= (PLAYERS - m_winners.count());
+            m *= (PLAYERS - 1);
     }
     else if( m_winners.count() == PLAYERS - 1 )
     {
         if( !m_winners.containsRef( player ) )
-            m *= (PLAYERS - m_winners.count());
+            m *= m_winners.count();
     }
        
     return m;

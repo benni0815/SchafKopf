@@ -199,6 +199,7 @@ void Settings::setMoneyResults( const t_ResultValues* r )
     config->writeEntry( "Laufende", r->laufende );
     config->writeEntry( "Schneider", r->schneider );
     config->writeEntry( "Schwarz", r->schwarz );
+    config->writeEntry( "Ramsch", r->ramsch );
     config->sync();
 }
 
@@ -213,6 +214,7 @@ void Settings::setPointResults( const t_ResultValues* r )
     config->writeEntry( "Laufende", (int)r->laufende );
     config->writeEntry( "Schneider", (int)r->schneider );
     config->writeEntry( "Schwarz", (int)r->schwarz );
+    config->writeEntry( "Ramsch", (int)r->ramsch );
     config->sync();
 }
 
@@ -228,6 +230,7 @@ t_ResultValues* Settings::moneyResults() const
     r->laufende = config->readDoubleNumEntry( "Laufende", 0.1 );
     r->schneider = config->readDoubleNumEntry( "Schneider", 0.1 );
     r->schwarz = config->readDoubleNumEntry( "Schwarz", 0.1 );
+    r->ramsch = config->readDoubleNumEntry( "Ramsch", 0.2 );
     return r;    
 }
 
@@ -243,6 +246,7 @@ t_ResultValues* Settings::pointResults() const
     r->laufende = config->readNumEntry( "Laufende", 1 );
     r->schneider = config->readNumEntry( "Schneider", 1 );
     r->schwarz = config->readNumEntry( "Schwarz", 1 );
+    r->ramsch = config->readNumEntry( "Ramsch", 1 );
     return r;    
 }
 

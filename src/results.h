@@ -51,9 +51,12 @@ class Results{
         QString formatedPoints( Player* player );
         
         double klopfen(int anzahl, double betrag);
-    
-    protected:        
+
+    private:
+        void init();
         void parse();
+    
+    private:        
 
         QPtrList<Player> m_winners;
         QPtrList<Player> m_losers;
@@ -66,9 +69,6 @@ class Results{
         int m_points;
         bool m_schneider;
         bool m_schwarz;
-        
-    private:
-        bool m_parsed;
 };
 
 #endif

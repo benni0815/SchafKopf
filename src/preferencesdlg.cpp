@@ -71,6 +71,7 @@ void PreferencesDlg::accept()
     r.laufende = m_money_lauf->value();
     r.schneider = m_money_schneider->value();
     r.schwarz = m_money_notrick->value();
+    r.ramsch = m_money_ramsch->value();
     s->setMoneyResults( &r );
     
     r.rufspiel = m_point_call->value();
@@ -78,6 +79,7 @@ void PreferencesDlg::accept()
     r.laufende = m_point_lauf->value();
     r.schneider = m_point_schneider->value();
     r.schwarz = m_point_notrick->value();
+    r.ramsch = m_point_ramsch->value();
     s->setPointResults( &r );
    
     QStringList names; 
@@ -143,9 +145,9 @@ void PreferencesDlg::addPageRules()
     QVButtonGroup* group = new QVButtonGroup( i18n("No one wants to play:"), box, "group" );
     m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
     m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
-    m_radioRamsch = new QRadioButton( i18n("Play Ramsch (not available yet)"), group );
+    m_radioRamsch = new QRadioButton( i18n("Play Ramsch"), group );
     
-    QToolTip::add( m_radioRamsch, i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser.") );
+    QToolTip::add( m_radioRamsch, i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too.") );
     m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
     QToolTip::add( m_checkDoublerPlays, i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect.") );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
@@ -221,11 +223,16 @@ void PreferencesDlg::addPageResultsMoney()
     m_money_schneider->setLabel( i18n("Schneider:"), AlignLeft | AlignVCenter );
     m_money_schneider->setSuffix( locale->currencySymbol() );
     
+    m_money_ramsch = new KDoubleNumInput( m_money_schneider, 0.0, 100.00, r->ramsch, 0.10, 2, box, "m_money_ramsch" );
+    m_money_ramsch->setLabel( i18n("Ramsch:"), AlignLeft | AlignVCenter );
+    m_money_ramsch->setSuffix( locale->currencySymbol() );
+    
     layout->addWidget( m_money_call );    
     layout->addWidget( m_money_solo );
     layout->addWidget( m_money_lauf );
     layout->addWidget( m_money_notrick );
     layout->addWidget( m_money_schneider );
+    layout->addWidget( m_money_ramsch );
     layout->addItem( spacer );
     
     delete r;
@@ -262,12 +269,18 @@ void PreferencesDlg::addPageResultsPoints()
     m_point_schneider->setLabel( i18n("Schneider:"), AlignLeft | AlignVCenter );
     m_point_schneider->setMinValue( 0 );
     m_point_schneider->setMaxValue( 100 );
+
+    m_point_ramsch = new KIntNumInput( m_point_schneider, (int)r->ramsch, box, 10, "m_point_ramsch" );
+    m_point_ramsch->setLabel( i18n("Ramsch:"), AlignLeft | AlignVCenter );
+    m_point_ramsch->setMinValue( 0 );
+    m_point_ramsch->setMaxValue( 100 );
     
     layout->addWidget( m_point_call );    
     layout->addWidget( m_point_solo );
     layout->addWidget( m_point_lauf );
     layout->addWidget( m_point_notrick );
     layout->addWidget( m_point_schneider );
+    layout->addWidget( m_point_ramsch );
     layout->addItem( spacer );
     
     delete r;

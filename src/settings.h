@@ -31,6 +31,7 @@ struct t_ResultValues {
     double laufende;
     double schwarz;
     double schneider;
+    double ramsch;
 };
 
 /** a datatype defining which games are allowed to be 

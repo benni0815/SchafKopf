@@ -91,12 +91,14 @@ class PreferencesDlg : public KDialogBase
         KDoubleNumInput* m_money_lauf;
         KDoubleNumInput* m_money_notrick;
         KDoubleNumInput* m_money_schneider;
+        KDoubleNumInput* m_money_ramsch;
         
         KIntNumInput* m_point_solo;
         KIntNumInput* m_point_call;
         KIntNumInput* m_point_lauf;
         KIntNumInput* m_point_notrick;
         KIntNumInput* m_point_schneider;
+        KIntNumInput* m_point_ramsch;
 };
 
 #endif
