@@ -239,6 +239,8 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
         default:
         	break;
 	}
+	if(col==Card::NOCOLOR)
+		col=Card::EICHEL;
 	l_colors[0]=col;
 	for(i=0, a=1;i<4;i++)
 	{
@@ -271,7 +273,6 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 			break;
 		}
 	}
-	//qDebug("Trumpf-Index: " + QString::number(trumpf_index));
 	if(trumpf_index!=-1)
 		return 32-(trumpf_index*4+card->color());
 	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
