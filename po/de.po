@@ -279,17 +279,17 @@ msgid "No trick was made."
 msgstr "Kein Stich wurde bis jetzt gemacht."
 
 msgid "When you play a \"Solo\", you have to additionally choose a color. Trumps are all \"Ober\", \"Unter\" and the color you chose. You will play alone against the other three players."
-msgstr "Wenn Du ein Solo spielen willst musst Du zusätzlich noch eine Farbe auswählen. Trumpf sind alle Ober, Unter und die Farbe die du gewählt hast. Du spielst dann alleine gegen die drei anderen Spieler."
+msgstr "Wenn Du ein Solo spielen willst, musst Du zusätzlich noch eine Farbe auswählen. Trumpf sind alle Ober, Unter und die Farbe die du gewählt hast.<br>Du spielst alleine gegen die drei anderen Spieler."
 
 msgid "When you play a \"Dachs\", the only trumps are aces and tenners. You will play alone against the other three players."
-msgstr "Wenn du einen Dachs spielst sind die Asse und die Zehner die einzigen Trümpfe. Du spielst dann alleine gegen die drei anderen Spieler."
+msgstr "Wenn du einen Dachs spielst, sind die Asse und die Zehner die einzigen Trümpfe.<br>Du spielst  alleine gegen die drei anderen Spieler."
 
 msgid "When you play a callgame, you will have to choose a color. You will then play in team with the player which has the ace of the color you chose. Hearts are trumps."
-msgstr "Wenn Du ein Rufspiel spielen willst musst Du zusätzlich noch eine Farbe auswählen. Du spielst dann mit dem Spieler zusammen der das Ass derjenigen Farbe hat die Du ausgewählt hast. Herz ist Trumpf."
+msgstr "Wenn Du ein Rufspiel spielen willst, musst Du zusätzlich noch eine Farbe auswählen. Du spielst dann mit dem Spieler zusammen der das Ass dieser Farbe hat. Herz ist Trumpf."
 
 msgid "When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players."
-msgstr "Wenn du einen Wenz spielen willst kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Unter sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Unter Trumpf. Du spielst alleine gegen die drei anderen Spieler."
+msgstr "Wenn du einen Wenz spielen willst, kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Unter sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Unter Trumpf.<br>Du spielst alleine gegen die drei anderen Spieler."
 
 msgid "When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players."
-msgstr "Wenn du einen Geier spielen willst kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Ober Trumpf. Du spielst alleine gegen die drei anderen Spieler."
+msgstr "Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Ober Trumpf.<br>Du spielst alleine gegen die drei anderen Spieler."
 
