@@ -5,7 +5,6 @@ Fixen:
 
 AI:
 - Solo: Mitspieler schmieren dem Spieler
-- Solo: Spieler spielt seine Truempfe zu spaet.
 - Computer schmiert auch Ober wenn er nix hoeheres hat
 - Oefters Rufspiele spielen
 - "Wird eine Farbe das zweite Mal gespielt, so sollte ein AI-Spieler mindestens mit einem Unter stechen, sofern hinter ihm noch ein Gegner kommt." (auf keinen Fall schmieren!!)

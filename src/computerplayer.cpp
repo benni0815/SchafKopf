@@ -148,6 +148,7 @@ Card *ComputerPlayer::play()
 			else
 				i++;
 		}
+		qDebug("%s: allowed->count() : %i", name().latin1(), allowed->count() );
 	}
     else if( m_game->currStich()->count() == 3 )
     {

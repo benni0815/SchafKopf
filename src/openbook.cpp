@@ -128,7 +128,9 @@ CardList* OpenBook::possibleCards()
     CardList* allowed = m_self->allowedCards();
     CardList* list = new CardList();
     unsigned int i = 0;
-    
+
+    m_player = ((Player*)m_self == m_game->gameInfo()->spieler() || (Player*)m_self == m_game->gameInfo()->mitspieler() );
+    qDebug(" %s : player : %i", m_self->name().latin1(), (int)m_player );
     for( i=0;i<sizeof(rules)/sizeof(s_rule);i++)
     {
         s_rule r = rules[i];
