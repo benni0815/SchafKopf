@@ -23,6 +23,7 @@
 #include "computerplayer.h"
 #include "cardlist.h"
 #include "gamecanvas.h"
+#include "timer.h"
 
 #include <kapplication.h>
 #if QT_VERSION >= 0x030100
@@ -66,13 +67,24 @@ void Game::gameLoop()
 {
     int i, a, index;
     Player *tmp[PLAYERS];
+    Timer timer;
         
     for(i=0;i<TURNS || terminated;i++)
     {
         m_currstich.clear();
-        for(a=0;a<PLAYERS;a++) {
-            m_currstich.append(m_players[a]->play());
+        for(a=0;a<PLAYERS;a++) 
+        {
+            Card *c = m_players[a]->play();
+            for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
+                if(m_players[a]->cards()->at(z) == c) 
+                {
+                    m_players[a]->cards()->take(z);
+                    break;
+                }
+            
+            m_currstich.append(c);
             emit gameStateChanged();
+            timer.block( 1 );
         }
         
         index = highestCard();
@@ -85,7 +97,7 @@ void Game::gameLoop()
     }
 }
 
-const CardList *Game::currStich() const
+CardList *Game::currStich() const
 {
     return &m_currstich;
 }
@@ -113,7 +125,7 @@ void Game::setCanvas( GameCanvas* c )
 }
 
 Player* Game::findId( unsigned int id ) const
-{
+{            kapp->eventLoop()->enterLoop();
     for( unsigned int i = 0; i < PLAYERS; i++)
         if( id == m_players[i]->id() )
             return m_players[i];

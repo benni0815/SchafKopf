@@ -46,6 +46,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_game = NULL;
     m_items[0] = NULL;
     m_item = NULL;
+    m_stich = NULL;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     update();
@@ -63,15 +64,24 @@ GameCanvas::~GameCanvas()
 
 void GameCanvas::clearObjects()
 {
-    if( !m_items[0] )
-        return;
-        
-    for( unsigned int i = 0; i < PLAYERS; i++ ) {
-        for( unsigned int z = 0; z < m_items[i]->count(); z++ )
-            delete (*m_items[i])[z];
+    if( m_items[0] )
+    {       
+        for( unsigned int i = 0; i < PLAYERS; i++ ) {
+            for( unsigned int z = 0; z < m_items[i]->count(); z++ )
+                delete (*m_items[i])[z];
             
-        delete m_items[i];
-        m_items[i] = NULL;
+            delete m_items[i];
+            m_items[i] = NULL;
+        }
+    }
+    
+    if( m_stich )
+    {
+        for( unsigned int i = 0; i < m_stich->count(); i++ )
+            delete (*m_stich)[i];
+            
+        delete m_stich;
+        m_stich = NULL;
     }
     
     redrawAll();
@@ -83,8 +93,10 @@ void GameCanvas::setGame( Game* game )
     
     if( m_game == NULL )
         clearObjects();
-    else
+    else {
         m_game->setCanvas( this );
+        connect( m_game, SIGNAL(gameStateChanged()), this, SLOT(updateObjects()));
+    }
     
     createObjects();
 }
@@ -117,12 +129,29 @@ void GameCanvas::createObjects()
         }
     }
     
+    m_stich = new QCanvasItemList();
+    for( unsigned int i = 0; i < m_game->currStich()->count(); i++ )
+    {
+        CanvasCard *c = new CanvasCard( m_game->currStich()->at(i), canvas() );
+        c->setZ( i );
+        
+        m_stich->append( c );
+    }
+    
     positionObjects();
+}
+
+void GameCanvas::updateObjects()
+{
+    // TODO: do only change the changed
+    // parts and do not recreated every thing!!
+    clearObjects();
+    createObjects();
 }
 
 void GameCanvas::positionObjects()
 {
-    if( !m_items[0] || !m_game )
+    if( !m_items[0] || !m_game || !m_stich )
         return;
 
     int w = canvas()->width()-DIST;
@@ -132,6 +161,7 @@ void GameCanvas::positionObjects()
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         int x = 0, y = 0;
+        int num=m_items[i]->count();
         QCanvasItemList* list = m_items[i];
     
         if(i==1||i==3)
@@ -139,21 +169,21 @@ void GameCanvas::positionObjects()
         
         switch( i ) {
             case 0:
-                x=(w-cardw*NUMCARDS)/2;
+                x=(w-cardw*num)/2;
                 y=h-cardh; 
                 break;
             case 1:
                 x=w-cardw;
-                y=(h-((cardh/2)*(NUMCARDS-1)+cardh))/2; 
+                y=(h-((cardh/2)*(num-1)+cardh))/2; 
                 break;
             case 2: 
-                x=(w-((cardw/2)*(NUMCARDS-1)+cardw))/2;
+                x=(w-((cardw/2)*(num-1)+cardw))/2;
                 y=DIST;
                 break;
             case 3:
             default:
                 x=DIST; 
-                y=(h-((cardh/2)*(NUMCARDS-1)+cardh))/2; 
+                y=(h-((cardh/2)*(num-1)+cardh))/2; 
                 break;
         }
 
@@ -171,6 +201,22 @@ void GameCanvas::positionObjects()
         // swap them back
         if(i==1||i==3)
             qSwap( cardw, cardh );
+    }
+    
+    for( unsigned int i = 0; i < m_stich->count(); i++ ) 
+    {
+        CanvasCard* card = static_cast<CanvasCard*>((*m_stich)[i]);
+        int cx = w/2;
+        int cy = h/2;
+        
+        if( i == 0 )
+            card->move( cx, cy+cardh );
+        else if( i == 1 )
+            card->move( cx-cardw, cy );
+        else if( i == 2 )
+            card->move( cx, cy-cardh );
+        else if( i == 3 )
+            card->move( cx+cardw, cy );
     }
     
     redrawAll();

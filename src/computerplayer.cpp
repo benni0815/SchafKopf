@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include "computerplayer.h"
 
+#include "cardlist.h"
+#include <kapplication.h>
+
 ComputerPlayer::ComputerPlayer(CardList *cards,Game* game)
  : Player(cards,game)
 {
@@ -36,5 +39,5 @@ void ComputerPlayer::klopfen()
 
 Card *ComputerPlayer::play()
 {
-    return 0;
+    return m_cards->at(KApplication::random()%m_cards->count());
 }

@@ -17,65 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef GAME_H
-#define GAME_H
+#include "timer.h"
 
-#include "cardlist.h"
+#include <qtimer.h>
 
-#include <qobject.h>
-
-#define PLAYERS 4
-#define TURNS 8
-
-class GameCanvas;
-class Player;
-/**
-@author Dominik Seichter
-*/
-class Game : public QObject
-{
-    Q_OBJECT
-    public:
-        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
-        struct game_info
-        {
-            int color;
-            __mode mode;
-            Player *spieler;
-        };
-
-        Game(QObject *parent = 0, const char *name = 0);
-        ~Game();
-        void gameLoop();
-        CardList *currStich() const;
-        const Game::game_info *gameInfo() const;
-        
-        void setCanvas( GameCanvas* c );
-        GameCanvas* canvas() const { return m_canvas; }
-        
-        Player* findId( unsigned int id ) const;
-        Player* findIndex( unsigned int index ) const;
-
-        bool istTrumpf(Card *card);
-        
-    signals:
-        void gameStateChanged();
-        void signalKlopfen();
-    
-    public slots:
-        void endGame(void);
-        
-    private:
-        bool terminated;
-        Player *m_players[PLAYERS];
-        CardList m_allcards;
-        CardList m_playedcards;
-        CardList m_currstich;
-        Game::game_info m_gameinfo;
-        
-        GameCanvas *m_canvas;
-        
-        int highestCard();
-};
-
+#include <kapplication.h>
+#if QT_VERSION >= 0x030100
+    #include <qeventloop.h>
+#else
+    #include <qapplication.h>
 #endif
+
+Timer::Timer(QObject *parent, const char *name)
+ : QObject(parent, name)
+{
+}
+
+
+Timer::~Timer()
+{
+}
+
+void Timer::block( int seconds )
+{
+    QTimer::singleShot( seconds*1000, this, SLOT( returnLoop() ) );
+#if QT_VERSION >= 0x030100
+    kapp->eventLoop()->enterLoop();
+#else
+    kapp->enter_loop();
+#endif
+}
+
+void Timer::returnLoop()
+{
+#if QT_VERSION >= 0x030100
+    kapp->eventLoop()->exitLoop();
+#else
+    kapp->exit_loop();
+#endif
+}
+
+#include "timer.moc"
+

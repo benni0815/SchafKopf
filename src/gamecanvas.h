@@ -41,7 +41,7 @@ class GameCanvas : public QCanvasView
         ~GameCanvas();
         
         void setGame( Game* game );
-    
+   
     signals:
         void clicked( QCanvasItem* item );
         void playCard( Card* card );
@@ -51,6 +51,7 @@ class GameCanvas : public QCanvasView
         /** Position the cards on the screen correctly
           */
         void positionObjects();
+        void updateObjects();
         
         void cardClicked( QCanvasItem* item );
 
@@ -67,6 +68,7 @@ class GameCanvas : public QCanvasView
         void clearObjects();
       
         QCanvasItemList* m_items[PLAYERS];
+        QCanvasItemList* m_stich;
         QCanvasItem* m_item; // currently clicked item
         
         Game* m_game;

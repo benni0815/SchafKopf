@@ -17,65 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef GAME_H
-#define GAME_H
-
-#include "cardlist.h"
+#ifndef TIMER_H
+#define TIMER_H
 
 #include <qobject.h>
 
-#define PLAYERS 4
-#define TURNS 8
-
-class GameCanvas;
-class Player;
+class QTimer;
 /**
 @author Dominik Seichter
 */
-class Game : public QObject
+class Timer : public QObject
 {
     Q_OBJECT
     public:
-        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
-        struct game_info
-        {
-            int color;
-            __mode mode;
-            Player *spieler;
-        };
-
-        Game(QObject *parent = 0, const char *name = 0);
-        ~Game();
-        void gameLoop();
-        CardList *currStich() const;
-        const Game::game_info *gameInfo() const;
+        Timer(QObject *parent = 0, const char *name = 0);
+        ~Timer();
         
-        void setCanvas( GameCanvas* c );
-        GameCanvas* canvas() const { return m_canvas; }
+        void block( int seconds );
         
-        Player* findId( unsigned int id ) const;
-        Player* findIndex( unsigned int index ) const;
-
-        bool istTrumpf(Card *card);
-        
-    signals:
-        void gameStateChanged();
-        void signalKlopfen();
-    
-    public slots:
-        void endGame(void);
+    private slots:
+        void returnLoop();
         
     private:
-        bool terminated;
-        Player *m_players[PLAYERS];
-        CardList m_allcards;
-        CardList m_playedcards;
-        CardList m_currstich;
-        Game::game_info m_gameinfo;
-        
-        GameCanvas *m_canvas;
-        
-        int highestCard();
+        QTimer *m_timer;
 };
 
 #endif
