@@ -86,6 +86,10 @@ class Settings : public QObject
         
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
+
+        void setRearrangeCards( bool b);
+        bool rearrangeCards() const;
+
         /** delete after usage
           */
         t_ResultValues* moneyResults() const;

@@ -236,7 +236,7 @@ void Settings::setDoublerHasToPlay( bool b )
 
 bool Settings::doublerHasToPlay() const
 {
-    bool b = false;
+    bool b = true;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     b = config->readBoolEntry( "DoublerHasToPlay", b );
@@ -253,12 +253,28 @@ void Settings::setDoubleNextGame( bool b )
 
 bool Settings::doubleNextGame() const
 {
-    bool b = false;
+    bool b = true;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     b = config->readBoolEntry( "DoubleNextGame", b );
     return b;
 }
 
+void Settings::setRearrangeCards( bool b)
+{
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    config->writeEntry( "RearrangeCards", b );
+    config->sync();
+}
+
+bool Settings::rearrangeCards() const
+{
+    bool b = true;
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    b = config->readBoolEntry( "RearrangeCards", b );
+    return b;
+}
 
 #include "settings.moc"

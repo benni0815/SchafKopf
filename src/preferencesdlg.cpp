@@ -47,6 +47,7 @@ PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     addPageResults();
     addPageResultsMoney();
     addPageResultsPoints();
+    addPageView();
     
     enableControls();
 }
@@ -87,6 +88,8 @@ void PreferencesDlg::accept()
     Settings::instance()->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
     
     Settings::instance()->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
+    
+    Settings::instance()->setRearrangeCards( m_checkRearrangeCards->isChecked() );
     
     KDialogBase::accept();
 }
@@ -247,6 +250,23 @@ void PreferencesDlg::addPageResultsPoints()
     layout->addItem( spacer );
     
     delete r;
+}
+
+void PreferencesDlg::addPageView()
+{
+    QFrame* box = addPage( i18n("View"), QString::null, BarIcon("") );
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+    
+    QVButtonGroup* group = new QVButtonGroup( i18n("Card Arrangement:"), box, "group" );
+    m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
+    QToolTip::add( m_checkRearrangeCards, i18n("Cards will be rearranged after each trick.") );
+ 
+    layout->addWidget( group );
+    layout->addItem( spacer );
+    
+    // load data from configuration
+    m_checkRearrangeCards->setChecked( Settings::instance()->rearrangeCards() );
 }
 
 void PreferencesDlg::enableControls()

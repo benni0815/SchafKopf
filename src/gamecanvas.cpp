@@ -269,7 +269,8 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
     if( card )
     {
         m_players[player]->cardPlayed( card->card() );
-	m_players[player]->position( player );
+	if(Settings::instance()->rearrangeCards())
+		m_players[player]->position( player );
   
         CanvasCard* stich = m_stich[player];
         stich->setCard( card->card() );

@@ -54,6 +54,8 @@ class PreferencesDlg : public KDialogBase
         void addPageResultsMoney();
         void addPageResultsPoints();
         void addPageRules();
+        void addPageView();
+
         
     private:
         QRadioButton* m_radioMoney;
@@ -63,7 +65,8 @@ class PreferencesDlg : public KDialogBase
         QRadioButton* m_radioRamsch;
         
         QCheckBox* m_checkDoublerPlays;
-        QCheckBox* m_checkDoubleNextGame; 
+        QCheckBox* m_checkDoubleNextGame;
+        QCheckBox* m_checkRearrangeCards;
 
         KLineEdit* m_p1_name;
         KLineEdit* m_p2_name;

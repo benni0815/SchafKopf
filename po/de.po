@@ -308,6 +308,18 @@ msgstr "Schneider:"
 msgid "Configure Point Values"
 msgstr "Punkte festlegen"
 
+msgid "View"
+msgstr "Anzeige"
+
+msgid "Card Arrangement:"
+msgstr "Kartendarstellung:"
+
+msgid "Rearrange cards after each trick."
+msgstr "Karten nach jedem Stich neu anordnen."
+
+msgid "Cards will be rearranged after each trick."
+msgstr "Die Karten werden nach jedem Stich neu angeordnet."
+
 #: results.cpp:44
 msgid " schneider"
 msgstr " Schneider"
