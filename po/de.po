@@ -326,6 +326,9 @@ msgstr "Spielfeld:"
 msgid "Background image:"
 msgstr "Hintergrundbild:"
 
+msgid "clear background image"
+msgstr "Hintergrundbild entfernen"
+
 msgid "Games"
 msgstr "Spiele"
 

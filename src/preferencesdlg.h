@@ -49,6 +49,7 @@ class PreferencesDlg : public KDialogBase
     
     private slots:
         void enableControls();
+        void disableClearButton(const QString & url);
         
     private:
         void addPagePlayer();

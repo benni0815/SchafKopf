@@ -284,6 +284,7 @@ void PreferencesDlg::addPageView()
     layout->addItem( spacer );
     
     connect( m_pushURLClear, SIGNAL( clicked() ), m_linePathBackground, SLOT( clear() ) );
+    connect( m_linePathBackground, SIGNAL( textChanged(const QString &) ), this, SLOT( disableClearButton(const QString &) ) );
 
     // load data from configuration
     m_checkRearrangeCards->setChecked( Settings::instance()->rearrangeCards() );
@@ -345,6 +346,14 @@ void PreferencesDlg::enableControls()
     
     m_games_farbwenz->setEnabled( m_games_wenz->isChecked() );
     m_games_farbgeier->setEnabled( m_games_geier->isChecked() );
+}
+
+void PreferencesDlg::disableClearButton(const QString & url)
+{
+    if(url=="")
+        m_pushURLClear->setEnabled( false );
+    else
+        m_pushURLClear->setEnabled( true );
 }
 
 #include "preferencesdlg.moc"
