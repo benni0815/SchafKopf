@@ -17,42 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef GAMECANVAS_H
+#define GAMECANVAS_H
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include <qcanvas.h>
+#include "game.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+class QCanvasItemList;
+class QResizeEvent;
 
-#include <kmainwindow.h>
-
-class QCanvas;
-class GameCanvas;
-class Game;
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+class GameCanvas : public QCanvasView
 {
     Q_OBJECT
     public:
-        SchafKopf();
-        ~SchafKopf();
+        GameCanvas(QCanvas* c,QWidget *parent = 0, const char *name = 0);
+        ~GameCanvas();
+        
+        void setGame( Game* game );
     
     private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
+        void redrawAll();
         
     private:
-        void setupActions();
+        /** Create QCanvasItem's for all Cards 
+          */
+        void createCards();
+        /** Position the cards on the screen correctly
+          */
+        void lineupCards();
+
+        void resizeEvent( QResizeEvent *r );
+        
+        QCanvasItemList* m_items[PLAYERS];
         
         Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
 };
 
-#endif // _SCHAFKOPF_H_
+#endif

@@ -28,7 +28,7 @@ void Player::setName( const QString & n )
     m_name = n;
 }
 
-const CardList *Player::cards() const
+CardList *Player::cards() const
 {
     return m_cards;
 }

@@ -49,7 +49,8 @@ class Game : public QObject
         const CardList *currStich() const;
         const Game::game_info *gameInfo() const;
         
-        Player* findId( unsigned int id );
+        Player* findId( unsigned int id ) const;
+        Player* findIndex( unsigned int index ) const;
 
         bool istTrumpf(Card *card);
             

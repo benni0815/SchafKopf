@@ -34,7 +34,6 @@ Card::Card( const enum type t, const enum color c )
     m_pixmap = 0;
     m_card = t;
     m_color = c;
-    
     switch( m_card ) {
         case ASS:
             m_points = 11; break;
@@ -76,7 +75,7 @@ QPixmap* Card::pixmap()
 QPixmap* Card::backgroundPixmap()
 {
     if( !m_background ) {
-        QString deck = Settings::instance()->cardDeck();
+        QString deck = Settings::instance()->cardBackground();
         m_background = new QPixmap( deck );
     }
     
@@ -86,6 +85,7 @@ QPixmap* Card::backgroundPixmap()
 void Card::cardChanged()
 {
     delete m_pixmap;
+    m_pixmap = NULL;
     if( m_background ) {
         delete m_background;
         m_background = NULL;

@@ -18,8 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "schafkopf.h"
-#include "card.h"
 #include "settings.h"
+#include "gamecanvas.h"
+// TODO: either move the game object into
+// GameCanvas as member variable or
+// maybe make GameCanvas a subclasse of Game
+#include "game.h"
 
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -38,12 +42,14 @@ SchafKopf::SchafKopf()
     : KMainWindow( 0, "SchafKopf" )
 {
     QVBox* w = new QVBox( this );
-    QLabel* label = new QLabel( "HI", w );
-    
     setCentralWidget( w );
-    Card c( Card::SIEBEN, Card::SCHELLEN );
-    label->setPixmap( *c.pixmap() );
-    
+
+    m_game = new Game();
+    m_canvas = new QCanvas( this, "canvas" );
+    m_canvasview = new GameCanvas( m_canvas, w, "canvasview" );
+    m_canvasview->setGame( m_game );
+    //m_game->gameLoop();
+        
     setupActions();
 }
 

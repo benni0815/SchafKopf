@@ -28,8 +28,8 @@ CardList::CardList()
 
 void CardList::init()
 {
-    clear();
     setAutoDelete( true );
+    clear();
 
     for( int i = 0; i < CARD_CNT ; i += 4  )
         for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
@@ -53,7 +53,7 @@ void CardList::randomize()
     init();
     for(i=0;i<CARD_CNT;i++)
     {
-        rval=KApplication::random()%32;
+        rval=KApplication::random()%CARD_CNT;
         for(a=0;a<i;a++)
         {
             if(rnd[a]==rval)
@@ -66,7 +66,9 @@ void CardList::randomize()
     }
     for(i=0;i<CARD_CNT;i++)
         append(at(rnd[i]));
-    for(i=0;i<CARD_CNT;i++)
-        remove(first()); // we always remove the first item
+    while(count() > CARD_CNT )
+        (void)take(0); // we always remove the first item
+                       // Do not use remove(), as autoDeletion is
+                       // enabled!!! 
 }
 

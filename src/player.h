@@ -20,7 +20,7 @@ class Player
 
         const QString & name() const;
         void setName( const QString & n );
-        const CardList *cards() const;
+        CardList *cards() const;
         void setCards( CardList *cards);
         const CardList* stiche() const;
         void addStich( CardList stich );

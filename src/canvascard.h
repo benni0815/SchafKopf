@@ -17,42 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef CANVASCARD_H
+#define CANVASCARD_H
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include <qcanvas.h>
+#include <qpainter.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+class Card;
 
-#include <kmainwindow.h>
-
-class QCanvas;
-class GameCanvas;
-class Game;
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+class CanvasCard : public QCanvasRectangle
 {
-    Q_OBJECT
     public:
-        SchafKopf();
-        ~SchafKopf();
-    
-    private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
+        CanvasCard(Card* card,QCanvas*c);
+        ~CanvasCard();
+
+        Card* card() const { return m_card; }
+        
+        void setFrontVisible( bool b );
+        void setRotation( int d );
         
     private:
-        void setupActions();
+        void draw( QPainter & p );
         
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
+        bool m_visible;
+        int m_rotation;
+        Card* m_card;
 };
 
-#endif // _SCHAFKOPF_H_
+#endif

@@ -17,42 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "canvascard.h"
+#include "card.h"
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include <qpixmap.h>
+#include <qwmatrix.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <kmainwindow.h>
-
-class QCanvas;
-class GameCanvas;
-class Game;
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+CanvasCard::CanvasCard(Card* card,QCanvas*c)
+ : QCanvasRectangle(c), m_rotation(0)
 {
-    Q_OBJECT
-    public:
-        SchafKopf();
-        ~SchafKopf();
-    
-    private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
-        
-    private:
-        void setupActions();
-        
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-};
+    m_card = card;
+    show();
+}
 
-#endif // _SCHAFKOPF_H_
+
+CanvasCard::~CanvasCard()
+{
+}
+
+void CanvasCard::draw( QPainter & p )
+{
+    QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
+    
+    setSize( pixmap->width(), pixmap->height() );
+
+    // this code handles already matrix transformations
+    QWMatrix wm = p.worldMatrix();    
+    QPoint point( (int)x(), (int)y() );
+    point = wm * point;
+    
+    wm.rotate( (double)m_rotation );
+    
+    QPixmap pix = pixmap->xForm( wm );
+    bitBlt( p.device(), point.x(), point.y(), &pix );
+}
+
+void CanvasCard::setFrontVisible( bool b )
+{
+    m_visible = b;
+}
+
+void CanvasCard::setRotation( int d )
+{
+    m_rotation = d;
+}
+
+#include "canvascard.moc"
