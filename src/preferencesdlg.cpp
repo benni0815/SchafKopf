@@ -34,6 +34,7 @@
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+#include <qtooltip.h>
 
 PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     : KDialogBase( IconList, i18n("Preferences"), KDialogBase::Ok|KDialogBase::Cancel,
@@ -117,13 +118,11 @@ void PreferencesDlg::addPageRules()
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     
     QVButtonGroup* group = new QVButtonGroup( i18n("No one wants to play:"), box, "group" );
-    m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones"), group );
-    m_radioForcedGame = new QRadioButton( i18n("He who has the Eichel &Ober has to play"), group );
-    m_radioForcedGame2 = new QRadioButton( i18n("He who doubled last has to play. If no one has doubled:"), group );
-    QVButtonGroup* group2 = new QVButtonGroup( "", group, "group2" );
-    m_radioForcedGame3 = new QRadioButton( i18n("Throw cards together"), group2 );
-    m_radioForcedGame4 = new QRadioButton( i18n("Eichel Ober has to play"), group2 );
-    m_checkDoubleNextGame = new QCheckBox ( i18n("Double next game when cards are thrown together"), group );
+    m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
+    m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
+    m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
+    QToolTip::add( m_checkDoublerPlays, i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect.") );
+    m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
  
     layout->addWidget( group );
     layout->addItem( spacer );

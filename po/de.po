@@ -355,3 +355,24 @@ msgstr "Geldbeträge festlegen"
 
 msgid "Configure Point Values"
 msgstr "Punkte festlegen"
+
+msgid "Rules"
+msgstr "Regeln"
+
+msgid "No one wants to play:"
+msgstr "Niemand will spielen:"
+
+msgid "The &last player who has doubled has to play."
+msgstr "Der Spieler, der als &letztes geklopft hat, muss spielen."
+
+msgid "The last player who has doubled has to play. If no one has doubled the above rule takes effect."
+msgstr "Der Spieler, der als letztes geklopft hat, muss spielen. Falls niemand geklopft hat, tritt die obige Regel in Kraft."
+
+msgid "&Throw cards together and give new ones."
+msgstr "Karten &zusammenwerfen und neu geben."
+
+msgid "The player who has the Eichel &Ober has to play."
+msgstr "Der Spieler der den &Alten hat muss spielen."
+
+msgid "&Double next game when cards were thrown together."
+msgstr "Das nächste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
