@@ -45,6 +45,9 @@ class CardList : public QPtrList<Card>
         void init();
         void randomize();        
         int points();
+		
+	signals:
+		void changeEvent(void);
 };
 
 #endif

@@ -20,9 +20,10 @@
 #ifndef HUMANPLAYER_H
 #define HUMANPLAYER_H
 
+#include <qobject.h>
 #include "player.h"
 
-class HumanPlayer : public Player
+class HumanPlayer : public Player, QObject
 {
     public:
         HumanPlayer(CardList *cards,Game* game);
@@ -31,8 +32,23 @@ class HumanPlayer : public Player
         bool doppeln();
         Card *play();
         
-        int rtti() const { return HUMAN; }        
-
+        int rtti() const { return HUMAN; }       
+		 
+	public slots:
+		
+		/** Check if card can be played
+		*/
+		void isValid( const int index, bool &valid );
+		
+		/** Play the indexed card
+		*/
+		void playCard( const int index );
+	
+	private:
+		bool can_play;
+		int selected_card;
+		
+		void sortCards();
 };
 
 #endif

@@ -17,11 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include <kapplication.h>
+#if QT_VERSION >= 0x030100
+    #include <qeventloop.h>
+#else
+    #include <qapplication.h>
+#endif
+
 #include "humanplayer.h"
 
 HumanPlayer::HumanPlayer(CardList *cards,Game* game)
  : Player(cards,game)
 {
+	can_play=false;
+	selected_card=-1;
+	sortCards();
 }
 
 
@@ -36,6 +47,36 @@ bool HumanPlayer::doppeln()
 
 Card *HumanPlayer::play()
 {
-    return 0;
+    can_play=true;
+#if QT_VERSION >= 0x030100
+	//kapp->eventLoop()->enterLoop();
+#else
+	//kapp->enter_loop();
+#endif
+	can_play=false;
+	// Now return the card indexed by selected_card
+	sortCards();
+	return 0;
 }
 
+void HumanPlayer::isValid( const int index,  bool &valid )
+{
+	valid=false;
+}		
+		
+void HumanPlayer::playCard( const int index )
+{
+	if(!can_play)
+			return;
+	selected_card=index;
+#if QT_VERSION >= 0x030100
+	kapp->eventLoop()->exitLoop();
+#else
+    kapp->exit_loop();
+#endif
+}
+	
+void HumanPlayer::sortCards()
+{
+}
+	

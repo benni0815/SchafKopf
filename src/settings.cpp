@@ -58,7 +58,7 @@ const QString Settings::cardBackground() const
     return config->readEntry("Deck", KCardDialog::getDefaultDeck() );    
 }
 
-void Settings::configureCardDecks( QWidget* parent = 0 )
+void Settings::configureCardDecks( QWidget* parent )
 {
     QString dir = cardDeck();
     QString deck = cardBackground();
