@@ -215,11 +215,13 @@ CardList* Player::allowedCards()
 		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
 		// entferne alle trumpfe aus Spielfarbe
         for(unsigned int i=0;i<Spielfarbe->count();i++)
+        {
             if( istTrumpf( Spielfarbe->at(i) ) )
             {
                 Spielfarbe->removeRef( Spielfarbe->at(i) );
                 qDebug("Entferne trumpf aus Spielfarbe");
             }
+        }
                 
         if(!Sau->isEmpty())	//muss nur was machen wenn ich die Sau habe
 		{
@@ -227,21 +229,24 @@ CardList* Player::allowedCards()
 			{
 				delete allowed;
 				allowed=Sau;
-				delete Spielfarbe;
 			}
-			else if(Spielfarbe->count()>=4)
-			{
-				Spielfarbe->RemoveCards(Sau);
-				allowed->RemoveCards(Spielfarbe);
-				delete Sau;
-				delete Spielfarbe;
-			}
+            else if(m_game->currStich()->count()==0)
+            {
+                if(Spielfarbe->count()<4)
+                {
+                    Spielfarbe->RemoveCards(Sau);
+                    allowed->RemoveCards(Spielfarbe);
+                    delete Sau;
+                }
+            }
+            else if(m_game->currStich()->count()>0 && m_cards->count()>1)
+            {
+                allowed->RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
+                delete Sau;
+            }
 		}
-		else
-		{
-			delete Sau;
-			delete Spielfarbe;
-		}
+		//delete Sau;
+		delete Spielfarbe;
 	}
 	return allowed;
 }

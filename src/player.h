@@ -61,10 +61,11 @@ class Player
           */
         bool hasDoubled() const { return m_has_doubled; }
 
-	CardList *allowedCards();
-	void removeTrumpf(CardList* liste);
-	bool hasTrumpf(CardList* liste);
-	void DebugCardOutput(Card* card);
+        CardList *allowedCards();
+        void removeTrumpf(CardList* liste);
+        bool hasTrumpf(CardList* liste);
+        void DebugCardOutput(Card* card);
+
     protected:
         CardList *m_cards;
         CardList *m_stiche;
