@@ -16,7 +16,7 @@
   <kdevautoproject>
     <general>
       <activetarget>src/schafkopf</activetarget>
-      <useconfiguration>debug</useconfiguration>
+      <useconfiguration>default</useconfiguration>
     </general>
     <run>
       <mainprogram>src/schafkopf</mainprogram>
@@ -57,6 +57,7 @@
       <group pattern="*.po;*.ts" name="Translations" />
       <group pattern="*" name="Others" />
       <hidenonprojectfiles>false</hidenonprojectfiles>
+      <hidenonlocation>false</hidenonlocation>
     </groups>
     <tree>
       <hidepatterns>*.o,*.lo,CVS</hidepatterns>
