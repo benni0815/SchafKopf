@@ -71,6 +71,7 @@ class CanvasCard : public QObject, public QCanvasRectangle
 		void disableForbidden();
 		void moveLoop();
         void cardDeckChanged();
+        void loadAlpha();
 };
 
 #endif

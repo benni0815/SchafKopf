@@ -36,9 +36,8 @@ CanvasCard::CanvasCard(QCanvas*c)
     m_forbidden = false;
     show();
     timer = new QTimer( this );
-    loadOK1 = Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
-    loadOK2 = Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
-    
+    loadAlpha();
+        
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
 
@@ -132,11 +131,18 @@ void CanvasCard::moveLoop()
 	}
 }
 
+void CanvasCard::loadAlpha()
+{
+    loadOK1 = Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
+    loadOK2 = Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
+}
+
 void CanvasCard::cardDeckChanged()
 {
     if( m_card )
     {
         m_card->cardDeckChanged();
+        loadAlpha();
         QCanvasItem::update();
     }
 }
