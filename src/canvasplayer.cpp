@@ -79,8 +79,8 @@ void CanvasPlayer::position( int i )
 {
     int x = 0, y = 0;
     int num=NUMCARDS;
-    int w = m_canvas->width()-DIST;
-    int h = m_canvas->height()-DIST;
+    int w = m_canvas->width();//-DIST;
+    int h = m_canvas->height();//-DIST;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
         
@@ -91,26 +91,26 @@ void CanvasPlayer::position( int i )
     {
         case 0:
             x=(w-cardw*num)/2;
-            y=h-cardh; 
+            y=h-cardh-DIST; 
         
             m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
             break;
         case 1:
             x=DIST; 
-            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+            y=(h-((cardh/4)*(num-1)+cardh))/2; 
         
             m_name->move(x,y-m_name->boundingRect().height());
             break;
         case 2: 
-            x=(w-((cardw/2)*(num-1)+cardw))/2;
+            x=(w-((cardw/4)*(num-1)+cardw))/2;
             y=DIST;
         
             m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
             break;
         case 3:
         default:
-            x=w-cardw;
-            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+            x=w-cardw-DIST;
+            y=(h-((cardh/4)*(num-1)+cardh))/2; 
         
             m_name->move(x, y-m_name->boundingRect().height());
             break;
@@ -125,9 +125,9 @@ void CanvasPlayer::position( int i )
         if(i==0)
             x += cardw;
         else if(i==2)
-            x += (cardw/2);
+            x += (cardw/4);
         else
-            y += (cardh/2);            
+            y += (cardh/4);            
     }
         
     // swap them back

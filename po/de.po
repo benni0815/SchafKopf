@@ -29,7 +29,7 @@ msgstr "%1 sagt weiter."
 
 #: game.cpp:310
 msgid "No one wants to play. Cards will thrown together."
-msgstr "Alle sind weiter.\nKarten werden zusammen geworfen."
+msgstr "Alle sind weiter.\nKarten werden zusammengeworfen."
 
 #: gameinfo.cpp:47
 msgid "colorless"
@@ -115,6 +115,9 @@ msgstr "Starte ein &Netzwerkspiel als Server"
 msgid "Start network Game as &Client"
 msgstr "Starte ein Netzwerkspiel als &Client"
 
+msgid "Select Game Type"
+msgstr "Spielmodus auswählen"
+
 #: newgamewizard.cpp:103
 msgid ""
 "Start a local Game:\n"
@@ -122,7 +125,7 @@ msgid ""
 "3 Computer Players"
 msgstr ""
 "<qt>Starte ein Spiel auf dem lokalen Rechner:<br>"
-"Du wirst gegen drei Computergegner spielen.</qt>"
+"Du spielst gegen drei Computergegner.</qt>"
 
 #: newgamewizard.cpp:107
 msgid ""
@@ -216,7 +219,7 @@ msgstr "&Farblos"
 
 #: selectgamedlg.cpp:38
 msgid "Select Game"
-msgstr "Spiel Auswählen"
+msgstr "Spiel auswählen"
 
 #: selectgamedlg.cpp:43
 msgid "Game:"
@@ -241,6 +244,12 @@ msgstr "&Wenz"
 #: selectgamedlg.cpp:48
 msgid "&Dachs"
 msgstr "&Dachs"
+
+msgid "Step 1/2: Select Game"
+msgstr "Schritt 1/2: Spiel auswählen"
+
+msgid "Step 2/2: Select Color"
+msgstr "Schritt 2/2: Farbe auswählen"
 
 #: selectgametypebox.cpp:59
 msgid "Game"
