@@ -53,14 +53,24 @@ const QString Settings::cardDeck() const
 {
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    return config->readEntry("Cards", KCardDialog::getDefaultCardDir() );    
+    return config->readEntry("Cards", getCardDir()+"cards-bavarian-old/" );    
 }
 
 const QString Settings::cardBackground() const
 {
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    return config->readEntry("Deck", KCardDialog::getDefaultDeck() );    
+    return config->readEntry("Deck", getCardDir()+"decks/bavaria_tux.png" );    
+}
+
+QString Settings::getCardDir() const
+{
+    QString dir = KCardDialog::getDefaultCardDir();
+    int k;
+    dir = dir.remove( dir.length()-1, 1 );
+    k = dir.findRev( '/', -1 );
+    dir = dir.remove( k+1, dir.length()-k );
+    return dir;
 }
 
 void Settings::configureCardDecks( QWidget* parent )

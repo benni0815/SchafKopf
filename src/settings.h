@@ -72,6 +72,7 @@ class Settings : public QObject
         
         const QString cardDeck() const;
         const QString cardBackground() const;
+        QString getCardDir() const;
         
         const QStringList playerNames() const;
         void setPlayerNames( const QStringList & names );
