@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "moneyresults.h"
 #include "player.h"
+#include "game.h"
 #include "gameinfo.h"
 
 #include <kglobal.h>
@@ -42,9 +43,10 @@ double MoneyResults::points( Player* player )
     m += m_schneider ? 0.10 : 0.0;
     m += m_schwarz ? 0.10 : 0.0;
     m += m_laufende * 0.10;
-/*	if(player->geklopft())
-		m*=2;
-*/	
+    // or should I use pow: m  += ( pow( m, player->game()->timesDoubled() ) ) ?
+    // wie zaehlt man das?
+    m += (m*player->game()->timesDoubled());
+    
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
         m = (m_points > 60 ? m : m * -1.0);
     else

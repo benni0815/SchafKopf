@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "pointresults.h"
 #include "player.h"
+#include "game.h"
 #include "gameinfo.h"
 
 #include <kglobal.h>
@@ -42,13 +43,14 @@ double PointResults::points( Player* player )
     m += m_schneider ? 1 : 0;
     m += m_schwarz ? 1 : 0;
     m += m_laufende * 1;
-//	if(player->geklopft())
-//		m*=2;
-	
+    // or should I use pow: m  += ( pow( m, player->game()->timesDoubled() ) ) ?
+    // wie zaehlt man das?
+    m += (m*player->game()->timesDoubled());
+    
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
-        m = (m_points > 60 ? m : m * -1.0);
+        m = (m_points > 60 ? m : m * -1);
     else
-        m = (m_points >= 60 ? m * -1.0 : m);
+        m = (m_points >= 60 ? m * -1 : m);
         
     if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
         m *= 3;

@@ -52,7 +52,11 @@ class Game : public QObject
 		bool isTerminated() const { return terminated; }
 		int highestCard( CardList* list = 0 );
 		bool isHigher( Card* card, Card* high );
-		
+
+        /** returns how many players have doubled
+          */
+        int timesDoubled();
+
     signals:        
         void gameStarted();
         void gameEnded();

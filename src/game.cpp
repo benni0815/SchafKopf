@@ -357,4 +357,16 @@ void Game::resetGameResults()
         m_players[i]->setPoints( 0.0 );    
 }
 
+int Game::timesDoubled()
+{
+    int i, d = 0;
+    
+    for( i=0;i<PLAYERS;i++)
+        if( m_players[i]->geklopft() )
+            d++;
+            
+    return d;
+}
+
+
 #include "game.moc"
