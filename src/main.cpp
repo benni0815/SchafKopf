@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     about.addAuthor( "Christian Kern", 0, "kernch@in.tum.de" );	
     about.addAuthor( "Lorenz Moesenlechner", 0, "moesenle@in.tum.de" );
     about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de", "http://www.krename.net" );
-    about.addAuthor( "Benjamin Loewe", 0, "<benjamin.loewe@web.de" );
+    about.addAuthor( "Benjamin Loewe", 0, "benjamin.loewe@freenet.de" );
 
     KCmdLineArgs::init(argc, argv, &about);
     KCmdLineArgs::addCmdLineOptions( options );

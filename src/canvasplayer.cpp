@@ -147,9 +147,9 @@ void CanvasPlayer::init(int i)
             c->show();
             
             if(i==1)
-                c->setRotation(90);
-            else if(i==3)
                 c->setRotation(270);
+            else if(i==3)
+                c->setRotation(90);
     #ifdef CHEAT
             c->setFrontVisible( true );
     #else            
