@@ -45,9 +45,6 @@ class OpenBook : public QObject {
         void cardPlayed( unsigned int player, Card* card );
         
     private:
-        void nichtSpieler( CardList* list );
-        void spieler( CardList* list );
-        
         Game* m_game;
         Player* m_self;
         bool m_player;

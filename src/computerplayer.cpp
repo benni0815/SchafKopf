@@ -50,6 +50,9 @@ Card *ComputerPlayer::play()
     else
         allowed=allowedCards();
         
+    if( !allowed )
+        allowed=allowedCards();
+        
 	Card* ToPlay=allowed->at(KApplication::random()%allowed->count());
 
 	delete allowed;

@@ -25,6 +25,74 @@
 #include "gameinfo.h"
 #include "player.h"
 
+
+/* A few macros which make it quite simple to build macros for openbook rules */
+#define RULE( function, description, cancel, eval ) \
+    CardList* function ( CardList* allowed, Game* game ) \
+    { \
+        /* description */ \
+        qDebug("Executing Rule=" description ); \
+        const GameInfo* info = game->gameInfo(); \
+        if( cancel ) \
+            return 0; \
+        CardList* list = new CardList(); \
+        unsigned int i=0; \
+        for( i=0;i<allowed->count();i++ ) \
+        { \
+            Card* c = allowed->at( i ); \
+            if( eval ) \
+                list->append( allowed->at( i ) ); \
+        } \
+        return list; \
+    }
+
+
+// Do not polute the global namespace
+namespace OpeningRules
+{
+    typedef struct s_rule 
+    {
+        CardList* (*rule)( CardList*, Game* );
+        bool player;
+    };
+    
+    RULE( player1, "player plays trump",
+        ( false ),
+        ( info->istTrumpf( c ) )
+    )
+
+    RULE( rule1, "play an ace on a solo", 
+        ( info->mode() == GameInfo::RUFSPIEL || 
+          info->mode() == GameInfo::RAMSCH || 
+          info->mode() == GameInfo::DACHS ),
+        ( !info->istTrumpf( c ) && c->card() == Card::SAU )
+    )
+
+    RULE( rule2, "such die sau auf die gespielt wird", 
+        ( info->mode() != GameInfo::RUFSPIEL ),
+        ( !info->istTrumpf( c ) && c->color() == info->color() )
+    )
+    
+    RULE( rule3, "nicht spieler spielt farbe", 
+        ( false ), // always execute this one
+        ( !info->istTrumpf( c ) )
+    )
+    
+    /** This list should contain all rules for the open book:
+      */
+      
+    s_rule rules[] =
+    {
+        { player1, true },
+        { rule1, false },
+        { rule2, false },
+        { rule3, false }
+    };
+
+}
+
+using namespace OpeningRules;
+
 OpenBook::OpenBook( Player* player, Game* game )
 {
     m_self = player;
@@ -39,57 +107,40 @@ OpenBook::~OpenBook()
 {
 }
 
-void OpenBook::spieler( CardList* list )
-{
-    /* Spieler spielt trumpf */
-
-}
-
-void OpenBook::nichtSpieler( CardList* list )
-{
-    CardList* tmp = 0;
-    
-    /* Nicht spieler spielt farbe */
-    switch( m_game->gameInfo()->mode() )
-    {
-        case GameInfo::RUFSPIEL:
-            /* such die sau */
-            tmp = list->FindCards( m_game->gameInfo()->color(), Card::NOSTICH );
-            if( !tmp->isEmpty() )
-                *list = *tmp;
-            delete tmp;
-            break;
-        
-        case GameInfo::STICHT:
-        case GameInfo::GEIER:
-        case GameInfo::WENZ:
-            /* auf solo gehöhrt sau */
-            tmp = list->FindCards( Card::NOCOLOR, Card::SAU );
-            if( !tmp->isEmpty() )
-            {
-                /* entferne die trumpfsau */
-                CardList* t = tmp->FindCards(  m_game->gameInfo()->color(), Card::SAU );
-                tmp->RemoveCards( t );
-                delete t;
-
-                *list = *tmp;               
-            }
-            delete tmp;
-        break;
-    }
-
-}
-
 CardList* OpenBook::possibleCards()
 {
-    CardList* list = m_self->allowedCards();
+    CardList* allowed = m_self->allowedCards();
+    CardList* list = new CardList();
+    unsigned int i = 0;
     
-    if( m_player )
-        spieler( list );
+    for( i=0;i<sizeof(rules)/sizeof(s_rule);i++)
+    {
+        s_rule r = rules[i];
+        if( r.player == m_player )
+        {
+            CardList* l = r.rule( allowed, m_game );
+            if( l )
+            {
+                list->appendList( l );
+                if( !l->isEmpty() )
+                {
+                    delete l;
+                    break;
+                } else
+                    delete l;
+            }
+        }
+    }
+    
+    delete allowed;
+    if( !list->isEmpty() )
+        return list;
     else
-        nichtSpieler( list );
-        
-    return list;
+    {
+        qDebug("OpenBook did not find a good card to play!");
+        delete list;
+        return 0;
+    }
 }
 
 void OpenBook::cardPlayed( unsigned int player, Card* card )
