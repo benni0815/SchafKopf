@@ -1,0 +1,268 @@
+#: _translatorinfo.cpp:1
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr ""
+
+#: _translatorinfo.cpp:3
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr ""
+
+#: game.cpp:117
+msgid "%1 has doubled."
+msgstr ""
+
+#: game.cpp:297
+msgid "%1 has a game."
+msgstr ""
+
+#: game.cpp:302
+msgid "%1 has no game."
+msgstr ""
+
+#: game.cpp:310
+msgid "No one wants to play. Cards will thrown together."
+msgstr ""
+
+#: gameinfo.cpp:47
+msgid "colorless"
+msgstr ""
+
+#: gameinfo.cpp:49
+msgid "Eichel"
+msgstr ""
+
+#: gameinfo.cpp:51
+msgid "Gras"
+msgstr ""
+
+#: gameinfo.cpp:53
+msgid "Heart"
+msgstr ""
+
+#: gameinfo.cpp:55
+msgid "Schellen"
+msgstr ""
+
+#: gameinfo.cpp:64
+msgid "Sticht"
+msgstr ""
+
+#: gameinfo.cpp:66
+msgid "Geier"
+msgstr ""
+
+#: gameinfo.cpp:68
+msgid "Wenz"
+msgstr ""
+
+#: gameinfo.cpp:70
+msgid "Ramsch"
+msgstr ""
+
+#: gameinfo.cpp:72
+msgid "Badger"
+msgstr ""
+
+#: gameinfo.cpp:79
+msgid "%1 plays on the %2 Ace."
+msgstr ""
+
+#: gameinfo.cpp:81
+msgid "Ramsch is played."
+msgstr ""
+
+#: gameinfo.cpp:83
+msgid "%1 plays %2 %3."
+msgstr ""
+
+#: humanplayer.cpp:47
+msgid "Do you want to double?"
+msgstr ""
+
+#: humanplayer.cpp:66
+msgid "Do you want to play?"
+msgstr ""
+
+#: main.cpp:29
+msgid "Schafkopf is a popular card game in Bavaria."
+msgstr ""
+
+#: main.cpp:40
+msgid "SchafKopf"
+msgstr ""
+
+#: newgamewizard.cpp:52
+msgid "Select Type:"
+msgstr ""
+
+#: newgamewizard.cpp:57
+msgid "&Start local Game"
+msgstr ""
+
+#: newgamewizard.cpp:58
+msgid "Start network Game as &Server"
+msgstr ""
+
+#: newgamewizard.cpp:59
+msgid "Start network Game as &Client"
+msgstr ""
+
+#: newgamewizard.cpp:103
+msgid ""
+"Start a local Game:\n"
+"You will play against\n"
+"3 Computer Players"
+msgstr ""
+
+#: newgamewizard.cpp:107
+msgid ""
+"Start a Game Server\n"
+"You will be the host\n"
+"of a new Network game"
+msgstr ""
+
+#: newgamewizard.cpp:111
+msgid ""
+"Connect to a Game Server\n"
+"You will connect to a Computer,\n"
+"running a Schafkopf server"
+msgstr ""
+
+#: results.cpp:44
+msgid " schneider"
+msgstr ""
+
+#: results.cpp:45
+msgid " no-trick"
+msgstr ""
+
+#: results.cpp:48
+msgid " win with %1 Points%2."
+msgstr ""
+
+#: results.cpp:50
+msgid " looses with %1 Points%2."
+msgstr ""
+
+#: results.cpp:55
+msgid " got %1 cards in a row."
+msgstr ""
+
+#: results.cpp:57
+msgid " played without %1 cards in a row."
+msgstr ""
+
+#: schafkopf.cpp:67
+msgid "Results:"
+msgstr ""
+
+#: schafkopf.cpp:81
+msgid "Game Information:"
+msgstr ""
+
+#: schafkopf.cpp:103
+msgid "Show the last trick that was made."
+msgstr ""
+
+#: schafkopf.cpp:136
+msgid "&Last Trick"
+msgstr ""
+
+#: schafkopf.cpp:241
+msgid "<qt>Current Game:<br><b>"
+msgstr ""
+
+#: schafkopf.cpp:250
+msgid "<qt><b>%1</b> has doubled.</qt>"
+msgstr ""
+
+#: selectgamecolorbox.cpp:53 selectgamedlg.cpp:50
+msgid "Color:"
+msgstr ""
+
+#: selectgamecolorbox.cpp:54 selectgamedlg.cpp:51
+msgid "&Eichel"
+msgstr ""
+
+#: selectgamecolorbox.cpp:55 selectgamedlg.cpp:52
+msgid "&Gras"
+msgstr ""
+
+#: selectgamecolorbox.cpp:56 selectgamedlg.cpp:53
+msgid "&Herz"
+msgstr ""
+
+#: selectgamecolorbox.cpp:57 selectgamedlg.cpp:54
+msgid "&Schellen"
+msgstr ""
+
+#: selectgamecolorbox.cpp:58 selectgamedlg.cpp:55
+msgid "&Farblos"
+msgstr ""
+
+#: selectgamedlg.cpp:38
+msgid "Select Game"
+msgstr ""
+
+#: selectgamedlg.cpp:43
+msgid "Game:"
+msgstr ""
+
+#: selectgamedlg.cpp:44
+msgid "&Rufspiel"
+msgstr ""
+
+#: selectgamedlg.cpp:45
+msgid "&Solo"
+msgstr ""
+
+#: selectgamedlg.cpp:46
+msgid "&Geier"
+msgstr ""
+
+#: selectgamedlg.cpp:47
+msgid "&Wenz"
+msgstr ""
+
+#: selectgamedlg.cpp:48
+msgid "&Dachs"
+msgstr ""
+
+#: selectgametypebox.cpp:59
+msgid "Game"
+msgstr ""
+
+#: selectgametypebox.cpp:62
+msgid "Play a Callgame"
+msgstr ""
+
+#: selectgametypebox.cpp:63
+msgid "Play a Solo"
+msgstr ""
+
+#: selectgametypebox.cpp:64
+msgid "Play a Geier"
+msgstr ""
+
+#: selectgametypebox.cpp:65
+msgid "Play a Wenz"
+msgstr ""
+
+#: selectgametypebox.cpp:66
+msgid "Play a Dachs"
+msgstr ""
+
+#: stichdlg.cpp:32
+msgid "Last Trick"
+msgstr ""
+
+#: stichdlg.cpp:66
+msgid "Trick was made by: <b>"
+msgstr ""
+
+#: stichdlg.cpp:68
+msgid "No trick was made."
+msgstr ""
