@@ -179,7 +179,6 @@ CardList* StrategyBook::possibleCards()
     CardList* list = new CardList();
     Card* highest = NULL;
     bool unser_stich = false;
-    unsigned int i = 0;
     bool abspatzen = false;
     
     /* Moeglichkeiten:

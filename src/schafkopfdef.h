@@ -27,10 +27,8 @@
 #define CARD_CNT  32
 
 
-
-
 /** Uncomment this line to make all cards
-  * user visible, this is useful for debuggin
+  * user visible, this is useful for debugging
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */

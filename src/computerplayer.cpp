@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "computerplayer.h"
 
+#include "card.h"
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
@@ -50,12 +51,47 @@ ComputerPlayer::~ComputerPlayer()
 
 void ComputerPlayer::klopfen()
 {
+    int i;
+    const int anz = NUMCARDS/2;
+    int start = 0; // if geber = anz
+    int ende = start + anz;
+    int count = 0;
+    GameInfo* info;
     m_geklopft = false;
-    unsigned int i=0;
-	
-    for(i=0;i<m_cards->count();i++)
-    {
     
+    /** check 2 possibilities:
+      * - all cards have the same color
+      * - all cards trump in herz sticht oder sau
+      */
+      
+    // are all cards in the same color?
+    for( i=start;i<ende;i++ )
+        if( m_cards->at( i )->color() == m_cards->at( start )->color() )
+            count++;
+            
+    if( count == anz )
+    {
+        m_geklopft = true;
+        Player::klopfen();
+        return;
+    }
+    
+    // are all cards trump?
+    info = new GameInfo;
+    info->setMode( GameInfo::STICHT );
+    info->setColor( Card::HERZ );
+    count = 0;
+    for( i=start;i<ende;i++ )
+        if( m_cards->at( i )->card() == Card::SAU || info->istTrumpf( m_cards->at( i ) ) )
+            count++;
+    
+    delete info;
+    
+    if( count == anz )
+    {
+        m_geklopft = true;
+        Player::klopfen();
+        return;
     }
     
     Player::klopfen();
