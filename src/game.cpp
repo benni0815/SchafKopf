@@ -88,7 +88,7 @@ void Game::start()
 	emit gameStarted();
 }
 
-// Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitter sofort erschießen :)
+// Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitter sofort erschieï¿½n :)
 void Game::gameLoop()
 {
     int i, a, index, realindex;
@@ -98,6 +98,10 @@ void Game::gameLoop()
 	int gamecnt=0;
     
 	terminated = false;
+
+    // reset points (i.e. results) from a previous game
+    for(i=0;i<PLAYERS;i++)
+        m_players[i]->setPoints( 0.0 );
     
 	while(!terminated)
 	{
@@ -159,7 +163,7 @@ void Game::gameLoop()
 			index = highestCard();
     	    tmp[index]->addStich( m_currstich );
         	emit playerMadeStich(tmp[index]->id());
-        	// Sortiere so, das der stecher nächste karte spielt 
+        	// Sortiere so, das der stecher nï¿½hste karte spielt 
 			for(realindex=0;realindex<PLAYERS;realindex++)
 				if(m_players[realindex]==tmp[index])
 					break;
