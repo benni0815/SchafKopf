@@ -27,6 +27,7 @@
 #include <kcarddialog.h>
 #include <kconfig.h>
 #include <kuser.h>
+#include <kstandarddirs.h>
 
 Settings* Settings::m_instance = 0;
 
@@ -51,16 +52,22 @@ Settings::~Settings()
 
 const QString Settings::cardDeck() const
 {
+    QString cardDir = getCardDir()+"cards-bavarian-old/";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    return config->readEntry("Cards", getCardDir()+"cards-bavarian-old/" );    
+    if(!KStandardDirs::exists ( cardDir ))
+        cardDir = KCardDialog::getDefaultCardDir();
+    return config->readEntry("Cards", cardDir );    
 }
 
 const QString Settings::cardBackground() const
 {
+    QString deckCard = getCardDir()+"decks/bavaria_tux.png";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    return config->readEntry("Deck", getCardDir()+"decks/bavaria_tux.png" );    
+    if(!KStandardDirs::exists ( deckCard ))
+        deckCard = KCardDialog::getDefaultDeck();
+    return config->readEntry("Deck", deckCard );    
 }
 
 QString Settings::getCardDir() const
