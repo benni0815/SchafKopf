@@ -30,11 +30,6 @@ ComputerPlayer::ComputerPlayer(CardList *cards,Game* game)
 {
 }
 
-
-ComputerPlayer::~ComputerPlayer()
-{
-}
-
 void ComputerPlayer::klopfen()
 {
     m_geklopft = false;
@@ -55,10 +50,8 @@ GameInfo* ComputerPlayer::game()
         
     for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
     {
-        qDebug("TYPE=%i", i);
         for( int z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
         {
-            qDebug("Color=%i", i);
             if( !GameInfo::isAllowed( m_cards, i, z ) )
                 continue;
          
@@ -73,14 +66,19 @@ GameInfo* ComputerPlayer::game()
                 if( d.info.istTrumpf( m_cards->at(c) ) )
                     d.trumpf++;
                 else if( !d.info.istTrumpf( m_cards->at(c) ) && m_cards->at(c)->card() != Card::SAU )
-                    d.fehlfarbe++;
+                {
+                    CardList* list = m_cards->FindCards( m_cards->at(c)->color(), Card::SAU );
+                    if( list->isEmpty() )
+                        d.fehlfarbe++;
+                    delete list;
+                }
+                    
             }
 
-            if( ((i==GameInfo::RUFSPIEL && d.weight >= 8) || (i!=GameInfo::RUFSPIEL && d.weight >=9 ))
-                && d.fehlfarbe <= 2 )        
-            {
+            if( i==GameInfo::RUFSPIEL && d.weight>=8 && ((d.fehlfarbe<=2 && d.trumpf>=5) || d.fehlfarbe<=1) )
                 lst.append( d );
-            }    
+            else if( i!=GameInfo::RUFSPIEL && d.weight>=9 && d.fehlfarbe<=1 && d.trumpf>=5 )
+                lst.append( d );
         }
     }
     
@@ -90,7 +88,7 @@ GameInfo* ComputerPlayer::game()
     {
         int best = 0;
         for( unsigned int i=0;i<lst.count();i++)
-            if( lst[i].trumpf > lst[best].trumpf && lst[i].fehlfarbe < lst[i].fehlfarbe )
+            if( lst[i].weight > lst[best].weight || (lst[i].trumpf > lst[best].trumpf && lst[i].fehlfarbe < lst[i].fehlfarbe) )
             {
                 best = i;
                 continue;

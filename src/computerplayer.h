@@ -27,7 +27,6 @@ class ComputerPlayer : public Player
 {
     public:
         ComputerPlayer(CardList *cards,Game* game);
-        ~ComputerPlayer();
         
         void klopfen();
         Card *play();
