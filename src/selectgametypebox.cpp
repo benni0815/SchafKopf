@@ -115,7 +115,6 @@ SelectGameTypeBox::~SelectGameTypeBox()
 	delete group_TypeSelect;
 	delete page;
 	delete row1;
-	delete group_TypeSelect;
 	delete preview;
 	delete info;
 }
