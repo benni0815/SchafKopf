@@ -40,7 +40,6 @@ void Timer::block( int seconds )
 
 void Timer::returnLoop()
 {
-	qDebug("timeout over...");
 	EXIT_LOOP();
 }
 
