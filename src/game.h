@@ -97,7 +97,7 @@ class Game : public QThread
          * It forces players in certain cases to play according
          * to the users settings.
          */
-       bool setupGameInfoForced();
+       bool setupGameInfoForced(Player *players[]);
      
     protected:
         /** inherited from QThread, calls gameLoop();
