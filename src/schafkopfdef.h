@@ -26,6 +26,39 @@
 #define TURNS     8
 #define CARD_CNT  32
 
+/** Identify events from schafkopf in the Qt event loop
+  * using this ID.
+  */
+#define SCHAFKOPF_EVENT 1984
+
+#include <qstring.h>
+
+class Card;
+class QSemaphore;
+class QStringList;
+
+enum { YES, NO };
+    
+typedef enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled, 
+                       PlayerHasDoubled, PlayerIsLast, PlayerNameChanged, PlayerGotCards,
+                       CardPlayed, PlayerMadeStich, PlayerResults, GameInfoSetup,
+                       RedrawPlayers, InfoMessage, QuestionYesNo, 
+                       HumanPlayerGetCard, ForbiddenCard, SelectGame,
+                       ForcedSelectGame };
+
+typedef struct t_EventData {
+    EAction type;
+    
+    unsigned int playerid;
+    void* returncode;
+    int* cardids;
+
+    bool wait;
+    bool quitgame;
+    
+    QStringList* playernames;
+    QString data;
+};
 
 /** Uncomment this line to make all cards
   * user visible, this is useful for debugging

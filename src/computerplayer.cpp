@@ -28,7 +28,7 @@
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(Game* game)
-	: QObject(0, 0), Player(game)
+	: Player(game)
 {
 	int i;
 	
@@ -36,7 +36,6 @@ ComputerPlayer::ComputerPlayer(Game* game)
 	for(i=0;i<PLAYERS;i++)
 		m_playedCards[i]=new CardList();
 	m_angespielt=new CardList();
-	connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int, Card*) ) );
 }
 
 ComputerPlayer::~ComputerPlayer()
@@ -460,6 +459,8 @@ int ComputerPlayer::trumpfsInGame()
 
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 {
+    // TODO: was called by signal before the thread change
+    // has to be implemented in another way
 	m_playedCards[player]->append(c);
 	if(mitspieler!=-1)
 		return;
@@ -512,4 +513,4 @@ int ComputerPlayer::cardsStillInGame( int c )
     
     return n2 - n;
 }
-    
+

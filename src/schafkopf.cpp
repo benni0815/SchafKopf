@@ -25,6 +25,8 @@
 #include "player.h"
 #include "newgamewizard.h"
 #include "preferencesdlg.h"
+#include "selectgamewizard.h"
+#include "timer.h"
 
 // for pow()
 #include <math.h>
@@ -33,6 +35,7 @@
 #include <qheader.h>
 #include <qlabel.h>
 #include <qpixmap.h>
+#include <qsemaphore.h>
 #include <qsplitter.h>
 #include <qtable.h>
 #include <qtimer.h>
@@ -54,6 +57,8 @@
 SchafKopf::SchafKopf()
         : KMainWindow( 0, "SchafKopf" )
 {
+    sem_init( &m_sem, 0, 0 );
+    
     split = new QSplitter( QSplitter::Horizontal, this );
 #if QT_VERSION >= 0x030200
     split->setChildrenCollapsible( true );
@@ -66,9 +71,7 @@ SchafKopf::SchafKopf()
     m_canvas = new QCanvas( this, "canvas" );
     m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
 
-    m_game = new Game();
-    m_game->setCanvas( m_canvasview );
-    m_canvasview->setGame( m_game );
+    m_game = new Game( &m_sem, this );
     m_canvasview->setHScrollBarMode(QScrollView::AlwaysOff);
     m_canvasview->setVScrollBarMode(QScrollView::AlwaysOff);
     
@@ -94,7 +97,6 @@ SchafKopf::SchafKopf()
     lblDoubled = new QLabel( groupInfo );
 
     btnLastTrick = new KPushButton( groupInfo );
-    btnLastTrick->setPixmap( *(Card::backgroundPixmap()) );
     btnLastTrick->setFlat( true );
 
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
@@ -105,31 +107,152 @@ SchafKopf::SchafKopf()
     //connect(kapp, SIGNAL(aboutToQuit()), this, SLOT(endGame()));
 
     connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
-    connect(m_game,SIGNAL(gameStarted()),this,SLOT(enableControls()));
-    connect(m_game,SIGNAL(gameEnded()),this,SLOT(enableControls()));
-    connect(m_game,SIGNAL(signalSetupGameInfo()),this,SLOT(updateInfo()));
-    connect(m_game,SIGNAL(signalDoubled()),this,SLOT(updateInfo()));
-
     connect(Settings::instance(),SIGNAL(resultsTypeChanged()),this,SLOT(clearTable()));
     connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
+    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( updateInfo() ) );
+    
     QToolTip::add
         ( btnLastTrick, i18n("Show the last trick that was made.") );
 
-    m_stichdlg = new StichDlg( m_game, this );            
+    m_stichdlg = new StichDlg( this );            
     
+    m_terminated = true;
+
     updateInfo();
 }
 
 SchafKopf::~SchafKopf()
 {
     saveConfig();
+    // make sure the thread is really not running
+    // and does not wait for the semaphore
+    endGame();
+    sem_destroy( &m_sem );
 
-    //if( m_game )
-    //    endGame();
-
-    if( m_stichdlg )
-        delete m_stichdlg;
+    delete m_stichdlg;
 }
+
+void SchafKopf::customEvent( QCustomEvent* e )
+{
+    if( e->type() == SCHAFKOPF_EVENT )
+    {
+        int* a;
+        bool force_select = false;
+        
+        t_EventData* data = (t_EventData*)e->data();
+        switch( data->type )
+        {
+            case GameEnded:
+                //EXIT_LOOP();
+                m_canvasview->resetPlayerCards();
+                // fall through!
+
+            case RedrawPlayers:
+                m_canvasview->redrawPlayers();
+                enableControls();
+                break;
+            
+            case GameStarted:
+                m_canvasview->resetPlayers();
+                m_canvasview->redrawPlayers();
+                enableControls();
+                break;
+                        
+            case GameInfoSetup:
+                updateInfo();
+                break;
+                
+            case PlayerIsLast:
+                m_canvasview->playerIsLast( data->playerid );
+                break;
+                
+            case PlayerDoubled:
+                updateInfo();
+                m_canvasview->information( data->data );
+                break;
+                
+            case PlayerHasDoubled:
+                m_canvasview->playerHasDoubled( data->playerid, true );
+                break;
+                
+            case CardPlayed:
+                m_canvasview->slotPlayerPlayedCard( data->playerid, *(data->cardids) );
+                break;
+            
+            case PlayerMadeStich:
+                m_canvasview->slotPlayerMadeStich( data->playerid );
+                m_stichdlg->changed( data->data, data->cardids, data->playernames );
+                break;
+            
+            case PlayerResults:
+                this->slotPlayerResult( data->playerid, data->data );
+                break;
+                
+            case InfoMessage:
+                m_canvasview->information( data->data );
+                break;
+                
+            case QuestionYesNo:
+                a = new int;
+                *a = m_canvasview->questionYesNo( data->data ) ? YES : NO;
+                data->returncode = (void*)a;
+                break;
+            
+            case HumanPlayerGetCard:
+                a = new int;
+                *a = m_canvasview->getCard();
+                data->returncode = (void*)a;
+                break;
+            
+            case ForbiddenCard:
+                m_canvasview->cardForbidden( *(data->cardids) );
+                break;
+            
+            case ForcedSelectGame:
+                force_select = true;
+                // fall through!
+            case SelectGame:
+                data->returncode = (void*)selectGame( force_select, data->cardids );
+                break;
+                
+            case PlayerNameChanged:
+                m_canvasview->setPlayerName( data->playerid, data->data );
+                break;
+                
+            case PlayerGotCards:
+                m_canvasview->setPlayerCards( data->playerid, data->cardids );
+                break;
+                
+            default:
+                break;
+        }
+        
+        data->quitgame = m_terminated;
+        
+        if( data->wait )
+        {
+            sem_post( &m_sem );
+        }
+        else        
+        {
+            // compiler warns that deleting void is undefined....
+            // data->returncode should be NULL anyways...
+            // so why is it there???
+            // stupid comments...
+            if( data->returncode )
+                delete data->returncode;
+                
+            if( data->cardids )
+                delete [] data->cardids;
+
+            if( data->playernames )
+                delete data->playernames;
+                
+            delete data;
+        }
+    }
+}
+
 
 void SchafKopf::saveConfig()
 {
@@ -196,26 +319,35 @@ void SchafKopf::newGame()
 
 void SchafKopf::realNewGame()
 {
-    connect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
+    //connect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
 
     // entering the game loop is the last thing
     // we want to do!
-    m_game->gameLoop();
-    endGame();    
+    m_terminated = false;
+    m_game->start();
+    //m_game->gameLoop();
+    //endGame();    
 }
 
 void SchafKopf::endGame()
 {
-    disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
+    //disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
 
-    m_game->endGame();
+    //m_game->endGame();
+    if( !m_terminated )
+    {
+        m_terminated = true;
+        EXIT_LOOP();
+        //KApplication::postEvent( m_game, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT_QUIT ) );
+    }
+    
     clearTable();
     updateInfo();
 }
 
 void SchafKopf::showStich()
 {
-    if( m_game->isTerminated() )
+    if( m_terminated )
         return;
 
     m_stichdlg->show();
@@ -228,18 +360,8 @@ void SchafKopf::enableControls()
     btnLastTrick->setEnabled( !m_game->isTerminated() );
 }
 
-void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
+void SchafKopf::slotPlayerResult( unsigned int col, const QString & result )
 {
-    int col = 0;
-    unsigned int i = 0;
-    QHeader* header = m_table->horizontalHeader();
-    for(;i<(unsigned int)header->count();i++)
-        if(header->label(i) == name )
-        {
-            col = i;
-            break;
-        }
-
     if( !m_table->numRows() || !m_table->text( m_table->numRows()-1, col ).isEmpty() )
         m_table->insertRows( m_table->numRows() );
 
@@ -252,7 +374,9 @@ void SchafKopf::updateInfo()
     int timesDoubled = 0, timesThrownTogether = 0;
     int valuation;
     
-    if( !m_game->isTerminated() && m_game->gameInfo()->isValid() )
+    btnLastTrick->setPixmap( *(Card::backgroundPixmap()) );
+        
+    if( !m_terminated && m_game->gameInfo()->isValid() )
         lblCurGame->setText( i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
     else
     {
@@ -274,9 +398,9 @@ void SchafKopf::updateInfo()
     timesThrownTogether = m_game->timesThrownTogether();
     if(timesThrownTogether>0)
         sDoubled.append( i18n("<qt>Times thrown together: <b>%1</b></qt>").arg(timesThrownTogether) );
-    valuation=pow(2, timesDoubled);
+    valuation=(int)pow(2, timesDoubled);
     if( Settings::instance()->doubleNextGame() )
-        valuation = valuation * pow(2, timesThrownTogether );
+        valuation = valuation * (int)pow(2, timesThrownTogether );
     sDoubled.append( i18n("<qt>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
     
     lblDoubled->setText( sDoubled );
@@ -297,13 +421,25 @@ void SchafKopf::configure()
     PreferencesDlg prefs( this, "prefs");
     if( prefs.exec() == QDialog::Accepted )
     {
-    m_canvasview->updateBackground();
+        m_canvasview->updateBackground();
     }
 }
 
 void SchafKopf::updateTableNames()
 {
     m_table->setColumnLabels( Settings::instance()->playerNames() );
+}
+
+GameInfo* SchafKopf::selectGame( bool force, int* cardids )
+{
+    CardList list( cardids );
+    list.setAutoDelete( true );
+    
+    SelectGameWizard sgw( force, &list );    
+    if( sgw.exec() == QDialog::Accepted )
+        return sgw.gameInfo();
+    else
+        return NULL;
 }
 
 #include "schafkopf.moc"

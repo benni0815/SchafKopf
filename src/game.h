@@ -25,7 +25,8 @@
 #include "cardlist.h"
 #include "gameinfo.h"
 
-#include <qobject.h>
+#include <semaphore.h>
+#include <qthread.h>
 
 class Player;
 class GameCanvas;
@@ -33,20 +34,16 @@ class GameCanvas;
 /**
 @author Dominik Seichter
 */
-class Game : public QObject
+class Game : public QThread
 {
-    Q_OBJECT
     public:
-        Game(QObject *parent = 0, const char *name = 0);
+        Game(sem_t* sem, QObject *parent);
         ~Game();
         void gameLoop();
 		CardList *currStich();
 		inline CardList *allCards() { return &m_allcards; }
         inline CardList *playedCards() { return &m_playedcards; }
 		GameInfo *gameInfo();
-        
-        void setCanvas( GameCanvas* c );
-        GameCanvas* canvas() const { return m_canvas; }
         
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
@@ -58,22 +55,15 @@ class Game : public QObject
           */
         int timesDoubled();
         int timesThrownTogether();
-
-    signals:        
-        void gameStarted();
-        void gameEnded();
-    
-        void playerPlayedCard( unsigned int player, Card* );
-        void playerMadeStich( unsigned int player );
-        void playerResult( const QString & name, const QString & result );
         
-        void signalSetupGameInfo();
-        void signalDoubled();
+        /** post a event to the parent object
+          */
+        void* postEvent( EAction action, unsigned int playerid = 0, int* cardids = NULL, 
+                        QString data = QString::null, bool wait = false, QStringList* names = NULL );
         
-    public slots:
         void endGame(void);
 
-    private slots:
+    private:
         /** set the results of all players to 0. This is necessary
           * if for example the class for the results calculation was changed
           * or when a new game is started.
@@ -88,7 +78,7 @@ class Game : public QObject
     private:
 		/** give cards to the player and begin a new gameinfo
 		 */
-		void start();
+		void startGame();
         /** Display the results of the game (winner/loser)
           * to the user. Called after each game.
           */
@@ -108,8 +98,14 @@ class Game : public QObject
          * to the users settings.
          */
        bool setupGameInfoForced();
-        
+     
+    protected:
+        /** inherited from QThread, calls gameLoop();
+          */
+        void run();
+
     private:
+        sem_t* m_sem;
         bool terminated;
         Player *m_players[PLAYERS];
         CardList m_allcards;
@@ -118,9 +114,8 @@ class Game : public QObject
         GameInfo m_gameinfo;
         int m_laufende;
         int m_timesThrownTogether;
-                
-        GameCanvas *m_canvas;
         
+        QObject* m_parent;
 };
 
 #endif

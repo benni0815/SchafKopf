@@ -32,7 +32,6 @@ class CanvasCard : public QObject, public QCanvasRectangle
 	Q_OBJECT
     public:
         CanvasCard(QCanvas*c);
-        CanvasCard(Card* card,QCanvas*c);
         ~CanvasCard();
 
         void setCard(Card* card);
@@ -71,6 +70,7 @@ class CanvasCard : public QObject, public QCanvasRectangle
 	private slots:
 		void disableForbidden();
 		void moveLoop();
+        void cardDeckChanged();
 };
 
 #endif

@@ -20,9 +20,6 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include <qobject.h>
-#include <qstring.h>
-
 class QPixmap;
 class Player;
 
@@ -31,14 +28,15 @@ This class represents one card.
 
 @author Dominik Seichter
 */
-class Card : public QObject {
-    Q_OBJECT
+class Card {
     public:
         // TODO: find better names, Edit bei lenz: done =;-)
-        enum type { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
-        enum color { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
+        // DS: renamed to avoid name clashes
+        enum EType { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
+        enum EColor { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
 
-        Card( const enum type t, const enum color c );
+        Card( const int id );
+        Card( const enum EType t, const enum EColor c );
         ~Card();
 
         /** return a pixmap of the card 
@@ -84,10 +82,20 @@ class Card : public QObject {
           */
         bool operator<( Card* c );
 
-	bool isEqual(Card* othercard);
+        bool isEqual(Card* othercard);
 
-    private slots:
-        void cardChanged();
+        /** a id(). Using this id the card can be quickly identified
+          * as the id() is calculated using color and type.
+          */
+        int id() const;
+        
+        /** Call this whenever the carddeck has changed and
+          * the internal pixmap should be reloaded.
+          */
+        void cardDeckChanged();
+        
+    private:
+        void init( const enum EType t, const enum EColor c  );
         
     private:
         Player* m_owner;

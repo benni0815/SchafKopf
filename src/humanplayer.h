@@ -20,24 +20,19 @@
 #ifndef HUMANPLAYER_H
 #define HUMANPLAYER_H
 
-#include <qobject.h>
 #include "player.h"
 
-class HumanPlayer : public QObject, public Player
+class HumanPlayer : public Player
 {
-    Q_OBJECT
-	public:
+    public:
         HumanPlayer(Game* game);
         ~HumanPlayer();
         
-		void klopfen();
+        void klopfen();
         Card *play();
         GameInfo* gameInfo( bool force = false );
         
-		int rtti() const { return HUMAN; }        
-
-    private slots:
-        void getCard( Card* card );
+        int rtti() const { return HUMAN; }        
         
     private:
         Card* m_card;

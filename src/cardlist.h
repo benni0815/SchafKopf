@@ -36,7 +36,12 @@ class CardList : public QPtrList<Card>
 {
     public:
         CardList();
-
+        
+        /** Creates a card list from a zero terminated list of integers 
+          * as you can create it using toIntList()
+          */
+        CardList( int* cards );
+        
         /** initialize this card list with a default card
           * deck of 32 cards.
           * The CardList does now own all elements, i.e. they
@@ -60,14 +65,17 @@ class CardList : public QPtrList<Card>
           * is in the list
           */
         bool contains( int color, int type );
+        bool contains( int cardid );
         
 		CardList* FindCards(int color, int type);
 		void RemoveCards(CardList* itemsToRem);
 	
 		void sort(eval_func eval, void *param);
 
-	signals:
-		void changeEvent(void);
+        /** creates a zero terminated list of integers, every 
+          * int has the id of one card assigned.
+          */
+        int* toIntList();
 };
 
 #endif

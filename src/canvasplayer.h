@@ -20,7 +20,12 @@
 #ifndef CANVASPLAYER_H
 #define CANVASPLAYER_H
 
+#include "schafkopfdef.h"
+
+#include <qstring.h>
+
 class Card;
+class CardList;
 class CanvasCard;
 class Player;
 class QCanvas;
@@ -33,27 +38,37 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( QCanvas* canvas );
-        CanvasPlayer( int i, Player* player, QCanvas* canvas );
+        CanvasPlayer( int i, QCanvas* canvas );
         ~CanvasPlayer();
         
-        void position( int i );
-		void init(int i);
+        void position();
+        void init();
         
-        void setPlayer( int, Player* player );
+        unsigned int id() const;
+        bool isHuman() const;
+        
+        void setHasDoubled( bool h );
+        void setLast( bool l );
+        void setName( const QString & name );
+        void setCards( CardList* cards );
         
         void cardPlayed( Card* c );
-        CanvasCard* hasCard( Card* c ) const; 
-        Player* player() const { return m_player; }
+        CanvasCard* hasCard( int cardid ) const; 
         
     private:
         void create();
         
-		QCanvas* m_canvas;
-        QCanvasText* m_name;
-        CanvasCard* m_items[8];
+        unsigned int m_id;
+        int m_position;
+        bool m_has_doubled;
+        bool m_is_last;
+        bool m_is_human;
+        QString m_player_name;
         
-        Player* m_player;
+        QCanvas* m_canvas;
+        QCanvasText* m_name;
+        CanvasCard* m_items[NUMCARDS];
+        CardList* m_cards;
 };
 
 #endif

@@ -56,6 +56,7 @@ struct t_Players {
 
 
 class Results;
+class QMutex;
 class QWidget;
 
 /**
@@ -72,7 +73,6 @@ class Settings : public QObject
         
         const QString cardDeck() const;
         const QString cardBackground() const;
-        QString getCardDir() const;
         
         const QStringList playerNames() const;
         void setPlayerNames( const QStringList & names );
@@ -129,7 +129,9 @@ class Settings : public QObject
         ~Settings();
         
         static Settings* m_instance;
-
+        QString getCardDir() const;
+        
+        QMutex* m_mutex;
 };
 
 #endif

@@ -20,8 +20,6 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
-#include <qobject.h>
-
 #include "player.h"
 #include "card.h"
 #include "gameinfo.h"
@@ -29,9 +27,8 @@
 class OpenBook;
 class CardList;
 
-class ComputerPlayer : public QObject,  public Player
+class ComputerPlayer : public Player
 {
-	Q_OBJECT
     public:
         ComputerPlayer(Game* game);
         ~ComputerPlayer();
@@ -82,7 +79,7 @@ class ComputerPlayer : public QObject,  public Player
 		int myTrumpfs();
 		int trumpfsInGame();
 				
-	private slots:
+	//private slots:
 		void cardPlayed(unsigned int player, Card *c);
 };
 

@@ -24,7 +24,6 @@
 
 #include <kdialogbase.h>
 
-class Game;
 class QLabel;
 /**
 Show the last trick which was made
@@ -38,19 +37,18 @@ class StichDlg : public KDialogBase
 {
     Q_OBJECT
     public:
-        StichDlg(Game* g, QWidget *parent = 0, const char *name = 0);
+        StichDlg(QWidget *parent = 0, const char *name = 0);
         ~StichDlg();
         
-    private slots:
-        void changed(unsigned int id);
+        void changed( const QString & name, int* list, QStringList* players );
+        
+    private:
         void reset();
         
     private:
         QLabel* trick;
         QLabel* cards[PLAYERS];
         QLabel* players[PLAYERS];
-            
-        Game* m_game;
 };
 
 #endif

@@ -39,18 +39,18 @@ class GameCanvas : public QCanvasView
 {
     Q_OBJECT
     
-    enum { YES, NO };
-    
     public:
         GameCanvas(QCanvas* c,QWidget *parent = 0, const char *name = 0);
         ~GameCanvas();
         
-        void setGame( Game* game );
-   
+        /** the user has to click a card to play
+          */
+        int getCard();
+        
         /** the user played card, which
           * is forbidden to play!
           */
-        void cardForbidden( Card* card );
+        void cardForbidden( int cardid );
 
         /** ask the user a question and allow him to make a decision
           */
@@ -59,11 +59,30 @@ class GameCanvas : public QCanvasView
         /** display an information message to the user
           */
         void information( const QString & message );
+
+        /** set the canvas player with the @p id to have doubled in this game
+          */
+        void playerHasDoubled( unsigned int id, bool value );
+        
+        /** Reset all data of the canvas players to default values 
+          */
+        void resetPlayers();
+        /** remove all cards from the canvas player cardlists
+          * so that they are going to hide themselves
+          */
+        void resetPlayerCards();
+        
+        void playerIsLast( unsigned int id );
+        void setPlayerName( unsigned int id, const QString & name );
+        void setPlayerCards( unsigned int id, int* cards );
+        
         void updateBackground();
           
     public slots:
         void redrawPlayers();
-        
+        void slotPlayerPlayedCard( unsigned int player, int cardid );
+        void slotPlayerMadeStich(unsigned int);
+                
     signals:
         void clicked( QCanvasItem* item );
         void playCard( Card* card );
@@ -76,9 +95,6 @@ class GameCanvas : public QCanvasView
         void cardClicked( QCanvasItem* item );
         void yesNoClicked( QCanvasItem* item );
         
-        void slotPlayerPlayedCard( unsigned int player, Card *c );
-        void slotPlayerMadeStich(unsigned int);
-        
     protected:
         void resizeEvent( QResizeEvent *r );
         void resizeBackground();
@@ -87,9 +103,6 @@ class GameCanvas : public QCanvasView
         void contentsMouseReleaseEvent(QMouseEvent*);
                 
     private:
-        /** Create QCanvasItem's for all Cards 
-          */
-        void createObjects();
         int m_result;
         QPoint getStichPosition( int player );
         int getStichRotation( int player );
@@ -97,14 +110,13 @@ class GameCanvas : public QCanvasView
         
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
+        
         QCanvasItem* m_item; // currently clicked item
 
         QCanvasText* m_message;
         QCanvasText* m_yes;
         QCanvasText* m_no;
         QCanvasText* m_ok;
-                
-        Game* m_game;
 
         QImage ImgBack;
         bool loadOK;

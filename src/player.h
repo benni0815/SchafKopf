@@ -54,12 +54,6 @@ class Player
           * count twice or not
           */
         bool geklopft() const { return m_geklopft; }
-        /** required by the user interface to know if all cards
-          * maybe shown or already the first four ones. 
-          * Returns true if the players klopfen() member 
-          * function was already called.
-          */
-        bool hasDoubled() const { return m_has_doubled; }
 
         CardList *allowedCards();
         void removeTrumpf(CardList* liste);
@@ -86,6 +80,7 @@ class Player
 		CardList* cardsOfSameType(Card* card);
 		Card* firstPlayedCard();
 		bool istTrumpf(Card* card);
+        
     private:
         static unsigned int def_id;
         double m_points;

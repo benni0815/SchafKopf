@@ -24,6 +24,7 @@ class Card;
 class CardList;
 class Player;
 class QString;
+
 /**
 Keeps all information on the current game (e.g. wenz or rufspiel)
 

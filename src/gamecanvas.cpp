@@ -39,10 +39,9 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     for(;i<PLAYERS;i++)
     {
         m_stich[i]=new CanvasCard( c );
-        m_players[i]=new CanvasPlayer( c );
+        m_players[i]=new CanvasPlayer( i, c );
     }
     
-    m_game = NULL;
     m_item = NULL;
         
     QFont f( "Helvetica", 24 );
@@ -75,7 +74,6 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
-    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
 }    
 
@@ -83,29 +81,19 @@ GameCanvas::~GameCanvas()
 {
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
+        if( m_stich[i]->card() )
+            delete m_stich[i]->card();
+            
         delete m_stich[i];
         delete m_players[i];
     }
 }
 
-void GameCanvas::setGame( Game* game )
-{
-    connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
-        
-    connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-    
-    connect( game, SIGNAL(gameStarted()), this, SLOT(redrawPlayers()));
-    connect( game, SIGNAL(gameEnded()), this, SLOT(redrawPlayers()));
-    
-    m_game = game;
-    createObjects();
-}
-
-void GameCanvas::cardForbidden(Card* card)
+void GameCanvas::cardForbidden( int cardid )
 {
     for(unsigned int z=0;z<PLAYERS;z++)
 	{
-        CanvasCard* c = m_players[z]->hasCard( card );
+        CanvasCard* c = m_players[z]->hasCard( cardid );
         if( c )            
         {
             c->forbidden();
@@ -114,42 +102,10 @@ void GameCanvas::cardForbidden(Card* card)
     }      
 }
 
-void GameCanvas::createObjects()
-{
-    if( !m_game )
-        return;
-    
-    unsigned int i = 0;
-    unsigned int h = 0;
-    unsigned int z = 0;
-	
-    /** We have to make sure that the human player == m_player[0] !
-      */
-    for( h=0;h<PLAYERS;h++ )    
-	{
-		if( m_game->findIndex( h )->rtti() == Player::HUMAN )
-        {
-			m_players[0]->setPlayer( 0, m_game->findIndex( h ) );
-            break;
-        }
-	}
-		
-    for( i=h+1;i<PLAYERS;i++ )
-        m_players[i-h]->setPlayer( i-h, m_game->findIndex( i ) );            
-	
-    for( z=0;z<h;z++)    
-        m_players[i-h+z]->setPlayer( i-h+z, m_game->findIndex( z ) );
-	
-    positionObjects();
-}
-
 void GameCanvas::positionObjects(bool redraw)
 {
-    if( !m_players[0] || !m_game || !m_stich )
-        return;
-
     for( unsigned int i = 0; i < PLAYERS; i++ )
-        m_players[i]->position( i );
+        m_players[i]->position();
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) 
     {
@@ -235,6 +191,14 @@ int GameCanvas::getStichRotation( int player )
     return r;
 }
 
+int GameCanvas::getCard()
+{
+    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
+    m_result = -1;
+    ENTER_LOOP();
+    
+    return m_result;
+}
 
 void GameCanvas::cardClicked( QCanvasItem* item )
 {
@@ -244,40 +208,41 @@ void GameCanvas::cardClicked( QCanvasItem* item )
         
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
-            Player* player = m_players[i]->player();
-            if( m_players[i]->hasCard( card->card() ) && player->rtti() == Player::HUMAN )
+            if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
-                qDebug("card=%i color=%i", card->card()->card(), card->card()->color() );
-                emit playCard( card->card() );
+                m_result = card->card()->id();
+                disconnect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
+                EXIT_LOOP();
             }
         }
     }
 }
 
-void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
+void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
 {
     QPoint point;
     unsigned int i=0;
     CanvasCard* card = 0;
-    if( !m_players[0] || !m_game || !m_stich )
-        return;    
            
     for(i=0;i<PLAYERS;i++)
-        if( m_players[i]->player()->id() == player )
+        if( m_players[i]->id() == player )
         {
-            card = m_players[i]->hasCard( c );
+            card = m_players[i]->hasCard( cardid );
             break;
         }
     
     if( card )
     {
         m_players[player]->cardPlayed( card->card() );
-	if(Settings::instance()->rearrangeCards())
-		m_players[player]->position( player );
+        if(Settings::instance()->rearrangeCards())
+            m_players[player]->position();
   
         CanvasCard* stich = m_stich[player];
-        stich->setCard( card->card() );
-	int r = getStichRotation(player);
+        if( stich->card() )
+            delete stich->card();
+        stich->setCard( new Card( card->card()->id() ) );
+        
+        int r = getStichRotation(player);
         stich->setRotation( r );
 
         // find out the correct z value of this card so that
@@ -336,7 +301,7 @@ void GameCanvas::redrawPlayers()
 	
     for(i=0;i<PLAYERS;i++)
     {
-		m_players[i]->init(i);
+		m_players[i]->init();
         m_stich[i]->hide();
     }
 }
@@ -437,6 +402,68 @@ void GameCanvas::information( const QString & message )
     canvas()->update();
         
     return;
+}
+
+void GameCanvas::playerHasDoubled( unsigned int id, bool value )
+{
+    int i;
+    for(i=0;i<PLAYERS;i++)
+        if( m_players[i]->id() == id )
+        {
+            m_players[i]->setHasDoubled( value );
+        }
+}
+
+void GameCanvas::playerIsLast( unsigned int id )
+{
+    int i;
+    for(i=0;i<PLAYERS;i++)
+        if( m_players[i]->id() == id )
+        {
+            m_players[i]->setLast( true );
+            // TODO: init is not a good name for this function...
+            m_players[i]->init();
+        }
+}
+
+void GameCanvas::setPlayerName( unsigned int id, const QString & name )
+{
+    int i;
+    for(i=0;i<PLAYERS;i++)
+        if( m_players[i]->id() == id )
+            m_players[i]->setName( name );
+
+}
+
+void GameCanvas::resetPlayers()
+{
+    int i;
+    
+    for(i=0;i<PLAYERS;i++)
+    {
+        m_players[i]->setHasDoubled( false );
+        m_players[i]->setLast( false );
+    }
+}
+
+void GameCanvas::resetPlayerCards()
+{
+    int i;
+    CardList list;
+        
+    for(i=0;i<PLAYERS;i++)    
+        m_players[i]->setCards( &list );
+}
+
+void GameCanvas::setPlayerCards( unsigned int id, int* cards )
+{
+    int i;
+    CardList list( cards );
+    list.setAutoDelete( false );
+    
+    for(i=0;i<PLAYERS;i++)
+        if( m_players[i]->id() == id )
+            m_players[i]->setCards( &list );
 }
 
 #include "gamecanvas.moc"

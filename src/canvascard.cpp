@@ -33,21 +33,14 @@
 CanvasCard::CanvasCard(QCanvas*c)
  : QCanvasRectangle(c), m_rotation(0)
 {
-    m_card = 0;
+    m_card = NULL;
     m_forbidden = false;
     show();
     timer = new QTimer( this );
     loadOK1 = Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
     loadOK2 = Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
-}
-
-CanvasCard::CanvasCard(Card* card,QCanvas*c)
- : QCanvasRectangle(c), m_rotation(0)
-{
-    setCard( card );
-    m_forbidden = false;
-    show();
-    //timer = new QTimer( this );
+    
+    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
 
 CanvasCard::~CanvasCard()
@@ -138,4 +131,13 @@ void CanvasCard::moveLoop()
 		timer->stop();
 		disconnect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
 	}
+}
+
+void CanvasCard::cardDeckChanged()
+{
+    if( m_card )
+    {
+        m_card->cardDeckChanged();
+        QCanvasItem::update();
+    }
 }

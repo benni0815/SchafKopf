@@ -132,7 +132,7 @@ void SelectGameTypeBox::updatePreview()
 	GameInfo* info = gameInfo();
 
 	list.init();
-	for(i=0;i<list.count();i++)
+	for(i=0;i<(int)list.count();i++)
 		if( info->istTrumpf( list.at(i) ) )
 			trumpf.append( list.at(i) );
 	delete info;
@@ -143,7 +143,7 @@ void SelectGameTypeBox::updatePreview()
 	x=c.pixmap()->width()/2*(trumpf.count()-1);
 	pix.fill( Qt::darkGreen );
 	QPainter p( &pix );
-	for(i=0;i<=trumpf.count()-1;i++)
+	for(i=0;i<=(int)trumpf.count()-1;i++)
 	{
 		QPixmap* pixmap = trumpf.at(i)->pixmap();
 		p.drawPixmap( x, y, *pixmap );

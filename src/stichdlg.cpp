@@ -28,10 +28,9 @@
 
 #include <klocale.h>
 
-StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
+StichDlg::StichDlg(QWidget *parent, const char *name)
     : KDialogBase( KDialogBase::Plain, i18n("Last Trick"),
-      KDialogBase::Close, KDialogBase::Close, parent,name, false),
-      m_game( g)
+      KDialogBase::Close, KDialogBase::Close, parent,name, false)
 {
     QGridLayout* layout = new QGridLayout( plainPage(), 4, 2 );
     trick = new QLabel( plainPage() );
@@ -45,10 +44,7 @@ StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
         layout->addWidget( players[i], 2, i );
     }
     
-    changed( m_game->findIndex( 0 )->id() );
-    
-    connect( m_game, SIGNAL( playerMadeStich(unsigned int)), this, SLOT(changed(unsigned int)));
-    connect( m_game, SIGNAL( gameStarted() ), this, SLOT( reset() ) );
+    reset();
 }
 
 
@@ -56,36 +52,33 @@ StichDlg::~StichDlg()
 {
 }
 
-void StichDlg::changed( unsigned int id )
+void StichDlg::changed( const QString & name, int* list, QStringList* playerlist )
 {
-    Player* player = m_game->findId( id );
-    CardList* stich = player->stiche();
+    CardList stich( list );
     
-    if( stich && stich->count() )
-        trick->setText( i18n("Trick was made by: <b>") + player->name() + "</b>" );
+    if( stich.count() )
+        trick->setText( i18n("Trick was made by: <b>") + name + "</b>" );
     else
         trick->setText( i18n("No trick was made.") );
         
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        if( stich )
+        if( stich.count() > i ) 
         {
-            if( stich->count() > i ) 
-                cards[i]->setPixmap( *(stich->at( stich->count() - PLAYERS + i )->pixmap()) );
-            else
-                cards[i]->setPixmap( *Card::backgroundPixmap() );
-
-            if( stich->count() > i )
-                players[i]->setText( "<qt><b>"+stich->at( stich->count() - PLAYERS + i )->owner()->name()+"</b></qt>" );
-            else
-                players[i]->setText( m_game->findIndex(i)->name() );
+            cards[i]->setPixmap( *(stich.at( stich.count() - PLAYERS + i )->pixmap()) );
+            players[i]->setText( "<qt><b>"+(*playerlist)[i]+"</b></qt>" );
+        }   
+        else
+        {
+            cards[i]->setPixmap( *Card::backgroundPixmap() );
+            players[i]->setText( QString::null );
         }
     }
 }
 
 void StichDlg::reset()
 {
-    changed( m_game->findIndex( 0 )->id() );
+    changed( 0, NULL, NULL );
 }
 
 #include "stichdlg.moc"

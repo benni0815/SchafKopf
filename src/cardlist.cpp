@@ -30,6 +30,18 @@ CardList::CardList()
     setAutoDelete( false );
 }
 
+CardList::CardList( int* cards )
+{
+    setAutoDelete( false );
+
+    if( cards )
+        while( *cards != 0 )
+        {
+            append( new Card( *cards ) );
+            ++cards;
+        }
+}
+
 void CardList::init()
 {
     setAutoDelete( true );
@@ -37,7 +49,7 @@ void CardList::init()
 
     for( int i = 0; i < CARD_CNT ; i += 4  )
         for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (enum Card::type)(i+1), (enum Card::color)z ) );
+            append( new Card( (Card::EType)(i+1), (Card::EColor)z ) );
 }
 
 int CardList::points()
@@ -104,9 +116,14 @@ CardList* CardList::FindCards(int color, int type)
 
 bool CardList::contains( int color, int type )
 {
+    return contains( color + type );
+}
+
+bool CardList::contains( int cardid )
+{
     for( unsigned int i = 0; i < this->count(); i++ )
     {
-        if( at(i)->color()==color && at(i)->card()==type )
+        if( at(i)->id() == cardid )
             return true;
     }
     return false;
@@ -150,3 +167,16 @@ void CardList::sort(eval_func eval, void *param)
 		}
 	}
 }
+
+int* CardList::toIntList()
+{
+    int* list = new int[count()+1];
+    int i;
+    
+    for(i=0;i<count();i++)
+        list[i] = at(i)->id();
+    list[i] = 0;
+    
+    return list;
+}
+

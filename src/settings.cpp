@@ -29,6 +29,8 @@
 #include <kuser.h>
 #include <kstandarddirs.h>
 
+#include <qmutex.h>
+
 Settings* Settings::m_instance = 0;
 
 Settings* Settings::instance() 
@@ -42,16 +44,21 @@ Settings* Settings::instance()
 Settings::Settings(QObject *parent, const char *name)
  : QObject(parent, name)
 {
+    // the mutex causes more problems right now than be useful...
+    m_mutex = NULL; // new QMutex();
 }
 
 
 Settings::~Settings()
 {
+    delete m_mutex;
     delete m_instance;
 }
 
 const QString Settings::cardDeck() const
 {
+    QMutexLocker locker( m_mutex );
+    
     QString cardDir = getCardDir()+"cards-bavarian-old/";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
@@ -62,6 +69,8 @@ const QString Settings::cardDeck() const
 
 const QString Settings::cardBackground() const
 {
+    QMutexLocker locker( m_mutex );
+
     QString deckCard = getCardDir()+"decks/bavaria_tux.png";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
@@ -72,6 +81,8 @@ const QString Settings::cardBackground() const
 
 QString Settings::getCardDir() const
 {
+    // do not lock private members
+    
     QString dir = KCardDialog::getDefaultCardDir();
     int k;
     dir = dir.remove( dir.length()-1, 1 );
@@ -82,23 +93,28 @@ QString Settings::getCardDir() const
 
 void Settings::configureCardDecks( QWidget* parent )
 {
+    // no mutex locker here as we would lock cardDeck and cardBackground
+    
     QString dir = cardDeck();
     QString deck = cardBackground();
         
     if (KCardDialog::getCardDeck(deck, dir, parent, KCardDialog::Both ) == QDialog::Accepted)
     {
+        //m_mutex->lock();
         KConfig* config = kapp->config();
         config->setGroup("CardDeck");
         config->writeEntry( "Cards", dir );
         config->writeEntry( "Deck", deck );
         kapp->config()->sync();
-        
+        //m_mutex->unlock();
         emit cardChanged();
     }
 }
 
 const QStringList Settings::playerNames() const
 {
+    QMutexLocker locker( m_mutex );
+    
     QStringList list;
     KUser user;
     KConfig* config = kapp->config();
@@ -112,6 +128,8 @@ const QStringList Settings::playerNames() const
 
 void Settings::setPlayerNames( const QStringList & names )
 {
+    QMutexLocker locker( m_mutex );
+
     int i;
     KConfig* config = kapp->config();
     QStringList old = this->playerNames();
@@ -126,6 +144,8 @@ void Settings::setPlayerNames( const QStringList & names )
 
 QValueList<int> Settings::splitterSizes( int width )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     QValueList<int> list;
     
@@ -142,6 +162,8 @@ QValueList<int> Settings::splitterSizes( int width )
 
 void Settings::setSplitterSizes( QValueList<int> list )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->writeEntry( "Splitter", list );
     config->sync();
@@ -149,6 +171,8 @@ void Settings::setSplitterSizes( QValueList<int> list )
 
 void Settings::setResultsType( int r )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup( "SchafKopf" );
     config->writeEntry("ResultMode", r );
@@ -159,6 +183,8 @@ void Settings::setResultsType( int r )
 
 int Settings::resultsType() const
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup( "SchafKopf" );
     return config->readNumEntry("ResultMode", MONEY );
@@ -166,6 +192,8 @@ int Settings::resultsType() const
 
 Results* Settings::results() const
 {
+    QMutexLocker locker( m_mutex );
+    
     int r = resultsType();
     if( r == MONEY )
         return new MoneyResults();
@@ -177,6 +205,8 @@ Results* Settings::results() const
 
 void Settings::setMoneyResults( const t_ResultValues* r )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup( "MoneyValues" );
     config->writeEntry( "Solo", r->solo );
@@ -189,6 +219,8 @@ void Settings::setMoneyResults( const t_ResultValues* r )
 
 void Settings::setPointResults( const t_ResultValues* r )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup( "PointValues" );
     config->writeEntry( "Solo", (int)r->solo );
@@ -201,6 +233,8 @@ void Settings::setPointResults( const t_ResultValues* r )
 
 t_ResultValues* Settings::moneyResults() const
 {
+    QMutexLocker locker( m_mutex );
+    
     t_ResultValues* r = new t_ResultValues;
     KConfig* config = kapp->config();
     config->setGroup( "MoneyValues" );
@@ -214,6 +248,8 @@ t_ResultValues* Settings::moneyResults() const
 
 t_ResultValues* Settings::pointResults() const
 {
+    QMutexLocker locker( m_mutex );
+
     t_ResultValues* r = new t_ResultValues;
     KConfig* config = kapp->config();
     config->setGroup( "PointValues" );
@@ -227,6 +263,8 @@ t_ResultValues* Settings::pointResults() const
 
 void Settings::setNoGame( int e )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     config->writeEntry( "KeinSpiel", e );
@@ -235,6 +273,8 @@ void Settings::setNoGame( int e )
 
 int Settings::noGame() const
 {
+    QMutexLocker locker( m_mutex );
+    
     int e = NOGAME_NEUGEBEN;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
@@ -245,6 +285,8 @@ int Settings::noGame() const
 
 void Settings::setDoublerHasToPlay( bool b )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     config->writeEntry( "DoublerHasToPlay", b );
@@ -253,6 +295,8 @@ void Settings::setDoublerHasToPlay( bool b )
 
 bool Settings::doublerHasToPlay() const
 {
+    QMutexLocker locker( m_mutex );
+    
     bool b = true;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
@@ -262,6 +306,8 @@ bool Settings::doublerHasToPlay() const
 
 void Settings::setDoubleNextGame( bool b )
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     config->writeEntry( "DoubleNextGame", b );
@@ -270,6 +316,8 @@ void Settings::setDoubleNextGame( bool b )
 
 bool Settings::doubleNextGame() const
 {
+    QMutexLocker locker( m_mutex );
+    
     bool b = true;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
@@ -279,6 +327,8 @@ bool Settings::doubleNextGame() const
 
 void Settings::setRearrangeCards( bool b)
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     config->writeEntry( "RearrangeCards", b );
@@ -287,6 +337,8 @@ void Settings::setRearrangeCards( bool b)
 
 bool Settings::rearrangeCards() const
 {
+    QMutexLocker locker( m_mutex );
+    
     bool b = true;
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
@@ -296,6 +348,8 @@ bool Settings::rearrangeCards() const
 
 void Settings::setBackgroundImage( QString b)
 {
+    QMutexLocker locker( m_mutex );
+    
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     config->writeEntry( "backgroundImage", b );
@@ -305,6 +359,7 @@ void Settings::setBackgroundImage( QString b)
 
 QString Settings::backgroundImage() const
 {
+    QMutexLocker locker( m_mutex );
     QString b="";
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
@@ -315,6 +370,7 @@ QString Settings::backgroundImage() const
 
 t_AllowedGames* Settings::allowedGames() const
 {
+    QMutexLocker locker( m_mutex );
     t_AllowedGames* a = new t_AllowedGames;
     
     KConfig* config = kapp->config();
@@ -330,6 +386,7 @@ t_AllowedGames* Settings::allowedGames() const
 
 void Settings::setAllowedGames( const t_AllowedGames* allowed )
 {
+    QMutexLocker locker( m_mutex );
     KConfig* config = kapp->config();
     config->setGroup( "Games" );
     config->writeEntry( "AllowWenz", allowed->wenz );

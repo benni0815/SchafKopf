@@ -25,12 +25,39 @@
 
 #include <kapplication.h>
 #include <kcarddialog.h>
-#include <kconfig.h>
 
 QPixmap* Card::m_background = 0;
 
-Card::Card( const enum type t, const enum color c )
-    : QObject()
+Card::Card( const int id )
+{
+    enum EType t;
+    enum EColor c;
+    int i;
+    
+    // try to calculate the type and color from the id
+    for( i=Card::EICHEL; i <= Card::SCHELLEN; i++ )
+        if( (id - i - 1) % 4 == 0 )
+        {
+            t = (Card::EType)(id - i);
+            c = (Card::EColor)i;
+            
+            break;
+        }
+    
+    init( t, c );
+}
+
+Card::Card( const enum EType t, const enum EColor c )
+{
+    init( t, c );
+}
+
+Card::~Card()
+{
+    delete m_pixmap;
+}
+
+void Card::init( const enum EType t, const enum EColor c  )
 {
     m_pixmap = NULL;
     m_owner = NULL;
@@ -55,14 +82,6 @@ Card::Card( const enum type t, const enum color c )
             m_points = 0;
             break;
     };
-    
-    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardChanged() ));
-}
-
-
-Card::~Card()
-{
-    delete m_pixmap;
 }
 
 QPixmap* Card::pixmap()
@@ -92,11 +111,13 @@ bool Card::isEqual(Card *othercard)
 		return false;
 }
 
-void Card::cardChanged()
+void Card::cardDeckChanged()
 {
     delete m_pixmap;
     m_pixmap = NULL;
-    if( m_background ) {
+    
+    if( m_background ) 
+    {
         delete m_background;
         m_background = NULL;
     }
@@ -122,3 +143,7 @@ bool Card::operator< ( Card* c )
     return false;
 }
 
+int Card::id() const
+{
+    return m_card + m_color;
+}

@@ -28,15 +28,19 @@
 #include <kmainwindow.h>
 #include <qguardedptr.h> 
 
-class StichDlg;
+#include <semaphore.h>
+
+class CardList;
 class GameCanvas;
 class Game;
+class GameInfo;
 class KAction;
 class KPushButton;
 class QCanvas;
 class QLabel;
 class QSplitter;
 class QTable;
+class StichDlg;
 
 /**
  * @short Application Main Window
@@ -77,7 +81,7 @@ class SchafKopf : public KMainWindow
         
 		void realNewGame();
         
-        void slotPlayerResult( const QString & name, const QString & result );
+        void slotPlayerResult( unsigned int id, const QString & result );
         
         void saveConfig();
         
@@ -91,8 +95,18 @@ class SchafKopf : public KMainWindow
           * in the preferences
           */
         void updateTableNames();
+        
+    protected:
+        /** Event handler to receive thread events
+          */
+        void customEvent( QCustomEvent* e );
+        
     private:
         void setupActions();
+        GameInfo* selectGame( bool force, int* cardids );
+
+        bool m_terminated;
+        sem_t m_sem;
         
         Game* m_game;
         GameCanvas* m_canvasview;

@@ -29,51 +29,50 @@
 #include <qcanvas.h>
 #include <qfont.h>
 
-CanvasPlayer::CanvasPlayer( QCanvas* canvas )
-    :m_canvas( canvas )
-{
-    create();
-}
-
-CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
-    : m_player( player ), m_canvas( canvas )
+CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas )
+    : m_canvas( canvas )
 {
     create();
     
-    setPlayer( i, player );
+    m_position = i;
+    // TODO: get a correct id! especially important for networking!
+    m_id = i;
+    m_is_human = (m_id == 0);
 }
 
 CanvasPlayer::~CanvasPlayer()
 {
     unsigned int i = 0;
+    // delete m_items before m_cards
+    // as m_items has references to cards in
+    // m_cards.
     for(i=0;i<NUMCARDS;i++)
         delete m_items[i];
     
+    delete m_cards;
     delete m_name;
 }
 
 void CanvasPlayer::create()
 {
     unsigned int z = 0;
-	for(z=0;z<NUMCARDS;z++)
-	    m_items[z] = new CanvasCard( m_canvas );
+    for(z=0;z<NUMCARDS;z++)
+        m_items[z] = new CanvasCard( m_canvas );
 
-    m_player = NULL;
+    m_cards = new CardList;
+    m_cards->setAutoDelete( true );
+    
     m_name = new QCanvasText( m_canvas );
     m_name->setColor( Qt::white );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
-}
-
-void CanvasPlayer::setPlayer( int i, Player* player )
-{
-    m_player = player;
     
-    if( m_player )
-        init(i);    
+    m_is_last = false;
+    m_has_doubled = false;
+    m_player_name = QString::null;
 }
 
-void CanvasPlayer::position( int i )
+void CanvasPlayer::position()
 {
     int x = 0, y = 0;
     int num = 0;
@@ -86,17 +85,18 @@ void CanvasPlayer::position( int i )
     
     for( unsigned int z = 0; z < NUMCARDS; z++ )
     {
-    	CanvasCard* card = m_items[z];
+        CanvasCard* card = m_items[z];
         if(card->isVisible())
-		num++;
+            num++;
     }
+    
     if(!Settings::instance()->rearrangeCards())
     	num=NUMCARDS;
     
-    if(i==1||i==3)
+    if(m_position==1||m_position==3)
         qSwap( cardw, cardh );
         
-    switch( i ) 
+    switch( m_position ) 
     {
         case 0:
             if(availw>num*cardw+(num-1))
@@ -141,14 +141,14 @@ void CanvasPlayer::position( int i )
 	    card->setDestination( x, y );
 	    card->animatedMove();
 	} 
-        if(i==0)
+        if(m_position==0)
 	{
 	    if(availw>num*cardw+(num-1))
             	x += cardw+1;
 	    else
 	    	x += (availw-cardw)/(num-1);
 	}
-        else if(i==2)
+        else if(m_position==2)
             x += (cardw/6);
         else
             y += (cardh/6);
@@ -156,36 +156,37 @@ void CanvasPlayer::position( int i )
     }
         
     // swap them back
-    if(i==1||i==3)
+    if(m_position==1||m_position==3)
         qSwap( cardw, cardh );
 }
 
-void CanvasPlayer::init(int i)
+void CanvasPlayer::init()
 {
-    m_name->setText( m_player->name() );
-    if( !m_player->game()->isTerminated() )
+    m_name->setText( m_player_name );
+
+    if( m_cards->count() )
     {
-        for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
+        for( unsigned int z = 0; z < m_cards->count(); z++ ) 
         {
             CanvasCard *c = m_items[z];
-            c->setCard( m_player->cards()->at( z ) );
+            c->setCard( m_cards->at( z ) );
             c->setZ( double(-1 - z) );
             c->show();
             
-            if(i==1)
+            if(m_position==1)
                 c->setRotation(270);
-            else if(i==3)
+            else if(m_position==3)
                 c->setRotation(90);
     #ifdef CHEAT
             c->setFrontVisible( true );
     #else            
-            if( m_player->rtti() == Player::HUMAN )
+            if( m_is_human )
             {
-                if( m_player->hasDoubled() )
+                if( m_has_doubled )
                     c->setFrontVisible( true );
                 else
                 {
-                    if( m_player->isLast() )
+                    if( m_is_last )
                         c->setFrontVisible( z >= 4 );
                     else
                         c->setFrontVisible( z < 4 );
@@ -206,23 +207,58 @@ void CanvasPlayer::init(int i)
     }
 }
 
-CanvasCard* CanvasPlayer::hasCard( Card* c ) const
+CanvasCard* CanvasPlayer::hasCard( int cardid ) const
 {
     for(unsigned int i=0;i<NUMCARDS;i++)
     {
         CanvasCard* card = m_items[i];
-        if(card->card() == c)
+        if(card->card()->id() == cardid )
             return card;
     }
-    return 0;
+    return NULL;
 }
         
 void CanvasPlayer::cardPlayed( Card* c )
 {
-    CanvasCard* card = hasCard( c );
+    CanvasCard* card = hasCard( c->id() );
     if( card )
     {
         card->hide();
     }
+}
+
+void CanvasPlayer::setCards( CardList* cards )
+{
+    int i;
+    for( i = 0; i < NUMCARDS; i++ ) 
+        m_items[i]->setCard( NULL );
+
+    m_cards->clear();
+    m_cards->appendList( cards );
+}
+
+void CanvasPlayer::setHasDoubled( bool h )
+{
+    m_has_doubled = h;
+}
+
+void CanvasPlayer::setLast( bool l )
+{
+    m_is_last = l;
+}
+
+void CanvasPlayer::setName( const QString & name )
+{
+    m_player_name = name;
+}
+
+bool CanvasPlayer::isHuman() const
+{
+    return m_is_human;
+}
+
+unsigned int CanvasPlayer::id() const
+{
+    return m_id;
 }
 

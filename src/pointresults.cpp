@@ -46,7 +46,7 @@ double PointResults::points( Player* player )
     m += m_schneider ? (int)r->schneider : 0;
     m += m_schwarz ? (int)r->schwarz : 0;
     m += m_laufende * (int)r->laufende;
-    m = klopfen( player->game()->timesDoubled(), m );
+    m = (int)klopfen( player->game()->timesDoubled(), m );
     
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
         m = (m_points > 60 ? m : m * -1);

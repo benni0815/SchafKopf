@@ -25,12 +25,11 @@
 #include "gamecanvas.h"
 #include "gameinfo.h"
 #include "timer.h"
-#include "selectgamewizard.h"
 
 #include <klocale.h>
 
 HumanPlayer::HumanPlayer(Game* game)
- : QObject( 0, 0 ), Player(game)
+ : Player(game)
 {
     m_allowed = NULL;
     m_card = NULL;
@@ -43,48 +42,70 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-    m_geklopft = m_game->canvas()->questionYesNo( i18n("Do you want to double?") );
+    int* ret = (int*)m_game->postEvent( QuestionYesNo, id(), 0, i18n("Do you want to double?"), true );
+    m_geklopft = ( *ret == YES );
+    delete ret;
+    
     Player::klopfen();
 }
 
 Card *HumanPlayer::play()
 {
-   	m_allowed = allowedCards();
-	m_card=NULL;
-    connect( m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
-    ENTER_LOOP();
-	delete m_allowed;
+    int* ret;
+    int cpy;
+    int* cpylist;
+    unsigned int i;
+    
+    m_allowed = allowedCards();
+    m_card=NULL;
+    
+    ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString::null, true );
+    cpy = *ret;
+    delete ret;
+    
+    while( cpy != -1 && !m_allowed->contains( cpy ) )
+    {
+        cpylist = new int[2];
+        cpylist[0] = cpy;
+        cpylist[1] = 0;
+        m_game->postEvent( ForbiddenCard, id(), cpylist, QString::null, true );
+
+        ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString::null, true );
+        cpy = *ret;
+        delete ret;
+    }
+    
+    for( i=0;i<m_allowed->count();i++ )
+        if( m_allowed->at(i)->id() == cpy )
+        {
+            m_card = m_allowed->at(i);
+            break;
+        }
+           
+    delete m_allowed;
     m_allowed = NULL;
-    disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
     return m_card;
 }
 
 GameInfo* HumanPlayer::gameInfo( bool force )
 {
-    if( force || m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
+    if( force )
     {
-   
-        SelectGameWizard sgw( force, m_cards );
-        if( sgw.exec() == QDialog::Accepted )
-            return sgw.gameInfo();
+        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toIntList(), QString::null, true );
+    }
+    else
+    {
+        int* ret = (int*)m_game->postEvent( QuestionYesNo, id(), NULL, i18n("Do you want to play?"), true );
+        if( *ret == YES )
+        {
+            delete ret;
+            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toIntList(), QString::null, true );
+        }
+        else
+            delete ret;
     }
     
     return NULL;
-}
-
-void HumanPlayer::getCard(Card* card)
-{
-    if(!m_game)
-		return;
-	if( m_allowed->containsRef( card ) )
-    {
-        m_card = card;
-        EXIT_LOOP();
-    } 
-	else
-	{
-		m_game->canvas()->cardForbidden(card);
-	}
 }
 
 
