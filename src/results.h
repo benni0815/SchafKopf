@@ -35,7 +35,9 @@ or money who has to give to whom.
 
 class Results{
     public:
-        void setLaufende( int l ) { m_laufende = l; }
+		virtual ~Results() {}
+		
+		void setLaufende( int l ) { m_laufende = l; }
         void setGameInfo( GameInfo* info ) { m_gameinfo = info; }
 
         /** get a message of the game results, which can be displayed
@@ -47,7 +49,7 @@ class Results{
         
     protected:        
         Results();
-        
+				        
         void parse();
 
         GameInfo* m_gameinfo;
