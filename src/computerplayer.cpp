@@ -51,65 +51,53 @@ Card *ComputerPlayer::play()
 
 GameInfo* ComputerPlayer::game()
 {
-    int trumpf = 0;
-    int fehlfarbe = 0;
-    unsigned int i = 0, c = 0;
-    int z = 0;
-
-    // it's ugly to have three list, but smaller
-    // than having one list containing a struct
-    QValueList<GameInfo> lstInfo;
-    QValueList<int> lstTrumpf;
-    QValueList<int> lstFehlFarbe;
+    QValueList<game_data> lst;
         
-    for(i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
+    for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
     {
-        trumpf = fehlfarbe = 0;
-        
-        for( z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
+        qDebug("TYPE=%i", i);
+        for( int z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
         {
-            if( i==GameInfo::RUFSPIEL ) 
-            {
-                CardList* sau = m_cards->FindCards(m_game->gameInfo()->color(), Card::SAU);
-                if( z==Card::NOCOLOR || z==Card::HERZ || !sau->isEmpty() ) {
-                    delete sau;
-                    continue;
-                } else
-                    delete sau;
-            }
+            qDebug("Color=%i", i);
+            if( !GameInfo::isAllowed( m_cards, i, z ) )
+                continue;
+         
+            game_data d;
+            d.trumpf = d.fehlfarbe = d.weight = 0;
+            d.info.setMode( i );
+            d.info.setColor( z );        
             
-            GameInfo info;
-            info.setMode( i );
-            info.setColor( z );        
-            for( c=0;c<m_cards->count();c++)
-                if( info.istTrumpf( m_cards->at(c) ) )
-                    trumpf++;
-                else if( !info.istTrumpf( m_cards->at(c) ) && m_cards->at(c)->card() != Card::SAU )
-                    fehlfarbe++;
-            
-            if( trumpf >= 4 && fehlfarbe <= 2 )
+            for( unsigned int c=0;c<m_cards->count();c++)
             {
-                lstInfo.append( info );
-                lstTrumpf.append( trumpf );
-                lstFehlFarbe.append( fehlfarbe );
+                d.weight += d.info.weight( m_cards->at(c) );
+                if( d.info.istTrumpf( m_cards->at(c) ) )
+                    d.trumpf++;
+                else if( !d.info.istTrumpf( m_cards->at(c) ) && m_cards->at(c)->card() != Card::SAU )
+                    d.fehlfarbe++;
             }
+
+            if( ((i==GameInfo::RUFSPIEL && d.weight >= 8) || (i!=GameInfo::RUFSPIEL && d.weight >=9 ))
+                && d.fehlfarbe <= 2 )        
+            {
+                lst.append( d );
+            }    
         }
     }
     
     // now we have all possible games in list,
     // let's find the best one;
-    if( !lstInfo.isEmpty() )
+    if( !lst.isEmpty() )
     {
         int best = 0;
-        for( i=0;i<lstInfo.count();i++)
-            if( lstTrumpf[i] > lstTrumpf[best] && lstFehlFarbe[i] < lstFehlFarbe[i] )
+        for( unsigned int i=0;i<lst.count();i++)
+            if( lst[i].trumpf > lst[best].trumpf && lst[i].fehlfarbe < lst[i].fehlfarbe )
             {
                 best = i;
                 continue;
             }
         
         GameInfo* gi = new GameInfo;
-        *gi = lstInfo[best];
+        *gi = lst[best].info;
         return gi;
     }
     return 0;

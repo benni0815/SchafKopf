@@ -327,7 +327,6 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 			point = getStichPosition(player);   
             card->move( point.x(), point.y() );
             
-            qDebug( "Moving card to: x=%i, y=%i",point.x(), point.y());
             break;
         }
     }

@@ -345,6 +345,7 @@ void Game::setupGameInfo()
     unsigned int i = 0;
     for( i=0;i<PLAYERS;i++)
     {
+        qDebug("PLAYER:"+m_players[i]->name());
         GameInfo* info = m_players[i]->game();
         if( info )
         {

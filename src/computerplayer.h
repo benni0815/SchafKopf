@@ -21,6 +21,7 @@
 #define COMPUTERPLAYER_H
 
 #include "player.h"
+#include "gameinfo.h"
 
 class ComputerPlayer : public Player
 {
@@ -34,6 +35,15 @@ class ComputerPlayer : public Player
         
         int rtti() const { return COMPUTER; }
 
+    private:
+        typedef struct game_data {
+            int trumpf;
+            int fehlfarbe;
+            int weight;
+            GameInfo info;        
+        };
+
+    
 };
 
 #endif

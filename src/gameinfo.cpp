@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "gameinfo.h"
 #include "card.h"
+#include "cardlist.h"
 #include "player.h"
 
 #include <klocale.h>
@@ -31,7 +32,6 @@ GameInfo::GameInfo()
     m_spieler=0;
     m_mitspieler=0;
 }
-
 
 GameInfo::~GameInfo()
 {
@@ -85,6 +85,25 @@ const QString GameInfo::toString() const
 
 int GameInfo::weight( Card* card ) const
 {
+    if( istTrumpf( card ) )
+    {
+        if( card->card()==Card::OBER && mode() != GameInfo::WENZ )
+            return 3;
+        else if( card->card()==Card::UNTER && mode() != GameInfo::WENZ )
+            return 2;
+        else if( card->card()==Card::UNTER && mode() == GameInfo::WENZ )
+            return 3;
+        else
+            return 1;
+    }
+    else 
+    {
+        if( card->card() == Card::SAU )   
+            return 1;
+        else
+            // TODO: ausser man hat auch die SAU
+            return -1;
+    }
 }
 
 bool GameInfo::istTrumpf(Card *card) const
@@ -111,6 +130,22 @@ bool GameInfo::istTrumpf(Card *card) const
                 break;
     };
     return false;
+}
+
+bool GameInfo::isAllowed( CardList* cards, int mode, int color )
+{
+    if( mode==GameInfo::RUFSPIEL ) 
+    {
+        CardList* sau = cards->FindCards(color, Card::SAU);
+        if( color==Card::NOCOLOR || color==Card::HERZ || !sau->isEmpty() ) {
+            delete sau;
+            return false;
+        } else
+            delete sau;
+    } else if( mode==GameInfo::STICHT && color=Card::NOCOLOR )
+        return false;
+
+    return true;
 }
 
 bool GameInfo::operator>( GameInfo info )
