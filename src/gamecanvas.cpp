@@ -169,24 +169,61 @@ QPoint GameCanvas::getStichPosition( int player )
     int h = canvas()->height();//-DIST;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
+    int stichcanvasw = canvas()->width() - (4*DIST) - (2*cardh);
+    int stichcanvash = canvas()->height() - (4*DIST) - (2*cardh);
     int cx = w/2;
     int cy = h/2;
     
     switch( player ) 
     {
         case 0:
-            p = QPoint(cx-(cardw/2), cy); break;
+            if(stichcanvash>(2*cardh))
+	    	p = QPoint(cx-(cardw/2), cy );
+	    else
+	    	p = QPoint(cx-(cardw/2), cy+(stichcanvash/2)-cardh);
+	    break;
         case 1:
-            p = QPoint(cx-(3*cardw/2), cy-(cardh/2)); break;
+	    if(stichcanvasw>(2*cardh))
+            	p = QPoint(cx-cardh, cy-(cardw/2));
+	    else
+	    	p = QPoint(cx-(stichcanvasw/2), cy-(cardw/2));
+	    break;
         case 2:
-            p = QPoint(cx-(cardw/2), cy-(cardh)); break;
+            if(stichcanvash>(2*cardh))
+            	p = QPoint(cx-(cardw/2), cy-cardh );
+	    else
+	    	p = QPoint(cx-(cardw/2), cy-(stichcanvash/2));
+	    break;
         case 3:
         default:
-            p = QPoint(cx+(cardw/2), cy-(cardh/2)); break;
+	    if(stichcanvasw>(2*cardh))
+            	p = QPoint(cx, cy-(cardw/2));
+	    else
+	    	p = QPoint(cx+(stichcanvasw/2)-cardh, cy-(cardw/2));
+	    break;
     };
         
     return p;
 }
+
+int GameCanvas::getStichRotation( int player )
+{
+    int r;
+    switch( player ) 
+    {
+	case 0:
+		r=0; break;
+	case 1:
+		r=90; break;
+	case 2:
+		r=180; break;
+	case 3:
+	default:
+		r=270; break;
+    };
+    return r;
+}
+
 
 void GameCanvas::cardClicked( QCanvasItem* item )
 {
@@ -227,7 +264,8 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
   
         CanvasCard* stich = m_stich[player];
         stich->setCard( card->card() );
-        stich->setRotation( 0 );
+	int r = getStichRotation(player);
+        stich->setRotation( r );
 
         // find out the correct z value of this card so that
         // a new card is always placed on top of the earlier ones

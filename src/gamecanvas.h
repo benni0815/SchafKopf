@@ -89,6 +89,8 @@ class GameCanvas : public QCanvasView
         void createObjects();
         int m_result;
         QPoint getStichPosition( int player );
+        int getStichRotation( int player );
+
         
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
