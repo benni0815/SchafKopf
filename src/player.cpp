@@ -44,7 +44,7 @@ void Player::setCards( CardList *cards)
     // sortCards();
 }
         
-const CardList* Player::stiche() const
+CardList* Player::stiche() const
 {
     return m_stiche;
 }

@@ -24,6 +24,7 @@
 // GameCanvas as member variable or
 // maybe make GameCanvas a subclasse of Game
 #include "game.h"
+#include "stichdlg.h"
 
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -59,6 +60,9 @@ SchafKopf::~SchafKopf()
 {
     if( m_game )
         endGame();
+        
+    if( m_stichdlg )
+        delete m_stichdlg;
 }
 
 void SchafKopf::setupActions()
@@ -72,10 +76,12 @@ void SchafKopf::setupActions()
 
     KAction* m_actNew = KStdGameAction::gameNew( this, SLOT( newGame() ) );
     m_actEnd = KStdGameAction::end( this, SLOT( endGame() ) );
-    m_actEnd->setEnabled( false );
+    // TODO: DOM: translate me correctly!!!    
+    m_actStich = new KAction( i18n( "&Last Stich" ), 0, 0, this, SLOT( showStich() ), actionCollection() );
     
     m_actNew->plug( mnuGame );
     m_actEnd->plug( mnuGame );
+    m_actStich->plug( mnuGame );
     
     m_actNew->plug( toolBar() );
     m_actEnd->plug( toolBar() );
@@ -84,6 +90,8 @@ void SchafKopf::setupActions()
     
     KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
     KStdAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
+    
+    enableControls();
 }
 
 void SchafKopf::carddecks()
@@ -96,21 +104,42 @@ void SchafKopf::newGame()
     if( m_game )
         endGame();
         
-    m_actEnd->setEnabled( true );
-    
     m_game = new Game();
     m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );    
+    
+    enableControls();
+   
+    // entering the game loop is the last thing
+    // we want to do!
     m_game->gameLoop();
 }
 
 void SchafKopf::endGame()
 {
-    m_actEnd->setEnabled( false );
     m_game->endGame();
     m_canvasview->setGame( NULL );
     delete m_game;
     m_game = NULL;
+    
+    enableControls();
+}
+
+void SchafKopf::showStich()
+{
+    if( !m_game )
+        return;
+        
+    if( !m_stichdlg )
+        m_stichdlg = new StichDlg( m_game, 0 );
+
+    m_stichdlg->show();
+}
+
+void SchafKopf::enableControls()
+{
+    m_actEnd->setEnabled( m_game );
+    m_actStich->setEnabled( m_game );
 }
 
 #include "schafkopf.moc"

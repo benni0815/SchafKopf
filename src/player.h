@@ -23,7 +23,7 @@ class Player
         void setName( const QString & n );
         CardList *cards() const;
         virtual void setCards( CardList *cards);
-        const CardList* stiche() const;
+        CardList* stiche() const;
         void addStich( CardList stich );
         
         virtual int rtti() const = 0;

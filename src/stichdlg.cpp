@@ -17,66 +17,56 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "stichdlg.h"
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include "card.h"
+#include "cardlist.h"
+#include "player.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include <qlabel.h>
+#include <qlayout.h>
 
-#include <kmainwindow.h>
-#include <qguardedptr.h> 
+#include <klocale.h>
 
-class StichDlg;
-class QCanvas;
-class GameCanvas;
-class Game;
-class KAction;
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
+    : KDialogBase( KDialogBase::Plain, i18n("&Last Stich"),
+      KDialogBase::Close, KDialogBase::Close, parent,name, false),
+      m_game( g)
 {
-    Q_OBJECT
-    public:
-        SchafKopf();
-        ~SchafKopf();
+    QGridLayout* layout = new QGridLayout( plainPage(), 4, 2 );
+    for( unsigned int i = 0; i < PLAYERS; i++ ) {
+        cards[i] = new QLabel( plainPage() );
+        layout->addWidget( cards[i], 0, i );
         
-    private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
-        
-        /** Start a new game 
-          */
-        void newGame();
-        
-        /** abort current game
-          */
-        void endGame();
-        
-        /** show the last stich 
-          */
-        void showStich();
-        
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
-        
-    private:
-        void setupActions();
-        
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        
-        KAction* m_actStich;
-        KAction* m_actEnd;
-        
-        QGuardedPtr<StichDlg> m_stichdlg;
-};
+        players[i] = new QLabel( plainPage() );
+        layout->addWidget( players[i], 1, i );
+    }
+    
+    changed();
+    
+    // close if there is no active game
+    connect( m_game, SIGNAL( destroyed() ), this, SLOT( deleteLater() ));
+    connect( m_game, SIGNAL( playerMadeStich(unsigned int)), this, SLOT(changed()));
+}
 
-#endif // _SCHAFKOPF_H_
+
+StichDlg::~StichDlg()
+{
+}
+
+void StichDlg::changed()
+{
+    Player* player = m_game->findIndex( 0 );
+    CardList* stich = player->stiche();
+    for( unsigned int i = 0; i < PLAYERS; i++ )
+    {
+        if( stich->count() ) 
+            cards[i]->setPixmap( *(stich->at( stich->count() - PLAYERS + i )->pixmap()) );
+        else
+            cards[i]->setPixmap( *Card::backgroundPixmap() );
+
+        players[i]->setText( m_game->findIndex( i )->name() );
+    }
+}
+
+#include "stichdlg.moc"

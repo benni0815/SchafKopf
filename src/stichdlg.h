@@ -17,66 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef STICHDLG_H
+#define STICHDLG_H
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include <kdialogbase.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include "game.h"
 
-#include <kmainwindow.h>
-#include <qguardedptr.h> 
-
-class StichDlg;
-class QCanvas;
-class GameCanvas;
-class Game;
-class KAction;
+class QLabel;
 /**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+Show the last "stich" which was made
+
+@author Dominik Seichter
+*/
+
+class StichDlg : public KDialogBase
 {
     Q_OBJECT
     public:
-        SchafKopf();
-        ~SchafKopf();
+        StichDlg(Game* g, QWidget *parent = 0, const char *name = 0);
+        ~StichDlg();
         
     private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
-        
-        /** Start a new game 
-          */
-        void newGame();
-        
-        /** abort current game
-          */
-        void endGame();
-        
-        /** show the last stich 
-          */
-        void showStich();
-        
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
+        void changed();
         
     private:
-        void setupActions();
-        
+        QLabel* cards[PLAYERS];
+        QLabel* players[PLAYERS];
+            
         Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        
-        KAction* m_actStich;
-        KAction* m_actEnd;
-        
-        QGuardedPtr<StichDlg> m_stichdlg;
 };
 
-#endif // _SCHAFKOPF_H_
+#endif
