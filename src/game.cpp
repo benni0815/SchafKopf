@@ -26,13 +26,7 @@
 #include "settings.h"
 #include "timer.h"
 
-
-#include <kapplication.h>
-#if QT_VERSION >= 0x030100
-    #include <qeventloop.h>
-#else
-    #include <qapplication.h>
-#endif
+#include <setjmp.h>
 
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
@@ -57,7 +51,7 @@ Game::Game(QObject *parent, const char *name)
         m_players[i]->setName( list[i] );
     }
     
-    m_gameinfo.color=Card::SCHELLEN;
+    m_gameinfo.color=Card::EICHEL;
     m_gameinfo.mode=Game::RUFSPIEL;
     m_gameinfo.spieler=m_players[0];
 }
@@ -93,13 +87,13 @@ void Game::gameLoop()
                 }
             
             m_currstich.append(c);
-            emit playerPlayedCard(a,c);
+            emit playerPlayedCard(m_players[a]->id(),c);
             timer.block( 1 );
         }
         
         index = highestCard();
         m_players[index]->addStich( m_currstich );
-        emit playerMadeStich(index);
+        emit playerMadeStich(m_players[index]->id());
         // Sortiere so, das der stecher nächste karte spielt 
         for(a=0;a<PLAYERS;a++)
             tmp[a]=m_players[a];
@@ -120,10 +114,12 @@ CardList *Game::currStich() const
 void Game::endGame(void)
 {
 #if QT_VERSION >= 0x030100
-    while( kapp->eventLoop()->loopLevel() )
+//    while( kapp->eventLoop()->loopLevel() > 1 )
+    if( kapp->eventLoop()->loopLevel() > 1 )
         kapp->eventLoop()->exitLoop();
 #else
-    while( kapp->loopLevel() )
+//    while( kapp->loopLevel() - 1)
+    if( kapp->loopLevel() > 1 )
         kapp->exit_loop();
 #endif
     terminated=true;
@@ -140,7 +136,7 @@ void Game::setCanvas( GameCanvas* c )
 }
 
 Player* Game::findId( unsigned int id ) const
-{            kapp->eventLoop()->enterLoop();
+{     
     for( unsigned int i = 0; i < PLAYERS; i++)
         if( id == m_players[i]->id() )
             return m_players[i];
@@ -152,45 +148,104 @@ Player* Game::findIndex( unsigned int index ) const
     return ( index < PLAYERS ? m_players[index] : 0 );
 }
 
-
-
 bool Game::istTrumpf(Card *card)
 {
-
     switch(m_gameinfo.mode)
     {
         case RUFSPIEL:
-		if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
-			return true;
-		break;
         case RAMSCH:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
                     return true;
-		break;
         case STICHT:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
-		break;
         case GEIER:
                 if(card->card()==Card::OBER || card->color()==m_gameinfo.color)
                     return true;
-		break;
         case WENZ:
                 if(card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
-		break;
         default:
                 break;
-    }
+    };
     return false;
-/*
-    if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ) return true;
-    else return false;*/
 }
 
 int Game::highestCard()
 {
-    return 0;
+    Card* high = m_currstich.first();
+    Card* card = m_currstich.first();
+    while( (card = m_currstich.next() ) )
+    {
+        if( isHigher( card, high ) )
+        {
+            high = card;
+            continue;
+        }
+    }
+    
+    int i = 0;
+    for( ; i < m_currstich.count(); i++ )
+        if( m_currstich.at(i) == high )
+            break;
+            
+    return i;
+}
+
+bool Game::isHigher( Card* card, Card* high )
+{
+    if( istTrumpf( card ) && !istTrumpf( high ) )
+        return true;
+    else if( istTrumpf( card ) && istTrumpf( high ) )
+    {
+        qDebug("BEIDE TRUMPF");
+        if( card->card() == high->card() && card->color() < high->color() )
+            return true;
+        else 
+        {
+            bool higher = false;
+            switch( m_gameinfo.mode )
+            {
+                case RAMSCH:
+                case RUFSPIEL:
+                case STICHT:
+                    if( (card->card() == Card::OBER && high->card() != Card::OBER) ||
+                        ( card->card() == Card::UNTER && high->card() != Card::UNTER ) )
+                        higher = true;
+                    break;
+                case GEIER:
+                    if( card->card() == Card::OBER && high->card() != Card::OBER )
+                        higher = true; 
+                    break;
+                case WENZ:
+                    if( card->card() == Card::UNTER && high->card() != Card::UNTER )
+                        higher = true;
+                    break;
+                default:
+                    break;
+            }
+            
+            if( higher || (!higher && *card < high)) 
+                return true;
+        }
+    }
+    else if( !istTrumpf( card ) && !istTrumpf( high ) ) // beide kein trumpf
+    {
+        qDebug("KEIN TRUMPF");
+        // die farbe ist anders als die farbe der ersten/hoechsten 
+        // karte aber diese karte is kein trumfh, kann
+        // also ned stechen
+        if( card->color() != high->color() )
+            return false;
+                
+        if( *card < high )
+        {
+            qDebug("---2. FARBE IST GLEICH" );
+            return true;
+        }
+    }
+
+    return false;
 }
 
 #include "game.moc"
