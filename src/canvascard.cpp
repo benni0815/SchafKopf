@@ -37,8 +37,8 @@ CanvasCard::CanvasCard(QCanvas*c)
     m_forbidden = false;
     show();
     timer = new QTimer( this );
-    Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
-    Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
+    loadOK1 = Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
+    loadOK2 = Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
 }
 
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
@@ -76,12 +76,15 @@ void CanvasCard::draw( QPainter & p )
         if( m_forbidden )
             pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
         
-        setSize( pix.width(), pix.height() );
+        setSize( pix.width()+3, pix.height()+3 );
         bitBlt( p.device(), point.x(), point.y(), &pix );
-        if( m_rotation==0 || m_rotation==180)
+        if(loadOK1 && loadOK2)
+        {
+	if( m_rotation==0 || m_rotation==180)
             bitBlt( p.device(), point.x(), point.y(), &Shadow );
         else
             bitBlt( p.device(), point.x(), point.y(), &Shadow2 );
+        }
     }
 }
 

@@ -21,7 +21,6 @@
 #define CANVASCARD_H
 
 #include <qcanvas.h>
-#include <qimage.h>
 
 #define CANVASCARD 1000
 
@@ -66,7 +65,8 @@ class CanvasCard : public QObject, public QCanvasRectangle
 	QTimer *timer;
         
         Card* m_card;
-        QImage Shadow, Shadow2;
+        QPixmap Shadow, Shadow2;
+	bool loadOK1, loadOK2;
 
 	private slots:
 		void disableForbidden();

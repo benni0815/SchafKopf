@@ -69,7 +69,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     
-    ImgBack.load( Settings::instance()->backgroundImage() );
+    loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
     canvas()->setAdvancePeriod( 20 );
     update();
     
@@ -304,13 +304,17 @@ void GameCanvas::slotPlayerMadeStich(unsigned int)
 
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
+    QImage ImgBack2;
     canvas()->resize( this->width() -2, this->height()-2 );
     QCanvasView::resizeEvent( r );
     
     positionObjects();
     
-    ImgBack2=ImgBack.smoothScale( canvas()->width(), canvas()->height() );
-    canvas()->setBackgroundPixmap( ImgBack2 );
+    if(loadOK)
+    {
+         ImgBack2=ImgBack.smoothScale( canvas()->width(), canvas()->height() );
+         canvas()->setBackgroundPixmap( ImgBack2 );
+    }
 }
 
 void GameCanvas::redrawPlayers()

@@ -104,7 +104,8 @@ class GameCanvas : public QCanvasView
                 
         Game* m_game;
 
-        QImage ImgBack, ImgBack2;
+        QImage ImgBack;
+        bool loadOK;
 };
 
 #endif
