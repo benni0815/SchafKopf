@@ -17,71 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef GAMECANVAS_H
-#define GAMECANVAS_H
+#ifndef CANVASPLAYER_H
+#define CANVASPLAYER_H
 
-#include <qcanvas.h>
-
-#ifndef PLAYERS
-    #define PLAYERS 4
-#endif
+// DISTANCE from the border
+#define DIST 20
 
 class Card;
-class Game;
-class CanvasPlayer;
-class QCanvasItem;
+class CanvasCard;
+class Player;
+class QCanvas;
 class QCanvasItemList;
 class QCanvasText;
-class QMouseEvent;
-class QResizeEvent;
 
-class GameCanvas : public QCanvasView
-{
-    Q_OBJECT
+/**
+Represents a player on the canvas
+
+@author Dominik Seichter
+*/
+class CanvasPlayer{
     public:
-        GameCanvas(QCanvas* c,QWidget *parent = 0, const char *name = 0);
-        ~GameCanvas();
+        CanvasPlayer( int i, Player* player, QCanvas* canvas );
+        ~CanvasPlayer();
         
-        void setGame( Game* game );
-   
-        /** the user played card, which
-          * is forbidden to play!
-          */
-        void cardForbidden( Card* card );
+        void position( int i );
         
-    signals:
-        void clicked( QCanvasItem* item );
-        void playCard( Card* card );
+        QCanvasItemList* items() const { return m_items; }
+        CanvasCard* hasCard( Card* c ) const; 
+        Player* player() const { return m_player; }
         
-    private slots:
-        void redrawAll();
-        /** Position the cards on the screen correctly
-          */
-        void positionObjects();
-        
-        void cardClicked( QCanvasItem* item );
-
-        void slotPlayerPlayedCard( unsigned int player, Card *c );
-        void slotPlayerMadeStich(unsigned int);
-        
-    protected:
-        void resizeEvent( QResizeEvent *r );
-        
-        void contentsMousePressEvent(QMouseEvent*);
-        void contentsMouseReleaseEvent(QMouseEvent*);
-                
     private:
-        /** Create QCanvasItem's for all Cards 
-          */
-        void createObjects();
-        void clearObjects();
-        QPoint getStichPosition( int player );
+        QCanvas* m_canvas;
+        QCanvasText* m_name;
+        QCanvasItemList* m_items;
         
-        CanvasPlayer* m_players[PLAYERS];
-        QCanvasItemList* m_stich;
-        QCanvasItem* m_item; // currently clicked item
-        
-        Game* m_game;
+        Player* m_player;
 };
 
 #endif

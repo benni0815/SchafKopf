@@ -21,34 +21,20 @@
 
 #include "card.h"
 #include "canvascard.h"
+#include "canvasplayer.h"
 #include "game.h"
 #include "player.h"
 #include "settings.h"
 
-/** Uncomment this line to make all cards
-  * user visible, this is useful for debuggin
-  * and improving the AI.
-  * But it might cause problems in network mode for cheaters!!
-  */
-#define CHEAT
-
-#ifdef CHEAT
-    #warning "CHEATING ENABLED!!!"
-#endif
-
 #define NUMCARDS 8
-// DISTANCE from the border
-#define DIST 20
-
 
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
     m_game = NULL;
-    m_items[0] = NULL;
     m_item = NULL;
-    m_names[0] = NULL;
     m_stich = NULL;
+    m_players[0] = NULL;
     canvas()->setBackgroundColor( Qt::darkGreen );
     canvas()->setAdvancePeriod( 200 );
     update();
@@ -66,26 +52,6 @@ GameCanvas::~GameCanvas()
 
 void GameCanvas::clearObjects()
 {
-    if( m_items[0] )
-    {       
-        for( unsigned int i = 0; i < PLAYERS; i++ ) {
-            for( unsigned int z = 0; z < m_items[i]->count(); z++ )
-                delete (*m_items[i])[z];
-            
-            delete m_items[i];
-            m_items[i] = NULL;
-        }
-    }
-    
-    if( m_names[0] )
-    {
-        for( unsigned int i = 0; i < PLAYERS; i++ )
-        {
-            delete m_names[i];
-            m_names[i] = NULL;
-        }
-    }
-    
     if( m_stich )
     {
         for( unsigned int i = 0; i < m_stich->count(); i++ )
@@ -95,6 +61,12 @@ void GameCanvas::clearObjects()
         m_stich = NULL;
     }
     
+    if( m_players[0] ) 
+    {
+        for( unsigned int i = 0; i < PLAYERS; i++ )
+            delete m_players[i];
+        m_players[0] = NULL;
+    }
     redrawAll();
 }
 
@@ -124,56 +96,28 @@ void GameCanvas::setGame( Game* game )
 
 void GameCanvas::cardForbidden(Card* card)
 {
-	for(unsigned int z=0;z<PLAYERS;z++)
+    for(unsigned int z=0;z<PLAYERS;z++)
 	{
-		if(!m_items[z])
+		if(!m_players[z])
 			continue;
-		for(unsigned int i=0;i<m_items[z]->count();i++)
+
+        CanvasCard* c = m_players[z]->hasCard( card );
+        if( c )            
         {
-            CanvasCard* c = static_cast<CanvasCard*>((*m_items[z])[i]);
-            if(c->card() == card)
-            {
-                c->forbidden();
-                break;
-            }
+            c->forbidden();
+            break;
         }
-	}
+    }      
 }
 
 void GameCanvas::createObjects()
 {
     if( !m_game )
         return;
-        
-    for( unsigned int i = 0; i < PLAYERS; i++ ) 
-    {
-        m_items[i] = new QCanvasItemList();
-        m_names[i] = new QCanvasText( canvas() );
-        m_names[i]->setColor( Qt::white );
-        m_names[i]->setFont( QFont( "Helvetica", 24 ) );
-        m_names[i]->show();
-    }
     
-    for( unsigned int i = 0; i < PLAYERS; i++ ) {
-        Player* player = m_game->findIndex( i );
-        m_names[i]->setText( player->name() );
-        m_ids[i] = player->id();
-        for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
-            CanvasCard *c = new CanvasCard( player->cards()->at(z), canvas() );
-            c->setZ( double(-1 - z) );
-            
-            if(i==1)
-                c->setRotation(90);
-            else if(i==3)
-                c->setRotation(270);
-#ifdef CHEAT
-            c->setFrontVisible( true );
-#else            
-            c->setFrontVisible( player->rtti() == Player::HUMAN );
-#endif
-            m_items[i]->append( c );
-            
-        }
+    for( unsigned int i = 0; i < PLAYERS; i++ )    
+    {
+        m_players[i] = new CanvasPlayer( i, m_game->findIndex( i ), canvas() );
     }
     
     m_stich = new QCanvasItemList();
@@ -183,69 +127,11 @@ void GameCanvas::createObjects()
 
 void GameCanvas::positionObjects()
 {
-    if( !m_items[0] || !m_game || !m_stich )
+    if( !m_players[0] || !m_game || !m_stich )
         return;
 
-    int w = canvas()->width()-DIST;
-    int h = canvas()->height()-DIST;
-    int cardw = Card::backgroundPixmap()->width();
-    int cardh = Card::backgroundPixmap()->height();
-    
-    for( unsigned int i = 0; i < PLAYERS; i++ ) {
-        int x = 0, y = 0;
-        int num=m_items[i]->count();
-        QCanvasItemList* list = m_items[i];
-    
-        if(i==1||i==3)
-            qSwap( cardw, cardh );
-        
-        switch( i ) {
-            case 0:
-                x=(w-cardw*num)/2;
-                y=h-cardh; 
-                
-                m_names[i]->move( (w-m_names[i]->boundingRect().width())/2, y-m_names[i]->boundingRect().height() );
-                break;
-            case 1:
-                x=DIST; 
-                y=(h-((cardh/2)*(num-1)+cardh))/2; 
-                
-                m_names[i]->move(x,y-m_names[i]->boundingRect().height());
-                break;
-            case 2: 
-                x=(w-((cardw/2)*(num-1)+cardw))/2;
-                y=DIST;
-                
-                m_names[i]->move( (w-m_names[i]->boundingRect().width())/2, y+cardh );
-
-                break;
-            case 3:
-            default:
-                x=w-cardw;
-                y=(h-((cardh/2)*(num-1)+cardh))/2; 
-                
-                m_names[i]->move(x, y-m_names[i]->boundingRect().height());
-                break;
-        }
-        
-       for( unsigned int z = 0; z < list->count(); z++ ) {
-            CanvasCard* card = static_cast<CanvasCard*>((*list)[z]); 
-            // only move if necessary!
-            if( x != card->x() || y != card->y() )
-                card->move( x, y );
-                
-            if(i==0)
-                x += cardw;
-            else if(i==2)
-                x += (cardw/2);
-            else
-                y += (cardh/2);            
-        }
-        
-        // swap them back
-        if(i==1||i==3)
-            qSwap( cardw, cardh );
-    }
+    for( unsigned int i = 0; i < PLAYERS; i++ )
+        m_players[i]->position( i );
     
     for( unsigned int i = 0; i < m_stich->count(); i++ ) 
     {
@@ -291,16 +177,9 @@ void GameCanvas::cardClicked( QCanvasItem* item )
         
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
-            Player* player = m_game->findIndex( i );
-            if( player->rtti() == Player::HUMAN ) 
-            {
-                for( unsigned int z = 0; z < player->cards()->count(); z++ ) 
-                    if( player->cards()->at( z ) == card->card() ) {
-                        emit playCard( card->card() );
-                        break;
-                    }
-                break;
-            }
+            Player* player = m_players[i]->player();
+            if( m_players[i]->hasCard( card->card() ) && player->rtti() == Player::HUMAN )
+                emit playCard( card->card() );
         }
     }
 }
@@ -308,27 +187,29 @@ void GameCanvas::cardClicked( QCanvasItem* item )
 void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 {
     QPoint point;
-    player = id2index( player );
-	if( !m_items[player] || !m_game || !m_stich )
+    unsigned int i=0;
+    CanvasCard* card = 0;
+    if( !m_players[0] || !m_game || !m_stich )
         return;    
            
-    for(unsigned int i=0;i<m_items[player]->count();i++)
-    {
-        CanvasCard* card = static_cast<CanvasCard*>((*m_items[player])[i]);
-        if(card->card() == c)
+    for(i=0;i<PLAYERS;i++)
+        if( m_players[i]->player()->id() == player )
         {
-            m_items[player]->remove( card );
-            m_stich->append( card );
-            
-            card->setRotation( 0 );
-            card->setZ( player );
-			card->setFrontVisible( true );
-         
-			point = getStichPosition(player);   
-            card->move( point.x(), point.y() );
-            
+            card = m_players[i]->hasCard( c );
             break;
         }
+    
+    if( card )
+    {
+        m_players[player]->items()->remove( card );
+        m_stich->append( card );
+            
+        card->setRotation( 0 );
+        card->setZ( player );
+        card->setFrontVisible( true );
+         
+        point = getStichPosition(player);   
+        card->move( point.x(), point.y() );
     }
 }
 
@@ -372,15 +253,6 @@ void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
         emit clicked( m_item );
         m_item = NULL;
     }
-}
-
-int GameCanvas::id2index( int id )
-{
-    // convert id to index
-    for(unsigned int i=0;i<PLAYERS;i++)
-        if( m_ids[i] == id )
-            return i;
-    return 0;
 }
 
 #include "gamecanvas.moc"
