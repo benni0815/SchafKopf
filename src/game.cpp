@@ -103,9 +103,18 @@ void Game::gameLoop()
     
 	while(!terminated)
 	{
-		start();
 		for(i=0;i<PLAYERS;i++)
+        {
 			tmp[i]=m_players[(i+gamecnt)%PLAYERS];
+            tmp[i]->setLast( (i==PLAYERS-1) );
+        }
+		// setLast() has to be done before start(),
+        // so that CanvasPlayer draws cards correctly for
+        // doubling when gameStarted is emited.
+        // otherwise we had to emit gameStarted twice which would 
+        // result in an ugly UI rebuild
+        start();
+        
 		for(i=0;i<PLAYERS;i++)
     	{
 	        tmp[i]->klopfen();

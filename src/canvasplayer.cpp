@@ -160,7 +160,17 @@ void CanvasPlayer::init(int i)
             c->setFrontVisible( true );
     #else            
             if( m_player->rtti() == Player::HUMAN )
-                c->setFrontVisible( (z < 4 || m_player->hasDoubled() ) );
+            {
+                if( m_player->hasDoubled() )
+                    c->setFrontVisible( true );
+                else
+                {
+                    if( m_player->isLast() )
+                        c->setFrontVisible( z >= 4 );
+                    else
+                        c->setFrontVisible( z < 4 );
+                }
+            }
             else
                 c->setFrontVisible( false );
     #endif

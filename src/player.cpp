@@ -20,6 +20,7 @@ Player::Player(Game* game)
     
     m_has_doubled = false;
     m_geklopft = false;
+    m_last = false;
 }
 
 Player::~ Player()

@@ -53,7 +53,7 @@ void ComputerPlayer::klopfen()
 {
     int i;
     const int anz = NUMCARDS/2;
-    int start = 0; // if geber = anz
+    int start = ( isLast() ? anz : 0 );
     int ende = start + anz;
     int count = 0;
     GameInfo* info;

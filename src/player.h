@@ -21,6 +21,9 @@ class Player
 		virtual ~Player();
 
 		virtual void init() {};
+        /** set m_geklopft to true in this function if the player wants to double
+          * and to false if not. 
+          */
 		virtual void klopfen();
         virtual Card *play() = 0;
         /** if @p force is true the player has to play wether he wants or not
@@ -38,7 +41,9 @@ class Player
         void setCards( CardList *cards);
         CardList* stiche() const;
         void addStich( CardList stich );
-
+        inline bool isLast() const { return m_last; }
+        inline void setLast( bool b ) { m_last = b; }
+        
         double points() const { return m_points; }
         void setPoints( double p ) { m_points = p; }
         
@@ -62,6 +67,10 @@ class Player
 
         QString m_name;
 
+        // is this the last player in the current round
+        // needed to make sure that this player sees the last
+        // four cards to double
+        bool m_last;
         bool m_geklopft;
         // is set to true as soon as klopfed()
         // was called
