@@ -264,10 +264,7 @@ void Game::gameResults()
     for( unsigned int i=0;i<PLAYERS;i++)
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
 	m_canvas->information( r->result() );
-	if(dynamic_cast<MoneyResults *>(r))
-		delete dynamic_cast<MoneyResults *>(r);
-	else if(dynamic_cast<PointResults *>(r))
-		delete dynamic_cast<PointResults *>(r);
+	delete r;
 }
 
 bool Game::setupGameInfo(Player *players[])
