@@ -17,23 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef COMPUTERPLAYER_H
-#define COMPUTERPLAYER_H
+#ifndef GAMEINFO_H
+#define GAMEINFO_H
 
-#include "player.h"
+class Player;
 
-class ComputerPlayer : public Player
-{
+/**
+Keeps all information on the current game (e.g. wenz or rufspiel)
+
+@author Dominik Seichter
+*/
+
+class GameInfo{
     public:
-        ComputerPlayer(CardList *cards,Game* game);
-        ~ComputerPlayer();
+        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
         
-        void klopfen();
-        Card *play();
-        GameInfo* game();
+        int color;
+        __mode mode;
+        Player *spieler;
+        Player *mitspieler;
         
-        int rtti() const { return COMPUTER; }
-
+        
+        GameInfo();
+        ~GameInfo();
+        
+        bool operator>( GameInfo info );
 };
 
 #endif

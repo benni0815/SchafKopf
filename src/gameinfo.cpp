@@ -17,23 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef COMPUTERPLAYER_H
-#define COMPUTERPLAYER_H
+#include "gameinfo.h"
 
-#include "player.h"
-
-class ComputerPlayer : public Player
+GameInfo::GameInfo()
 {
-    public:
-        ComputerPlayer(CardList *cards,Game* game);
-        ~ComputerPlayer();
-        
-        void klopfen();
-        Card *play();
-        GameInfo* game();
-        
-        int rtti() const { return COMPUTER; }
+}
 
-};
 
-#endif
+GameInfo::~GameInfo()
+{
+}
+
+
+bool GameInfo::operator>( GameInfo info )
+{
+    return true;
+}

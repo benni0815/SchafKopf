@@ -23,6 +23,7 @@
 #include "computerplayer.h"
 #include "cardlist.h"
 #include "gamecanvas.h"
+#include "gameinfo.h"
 #include "settings.h"
 #include "timer.h"
 
@@ -50,28 +51,6 @@ Game::Game(QObject *parent, const char *name)
         m_players[i] = new ComputerPlayer(playercards[i] ,this );
         m_players[i]->setName( list[i] );
     }
-    
-    m_gameinfo.color=Card::EICHEL;
-    m_gameinfo.mode=Game::RUFSPIEL;
-    m_gameinfo.spieler=m_players[0];
-    m_gameinfo.mitspieler=0;
-    
-    // finde den mitspieler:
-    if( m_gameinfo.mode==Game::RUFSPIEL ) 
-    {
-        Card sau( Card::SAU, static_cast<enum Card::color>(m_gameinfo.color) );
-        for( unsigned int i=0;i<PLAYERS;i++ )
-        {
-            for( unsigned int z=0;z<CARD_CNT/PLAYERS;z++ )
-                if( m_players[i]->cards()->at(z)->isEqual( &sau ) )
-                {
-                    m_gameinfo.mitspieler=m_players[i];
-                    break;
-                }
-            if(m_gameinfo.mitspieler)
-                break;
-        }
-    }
 }
 
 
@@ -93,7 +72,11 @@ void Game::gameLoop()
     Player *tmp[PLAYERS];
 	Card *c;
     Timer timer;
-        
+    
+    // find a player you can playercards
+    // and setup m_gameinfo    
+    setupGameInfo();
+    
     for(i=0;i<TURNS;i++)
     {
         m_currstich.clear();
@@ -147,7 +130,7 @@ void Game::endGame(void)
 	EXIT_LOOP();
 }
 
-const Game::game_info *Game::gameInfo() const
+const GameInfo *Game::gameInfo() const
 {
     return &m_gameinfo;
 }
@@ -174,20 +157,20 @@ bool Game::istTrumpf(Card *card)
 {
     switch(m_gameinfo.mode)
     {
-        case RUFSPIEL:
-        case RAMSCH:
+        case GameInfo::RUFSPIEL:
+        case GameInfo::RAMSCH:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
                     return true;
                 break;
-        case STICHT:
+        case GameInfo::STICHT:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
                 break;
-        case GEIER:
+        case GameInfo::GEIER:
                 if(card->card()==Card::OBER || card->color()==m_gameinfo.color)
                     return true;
                 break;
-        case WENZ:
+        case GameInfo::WENZ:
                 if(card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
         default:
@@ -229,9 +212,9 @@ bool Game::isHigher( Card* card, Card* high )
         {
             switch( m_gameinfo.mode )
             {
-                case RAMSCH:
-                case RUFSPIEL:
-                case STICHT:
+                case GameInfo::RAMSCH:
+                case GameInfo::RUFSPIEL:
+                case GameInfo::STICHT:
                     if( card->card() == Card::OBER )
                         return true;
                     else if( high->card() == Card::OBER )
@@ -241,12 +224,12 @@ bool Game::isHigher( Card* card, Card* high )
                     else if( high->card() == Card::UNTER )        
                         return !(card->card() == Card::OBER );
                     break;
-                case GEIER:
+                case GameInfo::GEIER:
                     if( card->card() == Card::OBER )
                         return true;
                     else if( high->card() == Card::OBER )
                         return false;
-                case WENZ:
+                case GameInfo::WENZ:
                     if( card->card() == Card::UNTER )
                         return true;
                     else if( high->card() == Card::UNTER )
@@ -283,6 +266,57 @@ void Game::gameResults()
         KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" gewinnt mit %1 Punkten.").arg( points ) );
     else
         KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" verliert mit %1 Punkten.").arg( points ) );
+}
+
+void Game::setupGameInfo()
+{
+    // list of games the players want to playercards
+    // maximum 4 entries
+    QPtrList<GameInfo> games;
+    games.setAutoDelete( true );
+    
+    unsigned int i = 0;
+    for( i=0;i<PLAYERS;i++)
+    {
+        GameInfo* info = m_players[i]->game();
+        if( info )
+            games.append( info );
+    }
+    
+    if( games.isEmpty() )
+    {
+        // nobody wants to play
+        // TODO: future: Ramsch, zamschmeissen, etc.
+        m_gameinfo.color=Card::EICHEL;
+        m_gameinfo.mode=GameInfo::RUFSPIEL;
+        m_gameinfo.spieler=m_players[0];
+        m_gameinfo.mitspieler=0;
+    } 
+    else
+    {
+        // find the highest game in the list
+        GameInfo* best = games.first();
+        for( i=0;i<games.count();i++ )        
+            if( *games.at( i ) > *best )
+                best = games.at( i );
+        
+        m_gameinfo = *best;
+    }
+    
+    // finde den mitspieler:
+    if( m_gameinfo.mode==GameInfo::RUFSPIEL ) 
+    {
+        Card sau( Card::SAU, static_cast<enum Card::color>(m_gameinfo.color) );
+        for( i=0;i<PLAYERS || !m_gameinfo.mitspieler;i++ )
+        {
+            for( unsigned int z=0;z<CARD_CNT/PLAYERS;z++ )
+                if( m_players[i]->cards()->at(z)->isEqual( &sau ) )
+                {
+                    m_gameinfo.mitspieler=m_players[i];
+                    break;
+                }
+        }
+    }
 }
 
 #include "game.moc"

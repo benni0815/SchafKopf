@@ -20,6 +20,8 @@
 #include "computerplayer.h"
 
 #include "cardlist.h"
+#include "game.h"
+
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(CardList *cards,Game* game)
@@ -44,4 +46,9 @@ Card *ComputerPlayer::play()
 
 	delete allowed;
 	return ToPlay;
+}
+
+GameInfo* ComputerPlayer::game()
+{
+    return 0;
 }

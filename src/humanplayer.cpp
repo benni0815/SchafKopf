@@ -23,6 +23,7 @@
 #include "cardlist.h"
 #include "game.h"
 #include "gamecanvas.h"
+#include "gameinfo.h"
 #include "timer.h"
 
 HumanPlayer::HumanPlayer(CardList *cards,Game* game)
@@ -40,7 +41,6 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-
 }
 
 Card *HumanPlayer::play()
@@ -53,6 +53,16 @@ Card *HumanPlayer::play()
     m_allowed = NULL;
     disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
     return m_card;
+}
+
+GameInfo* HumanPlayer::game()
+{
+    GameInfo* info = new GameInfo;
+    info->color=Card::EICHEL;
+    info->mode=GameInfo::RUFSPIEL;
+    info->spieler=this;
+    info->mitspieler=0;   
+    return info;
 }
 
 void HumanPlayer::getCard(Card* card)

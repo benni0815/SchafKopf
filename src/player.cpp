@@ -139,7 +139,7 @@ CardList* Player::allowedCards()
 {
 	CardList* allowed= m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
 	
-	if(m_game->gameInfo()->mode==Game::RUFSPIEL)
+	if(m_game->gameInfo()->mode==GameInfo::RUFSPIEL)
 	{
 		CardList* Sau=			m_cards->FindCards(m_game->gameInfo()->color, Card::SAU);
 		CardList* Spielfarbe=	m_cards->FindCards(m_game->gameInfo()->color, Card::NOSTICH);

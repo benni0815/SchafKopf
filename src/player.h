@@ -7,6 +7,7 @@
 class Card;
 class CardList;
 class Game;
+class GameInfo;
 
 class Player
 {
@@ -18,6 +19,7 @@ class Player
         
         virtual void klopfen() = 0;
         virtual Card *play() = 0;
+        virtual GameInfo* game() = 0;
 
         const QString & name() const;
         void setName( const QString & n );

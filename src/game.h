@@ -21,6 +21,7 @@
 #define GAME_H
 
 #include "cardlist.h"
+#include "gameinfo.h"
 
 #include <qobject.h>
 
@@ -36,20 +37,11 @@ class Game : public QObject
 {
     Q_OBJECT
     public:
-        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
-        struct game_info
-        {
-            int color;
-            __mode mode;
-            Player *spieler;
-            Player *mitspieler;
-        };
-
         Game(QObject *parent = 0, const char *name = 0);
         ~Game();
         void gameLoop();
         const CardList *currStich() const;
-        const Game::game_info *gameInfo() const;
+        const GameInfo *gameInfo() const;
         
         void setCanvas( GameCanvas* c );
         GameCanvas* canvas() const { return m_canvas; }
@@ -75,13 +67,18 @@ class Game : public QObject
         CardList m_allcards;
         CardList m_playedcards;
         CardList m_currstich;
-        Game::game_info m_gameinfo;
+        GameInfo m_gameinfo;
         
         GameCanvas *m_canvas;
         
         int highestCard();
         bool isHigher( Card* card, Card* high );
         void gameResults();
+        
+        /** find a player who wants to playerPlayedCard 
+          * and setup m_gameinfo according to this
+          */
+       void setupGameInfo();
 };
 
 #endif
