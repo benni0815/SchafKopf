@@ -26,6 +26,9 @@
 #include "newgamewizard.h"
 #include "preferencesdlg.h"
 
+// for pow()
+#include <math.h>
+
 #include <qfontmetrics.h>
 #include <qheader.h>
 #include <qlabel.h>
@@ -73,7 +76,7 @@ SchafKopf::SchafKopf()
     m_table->setReadOnly( true );
     m_table->setNumCols( PLAYERS );
     m_table->setLeftMargin( 0 );
-    m_table->setColumnLabels( Settings::instance()->playerNames() );
+    updateTableNames();
     //QFontMetrics fm( m_table->horizontalHeader()->font() );
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
@@ -105,7 +108,7 @@ SchafKopf::SchafKopf()
     connect(m_game,SIGNAL(signalDoubled()),this,SLOT(updateInfo()));
 
     connect(Settings::instance(),SIGNAL(resultsTypeChanged()),this,SLOT(clearTable()));
-    
+    connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
     QToolTip::add
         ( btnLastTrick, i18n("Show the last trick that was made.") );
 
@@ -185,7 +188,6 @@ void SchafKopf::newGame()
 
     }
 
-
     delete ng;
 }
 
@@ -196,7 +198,7 @@ void SchafKopf::realNewGame()
     // entering the game loop is the last thing
     // we want to do!
     m_game->gameLoop();
-    endGame();
+    endGame();    
 }
 
 void SchafKopf::endGame()
@@ -205,6 +207,7 @@ void SchafKopf::endGame()
 
     m_game->endGame();
     clearTable();
+    updateInfo();
 }
 
 void SchafKopf::showStich()
@@ -245,11 +248,16 @@ void SchafKopf::updateInfo()
 {
     int timesDoubled = 0, timesThrownTogether = 0;
     int valuation;
-    if( m_game->gameInfo()->isValid() )
+    
+    if( !m_game->isTerminated() && m_game->gameInfo()->isValid() )
         lblCurGame->setText( i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
     else
+    {
         lblCurGame->setText( QString::null );
-
+        lblDoubled->setText( QString::null );
+        return;
+    }
+    
     QString sDoubled;
     for(unsigned int i=0;i<PLAYERS;i++)
     {
@@ -269,8 +277,6 @@ void SchafKopf::updateInfo()
     sDoubled.append( i18n("<qt>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
     
     lblDoubled->setText( sDoubled );
-    
-    
 }
 
 void SchafKopf::clearTable()
@@ -290,6 +296,11 @@ void SchafKopf::configure()
     {
     
     }
+}
+
+void SchafKopf::updateTableNames()
+{
+    m_table->setColumnLabels( Settings::instance()->playerNames() );
 }
 
 #include "schafkopf.moc"

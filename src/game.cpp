@@ -286,6 +286,10 @@ void Game::gameResults()
     m_canvas->information( r->result() );
     delete r;
     m_timesThrownTogether = 0;
+    
+    // the game is over, so the GameInfo structure is not
+    // valid. Results in a cleared updateInfo() field in the UI
+    gameInfo()->setValid( false );
 }
 
 bool Game::setupGameInfo(Player *players[])

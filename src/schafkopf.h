@@ -86,6 +86,11 @@ class SchafKopf : public KMainWindow
         /** remove all items from the table displaying the results
           */
         void clearTable();
+        
+        /** update table headings when the user changes the player names
+          * in the preferences
+          */
+        void updateTableNames();
     private:
         void setupActions();
         
