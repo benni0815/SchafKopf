@@ -47,9 +47,8 @@ StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
     
     changed( m_game->findIndex( 0 )->id() );
     
-    // close if there is no active game
-    connect( m_game, SIGNAL( destroyed() ), this, SLOT( deleteLater() ));
     connect( m_game, SIGNAL( playerMadeStich(unsigned int)), this, SLOT(changed(unsigned int)));
+    connect( m_game, SIGNAL( gameStarted() ), this, SLOT( reset() ) );
 }
 
 
@@ -82,6 +81,11 @@ void StichDlg::changed( unsigned int id )
                 players[i]->setText( m_game->findIndex(i)->name() );
         }
     }
+}
+
+void StichDlg::reset()
+{
+    changed( m_game->findIndex( 0 )->id() );
 }
 
 #include "stichdlg.moc"

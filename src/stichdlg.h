@@ -43,6 +43,7 @@ class StichDlg : public KDialogBase
         
     private slots:
         void changed(unsigned int id);
+        void reset();
         
     private:
         QLabel* trick;
