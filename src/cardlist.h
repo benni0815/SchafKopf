@@ -60,6 +60,11 @@ class CardList : public QPtrList<Card>
           */
         void appendList( CardList* list );
 
+        /** returns wether the card color and typedef
+          * is in the list
+          */
+        bool contains( int color, int type );
+        
 	CardList* FindCards(int color, int type);
 	void RemoveCards(CardList* itemsToRem);
 	

@@ -99,6 +99,15 @@ CardList* CardList::FindCards(int color, int type)
 	return found;
 }
 
+bool CardList::contains( int color, int type )
+{
+    for( unsigned int i = 0; i < this->count(); i++ )
+    {
+        if( at(i)->color()==color && at(i)->card()==type )
+            return true;
+    }
+    return false;
+}
 
 void CardList::RemoveCards(CardList* itemsToRem)
 {

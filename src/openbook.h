@@ -47,7 +47,6 @@ class OpenBook : public QObject {
     private:
         Game* m_game;
         Player* m_self;
-        bool m_player;
 };
 
 #endif

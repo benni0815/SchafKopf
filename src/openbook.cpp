@@ -56,7 +56,13 @@ namespace OpeningRules
         bool player;
     };
     
-    RULE( player1, "player plays trump",
+    RULE( player1, "davon-laufen - hängt von allowedCards ab und läuft nicht mit dem zehner davon", 
+        ( info->mode() != GameInfo::RUFSPIEL && 
+          allowed->contains( info->color(), Card::SAU ) ),
+        ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )
+    )
+    
+    RULE( player2, "player plays trump",
         ( false ),
         ( info->istTrumpf( c ) )
     )
@@ -73,7 +79,7 @@ namespace OpeningRules
         ( !info->istTrumpf( c ) && c->color() == info->color() )
     )
     
-    RULE( rule3, "nicht spieler spielt farbe", 
+    RULE( rule3, "nicht sp    ieler spielt farbe", 
         ( false ), // always execute this one
         ( !info->istTrumpf( c ) )
     )
@@ -83,6 +89,7 @@ namespace OpeningRules
       
     s_rule rules[] =
     {
+        { player1, true },
         { player1, true },
         { rule1, false },
         { rule2, false },
@@ -99,7 +106,6 @@ OpenBook::OpenBook( Player* player, Game* game )
     m_game = game;
     
     connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int,Card*) ) );
-    m_player = (m_self == m_game->gameInfo()->spieler() || m_self == m_game->gameInfo()->mitspieler() );
 }
 
 
@@ -109,6 +115,13 @@ OpenBook::~OpenBook()
 
 CardList* OpenBook::possibleCards()
 {
+    bool m_player = (m_self == m_game->gameInfo()->spieler() || m_self == m_game->gameInfo()->mitspieler() );
+    if( m_player )
+        qDebug("Spieler=Ja");
+    else
+        qDebug("SPIELER=NEIN");
+    qDebug("Name=" + m_self->name() );
+
     CardList* allowed = m_self->allowedCards();
     CardList* list = new CardList();
     unsigned int i = 0;
@@ -129,7 +142,7 @@ CardList* OpenBook::possibleCards()
                 } else
                     delete l;
             }
-        }
+        } 
     }
     
     delete allowed;
