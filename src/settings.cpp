@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include "settings.h"
 
+#include "moneyresults.h"
+#include "pointresults.h"
+
 #include <kapplication.h>
 #include <kcarddialog.h>
 #include <kconfig.h>
@@ -87,6 +90,39 @@ const QStringList Settings::playerNames() const
     list.append( config->readEntry( "Player3", "Lenz" ) );
     list.append( config->readEntry( "Player4", "G.J." ) );
     return list;
+}
+
+QValueList<int> Settings::splitterSizes( int width )
+{
+    KConfig* config = kapp->config();
+    QValueList<int> list;
+    
+    config->setGroup("SchafKopf");
+    list = config->readIntListEntry( "Splitter" );
+    if( list.isEmpty() )
+    {
+        list.append( int((width/4)*3) );
+        list.append( int(width/4) );
+    }
+    
+    return list;
+}
+
+void Settings::setSplitterSizes( QValueList<int> list )
+{
+    KConfig* config = kapp->config();
+    config->writeEntry( "Splitter", list );
+    config->sync();
+}
+
+Results* Settings::results() const
+{
+    KConfig* config = kapp->config();
+    int r = config->readNumEntry("ResultMode", MONEY );
+    if( r == MONEY )
+        return new MoneyResults();
+    else if( r == POINTS )
+        return new PointResults();
 }
 
 #include "settings.moc"

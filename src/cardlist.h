@@ -55,6 +55,10 @@ class CardList : public QPtrList<Card>
 		/** Evaluate the all cards in this list
 		*/
         int points();
+        
+        /** append CardList @p list to this CardList
+          */
+        void appendList( CardList* list );
 
 	CardList* FindCards(int color, int type);
 	void RemoveCards(CardList* itemsToRem);

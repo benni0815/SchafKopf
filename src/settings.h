@@ -22,6 +22,7 @@
 
 #include <qobject.h>
 
+class Results;
 class QWidget;
 
 /**
@@ -40,10 +41,17 @@ class Settings : public QObject
 
         void configureCardDecks( QWidget* parent = 0 );
         
+        QValueList<int> splitterSizes( int width );
+        void setSplitterSizes( QValueList<int> list );
+        
+        Results* results() const;
+        
     signals:
         void cardChanged();
         
     private:
+        enum { MONEY, POINTS };
+        
         Settings(QObject *parent = 0, const char *name = 0);
         ~Settings();
         

@@ -48,6 +48,12 @@ int CardList::points()
     return tmp;
 }
 
+void CardList::appendList( CardList* list )
+{
+    for( unsigned int i=0;i<list->count();i++)
+        append( list->at( i ) );
+}
+
 void CardList::randomize()
 {
     int rnd[CARD_CNT];

@@ -26,10 +26,13 @@
 #include "game.h"
 #include "stichdlg.h"
 
+#include <qheader.h>
 #include <qlabel.h>
 #include <qpixmap.h>
-#include <qvbox.h>
+#include <qsplitter.h>
+#include <qtable.h>
 #include <qtimer.h>
+#include <qvbox.h>
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -44,26 +47,42 @@
 SchafKopf::SchafKopf()
     : KMainWindow( 0, "SchafKopf" )
 {
-    QVBox* w = new QVBox( this );
-    setCentralWidget( w );
+    split = new QSplitter( QSplitter::Vertical, this );
+    split->setChildrenCollapsible( true );
+    setCentralWidget( split );
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
     
     m_game = NULL;
     
     m_canvas = new QCanvas( this, "canvas" );
-    m_canvasview = new GameCanvas( m_canvas, w, "canvasview" );
-        
+    m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
+    
+    m_table = new QTable( split );
+    m_table->setReadOnly( true );
+    m_table->setNumCols( 4 );
+    m_table->setColumnLabels( Settings::instance()->playerNames() );
+    
+    split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
+    
+    connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
 }
 
 SchafKopf::~SchafKopf()
 {
+    saveConfig();
+
     if( m_game )
         endGame();
         
     if( m_stichdlg )
         delete m_stichdlg;
+}
+
+void SchafKopf::saveConfig()
+{
+    Settings::instance()->setSplitterSizes( split->sizes() );
 }
 
 void SchafKopf::setupActions()
@@ -110,6 +129,7 @@ void SchafKopf::newGame()
 void SchafKopf::realNewGame()
 {
 	m_game = new Game();
+    connect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
     m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );    
     enableControls();
@@ -146,6 +166,24 @@ void SchafKopf::enableControls()
 {
     m_actEnd->setEnabled( m_game );
     m_actStich->setEnabled( m_game );
+}
+
+void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
+{
+    int col = 0;
+    unsigned int i = 0;
+    QHeader* header = m_table->horizontalHeader();
+    for(;i<(unsigned int)header->count();i++)
+        if(header->label(i) == name )
+        {
+            col = i;
+            break;
+        }
+    
+    if( !m_table->numRows() || !m_table->text( m_table->numRows(), col ).isEmpty() )
+        m_table->insertRows( m_table->numRows() );
+    
+    m_table->setText( m_table->numRows()-1, col, result );
 }
 
 #include "schafkopf.moc"

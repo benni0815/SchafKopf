@@ -17,77 +17,48 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef RESULTS_H
+#define RESULTS_H
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include <qstring.h>
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <kmainwindow.h>
-#include <qguardedptr.h> 
-
-class StichDlg;
-class GameCanvas;
-class Game;
-class KAction;
-class QCanvas;
-class QSplitter;
-class QTable;
+class GameInfo;
+class Player;
 
 /**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
-{
-    Q_OBJECT
+This interface implements the basic functions, 
+to get game results and find out how many points 
+or money who has to give to whom.
+
+@author Dominik Seichter
+*/
+
+class Results{
     public:
-        SchafKopf();
-        ~SchafKopf();
-        
-    private slots:
-        /** Configure the carddeck to be used 
+        void setLaufende( int l ) { m_laufende = l; }
+        void setGameInfo( GameInfo* info ) { m_gameinfo = info; }
+
+        /** get a message of the game results, which can be displayed
+          * to the user.
           */
-        void carddecks();
+        QString result();
+        virtual double points( Player* player ) = 0;
+        virtual QString formatedPoints( Player* player ) = 0;
         
-        /** Start a new game 
-          */
-        void newGame();
+    protected:        
+        Results();
         
-        /** abort current game
-          */
-        void endGame();
+        void parse();
+
+        GameInfo* m_gameinfo;
+        int m_laufende;
         
-        /** show the last stich 
-          */
-        void showStich();
-        
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
-		
-		void realNewGame();
-        
-        void slotPlayerResult( const QString & name, const QString & result );
-        
-        void saveConfig();
+        int m_points;
+        bool m_schneider;
+        bool m_schwarz;
         
     private:
-        void setupActions();
-        
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        QTable* m_table;
-        QSplitter* split;
-        
-        KAction* m_actStich;
-        KAction* m_actEnd;
-        
-        QGuardedPtr<StichDlg> m_stichdlg;
+        bool m_parsed;
 };
 
-#endif // _SCHAFKOPF_H_
+#endif

@@ -17,77 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "results.h"
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include "cardlist.h"
+#include "gameinfo.h"
+#include "player.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <kmainwindow.h>
-#include <qguardedptr.h> 
-
-class StichDlg;
-class GameCanvas;
-class Game;
-class KAction;
-class QCanvas;
-class QSplitter;
-class QTable;
-
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+Results::Results()
 {
-    Q_OBJECT
-    public:
-        SchafKopf();
-        ~SchafKopf();
-        
-    private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
-        
-        /** Start a new game 
-          */
-        void newGame();
-        
-        /** abort current game
-          */
-        void endGame();
-        
-        /** show the last stich 
-          */
-        void showStich();
-        
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
-		
-		void realNewGame();
-        
-        void slotPlayerResult( const QString & name, const QString & result );
-        
-        void saveConfig();
-        
-    private:
-        void setupActions();
-        
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        QTable* m_table;
-        QSplitter* split;
-        
-        KAction* m_actStich;
-        KAction* m_actEnd;
-        
-        QGuardedPtr<StichDlg> m_stichdlg;
-};
+    m_laufende = 0;
+    m_gameinfo = NULL;
+    m_parsed = false;
+}
 
-#endif // _SCHAFKOPF_H_
+QString Results::result()
+{
+    parse();
+    
+    QString s;
+    QString schneider = m_schneider ? " schneider" : QString::null;
+    QString schwarz = m_schwarz ? " schwarz" : QString::null;
+    
+    if( m_points > 60 )
+        s = m_gameinfo->spieler()->name() + QString(" gewinnt mit %1 Punkten%2.").arg( m_points ).arg( schneider + schwarz );
+    else
+        s = m_gameinfo->spieler()->name() + QString(" verliert mit %1 Punkten%2.").arg( m_points ).arg( schneider + schwarz );
+    
+    return s;
+}
+
+void Results::parse()
+{
+    if( m_parsed )
+        return;
+        
+    CardList stiche( *(m_gameinfo->spieler()->stiche()) );
+    if( m_gameinfo->mitspieler() )
+        stiche.appendList( m_gameinfo->mitspieler()->stiche() );
+    
+    m_points = stiche.points();
+    m_schwarz = ( stiche.isEmpty() || stiche.count() == 8 );
+    m_schneider = (m_points < 31 || m_points > 90 );
+
+    m_parsed = true;
+}
+
+

@@ -30,6 +30,7 @@
 
 class GameCanvas;
 class Player;
+
 /**
 @author Dominik Seichter
 */
@@ -63,7 +64,8 @@ class Game : public QObject
         void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );
         void playerMadeStich( unsigned int player );
-    
+        void playerResult( const QString & name, const QString & result );
+        
     public slots:
         void endGame(void);
         

@@ -17,77 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "moneyresults.h"
 
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#include "gameinfo.h"
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
+#include <kglobal.h>
+#include <klocale.h>
 
-#include <kmainwindow.h>
-#include <qguardedptr.h> 
-
-class StichDlg;
-class GameCanvas;
-class Game;
-class KAction;
-class QCanvas;
-class QSplitter;
-class QTable;
-
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
-class SchafKopf : public KMainWindow
+MoneyResults::MoneyResults()
+ : Results()
 {
-    Q_OBJECT
-    public:
-        SchafKopf();
-        ~SchafKopf();
-        
-    private slots:
-        /** Configure the carddeck to be used 
-          */
-        void carddecks();
-        
-        /** Start a new game 
-          */
-        void newGame();
-        
-        /** abort current game
-          */
-        void endGame();
-        
-        /** show the last stich 
-          */
-        void showStich();
-        
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
-		
-		void realNewGame();
-        
-        void slotPlayerResult( const QString & name, const QString & result );
-        
-        void saveConfig();
-        
-    private:
-        void setupActions();
-        
-        Game* m_game;
-        GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        QTable* m_table;
-        QSplitter* split;
-        
-        KAction* m_actStich;
-        KAction* m_actEnd;
-        
-        QGuardedPtr<StichDlg> m_stichdlg;
-};
+}
 
-#endif // _SCHAFKOPF_H_
+double MoneyResults::points( Player* player )
+{
+    parse();
+    
+    double m = 0.0;
+    if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
+        m = 0.20; // SOLO = 20cent
+    else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
+        m = 0.10;
+        
+    m += m_schneider ? 0.10 : 0.0;
+    m += m_schwarz ? 0.10 : 0.0;
+    m += m_laufende * 0.10;
+    
+    if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
+        return (m_points > 60 ? m : m * -1.0);
+    else
+        return (m_points >= 60 ? m * -1.0 : m);
+}
+
+QString MoneyResults::formatedPoints( Player* player )
+{
+    double p = points( player );
+    KLocale* locale = KGlobal::locale();
+    return locale->formatMoney( p );
+}

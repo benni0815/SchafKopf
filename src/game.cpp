@@ -24,6 +24,7 @@
 #include "cardlist.h"
 #include "gamecanvas.h"
 #include "gameinfo.h"
+#include "results.h"
 #include "settings.h"
 #include "timer.h"
 
@@ -322,17 +323,13 @@ bool Game::isHigher( Card* card, Card* high )
 
 void Game::gameResults()
 {
-    // TODO: handle schneider + schwarz ....
-    // sauberen code...
-    int points = m_gameinfo.spieler()->stiche()->points();
-    if( m_gameinfo.mitspieler() )
-        points += m_gameinfo.mitspieler()->stiche()->points();
-        
-        
-    if( points > 60 )
-        KMessageBox::information( 0,m_gameinfo.spieler()->name() + QString(" gewinnt mit %1 Punkten.").arg( points ) );
-    else
-        KMessageBox::information( 0,m_gameinfo.spieler()->name() + QString(" verliert mit %1 Punkten.").arg( points ) );
+    Results* r = Settings::instance()->results();
+    r->setGameInfo( &m_gameinfo );
+    for( unsigned int i=0;i<PLAYERS;i++)
+        emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
+    
+    KMessageBox::information( 0, r->result() );
+    delete r;
 }
 
 void Game::setupGameInfo()
