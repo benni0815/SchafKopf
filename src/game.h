@@ -78,6 +78,11 @@ class Game : public QObject
           * or when a new game is started.
           */
         void resetGameResults();
+
+        /** Called on initialization and when the user changed the names 
+          * of the players to represent the changes in the UI
+          */
+        void updatePlayerNames();
         
     private:
         bool terminated;

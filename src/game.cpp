@@ -46,17 +46,15 @@ Game::Game(QObject *parent, const char *name)
     
     // Create our player objects
     // delete these only in the destructor    
-    QStringList list = Settings::instance()->playerNames();
     m_players[0] = new HumanPlayer( this );
-    m_players[0]->setName( list[0] );
-	for( i=1;i<PLAYERS;i++)
-    {
+    for( i=1;i<PLAYERS;i++)
         m_players[i] = new ComputerPlayer( this );
-        m_players[i]->setName( list[i] );
-    }
+    
+    updatePlayerNames();
     
     // make sure that results get cleaned up, when the results type is changed
     connect( Settings::instance(), SIGNAL( resultsTypeChanged() ), this, SLOT( resetGameResults() ) );
+    connect( Settings::instance(), SIGNAL( playerNamesChanged() ), this, SLOT( updatePlayerNames() ) );
 }
 
 Game::~Game()
@@ -387,5 +385,16 @@ int Game::timesDoubled()
     return d;
 }
 
+void Game::updatePlayerNames()
+{
+    int i;
+    QStringList list = Settings::instance()->playerNames();
+    m_players[0]->setName( list[0] );
+    for( i=1;i<PLAYERS;i++)
+        m_players[i]->setName( list[i] );
+        
+    if( m_canvas )
+        m_canvas->redrawPlayers();
+}
 
 #include "game.moc"

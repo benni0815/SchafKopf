@@ -55,7 +55,6 @@ PreferencesDlg::~PreferencesDlg()
 void PreferencesDlg::accept()
 {
     t_ResultValues r;
-    t_Players p;
     
     Settings::instance()->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
     
@@ -72,12 +71,13 @@ void PreferencesDlg::accept()
     r.schneider = m_point_schneider->value();
     r.schwarz = m_point_notrick->value();
     Settings::instance()->setPointResults( &r );
-    
-    p.p1_name = m_p1_name->text();
-    p.p2_name = m_p2_name->text();
-    p.p3_name = m_p3_name->text();
-    p.p4_name = m_p4_name->text();
-    Settings::instance()->setPlayers( &p );
+   
+    QStringList names; 
+    names << m_p1_name->text();
+    names << m_p2_name->text();
+    names << m_p3_name->text();
+    names << m_p4_name->text();
+    Settings::instance()->setPlayerNames( names );
     
     Settings::instance()->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
     
@@ -88,24 +88,22 @@ void PreferencesDlg::addPagePlayer()
 {
     QFrame* box2 = addPage( i18n("Player Settings"), QString::null, BarIcon("identity") );
     QVBoxLayout* layout2 = new QVBoxLayout( box2, 6, 6  );
-    t_Players* p = Settings::instance()->players();
+    QStringList names = Settings::instance()->playerNames();
 
     QVButtonGroup* group2 = new QVButtonGroup( i18n("Your Player"), box2, "group2" );
     QLabel* label3 = new QLabel( i18n("Name:"), group2, "label3" );
-    m_p1_name = new KLineEdit( p->p1_name, group2, "m_p1_name" );
+    m_p1_name = new KLineEdit( names[0], group2, "m_p1_name" );
     
     QVButtonGroup* group3 = new QVButtonGroup( i18n("Computer Players"), box2, "group3" );
     QLabel* label4 = new QLabel( i18n("Computer Player 1:"), group3, "label4" );
-    m_p2_name = new KLineEdit( p->p2_name, group3, "m_p2_name" );
+    m_p2_name = new KLineEdit( names[1], group3, "m_p2_name" );
     QLabel* label5 = new QLabel( i18n("Computer Player 2:"), group3, "label5" );
-    m_p3_name = new KLineEdit( p->p3_name, group3, "m_p3_name" );
+    m_p3_name = new KLineEdit( names[2], group3, "m_p3_name" );
     QLabel* label6 = new QLabel( i18n("Computer Player 3:"), group3, "label6" );
-    m_p4_name = new KLineEdit( p->p4_name, group3, "m_p4_name" );
+    m_p4_name = new KLineEdit( names[3], group3, "m_p4_name" );
     
     layout2->addWidget( group2 );
     layout2->addWidget( group3 );
-        
-    delete p;
       
     // TODO: move into an own function  
     //QFrame* box3 = addPage( i18n("Rules"), "" );

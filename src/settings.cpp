@@ -21,6 +21,7 @@
 
 #include "moneyresults.h"
 #include "pointresults.h"
+#include "schafkopfdef.h"
 
 #include <kapplication.h>
 #include <kcarddialog.h>
@@ -92,29 +93,18 @@ const QStringList Settings::playerNames() const
     return list;
 }
 
-t_Players* Settings::players() const
+void Settings::setPlayerNames( const QStringList & names )
 {
-    KUser user;
+    int i;
     KConfig* config = kapp->config();
-    t_Players* p = new t_Players;
+    QStringList old = this->playerNames();
     config->setGroup("PlayerNames");
-    p->p1_name = config->readEntry( "Player1", user.loginName() );
-    p->p2_name = config->readEntry( "Player2", "Dom" );
-    p->p3_name = config->readEntry( "Player3", "Lenz" );
-    p->p4_name = config->readEntry( "Player4", "G.J." );
-    return p;
-}
-
-void Settings::setPlayers( const t_Players* p )
-{
-    KConfig* config = kapp->config();
-    config->setGroup( "PlayerNames" );
-    config->writeEntry( "Player1", p->p1_name );
-    config->writeEntry( "Player2", p->p2_name );
-    config->writeEntry( "Player3", p->p3_name );
-    config->writeEntry( "Player4", p->p4_name );
+    for( i=0;i<PLAYERS;i++ )
+        config->writeEntry( QString("Player%1").arg(i+1), names[i] );
     config->sync();
     
+    if( old != names )
+        emit playerNamesChanged();
 }
 
 QValueList<int> Settings::splitterSizes( int width )

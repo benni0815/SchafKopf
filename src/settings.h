@@ -33,13 +33,14 @@ struct t_ResultValues {
     double schneider;
 };
 
+/* 
+
+// Use as soon as the avatar is implemented
 struct t_Players {
-    QString p1_name;
-    //QImage avatar;
-    QString p2_name;
-    QString p3_name;
-    QString p4_name;
+    QString name;
+    QImage avatar;
 };
+*/
 
 
 class Results;
@@ -61,7 +62,8 @@ class Settings : public QObject
         const QString cardBackground() const;
         
         const QStringList playerNames() const;
-
+        void setPlayerNames( const QStringList & names );
+        
         void configureCardDecks( QWidget* parent = 0 );
         
         QValueList<int> splitterSizes( int width );
@@ -78,19 +80,17 @@ class Settings : public QObject
         
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
-        void setPlayers( const t_Players* p );
         /** delete after usage
           */
         t_ResultValues* moneyResults() const;
         /** delete after usage
           */
         t_ResultValues* pointResults() const;
-        t_Players* players() const;
-
         
     signals:
         void cardChanged();
         void resultsTypeChanged();
+        void playerNamesChanged();
         
     private:
         

@@ -69,10 +69,7 @@ void CanvasPlayer::setPlayer( int i, Player* player )
     m_player = player;
     
     if( m_player )
-    {
         init(i);    
-        m_name->setText( player->name() );
-    }
 }
 
 void CanvasPlayer::position( int i )
@@ -81,7 +78,7 @@ void CanvasPlayer::position( int i )
     int num=NUMCARDS;
     int w = m_canvas->width();//-DIST;
     int h = m_canvas->height();//-DIST;
-    int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen für z.B. ein Bild des Spielers (für Netzwerkmodus).
+    int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fr z.B. ein Bild des Spielers (fr Netzwerkmodus).
     int availw = m_canvas->width() - 2*DIST - offsetl;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
@@ -145,10 +142,11 @@ void CanvasPlayer::position( int i )
 
 void CanvasPlayer::init(int i)
 {
+    m_name->setText( m_player->name() );
     if( !m_player->game()->isTerminated() )
     {
         for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
-	    {
+        {
             CanvasCard *c = m_items[z];
             c->setCard( m_player->cards()->at( z ) );
             c->setZ( double(-1 - z) );
