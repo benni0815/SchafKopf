@@ -29,6 +29,9 @@ class Player
         CardList* stiche() const;
         void addStich( CardList stich );
 
+        double points() const { return m_points; }
+        void setPoints( double p ) { m_points = p; }
+        
         virtual int rtti() const = HUMAN;
         const unsigned int id() const { return m_id; }
 
@@ -49,8 +52,10 @@ class Player
         bool m_geklopft;
 
         unsigned int m_id;
+    
     private:
         static unsigned int def_id;
+        double m_points;
 	bool istTrumpf(Card* card);
 	CardList* cardsOfSameType(Card* card);
 	Card* firstPlayedCard();

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "moneyresults.h"
-
+#include "player.h"
 #include "gameinfo.h"
 
 #include <kglobal.h>
@@ -56,7 +56,7 @@ double MoneyResults::points( Player* player )
 
 QString MoneyResults::formatedPoints( Player* player )
 {
-    double p = points( player );
+    player->setPoints( points( player ) + player->points() );
     KLocale* locale = KGlobal::locale();
-    return locale->formatMoney( p );
+    return locale->formatMoney( player->points() );
 }

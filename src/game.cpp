@@ -122,7 +122,7 @@ void Game::gameLoop()
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
-            timer.block( 1 );
+            //timer.block( 1 );
         }
         
         index = highestCard();

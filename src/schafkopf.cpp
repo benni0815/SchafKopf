@@ -180,11 +180,10 @@ void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
             break;
         }
     
-    if( !m_table->numRows() )
+    if( !m_table->numRows() || !m_table->text( m_table->numRows()-1, col ).isEmpty() )
         m_table->insertRows( m_table->numRows() );
-        
+
     m_table->setText( m_table->numRows()-1, col, result );
-    m_table->insertRows( m_table->numRows() );
 }
 
 #include "schafkopf.moc"

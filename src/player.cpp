@@ -15,6 +15,7 @@ Player::Player(CardList *cards,Game* game)
     : m_cards( cards ), m_game( game )
 {
     m_stiche = new CardList();
+    m_points = 0.0;
     m_id=def_id++;
     
     m_geklopft = false;
