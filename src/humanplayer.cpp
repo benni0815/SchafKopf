@@ -26,6 +26,7 @@
 #include "gameinfo.h"
 #include "selectgamedlg.h"
 #include "timer.h"
+#include "selectgamewizard.h"
 
 #include <klocale.h>
 
@@ -63,11 +64,40 @@ GameInfo* HumanPlayer::gameInfo()
 {
     if( m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
     {
+    
+        SelectGameWizard* sgw = new SelectGameWizard(m_cards);
+    		if(sgw->exec() == QDialog::Accepted)
+    		{
+			GameInfo* gi = sgw->gameInfo();
+			delete sgw;
+    			return gi;
+    		}	
+	delete sgw;
+	//sgw=0;
+    
+    
+    /*
+    SelectGameWizard* sgw = new SelectGameWizard(m_cards);
+    		if(sgw->exec() == QDialog::Accepted)
+    		{
+    			return sgw->gameInfo();
+    		}	*/
+	//delete sgw;
+	//sgw=0;
+	/*
+	SelectGameWizard sgw( m_cards );
+        if( sgw.exec() == QDialog::Accepted )
+        {
+            return sgw.gameInfo();
+        }*/
+	
+	
+    /*
         SelectGameDlg sgd( m_cards, 0, "sgd" );
         if( sgd.exec() == QDialog::Accepted )
         {
             return sgd.gameInfo();
-        }
+        }*/
     } 
     return 0;
 }

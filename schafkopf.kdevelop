@@ -125,10 +125,25 @@
     </run>
     <general>
       <useconfiguration>default</useconfiguration>
+      <activetarget>src/schafkopf</activetarget>
     </general>
     <configurations>
       <default>
         <envvars/>
+        <configargs>--enable-debug=&quot;full&quot;</configargs>
+        <builddir/>
+        <topsourcedir/>
+        <cppflags/>
+        <ldflags/>
+        <ccompiler>kdevgccoptions</ccompiler>
+        <cxxcompiler>kdevgppoptions</cxxcompiler>
+        <f77compiler>kdevg77options</f77compiler>
+        <ccompilerbinary/>
+        <cxxcompilerbinary/>
+        <f77compilerbinary/>
+        <cflags/>
+        <cxxflags/>
+        <f77flags/>
       </default>
     </configurations>
   </kdevautoproject>
