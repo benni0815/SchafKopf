@@ -38,11 +38,15 @@ class CanvasText : public QCanvasText {
             : QCanvasText( t, f, c )
         {
             setActive( false );
+            setColor( Qt::yellow );
+
         }
         
         void setActive( bool b )
         {
-            setColor( b ? Qt::white : Qt::yellow );
+            QFont f = font();
+            f.setUnderline( b );
+            setFont( f );
             QCanvasText::setActive( b );
         }
 
