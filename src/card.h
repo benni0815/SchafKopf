@@ -32,8 +32,8 @@ This class represents one card.
 class Card : public QObject {
     Q_OBJECT
     public:
-        // TODO: find better names
-        enum type { ASS = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
+        // TODO: find better names, Edit bei lenz: done =;-)
+        enum type { /*ASS*/ SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
         enum color { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
 
         Card( const enum type t, const enum color c );

@@ -26,15 +26,15 @@
 #endif
 
 #include "humanplayer.h"
+#include "cardlist.h"
 
 HumanPlayer::HumanPlayer(CardList *cards,Game* game)
- : Player(cards,game)
+ : Player(cards,game), QObject()
 {
 	can_play=false;
 	selected_card=-1;
-	sortCards();
+	m_cards->sort();
 }
-
 
 HumanPlayer::~HumanPlayer()
 {
@@ -55,8 +55,14 @@ Card *HumanPlayer::play()
 #endif
 	can_play=false;
 	// Now return the card indexed by selected_card
-	sortCards();
+	m_cards->sort();
 	return 0;
+}
+
+void HumanPlayer::setCards( CardList *cards)
+{
+	Player::setCards(cards);
+	m_cards->sort();
 }
 
 void HumanPlayer::isValid( const int index,  bool &valid )
@@ -75,8 +81,3 @@ void HumanPlayer::playCard( const int index )
     kapp->exit_loop();
 #endif
 }
-	
-void HumanPlayer::sortCards()
-{
-}
-	

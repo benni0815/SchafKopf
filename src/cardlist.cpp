@@ -75,3 +75,79 @@ void CardList::randomize()
                        // enabled!!! 
 }
 
+int CardList::compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 )
+{
+	Card *tmp, *item1=(Card *)Item1, *item2=(Card *)Item2;
+	
+	if(item2->card()==Card::OBER || item2->card()==Card::UNTER)
+	{
+		tmp=item1;
+		item1=item2;
+		item2=tmp;
+	}
+	if(item1->card()!=Card::OBER && item1->card()!=Card::UNTER &&  item2->color()==Card::HERZ)
+	{
+		tmp=item1;
+		item1=item2;
+		item2=tmp;
+	}
+	// Sortierung abhängig vom spiel implementier ich morgen. Lass dich überraschen =:-)
+	if(item1->card()==Card::OBER)
+	{
+		if(item2->card()==Card::OBER && item1->color()>item2->color())
+			return 1;
+		else
+			return -1;
+	}
+	 else if(item1->card()==Card::UNTER)
+	{
+		if(item2->card()==Card::OBER)
+			return 1;
+		else if(item2->card()==Card::UNTER && item1->color()>item2->color())
+			return 1;
+		else
+			return -1;
+	}
+	else if(item1->color()==Card::HERZ)
+	{
+		if(item2->color()==Card::HERZ && item1->card()>item2->card())
+			return 1;
+		return -1;
+	}
+	else if(item1->color()==item2->color())
+	{
+		if(item1->card()>item2->card())
+			return 1;
+		return -1;
+	}
+	else if(item1->color()>item2->color())
+		return -1;
+	return 1;
+	/*
+	if(item1->card()==Card::OBER)
+	{
+		if(item2->card()==Card::OBER && item1->color()>item2->color())
+			return -1;
+		return 1;
+	}
+	else if(item1->card()==Card::UNTER)
+	{
+		if(item2->card()==Card::OBER)
+			return -1;
+		else if(item2->card()==Card::UNTER && item1->color()>item2->color())
+			return -1;
+		else return 1;
+	}
+	else if(item1->color()==Card::HERZ && item2->color()==Card::HERZ)
+	{
+		if(item1->card()>item2->card())
+			return -1;
+		return 1;
+	}
+	else if(item1->color()==Card::HERZ)
+		return 1;
+	else if(item1->card()>item2->card() && item1->color()<=item2->color())
+		return -1;
+	return 1;
+	*/
+}

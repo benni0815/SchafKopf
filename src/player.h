@@ -7,6 +7,7 @@
 class Card;
 class CardList;
 class Game;
+
 class Player
 {
     public:
@@ -21,7 +22,7 @@ class Player
         const QString & name() const;
         void setName( const QString & n );
         CardList *cards() const;
-        void setCards( CardList *cards);
+        virtual void setCards( CardList *cards);
         const CardList* stiche() const;
         void addStich( CardList stich );
         

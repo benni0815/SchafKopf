@@ -40,14 +40,23 @@ class CardList : public QPtrList<Card>
         /** initialize this card list with a default card
           * deck of 32 cards.
           * The CardList does now own all elements, i.e. they
-          * are delete on destruction.
+          * are deleted on destruction.
           */
         void init();
+		
+		/** generate a randomized list of 32 cards
+		*/
         void randomize();        
+		
+		/** Evaluate the all cards in this list
+		*/
         int points();
 		
 	signals:
 		void changeEvent(void);
+	
+	protected:
+		int compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 );
 };
 
 #endif

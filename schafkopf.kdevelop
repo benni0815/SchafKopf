@@ -1,7 +1,7 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
-    <author>Dominik Seichter</author>
+    <author>Dominik Seichter &amp; Lorenz Mösenlecner</author>
     <email>domseichter@web.de</email>
     <version>0.1</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
@@ -12,6 +12,11 @@
       <keyword>Qt</keyword>
       <keyword>KDE</keyword>
     </keywords>
+    <projectdirectory>.</projectdirectory>
+    <absoluteprojectpath>false</absoluteprojectpath>
+    <description></description>
+    <ignoreparts/>
+    <secondaryLanguages/>
   </general>
   <kdevautoproject>
     <general>
@@ -24,6 +29,11 @@
       <runarguments>
         <schafkopf/>
       </runarguments>
+      <customdirectory>/</customdirectory>
+      <programargs></programargs>
+      <terminal>false</terminal>
+      <autocompile>true</autocompile>
+      <envvars/>
     </run>
     <configurations>
       <optimized>
@@ -47,6 +57,10 @@
         <envvar value="1" name="WANT_AUTOCONF_2_5" />
         <envvar value="1" name="WANT_AUTOMAKE_1_6" />
       </envvars>
+      <abortonerror>false</abortonerror>
+      <numberofjobs>1</numberofjobs>
+      <dontact>false</dontact>
+      <makebin></makebin>
     </make>
   </kdevautoproject>
   <kdevfileview>
@@ -72,11 +86,31 @@
       <toc>php</toc>
       <toc>perl</toc>
     </ignoretocs>
+    <projectdoc>
+      <userdocDir>html/</userdocDir>
+      <apidocDir>html/</apidocDir>
+    </projectdoc>
+    <ignoreqt_xml/>
+    <ignoredoxygen/>
+    <ignorekdocs/>
+    <ignoredevhelp/>
   </kdevdoctreeview>
   <kdevdebugger>
     <general>
       <dbgshell>libtool</dbgshell>
+      <programargs></programargs>
+      <gdbpath></gdbpath>
+      <configGdbScript></configGdbScript>
+      <runShellScript></runShellScript>
+      <runGdbScript></runGdbScript>
+      <breakonloadinglibs>true</breakonloadinglibs>
+      <separatetty>false</separatetty>
+      <floatingtoolbar>false</floatingtoolbar>
     </general>
+    <display>
+      <staticmembers>false</staticmembers>
+      <demanglenames>true</demanglenames>
+    </display>
   </kdevdebugger>
   <kdevfilecreate>
     <filetypes/>
@@ -108,4 +142,10 @@
     <recursivewhencommitremove>true</recursivewhencommitremove>
     <revertoptions>-C</revertoptions>
   </kdevcvsservice>
+  <cppsupportpart>
+    <filetemplates>
+      <interfacesuffix>.h</interfacesuffix>
+      <implementationsuffix>.cpp</implementationsuffix>
+    </filetemplates>
+  </cppsupportpart>
 </kdevelop>

@@ -23,15 +23,17 @@
 #include <qobject.h>
 #include "player.h"
 
-class HumanPlayer : public Player, QObject
+class HumanPlayer : public QObject, public Player
 {
-    public:
+    Q_OBJECT
+	public:
         HumanPlayer(CardList *cards,Game* game);
         ~HumanPlayer();
         
         bool doppeln();
         Card *play();
-        
+        void setCards( CardList *cards);
+		
         int rtti() const { return HUMAN; }       
 		 
 	public slots:
@@ -47,8 +49,6 @@ class HumanPlayer : public Player, QObject
 	private:
 		bool can_play;
 		int selected_card;
-		
-		void sortCards();
 };
 
 #endif

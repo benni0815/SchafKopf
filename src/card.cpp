@@ -35,7 +35,7 @@ Card::Card( const enum type t, const enum color c )
     m_card = t;
     m_color = c;
     switch( m_card ) {
-        case ASS:
+        case SAU:
             m_points = 11; break;
         case ZEHN:
             m_points = 10; break;
