@@ -20,9 +20,6 @@
 #ifndef CANVASPLAYER_H
 #define CANVASPLAYER_H
 
-// DISTANCE from the border
-#define DIST 20
-
 class Card;
 class CanvasCard;
 class Player;

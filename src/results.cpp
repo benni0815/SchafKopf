@@ -17,7 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "results.h"
+
+#include "schafkopfdef.h"
 
 #include "cardlist.h"
 #include "gameinfo.h"
@@ -30,11 +33,6 @@ Results::Results()
     m_laufende = 0;
     m_gameinfo = NULL;
     m_parsed = false;
-}
-
-Results::~Results()
-{
-
 }
 
 QString Results::result()
@@ -72,7 +70,7 @@ void Results::parse()
         stiche.appendList( m_gameinfo->mitspieler()->stiche() );
     
     m_points = stiche.points();
-    m_schwarz = ( stiche.isEmpty() || stiche.count() == 8 );
+    m_schwarz = ( stiche.isEmpty() || stiche.count() == NUMCARDS * PLAYERS );
     m_schneider = (m_points < 31 || m_points > 90 );
 
     m_parsed = true;

@@ -51,7 +51,7 @@ Game::Game(QObject *parent, const char *name)
         m_players[i] = new ComputerPlayer( this );
         m_players[i]->setName( list[i] );
     }
-    }
+}
 
 Game::~Game()
 {
@@ -103,8 +103,11 @@ void Game::gameLoop()
     {
         m_players[i]->klopfen();
         m_players[i]->sortCards();
-        if( m_players[i]->geklopft() && m_players[i]->rtti() != Player::HUMAN )   
+        if( m_players[i]->geklopft() && m_players[i]->rtti() != Player::HUMAN ) 
+        {
             m_canvas->information( i18n("%1 has doubled.").arg( m_players[i]->name() ) );
+            emit signalDoubled();
+        }
     }
     
     m_canvas->redrawPlayers();
@@ -125,18 +128,18 @@ void Game::gameLoop()
         for(a=0;a<PLAYERS;a++) 
         {
             if(m_players[a])
-				c = m_players[a]->play();
-			if(terminated || c==NULL)
-				return;
+		c = m_players[a]->play();
+	    if(terminated || c==NULL)
+		return;
 			
-			for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
-			{
+	    for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
+	    {
                 if(m_players[a]->cards()->at(z) == c) 
                 {
                     m_players[a]->cards()->take(z);
                     break;
                 }
-			}
+	    }
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
@@ -323,6 +326,8 @@ bool Game::setupGameInfo()
     if( games.isEmpty() )
     {
         m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
+        m_gameinfo.setValid( false );
+        emit signalSetupGameInfo();
         return false;
     } 
     else
@@ -353,6 +358,9 @@ bool Game::setupGameInfo()
     
     m_laufende = m_gameinfo.laufende();
     m_canvas->information( m_gameinfo.toString() );
+
+    m_gameinfo.setValid( true );
+    emit signalSetupGameInfo();
     return true;
 }
 

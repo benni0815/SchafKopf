@@ -2,7 +2,7 @@
 INCLUDES = $(all_includes)
 
 # these are the headers for your project
-noinst_HEADERS = schafkopf.h card.h cardlist.h player.h game.h settings.h computerplayer.h humanplayer.h gamecanvas.h canvascard.h timer.h stichdlg.h gameinfo.h selectgamedlg.h canvasplayer.h results.h moneyresults.h pointresults.h openbook.h
+noinst_HEADERS = schafkopf.h card.h cardlist.h player.h game.h settings.h computerplayer.h humanplayer.h gamecanvas.h canvascard.h timer.h stichdlg.h gameinfo.h selectgamedlg.h canvasplayer.h results.h moneyresults.h pointresults.h openbook.h schafkopfdef.h
 
 # let automoc handle all of the meta source files (moc)
 METASOURCES = AUTO

@@ -31,8 +31,6 @@
 #include <klocale.h>
 #include <qtimer.h>
 
-#define NUMCARDS 8
-
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
@@ -228,7 +226,17 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
         CanvasCard* stich = m_stich[player];
         stich->setCard( card->card() );
         stich->setRotation( 0 );
-        stich->setZ( player );
+
+        // find out the correct z value of this card so that
+        // a new card is always placed on top of the earlier ones
+        int z = 0;
+        for(unsigned int i=0;i<PLAYERS;i++)
+        {
+            if( m_stich[i]->isVisible() )        
+                z++;
+        }
+        
+        stich->setZ( z );
         stich->setFrontVisible( true );
         stich->show();
     }
@@ -266,8 +274,11 @@ void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
     if( e->button() == Qt::LeftButton ) {
         QCanvasItemList list = canvas()->allItems();
         for( unsigned int i = 0; i < list.count(); i++ )
-            if( list[i]->boundingRect().contains( e->pos() ) )
+            if( list[i]->boundingRect().contains( e->pos() ) && list[i]->isVisible() )
+            {
                 m_item = list[i];
+                break;
+            }
     }
 }
 

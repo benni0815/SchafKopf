@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "card.h"
 #include "settings.h"
+#include "player.h"
 
 #include <qpixmap.h>
 
@@ -31,7 +32,9 @@ QPixmap* Card::m_background = 0;
 Card::Card( const enum type t, const enum color c )
     : QObject()
 {
-    m_pixmap = 0;
+    m_pixmap = NULL;
+    m_owner = NULL;
+    
     m_card = t;
     m_color = c;
     switch( m_card ) {

@@ -34,12 +34,15 @@ StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
       m_game( g)
 {
     QGridLayout* layout = new QGridLayout( plainPage(), 4, 2 );
+    trick = new QLabel( plainPage() );
+    layout->addMultiCellWidget( trick, 0, 0, 0, 3);
+    
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         cards[i] = new QLabel( plainPage() );
-        layout->addWidget( cards[i], 0, i );
+        layout->addWidget( cards[i], 1, i );
         
         players[i] = new QLabel( plainPage() );
-        layout->addWidget( players[i], 1, i );
+        layout->addWidget( players[i], 2, i );
     }
     
     changed( m_game->findIndex( 0 )->id() );
@@ -58,14 +61,26 @@ void StichDlg::changed( unsigned int id )
 {
     Player* player = m_game->findId( id );
     CardList* stich = player->stiche();
+    
+    if( stich && stich->count() )
+        trick->setText( i18n("Trick was made by: <b>") + player->name() + "</b>" );
+    else
+        trick->setText( i18n("No trick was made.") );
+        
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        if( stich->count() ) 
-            cards[i]->setPixmap( *(stich->at( stich->count() - PLAYERS + i )->pixmap()) );
-        else
-            cards[i]->setPixmap( *Card::backgroundPixmap() );
+        if( stich )
+        {
+            if( stich->count() > i ) 
+                cards[i]->setPixmap( *(stich->at( stich->count() - PLAYERS + i )->pixmap()) );
+            else
+                cards[i]->setPixmap( *Card::backgroundPixmap() );
 
-        players[i]->setText( "<qt><b>"+m_game->findIndex( i )->name()+"</b></qt>" );
+            if( stich->count() > i )
+                players[i]->setText( "<qt><b>"+stich->at( stich->count() - PLAYERS + i )->owner()->name()+"</b></qt>" );
+            else
+                players[i]->setText( m_game->findIndex(i)->name() );
+        }
     }
 }
 

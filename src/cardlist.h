@@ -22,11 +22,7 @@
 #define CARDLIST_H
 
 #include <qptrlist.h>
-
-#include <card.h>
-
-
-#define CARD_CNT 32
+#include "card.h"
 
 typedef int (*eval_func)(Card *card, void *param);
 

@@ -32,7 +32,9 @@ class StichDlg;
 class GameCanvas;
 class Game;
 class KAction;
+class KPushButton;
 class QCanvas;
+class QLabel;
 class QSplitter;
 class QTable;
 
@@ -75,6 +77,7 @@ class SchafKopf : public KMainWindow
         
         void saveConfig();
         
+        void updateInfo();
     private:
         void setupActions();
         
@@ -83,7 +86,11 @@ class SchafKopf : public KMainWindow
         QCanvas* m_canvas;    
         QTable* m_table;
         QSplitter* split;
-        
+
+        QLabel* lblCurGame;
+        QLabel* lblDoubled;
+        KPushButton* btnLastTrick;
+                
         KAction* m_actStich;
         KAction* m_actEnd;
         

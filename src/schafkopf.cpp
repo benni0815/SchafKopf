@@ -20,19 +20,20 @@
 #include "schafkopf.h"
 #include "settings.h"
 #include "gamecanvas.h"
-// TODO: either move the game object into
-// GameCanvas as member variable or
-// maybe make GameCanvas a subclasse of Game
 #include "game.h"
 #include "stichdlg.h"
+#include "player.h"
 
+#include <qfontmetrics.h>
 #include <qheader.h>
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qsplitter.h>
 #include <qtable.h>
 #include <qtimer.h>
+#include <qtooltip.h>
 #include <qvbox.h>
+#include <qvgroupbox.h>
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -41,13 +42,14 @@
 #include <kmainwindow.h>
 #include <kmenubar.h>
 #include <ktoolbar.h>
+#include <kpushbutton.h>
 #include <kpopupmenu.h>
 #include <kstdgameaction.h>
 
 SchafKopf::SchafKopf()
     : KMainWindow( 0, "SchafKopf" )
 {
-    split = new QSplitter( QSplitter::Vertical, this );
+    split = new QSplitter( QSplitter::Horizontal, this );
     split->setChildrenCollapsible( true );
     setCentralWidget( split );
     // save window size automatically
@@ -60,18 +62,42 @@ SchafKopf::SchafKopf()
     m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );    
 
-    m_table = new QTable( split );
+    QVBox * leftBox = new QVBox( split );
+    new QLabel( i18n("Results:"), leftBox );
+    
+    m_table = new QTable( leftBox );
     m_table->setReadOnly( true );
-    m_table->setNumCols( 4 );
+    m_table->setNumCols( PLAYERS );
     m_table->setColumnLabels( Settings::instance()->playerNames() );
+    QFontMetrics fm( m_table->horizontalHeader()->font() );
+    for( unsigned int i = 0; i < PLAYERS; i++ )
+    {
+        int w = fm.width( m_table->horizontalHeader()->label(i) ) + 10;
+        m_table->setColumnWidth( i, w );
+    }
+    
+    QVGroupBox* groupInfo = new QVGroupBox( i18n("Game Information:"), leftBox );
+    lblCurGame = new QLabel( groupInfo );
+    lblDoubled = new QLabel( groupInfo );
+    
+    btnLastTrick = new KPushButton( groupInfo );
+    btnLastTrick->setPixmap( *(Card::backgroundPixmap()) );
+    btnLastTrick->setFlat( true );
     
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
     
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
     
+    connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
     connect(m_game,SIGNAL(gameStarted()),this,SLOT(enableControls()));
     connect(m_game,SIGNAL(gameEnded()),this,SLOT(enableControls()));
+    connect(m_game,SIGNAL(signalSetupGameInfo()),this,SLOT(updateInfo()));
+    connect(m_game,SIGNAL(signalDoubled()),this,SLOT(updateInfo()));
+    
+    QToolTip::add( btnLastTrick, i18n("Show the last trick that was made.") );
+    
+    updateInfo();
 }
 
 SchafKopf::~SchafKopf()
@@ -162,6 +188,7 @@ void SchafKopf::enableControls()
 {
     m_actEnd->setEnabled( !m_game->isTerminated() );
     m_actStich->setEnabled( !m_game->isTerminated()  );
+    btnLastTrick->setEnabled( !m_game->isTerminated() );
 }
 
 void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
@@ -180,7 +207,25 @@ void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
         m_table->insertRows( m_table->numRows() );
 
     m_table->setText( m_table->numRows()-1, col, result );
+    m_table->ensureCellVisible( m_table->numRows()-1, col );
+}
+
+void SchafKopf::updateInfo()
+{
+    if( m_game->gameInfo()->isValid() )
+        lblCurGame->setText( i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
+    else
+        lblCurGame->setText( QString::null );
+        
+    QString sDoubled;
+    for(unsigned int i=0;i<PLAYERS;i++)
+    {
+        Player* player = m_game->findIndex( i );
+        if( player->geklopft() )
+            sDoubled.append( i18n("<qt><b>%1</b> has doubled.</qt>").arg( player->name() ) );
+    }
+    
+    lblDoubled->setText( sDoubled );
 }
 
 #include "schafkopf.moc"
-

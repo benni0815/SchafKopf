@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "cardlist.h"
 
+#include "schafkopfdef.h"
 
 #include <kapplication.h>
 

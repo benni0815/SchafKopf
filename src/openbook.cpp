@@ -27,20 +27,20 @@
 
 
 /* A few macros which make it quite simple to build macros for openbook rules */
-#define RULE( function, description, cancel, eval ) \
+#define RULE( function, description, condition, eval ) \
     CardList* function ( CardList* allowed, Game* game ) \
     { \
         /* description */ \
         qDebug("Executing Rule=" description ); \
         const GameInfo* info = game->gameInfo(); \
-        if( cancel ) \
+        if( !(condition) ) \
             return 0; \
         CardList* list = new CardList(); \
         unsigned int i=0; \
         for( i=0;i<allowed->count();i++ ) \
         { \
             Card* c = allowed->at( i ); \
-            if( eval ) \
+            if( (eval) ) \
                 list->append( allowed->at( i ) ); \
         } \
         return list; \
@@ -57,30 +57,33 @@ namespace OpeningRules
     };
     
     RULE( player1, "davon-laufen - hängt von allowedCards ab und läuft nicht mit dem zehner davon", 
-        ( info->mode() != GameInfo::RUFSPIEL && 
-          allowed->contains( info->color(), Card::SAU ) ),
+        ( info->mode() == GameInfo::RUFSPIEL && 
+          !allowed->contains( info->color(), Card::SAU ) ),
         ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )
     )
     
     RULE( player2, "player plays trump",
-        ( false ),
+        ( true ),
         ( info->istTrumpf( c ) )
     )
 
     RULE( rule1, "play an ace on a solo", 
-        ( info->mode() == GameInfo::RUFSPIEL || 
-          info->mode() == GameInfo::RAMSCH || 
-          info->mode() == GameInfo::DACHS ),
+        ( info->mode() == GameInfo::STICHT || 
+          info->mode() == GameInfo::WENZ || 
+          info->mode() == GameInfo::GEIER ),
         ( !info->istTrumpf( c ) && c->card() == Card::SAU )
     )
 
+    
+    // TODO: nur suchen wenn noch niemand gesucht hat 
+    // bzw. davon gelaufen ist
     RULE( rule2, "such die sau auf die gespielt wird", 
-        ( info->mode() != GameInfo::RUFSPIEL ),
+        ( info->mode() == GameInfo::RUFSPIEL  ),
         ( !info->istTrumpf( c ) && c->color() == info->color() )
     )
     
-    RULE( rule3, "nicht sp    ieler spielt farbe", 
-        ( false ), // always execute this one
+    RULE( rule3, "nicht spieler spielt farbe", 
+        ( true ), // always execute this one
         ( !info->istTrumpf( c ) )
     )
     

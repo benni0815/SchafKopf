@@ -38,6 +38,9 @@ class Player
         virtual int rtti() const = HUMAN;
         const unsigned int id() const { return m_id; }
 
+        /** returns wether this player want this game to
+          * count twice or not
+          */
         bool geklopft() const { return m_geklopft; }
         bool hasDoubled() const { return m_has_doubled; }
 

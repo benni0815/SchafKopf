@@ -20,11 +20,9 @@
 #ifndef GAMECANVAS_H
 #define GAMECANVAS_H
 
-#include <qcanvas.h>
+#include "schafkopfdef.h"
 
-#ifndef PLAYERS
-    #define PLAYERS 4
-#endif
+#include <qcanvas.h>
 
 class CanvasCard;
 class Card;

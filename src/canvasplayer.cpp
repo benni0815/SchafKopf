@@ -28,18 +28,6 @@
 #include <qcanvas.h>
 #include <qfont.h>
 
-/** Uncomment this line to make all cards
-  * user visible, this is useful for debuggin
-  * and improving the AI.
-  * But it might cause problems in network mode for cheaters!!
-  */
-//#define CHEAT
-
-#ifdef CHEAT
-    #warning "CHEATING ENABLED!!!"
-#endif
-#define NUMCARDS 8
-
 CanvasPlayer::CanvasPlayer( QCanvas* canvas )
     :m_canvas( canvas )
 {

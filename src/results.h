@@ -35,8 +35,6 @@ or money who has to give to whom.
 
 class Results{
     public:
-        ~Results();
-        
         void setLaufende( int l ) { m_laufende = l; }
         void setGameInfo( GameInfo* info ) { m_gameinfo = info; }
 

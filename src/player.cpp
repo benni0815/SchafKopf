@@ -3,7 +3,6 @@
 #include "game.h"
 #include "cardlist.h"
 
-
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -46,12 +45,16 @@ CardList *Player::cards() const
 
 void Player::setCards( CardList *cards)
 {
+    unsigned int i = 0;
     delete m_cards;
     
     m_has_doubled = false;
     m_geklopft = false;
     
     m_cards=cards;
+    // tell the card WHO owns them and WHOM they should serve! ;-)
+    for(i=0;i<cards->count();i++)
+        m_cards->at(i)->setOwner( this );
 }
 
 void Player::sortCards()

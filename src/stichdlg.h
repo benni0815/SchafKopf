@@ -20,16 +20,19 @@
 #ifndef STICHDLG_H
 #define STICHDLG_H
 
+#include "schafkopfdef.h"
+
 #include <kdialogbase.h>
 
-#include "game.h"
-
+class Game;
 class QLabel;
 /**
 Show the last trick which was made
 
 @author Dominik Seichter
 */
+
+#include "game.h"
 
 class StichDlg : public KDialogBase
 {
@@ -42,6 +45,7 @@ class StichDlg : public KDialogBase
         void changed(unsigned int id);
         
     private:
+        QLabel* trick;
         QLabel* cards[PLAYERS];
         QLabel* players[PLAYERS];
             

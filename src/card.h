@@ -24,6 +24,8 @@
 #include <qstring.h>
 
 class QPixmap;
+class Player;
+
 /**
 This class represents one card.
 
@@ -60,7 +62,19 @@ class Card : public QObject {
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
-        
+
+	/** set the owner of the card.
+	  * only do this when the cards are given,
+	  * not after a trick was made!
+	  */
+        const Player* owner() const { return m_owner; }
+      	
+        /** return the owner of this card.
+          * we need this to be able to know who
+          * played this card of the trick was made.
+          */
+        void setOwner( Player* owner ) { m_owner = owner; }
+
         /** this operator< is not quite correct,
           * it just tells wether ass is bigger than 10 or 10 
           * is bigger than king, but does not care
@@ -68,13 +82,16 @@ class Card : public QObject {
           * So it does not care for Wenz or Solo's.
           * it is used in Game::highesCard
           */
-        bool operator< ( Card* c );
+        bool operator<( Card* c );
 
 	bool isEqual(Card* othercard);
+
     private slots:
         void cardChanged();
         
     private:
+        Player* m_owner;
+        
         int m_points;
         int m_color;
         int m_card;

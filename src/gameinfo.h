@@ -35,6 +35,9 @@ class GameInfo{
         enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH, DACHS };
         GameInfo();
         ~GameInfo();
+        
+        void setValid( bool b ) { m_valid = b; }
+        bool isValid() const { return m_valid; }
 
         int color() const { return m_color; }
         void setColor( int c ) { m_color = c; }
@@ -71,6 +74,7 @@ class GameInfo{
         bool operator>( GameInfo info );
         
     private:
+        bool m_valid;
         int m_color;
         __mode m_mode;
         Player *m_spieler;

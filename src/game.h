@@ -20,16 +20,15 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "schafkopfdef.h"
+
 #include "cardlist.h"
 #include "gameinfo.h"
 
 #include <qobject.h>
 
-#define PLAYERS 4
-#define TURNS 8
-
-class GameCanvas;
 class Player;
+class GameCanvas;
 
 /**
 @author Dominik Seichter
@@ -50,17 +49,20 @@ class Game : public QObject
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 
-		bool isTerminated() const { return terminated; }
+	bool isTerminated() const { return terminated; }
 		
-		bool isHigher( Card* card, Card* high );
+	bool isHigher( Card* card, Card* high );
 		
-	signals:        
+    signals:        
         void gameStarted();
         void gameEnded();
     
         void playerPlayedCard( unsigned int player, Card* );
         void playerMadeStich( unsigned int player );
         void playerResult( const QString & name, const QString & result );
+        
+        void signalSetupGameInfo();
+        void signalDoubled();
         
     public slots:
         void endGame(void);
