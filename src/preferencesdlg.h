@@ -44,6 +44,9 @@ class PreferencesDlg : public KDialogBase
        
     protected:
         void accept();
+    
+    private slots:
+        void enableControls();
         
     private:
         void addPagePlayer();

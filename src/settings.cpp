@@ -226,4 +226,21 @@ int Settings::noGame() const
     return e;
 }
 
+void Settings::setDoublerHasToPlay( bool b )
+{
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    config->writeEntry( "DoublerHasToPlay", b );
+    config->sync();
+}
+
+bool Settings::doublerHasToPlay() const
+{
+    bool b = false;
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    b = config->readBoolEntry( "DoublerHasToPlay", b );
+    return b;
+}
+
 #include "settings.moc"

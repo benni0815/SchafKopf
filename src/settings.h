@@ -78,6 +78,9 @@ class Settings : public QObject
           */
         int noGame() const;
         
+        void setDoublerHasToPlay( bool b );
+        bool doublerHasToPlay() const;
+        
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
         /** delete after usage

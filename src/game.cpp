@@ -318,28 +318,8 @@ bool Game::setupGameInfo(Player *players[])
     
     if( games.isEmpty() )
     {
-        if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
-        {
-            m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
-            m_gameinfo.setValid( false );
-            emit signalSetupGameInfo();
+        if( !setupGameInfoForced() )
             return false;
-        }
-        else if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
-        {
-            // find player with eichel ober
-            for( i=0;i<PLAYERS;i++ )
-                if( m_players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
-                {
-                    GameInfo* info = m_players[i]->gameInfo( true );
-                    info->setSpieler( m_players[i] );
-                    m_gameinfo = *info;
-                    delete info;
-                    
-                    m_canvas->information( i18n("%1 has the Eichel Ober and has to play.").arg( m_players[i]->name() ) );
-                    break;
-                }
-        }
     } 
     else
     {
@@ -373,6 +353,54 @@ bool Game::setupGameInfo(Player *players[])
     m_gameinfo.setValid( true );
     emit signalSetupGameInfo();
     return true;
+}
+
+bool Game::setupGameInfoForced()
+{
+    int i;
+    GameInfo* info;
+    
+    if( Settings::instance()->doublerHasToPlay() )
+    {
+        // if someone has doubled he is forced to player
+        // only the first one who is doubled is forced to play
+        for( i=0;i<PLAYERS;i++ )
+            if( m_players[i]->geklopft() )
+            {
+                m_canvas->information( i18n("%1 has doubled and has to play now.").arg( m_players[i]->name() ) );
+    
+                info = m_players[i]->gameInfo( true );
+                info->setSpieler( m_players[i] );
+                m_gameinfo = *info;
+                delete info;
+                return true;
+            }
+    }
+        
+    if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
+    {
+        m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
+        m_gameinfo.setValid( false );
+        emit signalSetupGameInfo();
+        return false;
+    }
+    else if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
+    {
+        // find player with eichel ober
+        for( i=0;i<PLAYERS;i++ )
+            if( m_players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
+            {
+                m_canvas->information( i18n("%1 has the Eichel Ober and has to play.").arg( m_players[i]->name() ) );
+                
+                info = m_players[i]->gameInfo( true );
+                info->setSpieler( m_players[i] );
+                m_gameinfo = *info;
+                delete info;
+                return true;
+            }
+    }
+    
+    return false;
 }
 
 void Game::resetGameResults()

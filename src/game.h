@@ -83,6 +83,30 @@ class Game : public QObject
           * of the players to represent the changes in the UI
           */
         void updatePlayerNames();
+
+    private:
+		/** give cards to the player and begin a new gameinfo
+		 */
+		void start();
+        /** Display the results of the game (winner/loser)
+          * to the user. Called after each game.
+          */
+        void gameResults();
+		
+        /** find a player who wants to playerPlayedCard 
+          * and setup m_gameinfo according to this
+          * returns true on succes
+          * and false when no one wants to playerPlayedCard
+          * and a new game should be started
+          */
+       bool setupGameInfo(Player *players[]);
+       
+       /** internal helper function for setupGameInfo().
+         * handles all cases when no player wants to play.
+         * It forces players in certain cases to play according
+         * to the users settings.
+         */
+       bool setupGameInfoForced();
         
     private:
         bool terminated;
@@ -95,18 +119,6 @@ class Game : public QObject
                 
         GameCanvas *m_canvas;
         
-		/** give cards to the player and begin a new gameinfo
-		 */
-		void start();
-        void gameResults();
-		
-        /** find a player who wants to playerPlayedCard 
-          * and setup m_gameinfo according to this
-          * returns true on succes
-          * and false when no one wants to playerPlayedCard
-          * and a new game should be started
-          */
-       bool setupGameInfo(Player *players[]);
 };
 
 #endif

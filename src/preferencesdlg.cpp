@@ -47,6 +47,8 @@ PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     addPageResults();
     addPageResultsMoney();
     addPageResultsPoints();
+    
+    enableControls();
 }
 
 
@@ -82,6 +84,7 @@ void PreferencesDlg::accept()
     Settings::instance()->setPlayerNames( names );
     
     Settings::instance()->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
+    Settings::instance()->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
     
     KDialogBase::accept();
 }
@@ -132,6 +135,12 @@ void PreferencesDlg::addPageRules()
         m_radioForcedGame->setChecked( true );
     else
         m_radioThrowAway->setChecked( true );
+        
+    m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
+    
+    // connections
+    connect( m_radioThrowAway, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect( m_radioForcedGame, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
 }
 
 void PreferencesDlg::addPageResults()
@@ -234,6 +243,11 @@ void PreferencesDlg::addPageResultsPoints()
     layout->addItem( spacer );
     
     delete r;
+}
+
+void PreferencesDlg::enableControls()
+{
+    m_checkDoubleNextGame->setEnabled( m_radioThrowAway->isChecked() );
 }
 
 #include "preferencesdlg.moc"
