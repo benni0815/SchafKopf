@@ -67,6 +67,6 @@ void CardList::randomize()
     for(i=0;i<CARD_CNT;i++)
         append(at(rnd[i]));
     for(i=0;i<CARD_CNT;i++)
-        remove(i);
+        remove(first()); // we always remove the first item
 }
 
