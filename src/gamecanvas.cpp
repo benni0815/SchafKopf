@@ -207,10 +207,10 @@ void GameCanvas::positionObjects()
                 m_names[i]->move( (w-m_names[i]->boundingRect().width())/2, y-m_names[i]->boundingRect().height() );
                 break;
             case 1:
-                x=w-cardw;
+                x=DIST; 
                 y=(h-((cardh/2)*(num-1)+cardh))/2; 
                 
-                m_names[i]->move(x, y-m_names[i]->boundingRect().height());
+                m_names[i]->move(x,y-m_names[i]->boundingRect().height());
                 break;
             case 2: 
                 x=(w-((cardw/2)*(num-1)+cardw))/2;
@@ -221,10 +221,10 @@ void GameCanvas::positionObjects()
                 break;
             case 3:
             default:
-                x=DIST; 
+                x=w-cardw;
                 y=(h-((cardh/2)*(num-1)+cardh))/2; 
                 
-                m_names[i]->move(x,y-m_names[i]->boundingRect().height());
+                m_names[i]->move(x, y-m_names[i]->boundingRect().height());
                 break;
         }
         
@@ -272,12 +272,12 @@ QPoint GameCanvas::getStichPosition( int player )
         case 0:
             p = QPoint(cx, cy+(cardh/2)); break;
         case 1:
-            p = QPoint(cx+cardw, cy); break;
+            p = QPoint(cx-cardw, cy); break;
         case 2:
             p = QPoint(cx, cy-(cardh/2)); break;
         case 3:
         default:
-            p = QPoint(cx-cardw, cy); break;
+            p = QPoint(cx+cardw, cy); break;
     };
         
     return p;
