@@ -154,14 +154,14 @@ void GameCanvas::positionObjects(bool redraw)
         m_stich[i]->move( (int)p.x(), (int)p.y() );
     }
 
-    m_message->move( ( canvas()->width() - m_message->boundingRect().width() )/2,
-                   (( canvas()->height() - m_message->boundingRect().height() ) / 2) - m_message->boundingRect().height() );
+    m_message->move( canvas()->width()/2, canvas()->height()/2 );
+    m_message->setTextFlags(Qt::AlignCenter);
     m_ok->move( ( canvas()->width() - m_ok->boundingRect().width() )/2,
-                     m_message->y() + m_message->boundingRect().height() );
-    m_yes->move( m_message->x(), 
-                 m_message->y() + m_message->boundingRect().height() );
-    m_no->move( m_message->x() + m_message->boundingRect().width() - m_no->boundingRect().width(), 
-                m_message->y() + m_message->boundingRect().height() );
+                     m_message->y() + m_message->boundingRect().height()*2/3 );
+    m_yes->move( m_message->x() - m_message->boundingRect().width()/2, 
+                 m_message->y() + m_message->boundingRect().height()*2/3 );
+    m_no->move( m_message->x() + m_message->boundingRect().width()/2 - m_no->boundingRect().width(), 
+                m_message->y() + m_message->boundingRect().height()*2/3 );
     
     if(redraw)
     {
@@ -398,7 +398,6 @@ void GameCanvas::yesNoClicked( QCanvasItem* item )
 void GameCanvas::information( const QString & message )
 {
     m_message->setText( message );
-    
     m_message->show();
     m_ok->show();
 
