@@ -224,63 +224,33 @@ int Game::highestCard()
 
 bool Game::isHigher( Card* card, Card* high )
 {
-/*
-	 if( m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) )
-        return true;
-    else if( m_gameinfo.istTrumpf( card ) && m_gameinfo.istTrumpf( high ) )
-    {
-        if( card->card() == high->card()  )
-            return (card->color() < high->color());
-        else if( card->card() != high->card() )
-        {
-            switch( m_gameinfo.mode() )
-            {
-                case GameInfo::RAMSCH:
-                case GameInfo::RUFSPIEL:
-                case GameInfo::STICHT:
-                    if( card->card() == Card::OBER )
-                        return true;
-                    else if( high->card() == Card::OBER )
-                        return false;
-                    else if( card->card() == Card::UNTER )
-                        return !(high->card() == Card::OBER);
-                    else if( high->card() == Card::UNTER )        
-                        return !(card->card() == Card::OBER );
-                    break;
-                case GameInfo::GEIER:
-                    if( card->card() == Card::OBER )
-                        return true;
-                    else if( high->card() == Card::OBER )
-                        return false;
-                case GameInfo::WENZ:
-                    if( card->card() == Card::UNTER )
-                        return true;
-                    else if( high->card() == Card::UNTER )
-                        return false;
-                case GameInfo::DACHS:
-                    if( card->card() == Card::SAU )
-                        return true;
-                    else if( high->card() == Card::SAU )
-                        return false;
-                default:
-                    break;
-            }
-            
-            return (*card < high);
-        }
-    }
-    else if( !m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) ) // beide kein trumpf
-    {
-        // die farbe ist anders als die farbe der ersten/hoechsten 
-        // karte aber diese karte is kein trumfh, kann
-        // also ned stechen
-        if( card->color() == high->color() && *card < high )
-            return true;
-    }
-
-    return false;
-*/
-	return m_gameinfo.evalCard(card, &m_gameinfo) > m_gameinfo.evalCard(high, &m_gameinfo);
+	int cardVal, highVal;
+	int colcnt;
+	
+	cardVal=m_gameinfo.evalCard(card, &m_gameinfo);
+	highVal=m_gameinfo.evalCard(high, &m_gameinfo);
+	if(m_gameinfo.istTrumpf(card) || m_gameinfo.istTrumpf(high))
+		return highVal < cardVal;
+	else
+	{
+		switch( m_gameinfo.mode() )
+		{
+			case GameInfo::GEIER:
+			case GameInfo::WENZ:
+				colcnt=7;
+				break;
+			case GameInfo::RAMSCH:
+			case GameInfo::RUFSPIEL:
+			case GameInfo::STICHT:
+			case GameInfo::DACHS:
+			default:
+				colcnt=6;
+				break;
+		}
+		if((highVal-1)/colcnt==(cardVal-1)/colcnt)
+			return highVal < cardVal;
+	}
+	return false;
 }
 
 void Game::gameResults()
