@@ -68,7 +68,8 @@ SchafKopf::~SchafKopf()
 
 void SchafKopf::setupActions()
 {
-    KAction* m_actNew;
+    KAction *m_actNew;
+	//KAction *m_actExit;
 	KPopupMenu* mnuGame = new KPopupMenu( this );
     KPopupMenu* mnuSettings = new KPopupMenu( this );
     
@@ -89,7 +90,10 @@ void SchafKopf::setupActions()
     m_actEnd->plug( toolBar() );
 
     KStdGameAction::quit( kapp, SLOT( quit() ) )->plug( mnuGame );
-    
+	//m_actExit = KStdGameAction::quit( this, SLOT( endGame() ) );
+	connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+	//m_actExit->plug( mnuGame );
+	
     KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
     KStdAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
     
