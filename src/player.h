@@ -14,7 +14,7 @@ class Player
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
 		
-		Player(Game* game);
+		Player(unsigned int id, Game* game);
         // this destructor should be virtual
         // but setting it to virtual makes everything
         // crash. Seems to be a good lenz-job ;) ...
@@ -82,7 +82,6 @@ class Player
 		bool istTrumpf(Card* card);
         
     private:
-        static unsigned int def_id;
         double m_points;
 		
 		CardList* PlayerCards();

@@ -27,8 +27,8 @@
 
 #include <klocale.h>
 
-HumanPlayer::HumanPlayer(Game* game)
- : Player(game)
+HumanPlayer::HumanPlayer(unsigned int id, Game* game)
+ : Player(id,game)
 {
     m_allowed = NULL;
     m_card = NULL;

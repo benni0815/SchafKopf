@@ -27,8 +27,8 @@
 
 #include <kapplication.h>
 
-ComputerPlayer::ComputerPlayer(Game* game)
-	: Player(game)
+ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
+	: Player(id,game)
 {
 	int i;
 	

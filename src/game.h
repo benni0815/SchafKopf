@@ -105,6 +105,8 @@ class Game : public QThread
         void run();
 
     private:
+        static unsigned int def_id;
+        
         sem_t* m_sem;
         bool terminated;
         Player *m_players[PLAYERS];

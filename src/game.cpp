@@ -35,6 +35,8 @@
 #include <kmessagebox.h>
 #include <string.h>
 
+unsigned int Game::def_id=0;
+
 Game::Game(sem_t* sem, QObject *parent )
  : QThread()
 {
@@ -48,9 +50,9 @@ Game::Game(sem_t* sem, QObject *parent )
     
     // Create our player objects
     // delete these only in the destructor    
-    m_players[0] = new HumanPlayer( this );
+    m_players[0] = new HumanPlayer( def_id++, this );
     for( i=1;i<PLAYERS;i++)
-        m_players[i] = new ComputerPlayer( this );
+        m_players[i] = new ComputerPlayer( def_id++, this );
     
     updatePlayerNames();
     
@@ -501,7 +503,7 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
     data->playernames = names;
     data->returncode = NULL;
     data->quitgame = false;
-    
+        
     KApplication::postEvent( m_parent, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT, (void*)data) );
     if( wait )
     {
@@ -511,7 +513,7 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
             endGame();
 
         ret = data->returncode;
-        
+    
         if( data->cardids )
             delete [] data->cardids;
                 

@@ -53,11 +53,28 @@ typedef struct t_EventData {
     void* returncode;
     int* cardids;
 
+    
     bool wait;
     bool quitgame;
     
     QStringList* playernames;
     QString data;
+};
+
+typedef struct t_PlayerData {
+    unsigned int id1;
+    int* cards1;
+    
+    unsigned int id2;
+    int* cards2;
+
+    unsigned int id3;
+    int* cards3;
+
+    unsigned int id4;
+    int* cards4;
+
+    unsigned int lastid;
 };
 
 /** Uncomment this line to make all cards

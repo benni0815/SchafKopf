@@ -52,6 +52,7 @@ class CanvasPlayer{
         void setName( const QString & name );
         void setCards( CardList* cards );
         
+        CanvasCard* canvasCard( int index );
         void cardPlayed( Card* c );
         CanvasCard* hasCard( int cardid ) const; 
         

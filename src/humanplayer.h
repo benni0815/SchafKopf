@@ -25,7 +25,7 @@
 class HumanPlayer : public Player
 {
     public:
-        HumanPlayer(Game* game);
+        HumanPlayer(unsigned int id, Game* game);
         ~HumanPlayer();
         
         void klopfen();

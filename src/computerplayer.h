@@ -30,7 +30,7 @@ class CardList;
 class ComputerPlayer : public Player
 {
     public:
-        ComputerPlayer(Game* game);
+        ComputerPlayer(unsigned int id,Game* game);
         ~ComputerPlayer();
         
 		void init();

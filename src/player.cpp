@@ -8,14 +8,12 @@
 #include <cstdlib>
 using namespace std;
 
-unsigned int Player::def_id=0;
-
-Player::Player(Game* game)
+Player::Player(unsigned int id, Game* game)
     : m_game( game )
 {
     m_stiche = new CardList();
     m_points = 0.0;
-    m_id=def_id++;
+    m_id=id;
     m_cards = NULL;
     
     m_has_doubled = false;

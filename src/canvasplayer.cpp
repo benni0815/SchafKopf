@@ -207,6 +207,18 @@ void CanvasPlayer::init()
     }
 }
 
+CanvasCard* CanvasPlayer::canvasCard( int index )
+{
+    if( index < 0 || index >= NUMCARDS )
+        return NULL;
+        
+    CanvasCard* card = m_items[index];
+    if( card->isVisible() )
+        return card;
+    else 
+        return NULL;
+}
+
 CanvasCard* CanvasPlayer::hasCard( int cardid ) const
 {
     for(unsigned int i=0;i<NUMCARDS;i++)

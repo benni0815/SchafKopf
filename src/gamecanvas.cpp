@@ -32,6 +32,22 @@
 #include <qtimer.h>
 #include <qimage.h>
 
+class CanvasText : public QCanvasText {
+    public:
+        CanvasText( const QString & t, const QFont & f, QCanvas* c )
+            : QCanvasText( t, f, c )
+        {
+            setActive( false );
+        }
+        
+        void setActive( bool b )
+        {
+            setColor( b ? Qt::white : Qt::yellow );
+            QCanvasText::setActive( b );
+        }
+
+};
+
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
@@ -46,15 +62,11 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
         
     QFont f( "Helvetica", 24 );
     
-    m_message = new QCanvasText( QString::null, f, canvas() );;
-    m_yes = new QCanvasText( i18n("Yes"), f, canvas() );;
-    m_no = new QCanvasText( i18n("No"), f, canvas() );;
-    m_ok = new QCanvasText( i18n("OK"), f, canvas() );
+    m_message = new CanvasText( QString::null, f, canvas() );;
+    m_yes = new CanvasText( i18n("Yes"), f, canvas() );;
+    m_no = new CanvasText( i18n("No"), f, canvas() );;
+    m_ok = new CanvasText( i18n("OK"), f, canvas() );
     
-    m_message->setColor( Qt::yellow );
-    m_yes->setColor( Qt::yellow );
-    m_no->setColor( Qt::yellow );
-    m_ok->setColor( Qt::yellow );
     
     // Does not work :-(
     /*
@@ -65,6 +77,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     */
     
     m_result = 0;
+    setFocusPolicy( QWidget::StrongFocus );
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     
@@ -74,6 +87,13 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
+    
+    m_focus_list.append( m_yes );
+    m_focus_list.append( m_no );
+    m_focus_list.append( m_ok );
+    for( i=0;i<NUMCARDS;i++ )
+        m_focus_list.append( m_players[0]->canvasCard( i ) );
+    
 }    
 
 GameCanvas::~GameCanvas()
@@ -192,8 +212,24 @@ int GameCanvas::getStichRotation( int player )
 
 int GameCanvas::getCard()
 {
+    CanvasPlayer* human = humanPlayer();
+    CanvasCard* c = NULL;
+    unsigned int i;
+    
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
     m_result = -1;
+
+    if( hasFocus() )
+        for( i=0;i<NUMCARDS;i++)
+        {
+            c = human->canvasCard( i );
+            if( c )
+            {
+                c->setActive( true );
+                break;
+            }
+        }
+    
     ENTER_LOOP();
     
     return m_result;
@@ -201,6 +237,9 @@ int GameCanvas::getCard()
 
 void GameCanvas::cardClicked( QCanvasItem* item )
 {
+    if( item )
+        item->setActive( false );
+        
     if( item->rtti() == CANVASCARD ) 
     {
         CanvasCard* card = static_cast<CanvasCard*>(item);
@@ -339,6 +378,82 @@ void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
     }
 }
 
+void GameCanvas::keyPressEvent(QKeyEvent* e)
+{
+    unsigned int i = 0;
+    int z = 0;
+    
+    if( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
+    {
+        for( i=0;i<m_focus_list.count();i++ )
+            if( m_focus_list[i]->isActive() )
+            {
+                if( m_focus_list[i]->rtti() == QCanvasItem::Rtti_Text )                
+                    yesNoClicked( m_focus_list[i] );
+                else if( m_focus_list[i]->rtti() == CANVASCARD )
+                    cardClicked( m_focus_list[i] );
+            }
+    }
+    else if( e->key() == Qt::Key_Right )
+    {
+        for( i=0;i<m_focus_list.count();i++ )
+            if( m_focus_list[i]->isActive() )
+            {
+                for( z=i+1;z<m_focus_list.count();z++ )
+                    if( m_focus_list[z]->isVisible() )
+                    {
+                        if( m_message->isVisible() && m_focus_list[z]->rtti() == CANVASCARD )
+                            continue;
+                            
+                        m_focus_list[i]->setActive( false );
+                        m_focus_list[z]->setActive( true );
+                        break;
+                    }
+                break;
+            }
+    }
+    else if( e->key() == Qt::Key_Left )
+    {
+        for( i=0;i<m_focus_list.count();i++ )
+            if( m_focus_list[i]->isActive() )
+            {
+                for( z=i-1;z>=0;z-- )
+                    if( m_focus_list[z]->isVisible() )
+                    {
+                        if( m_message->isVisible() && m_focus_list[z]->rtti() == CANVASCARD )
+                            continue;
+
+                        m_focus_list[i]->setActive( false );
+                        m_focus_list[z]->setActive( true );
+                        break;
+                    }
+                break;
+            }
+    }
+}
+
+void GameCanvas::focusInEvent(QFocusEvent*)
+{
+    int i;
+    for(i=0;i<m_focus_list.count();i++)
+        if( m_focus_list[i]->isVisible() )
+        {
+            m_focus_list[i]->setActive( true );
+            break;
+        }
+}
+
+void GameCanvas::focusOutEvent(QFocusEvent*)
+{
+    int i;
+    for(i=0;i<m_focus_list.count();i++)
+        if( m_focus_list[i]->isActive() )
+        {
+            m_focus_list[i]->setActive( false );
+            break;
+        }
+}
+
 bool GameCanvas::questionYesNo( const QString & message )
 {
     m_result = NO;
@@ -351,6 +466,8 @@ bool GameCanvas::questionYesNo( const QString & message )
     positionObjects();
     
     canvas()->update();
+    if( hasFocus() )
+        m_yes->setActive( true );
     ENTER_LOOP();
     
     m_message->hide();
@@ -364,6 +481,9 @@ bool GameCanvas::questionYesNo( const QString & message )
 
 void GameCanvas::yesNoClicked( QCanvasItem* item )
 {
+    if( item )
+        item->setActive( false );
+        
     if( m_message && ((m_yes && m_no) || m_ok ))
     {
         if( item == m_yes )
@@ -393,6 +513,8 @@ void GameCanvas::information( const QString & message )
     positionObjects();
     
     canvas()->update();
+    if( hasFocus() )
+        m_ok->setActive( true );
     ENTER_LOOP();
 
     m_message->hide();
@@ -463,6 +585,15 @@ void GameCanvas::setPlayerCards( unsigned int id, int* cards )
     for(i=0;i<PLAYERS;i++)
         if( m_players[i]->id() == id )
             m_players[i]->setCards( &list );
+}
+
+CanvasPlayer* GameCanvas::humanPlayer() const
+{
+    int i;
+    for( i = 0; i < PLAYERS; i++ ) 
+        if( m_players[i]->isHuman() )
+            return m_players[i];
+    return NULL;
 }
 
 #include "gamecanvas.moc"

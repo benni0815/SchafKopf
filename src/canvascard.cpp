@@ -66,17 +66,25 @@ void CanvasCard::draw( QPainter & p )
         KPixmap pix = pixmap->xForm( wm );
         if( m_forbidden )
             pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
-        
+        else if( isActive() )
+            pix = KPixmapEffect::fade( pix, 0.25, Qt::yellow );
+            
         setSize( pix.width()+3, pix.height()+3 );
         bitBlt( p.device(), point.x(), point.y(), &pix );
         if(loadOK1 && loadOK2)
         {
-	if( m_rotation==0 || m_rotation==180)
-            bitBlt( p.device(), point.x(), point.y(), &Shadow );
-        else
-            bitBlt( p.device(), point.x(), point.y(), &Shadow2 );
+            if( m_rotation==0 || m_rotation==180)
+                bitBlt( p.device(), point.x(), point.y(), &Shadow );
+            else
+                bitBlt( p.device(), point.x(), point.y(), &Shadow2 );
         }
     }
+}
+
+void CanvasCard::setActive( bool b )
+{
+    QCanvasItem::update();
+    QCanvasItem::setActive( b );
 }
 
 void CanvasCard::setFrontVisible( bool b )
