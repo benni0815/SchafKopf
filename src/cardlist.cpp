@@ -53,13 +53,17 @@ void CardList::randomize()
     init();
     for(i=0;i<CARD_CNT;i++)
     {
+    top:
         rval=KApplication::random()%CARD_CNT;
         for(a=0;a<i;a++)
         {
             if(rnd[a]==rval)
             {
-                i--;
-                break;
+                //i--;
+                //break; break does not work here,
+                // as rnd[i-1] get rval assigned
+                // as a reason this goto solution
+		goto top;
             }
         }
         rnd[i]=rval;

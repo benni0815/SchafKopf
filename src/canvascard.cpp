@@ -62,4 +62,4 @@ void CanvasCard::setRotation( int d )
     m_rotation = d;
 }
 
-#include "canvascard.moc"
+

@@ -37,14 +37,14 @@ class GameCanvas : public QCanvasView
     
     private slots:
         void redrawAll();
-        
+        /** Position the cards on the screen correctly
+          */
+        void lineupCards();
+                
     private:
         /** Create QCanvasItem's for all Cards 
           */
         void createCards();
-        /** Position the cards on the screen correctly
-          */
-        void lineupCards();
 
         void resizeEvent( QResizeEvent *r );
         

@@ -48,7 +48,7 @@ SchafKopf::SchafKopf()
     m_canvas = new QCanvas( this, "canvas" );
     m_canvasview = new GameCanvas( m_canvas, w, "canvasview" );
     m_canvasview->setGame( m_game );
-    //m_game->gameLoop();
+    m_game->gameLoop();
         
     setupActions();
 }

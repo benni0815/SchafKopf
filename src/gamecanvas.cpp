@@ -47,9 +47,10 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     canvas()->setBackgroundColor( Qt::darkGreen );
     update();
     
-    connect( this, SLOT(redrawAll()), Settings::instance(), SLOT(cardChanged()));
+    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawAll()));
+    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(lineupCards()));
 }
-
+    
 
 GameCanvas::~GameCanvas()
 {
@@ -94,6 +95,8 @@ void GameCanvas::createCards()
 
 void GameCanvas::lineupCards()
 {
+    //TODO: check first wether m_items is initialized
+    
     int w = canvas()->width()-DIST;
     int h = canvas()->height()-DIST;
     int cardw = Card::backgroundPixmap()->width();
