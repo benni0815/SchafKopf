@@ -25,8 +25,6 @@
 #include "gamecanvas.h"
 #include "gameinfo.h"
 #include "results.h"
-#include "moneyresults.h"
-#include "pointresults.h"
 
 #include "settings.h"
 
