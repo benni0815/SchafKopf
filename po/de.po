@@ -348,11 +348,11 @@ msgid " no-trick"
 msgstr " Schwarz"
 
 #: results.cpp:48
-msgid " win with %1 Points%2."
+msgid " wins with %1 points%2."
 msgstr " gewinnt mit %1 Augen%2."
 
 #: results.cpp:50
-msgid " looses with %1 Points%2."
+msgid " loses with %1 points%2."
 msgstr " verliert mit %1 Augen%2."
 
 #: results.cpp:55

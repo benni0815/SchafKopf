@@ -45,16 +45,16 @@ QString Results::result()
     QString schwarz = m_schwarz ? i18n(" no-trick") : QString::null;
     
     if( m_points > 60 )
-        s = m_gameinfo->spieler()->name() + QString(i18n(" wins with %1 Points%2.")).arg( m_points ).arg( schneider + schwarz );
+        s = m_gameinfo->spieler()->name() + QString(i18n(" wins with %1 points%2.")).arg( m_points ).arg( schneider + schwarz );
     else
-        s = m_gameinfo->spieler()->name() + QString(i18n(" looses with %1 Points%2.") ).arg( m_points ).arg( schneider + schwarz );
+        s = m_gameinfo->spieler()->name() + QString(i18n(" loses with %1 points%2.") ).arg( m_points ).arg( schneider + schwarz );
     
     if( m_laufende )
     {
         if( positive )
-            s += m_gameinfo->spieler()->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
+            s += "\n" + m_gameinfo->spieler()->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
         else
-            s += m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
+            s += "\n" + m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
     }
     
     return s;
