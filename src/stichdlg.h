@@ -26,7 +26,7 @@
 
 class QLabel;
 /**
-Show the last "stich" which was made
+Show the last trick which was made
 
 @author Dominik Seichter
 */

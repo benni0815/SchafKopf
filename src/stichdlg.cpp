@@ -29,7 +29,7 @@
 #include <klocale.h>
 
 StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
-    : KDialogBase( KDialogBase::Plain, i18n("Last Stich"),
+    : KDialogBase( KDialogBase::Plain, i18n("Last Trick"),
       KDialogBase::Close, KDialogBase::Close, parent,name, false),
       m_game( g)
 {
