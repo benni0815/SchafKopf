@@ -96,21 +96,21 @@ int newgamewizard::getGame()
 
 QString newgamewizard::getGameInfoString(int gameType)
 {
-	switch(gameType)
-	{
-			case GAME_LOCAL:
-			return
-			    i18n("Start a local Game:\nYou will play against\n3 Computer Players");
-			break;
-			case GAME_NETWORK_SERVER:
-			return
-			    i18n("Start a Game Server\nYou will be the host\nof a new Network game");
-			break;
-			case GAME_NETWORK_CLIENT:
-			return
-			    i18n("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
-			break;
-	}
+    switch(gameType)
+    {
+      case GAME_LOCAL:
+          return
+              i18n("Start a local Game:\nYou will play against\n3 Computer Players");
+          break;
+      case GAME_NETWORK_SERVER:
+          return
+              i18n("Start a Game Server\nYou will be the host\nof a new Network game");
+          break;
+      case GAME_NETWORK_CLIENT:
+          return
+              i18n("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
+          break;
+    }
 }
 
 void newgamewizard::setInfoText(int gameType)
