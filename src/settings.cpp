@@ -349,7 +349,7 @@ void Settings::setBackgroundImage( QString b)
 QString Settings::backgroundImage() const
 {
     QMutexLocker locker( m_mutex );
-    QString b="";
+    QString b = locate("appdata", "data/background01.jpg");
     KConfig* config = kapp->config();
     config->setGroup("SchafKopf");
     b = config->readEntry( "backgroundImage", b );
