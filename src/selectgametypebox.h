@@ -54,8 +54,8 @@ protected:
 	QRadioButton* checkGeier;
 	QRadioButton* checkWenz;
 	QRadioButton* checkDachs;
-	QVBox *page;
-	QHBox *row1;
+	QHBox *page;
+	QVBox *row1;
 	QButtonGroup* group_TypeSelect;
 	QLabel* preview;
 	QLabel* info;

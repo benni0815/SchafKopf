@@ -57,7 +57,7 @@ protected:
         QRadioButton* checkGras;
         QRadioButton* checkHerz;
         QRadioButton* checkSchellen;
-	QHBox* page;
+	QVBox* page;
 	QVBox* row1;
 	Card* m_Herz;
 	Card* m_Schelle;
