@@ -30,7 +30,7 @@
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */
-#define CHEAT
+//#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"
@@ -323,6 +323,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
             
             card->setRotation( 0 );
             card->setZ( player );
+			card->setFrontVisible( true );
          
 			point = getStichPosition(player);   
             card->move( point.x(), point.y() );
