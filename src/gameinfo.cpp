@@ -142,7 +142,7 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
             return false;
         } else
             delete sau;
-    } else if( mode==GameInfo::STICHT && color=Card::NOCOLOR )
+    } else if( mode==GameInfo::STICHT && color==Card::NOCOLOR )
         return false;
 
     return true;
