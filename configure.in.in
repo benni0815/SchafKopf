@@ -4,3 +4,7 @@ AM_INIT_AUTOMAKE(schafkopf, 0.3)
 AC_C_BIGENDIAN
 AC_CHECK_KDEMAXPATHLEN
 
+#AC_CHECK_HEADER("/usr/kde/3.3/include/kgame/kgame.h", , AC_MSG_ERROR("kgame.h not found. Please install kdegame."))
+
+KDE_CHECK_LIB(kdegames, main, , AC_MSG_ERROR("libkdegames not found. Please install kdegames."))
+
