@@ -24,6 +24,7 @@
 #include "cardlist.h"
 #include "player.h"
 #include "game.h"
+#include "settings.h"
 
 #include <qcanvas.h>
 #include <qfont.h>
@@ -89,6 +90,8 @@ void CanvasPlayer::position( int i )
         if(card->isVisible())
 		num++;
     }
+    if(!Settings::instance()->rearrangeCards())
+    	num=NUMCARDS;
     
     if(i==1||i==3)
         qSwap( cardw, cardh );
@@ -128,16 +131,23 @@ void CanvasPlayer::position( int i )
     for( unsigned int z = 0; z < NUMCARDS; z++ ) {
         CanvasCard* card = m_items[z];
         // only move if necessary!
-        if(card->isVisible())
+        if(card->isVisible() || !Settings::instance()->rearrangeCards())
 	{
 	if( x != card->x() || y != card->y() )
+	if(num==NUMCARDS)
             card->move( x, y );
-         
+	else
+	{
+	    card->setDestination( x, y );
+	    card->animatedMove();
+	} 
         if(i==0)
+	{
 	    if(availw>num*cardw+(num-1))
             	x += cardw+1;
 	    else
 	    	x += (availw-cardw)/(num-1);
+	}
         else if(i==2)
             x += (cardw/6);
         else

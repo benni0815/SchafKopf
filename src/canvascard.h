@@ -40,6 +40,9 @@ class CanvasCard : public QObject, public QCanvasRectangle
         
         void setFrontVisible( bool b );
         void setRotation( int d );
+	void animatedMove();
+	void setDestination( int x, int x );
+
         
         int rtti() const { return CANVASCARD; }
         
@@ -47,6 +50,9 @@ class CanvasCard : public QObject, public QCanvasRectangle
           * in the UI
           */
         void forbidden();
+    signals:
+	void checkStop();
+    
     private:
         void draw( QPainter & p );
         
@@ -55,11 +61,16 @@ class CanvasCard : public QObject, public QCanvasRectangle
         bool m_visible;
         bool m_forbidden;
         int m_rotation;
+	
+	int tox;
+	int toy;
+	QTimer *timer;
         
         Card* m_card;
 	
 	private slots:
 		void disableForbidden();
+		void moveLoop();
 };
 
 #endif

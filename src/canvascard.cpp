@@ -34,6 +34,7 @@ CanvasCard::CanvasCard(QCanvas*c)
     m_card = 0;
     m_forbidden = false;
     show();
+    timer = new QTimer( this );
 }
 
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
@@ -42,6 +43,7 @@ CanvasCard::CanvasCard(Card* card,QCanvas*c)
     setCard( card );
     m_forbidden = false;
     show();
+    //timer = new QTimer( this );
 }
 
 CanvasCard::~CanvasCard()
@@ -98,3 +100,32 @@ void CanvasCard::disableForbidden()
 	QCanvasRectangle::update();
 }
 
+void CanvasCard::setDestination( int x, int y )
+{
+	tox = x;
+	toy = y;
+}
+
+void CanvasCard::animatedMove()
+{
+	//timer = new QTimer( this );
+        connect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
+        timer->start( 5 );
+}
+
+void CanvasCard::moveLoop()
+{
+	if(tox>x())
+		moveBy( 1, 0 );
+	else if(tox!=x())
+		moveBy( -1, 0 );
+	if(toy>y())
+		moveBy( 0, 1 );
+	else if(toy!=y())
+		moveBy( 0, -1 );
+	if(tox==x() && toy==y())
+	{
+		timer->stop();
+		disconnect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
+	}
+}

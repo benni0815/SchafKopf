@@ -67,10 +67,10 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_result = 0;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
-    canvas()->setAdvancePeriod( 200 );
+    canvas()->setAdvancePeriod( 20 );
     update();
     
-	connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
+    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
