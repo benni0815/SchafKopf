@@ -277,4 +277,31 @@ bool Settings::rearrangeCards() const
     return b;
 }
 
+t_AllowedGames* Settings::allowedGames() const
+{
+    t_AllowedGames* a = new t_AllowedGames;
+    
+    KConfig* config = kapp->config();
+    config->setGroup( "Games" );
+    a->wenz = config->readBoolEntry( "AllowWenz", true );
+    a->farb_wenz = config->readBoolEntry( "AllowFarbWenz", true );
+    a->geier = config->readBoolEntry( "AllowGeier", true );
+    a->farb_geier = config->readBoolEntry( "AllowFarbGeier", false );
+    a->dachs = config->readBoolEntry( "AllowDachs", false );
+    
+    return a;
+}
+
+void Settings::setAllowedGames( const t_AllowedGames* allowed )
+{
+    KConfig* config = kapp->config();
+    config->setGroup( "Games" );
+    config->writeEntry( "AllowWenz", allowed->wenz );
+    config->writeEntry( "AllowFarbWenz", allowed->farb_wenz );
+    config->writeEntry( "AllowGeier", allowed->geier );
+    config->writeEntry( "AllowFarbGeier", allowed->farb_geier );
+    config->writeEntry( "AllowDachs", allowed->dachs );
+    config->sync();
+}
+
 #include "settings.moc"

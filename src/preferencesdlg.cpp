@@ -41,7 +41,7 @@ PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
       KDialogBase::Ok, parent, name, true, true )
 {
     addPagePlayer();
-    // addPageGame(); // erlaubte spiele
+    addPageGames(); // erlaubte spiele
     // addPageSchafkopf(); // ton an aus .....
     addPageRules();
     addPageResults();
@@ -60,36 +60,46 @@ PreferencesDlg::~PreferencesDlg()
 void PreferencesDlg::accept()
 {
     t_ResultValues r;
+    t_AllowedGames allowed;
+    Settings* s = Settings::instance();
     
-    Settings::instance()->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
+    s->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
     
     r.rufspiel = m_money_call->value();
     r.solo = m_money_solo->value();
     r.laufende = m_money_lauf->value();
     r.schneider = m_money_schneider->value();
     r.schwarz = m_money_notrick->value();
-    Settings::instance()->setMoneyResults( &r );
+    s->setMoneyResults( &r );
     
     r.rufspiel = m_point_call->value();
     r.solo = m_point_solo->value();
     r.laufende = m_point_lauf->value();
     r.schneider = m_point_schneider->value();
     r.schwarz = m_point_notrick->value();
-    Settings::instance()->setPointResults( &r );
+    s->setPointResults( &r );
    
     QStringList names; 
     names << m_p1_name->text();
     names << m_p2_name->text();
     names << m_p3_name->text();
     names << m_p4_name->text();
-    Settings::instance()->setPlayerNames( names );
+    s->setPlayerNames( names );
     
-    Settings::instance()->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
-    Settings::instance()->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
+    s->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
+    s->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
     
-    Settings::instance()->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
+    s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
     
-    Settings::instance()->setRearrangeCards( m_checkRearrangeCards->isChecked() );
+    s->setRearrangeCards( m_checkRearrangeCards->isChecked() );
+    
+    // allowed games
+    allowed.wenz = m_games_wenz->isChecked();
+    allowed.farb_wenz = m_games_farbwenz->isChecked();
+    allowed.geier = m_games_geier->isChecked();
+    allowed.farb_geier = m_games_farbgeier->isChecked();
+    allowed.dachs = m_games_dachs->isChecked();
+    s->setAllowedGames( &allowed );
     
     KDialogBase::accept();
 }
@@ -269,9 +279,62 @@ void PreferencesDlg::addPageView()
     m_checkRearrangeCards->setChecked( Settings::instance()->rearrangeCards() );
 }
 
+void PreferencesDlg::addPageGames()
+{
+    QFrame* box = addPage( i18n("Games"), QString::null, BarIcon("joystick") );
+    
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QHBoxLayout* farbWenzLayout = new QHBoxLayout( NULL, 6, 6 );
+    QHBoxLayout* farbGeierLayout = new QHBoxLayout( NULL, 6, 6 );
+    
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+    QSpacerItem* smallSpace = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
+    QSpacerItem* smallSpace2 = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
+    
+    m_games_wenz = new QCheckBox( i18n("&Wenz"), box );
+    m_games_farbwenz = new QCheckBox( i18n("Colored &Wenz"), box );
+    m_games_geier = new QCheckBox( i18n("&Geier"), box );
+    m_games_farbgeier = new QCheckBox( i18n("Colored &Geier"), box );
+    m_games_dachs = new QCheckBox( i18n("&Badger"), box );
+    
+    layout->addWidget( new QLabel( i18n("<qt>You can configure which games are allowed to play."
+                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default."), box ) );
+                                        
+    farbWenzLayout->addItem( smallSpace );
+    farbWenzLayout->addWidget( m_games_farbwenz );
+    farbGeierLayout->addItem( smallSpace2 );
+    farbGeierLayout->addWidget( m_games_farbgeier );
+    
+    layout->addWidget( m_games_wenz );
+    layout->addLayout( farbWenzLayout );
+    layout->addWidget( m_games_geier );
+    layout->addLayout( farbGeierLayout );
+    layout->addWidget( m_games_dachs );
+    layout->addItem( spacer );
+    
+    // load settings
+    t_AllowedGames* allowed = Settings::instance()->allowedGames();
+    m_games_wenz->setChecked( allowed->wenz );
+    m_games_farbwenz->setChecked( allowed->farb_wenz );
+    m_games_geier->setChecked( allowed->geier );
+    m_games_farbgeier->setChecked( allowed->farb_geier );
+    m_games_dachs->setChecked( allowed->dachs );
+    delete allowed;
+    
+    // connections
+    connect( m_games_wenz, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect( m_games_geier, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    
+    // tool tips
+    QToolTip::add( m_games_dachs, i18n("<qt>The badger is no official game in SchafKopf and is therefore not played and tournaments.") );
+}
+
 void PreferencesDlg::enableControls()
 {
     m_checkDoubleNextGame->setEnabled( m_radioThrowAway->isChecked() );
+    
+    m_games_farbwenz->setEnabled( m_games_wenz->isChecked() );
+    m_games_farbgeier->setEnabled( m_games_geier->isChecked() );
 }
 
 #include "preferencesdlg.moc"

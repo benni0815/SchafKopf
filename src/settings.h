@@ -33,8 +33,20 @@ struct t_ResultValues {
     double schneider;
 };
 
-/* 
+/** a datatype defining which games are allowed to be 
+  * played in this game according to the users preferences
+  */
+struct t_AllowedGames {
+    bool wenz;
+    bool farb_wenz;
+    
+    bool geier;
+    bool farb_geier;
+    
+    bool dachs;
+};
 
+/* 
 // Use as soon as the avatar is implemented
 struct t_Players {
     QString name;
@@ -96,6 +108,11 @@ class Settings : public QObject
         /** delete after usage
           */
         t_ResultValues* pointResults() const;
+
+        /** delete after usage
+          */
+        t_AllowedGames* allowedGames() const;
+        void setAllowedGames( const t_AllowedGames* allowed );
         
     signals:
         void cardChanged();
