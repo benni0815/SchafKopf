@@ -39,7 +39,7 @@ void CardList::init()
 
 int CardList::points()
 {
-    int tmp;
+    int tmp = 0;
     for( unsigned int i = 0; i < this->count(); i++ )
         tmp += at( i )->points();
         
@@ -76,12 +76,6 @@ void CardList::randomize()
                        // enabled!!! 
 }
 
-
-
-
-
-
-
 /*
 	typedef bool (*__isTrumpf)(Card* Karte);
 	CardList* FindCards(int color, int type, __isTrumpf _trumpf_func);*/
@@ -110,10 +104,6 @@ void CardList::RemoveCards(CardList* itemsToRem)
 		}
 	}
 }
-
-
-
-
 
 int CardList::compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 )
 {
