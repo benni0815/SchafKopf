@@ -23,6 +23,8 @@
 #include <kdialogbase.h>
 
 class QRadioButton;
+class QLabel;
+class QSpinBox;
 
 /**
 Preferences dialog for schafkopf
@@ -47,6 +49,12 @@ class PreferencesDlg : public KDialogBase
     private:
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
+	QLabel* m_label1;
+	QLabel* m_label2;
+	QLabel* m_label3;
+	QLabel* m_label4;
+	QSpinBox* m_spinCallGame;
+	QSpinBox* m_spinSoloGame;
 };
 
 #endif

@@ -125,9 +125,9 @@ void CanvasPlayer::position( int i )
         if(i==0)
             x += cardw;
         else if(i==2)
-            x += (cardw/4);
+            x += (cardw/6);
         else
-            y += (cardh/4);            
+            y += (cardh/6);            
     }
         
     // swap them back
