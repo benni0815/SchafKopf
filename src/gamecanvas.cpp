@@ -81,7 +81,6 @@ void GameCanvas::setGame( Game* game )
         	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
 			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawAll()));
 			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
-        	//disconnect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		}
 		clearObjects();
 		m_game=NULL;
@@ -93,7 +92,6 @@ void GameCanvas::setGame( Game* game )
         connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
 		connect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawAll()));
 		connect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
-       // connect( game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		m_game = game;
 		createObjects();
     }
@@ -120,13 +118,26 @@ void GameCanvas::createObjects()
     if( !m_game )
         return;
     
-    for( unsigned int i = 0; i < PLAYERS; i++ )    
-    {
-        m_players[i] = new CanvasPlayer( i, m_game->findIndex( i ), canvas() );
-    }
+    unsigned int i = 0;
+    unsigned int h = 0;
+    unsigned int z = 0;
+    
+    /** We have to make sure that the human player == m_player[0] !
+      */
+    for( h=0;h<PLAYERS;h++ )    
+        if( m_game->findIndex( h )->rtti() == Player::HUMAN )
+        {
+            m_players[0] = new CanvasPlayer( 0, m_game->findIndex( h ), canvas() );
+            break;
+        }
+
+    for( i=h+1;i<PLAYERS;i++ )
+        m_players[i-h] = new CanvasPlayer( i-h, m_game->findIndex( i ), canvas() );            
+
+    for( z=0;z<h;z++)    
+        m_players[i-h+z] = new CanvasPlayer( i-h+z, m_game->findIndex( z ), canvas() );
     
     m_stich = new QCanvasItemList();
-    
     positionObjects();
 }
 

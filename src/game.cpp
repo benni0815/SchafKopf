@@ -40,7 +40,6 @@ Game::Game(QObject *parent, const char *name)
     start();
 }
 
-
 Game::~Game()
 {
     int i;
@@ -85,15 +84,7 @@ void Game::start()
         }
     }
     
-    // TODO:
-    // correct sorting, next player to the player who started the last game
-    // has to start this game!
-    
-    if( m_canvas )
-    {
-        m_canvas->setGame( NULL );
-        m_canvas->setGame( this );    
-    }
+    emit gameStateChanged();
 }
 
 void Game::gameLoop()
@@ -131,7 +122,7 @@ void Game::gameLoop()
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
-            //timer.block( 1 );
+            timer.block( 1 );
         }
         
         index = highestCard();

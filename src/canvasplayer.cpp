@@ -54,7 +54,6 @@ CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
 CanvasPlayer::~CanvasPlayer()
 {
     unsigned int i = 0;
-    
     for(i=0;i<m_items->count();i++)
     {
         QCanvasItem* item = (*m_items)[i];
