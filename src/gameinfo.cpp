@@ -271,7 +271,11 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 		}
 	}
 	if(trumpf_index!=-1)
+	{
+		qDebug(QString().setNum(32-(trumpf_index*4+card->color())));
 		return 32-(trumpf_index*4+card->color());
+	}
+	qDebug(QString().setNum(32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index)));
 	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
 }
 

@@ -224,7 +224,8 @@ int Game::highestCard()
 
 bool Game::isHigher( Card* card, Card* high )
 {
-    if( m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) )
+/*
+	 if( m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) )
         return true;
     else if( m_gameinfo.istTrumpf( card ) && m_gameinfo.istTrumpf( high ) )
     {
@@ -278,8 +279,8 @@ bool Game::isHigher( Card* card, Card* high )
     }
 
     return false;
-
-//	return evalCard(card, &m_gameinfo) > evalCard(high, &m_gameinfo);
+*/
+	return m_gameinfo.evalCard(card, &m_gameinfo) > m_gameinfo.evalCard(high, &m_gameinfo);
 }
 
 void Game::gameResults()
