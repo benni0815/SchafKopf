@@ -53,11 +53,13 @@ SchafKopf::SchafKopf()
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
     
-    m_game = NULL;
-    
     m_canvas = new QCanvas( this, "canvas" );
     m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
     
+    m_game = new Game();
+    m_game->setCanvas( m_canvasview );
+    m_canvasview->setGame( m_game );    
+
     m_table = new QTable( split );
     m_table->setReadOnly( true );
     m_table->setNumCols( 4 );
@@ -67,6 +69,9 @@ SchafKopf::SchafKopf()
     setupActions();
     
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
+    
+    connect(m_game,SIGNAL(gameStarted()),this,SLOT(enableControls()));
+    connect(m_game,SIGNAL(gameEnded()),this,SLOT(enableControls()));
 }
 
 SchafKopf::~SchafKopf()
@@ -128,12 +133,8 @@ void SchafKopf::newGame()
 
 void SchafKopf::realNewGame()
 {
-	m_game = new Game();
     connect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
-    m_game->setCanvas( m_canvasview );
-    m_canvasview->setGame( m_game );    
-    enableControls();
-   
+    
     // entering the game loop is the last thing
     // we want to do!
     m_game->gameLoop();
@@ -142,18 +143,13 @@ void SchafKopf::realNewGame()
 
 void SchafKopf::endGame()
 {
-	m_canvasview->setGame( NULL );
-	if(m_game)
-		m_game->endGame();
-	delete m_game;
-    m_game = NULL;
-    
-    enableControls();
+    m_game->endGame();
+    disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
 }
 
 void SchafKopf::showStich()
 {
-    if( !m_game )
+    if( m_game->isTerminated() )
         return;
         
     if( !m_stichdlg )
@@ -164,8 +160,8 @@ void SchafKopf::showStich()
 
 void SchafKopf::enableControls()
 {
-    m_actEnd->setEnabled( m_game );
-    m_actStich->setEnabled( m_game );
+    m_actEnd->setEnabled( !m_game->isTerminated() );
+    m_actStich->setEnabled( !m_game->isTerminated()  );
 }
 
 void SchafKopf::slotPlayerResult( const QString & name, const QString & result )

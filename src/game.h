@@ -60,6 +60,9 @@ class Game : public QObject
 		}
 		
 	signals:        
+        void gameStarted();
+        void gameEnded();
+    
 		void gameStateChanged();
         void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );

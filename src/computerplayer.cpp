@@ -26,8 +26,8 @@
 
 #include <kapplication.h>
 
-ComputerPlayer::ComputerPlayer(CardList *cards,Game* game)
- : Player(cards,game)
+ComputerPlayer::ComputerPlayer(Game* game)
+ : Player(game)
 {
     book = new OpenBook( this, game );
 }
@@ -56,7 +56,7 @@ Card *ComputerPlayer::play()
 	return ToPlay;
 }
 
-GameInfo* ComputerPlayer::game()
+GameInfo* ComputerPlayer::gameInfo()
 {
     QValueList<game_data> lst;
         

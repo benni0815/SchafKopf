@@ -23,6 +23,7 @@
 #include "card.h"
 #include "cardlist.h"
 #include "player.h"
+#include "game.h"
 
 #include <qcanvas.h>
 #include <qfont.h>
@@ -154,25 +155,30 @@ void CanvasPlayer::position( int i )
 
 void CanvasPlayer::init(int i)
 {
-    if( !m_player )
-        return;
-
-    for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
-	{
-        CanvasCard *c = m_items[z];
-        c->setCard( m_player->cards()->at( z ) );
-        c->setZ( double(-1 - z) );
-        c->show();
+    if( !m_player->game()->isTerminated() )
+    {
+        for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
+	    {
+            CanvasCard *c = m_items[z];
+            c->setCard( m_player->cards()->at( z ) );
+            c->setZ( double(-1 - z) );
+            c->show();
             
-        if(i==1)
-            c->setRotation(90);
-        else if(i==3)
-            c->setRotation(270);
-#ifdef CHEAT
-        c->setFrontVisible( true );
-#else            
-        c->setFrontVisible( m_player->rtti() == Player::HUMAN );
-#endif
+            if(i==1)
+                c->setRotation(90);
+            else if(i==3)
+                c->setRotation(270);
+    #ifdef CHEAT
+            c->setFrontVisible( true );
+    #else            
+            c->setFrontVisible( m_player->rtti() == Player::HUMAN );
+    #endif
+        }
+    }
+    else
+    {
+        for( unsigned int z = 0;z<NUMCARDS;z++)
+            m_items[z]->hide();
     }
 }
 

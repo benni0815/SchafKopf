@@ -39,6 +39,7 @@ Results::~Results()
 
 QString Results::result()
 {
+    bool positive = m_laufende > 0;
     parse();
     
     QString s;
@@ -50,8 +51,8 @@ QString Results::result()
     else
         s = m_gameinfo->spieler()->name() + QString(i18n(" looses with %1 Points%2.") ).arg( m_points ).arg( schneider + schwarz );
     
-    if( m_laufende > 0 )
-        s += m_gameinfo->spieler()->name() + QString( i18n(" get %1 cards in a row.").arg( m_laufende ) );
+    if( positive )
+        s += m_gameinfo->spieler()->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
     else
         s += m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
         
@@ -72,6 +73,8 @@ void Results::parse()
     m_schneider = (m_points < 31 || m_points > 90 );
 
     m_parsed = true;
+    
+    m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
 }
 
 

@@ -11,12 +11,13 @@ using namespace std;
 
 unsigned int Player::def_id=0;
 
-Player::Player(CardList *cards,Game* game)
-    : m_cards( cards ), m_game( game )
+Player::Player(Game* game)
+    : m_game( game )
 {
     m_stiche = new CardList();
     m_points = 0.0;
     m_id=def_id++;
+    m_cards = NULL;
     
     m_geklopft = false;
 }

@@ -35,16 +35,27 @@
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
 {
+    unsigned int i;
+    terminated = true;
+    
     m_canvas = NULL;
-    m_players[0] = NULL;
     m_laufende = 0;
     
-    start();
-}
+    // Create our player objects
+    // delete these only in the destructor    
+    QStringList list = Settings::instance()->playerNames();
+    m_players[0] = new HumanPlayer( this );
+    m_players[0]->setName( list[0] );
+    for( i=1;i<PLAYERS;i++)
+    {
+        m_players[i] = new ComputerPlayer( this );
+        m_players[i]->setName( list[i] );
+    }
+    }
 
 Game::~Game()
 {
-    int i;
+    unsigned int i;
     
 	m_currstich.clear();
 	for(i=0;i<PLAYERS;i++)
@@ -57,6 +68,7 @@ Game::~Game()
 void Game::start()
 {
     unsigned int i = 0;
+    terminated = false;
     CardList *playercards[PLAYERS];
 
     terminated=false;
@@ -66,33 +78,19 @@ void Game::start()
     for( i=0; i<CARD_CNT; i++)
         playercards[i%PLAYERS]->append(m_allcards.at(i));
 
-    if( m_players[0] == NULL )
+    for( i=0;i<PLAYERS;i++)
     {
-        QStringList list = Settings::instance()->playerNames();
-        m_players[0] = new HumanPlayer(playercards[0] ,this );
-        m_players[0]->setName( list[0] );
-        for( i=1;i<PLAYERS;i++)
-        {
-            m_players[i] = new ComputerPlayer(playercards[i] ,this );
-            m_players[i]->setName( list[i] );
-        }
+        m_players[i]->setCards( playercards[i] );
+        m_players[i]->stiche()->clear();
     }
-    else
-    {
-        qDebug("HIER3");
-        for( i=0;i<PLAYERS;i++)
-        {
-            m_players[i]->setCards( playercards[i] );
-            m_players[i]->stiche()->clear();
-        }
-        qDebug("SETN NEW CASRD");
-    }
-    qDebug("DONE");
-    emit gameStateChanged();
+    
+    emit gameStarted();
 }
 
 void Game::gameLoop()
 {
+    start();
+
     int i, a, index;
     Player *tmp[PLAYERS];
 	Card *c;
@@ -101,10 +99,7 @@ void Game::gameLoop()
     // find a player you can playercards
     // and setup m_gameinfo    
     if( !setupGameInfo() )
-    {
-        start();
         gameLoop();
-    }
     
 	for(i=0;i<PLAYERS && !terminated;i++)
 		m_players[i]->init();
@@ -149,7 +144,6 @@ void Game::gameLoop()
     if( !terminated )
     { 
         gameResults();
-        start();
         gameLoop();
     }
 }
@@ -162,6 +156,8 @@ const CardList *Game::currStich() const
 void Game::endGame(void)
 {
 	terminated=true;
+    emit gameEnded();
+    
 	EXIT_LOOP();
 }
 
@@ -290,7 +286,7 @@ bool Game::setupGameInfo()
     unsigned int i = 0;
     for( i=0;i<PLAYERS;i++)
     {
-        GameInfo* info = m_players[i]->game();
+        GameInfo* info = m_players[i]->gameInfo();
         if( info )
         {
             info->setSpieler( m_players[i] );

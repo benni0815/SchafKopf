@@ -14,13 +14,15 @@ class Player
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
 
-        Player(CardList *cards,Game* game);
+        Player(Game* game);
         ~Player();
 
         virtual void klopfen() = 0;
 		virtual void init() {};
         virtual Card *play() = 0;
-        virtual GameInfo* game() = 0;
+        virtual GameInfo* gameInfo() = 0;
+        
+        Game* game() const { return m_game; }
 
         const QString & name() const;
         void setName( const QString & n );

@@ -27,13 +27,13 @@ class HumanPlayer : public QObject, public Player
 {
     Q_OBJECT
 	public:
-        HumanPlayer(CardList *cards,Game* game);
+        HumanPlayer(Game* game);
         ~HumanPlayer();
         
 		void klopfen();
 		void init();
         Card *play();
-        GameInfo* game();
+        GameInfo* gameInfo();
         
         int rtti() const { return HUMAN; }        
 

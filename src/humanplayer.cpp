@@ -30,8 +30,8 @@
 #include <klocale.h>
 #include <kmessagebox.h>
 
-HumanPlayer::HumanPlayer(CardList *cards,Game* game)
- : QObject( 0, 0 ), Player(cards,game)
+HumanPlayer::HumanPlayer(Game* game)
+ : QObject( 0, 0 ), Player(game)
 {
     m_allowed = NULL;
     m_card = NULL;
@@ -64,7 +64,7 @@ Card *HumanPlayer::play()
     return m_card;
 }
 
-GameInfo* HumanPlayer::game()
+GameInfo* HumanPlayer::gameInfo()
 {
     int m = KMessageBox::questionYesNo( 0, i18n("Do you want to play?") );
     if( m == KMessageBox::Yes )

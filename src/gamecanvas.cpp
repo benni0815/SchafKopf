@@ -65,30 +65,15 @@ GameCanvas::~GameCanvas()
 
 void GameCanvas::setGame( Game* game )
 {
-    if( game == NULL )
-	{
-        if(m_game)
-		{
-            unsigned int i = 0;
-            
-			disconnect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
-        	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
-            
-            for(;i<PLAYERS;i++)
-                m_players[i]->setPlayer( i, NULL );
-		}
-		m_game=NULL;
-	}
-    else 
-	{
-        game->setCanvas( this );
-        connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
-        connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-		connect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
-		m_game = game;
-		createObjects();
-    }
+    connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
+        
+    connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+    
+    connect( game, SIGNAL(gameStarted()), this, SLOT(redrawPlayers()));
+    connect( game, SIGNAL(gameEnded()), this, SLOT(redrawPlayers()));
+    
+    m_game = game;
+    createObjects();
 }
 
 void GameCanvas::cardForbidden(Card* card)
@@ -246,8 +231,10 @@ void GameCanvas::redrawPlayers()
 	unsigned int i = 0;
 	
     for(i=0;i<PLAYERS;i++)
+    {
 		m_players[i]->init(i);
-
+        m_stich[i]->hide();
+    }
 }
 
 void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
