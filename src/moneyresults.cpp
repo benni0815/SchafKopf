@@ -44,9 +44,14 @@ double MoneyResults::points( Player* player )
     m += m_laufende * 0.10;
     
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
-        return (m_points > 60 ? m : m * -1.0);
+        m = (m_points > 60 ? m : m * -1.0);
     else
-        return (m_points >= 60 ? m * -1.0 : m);
+        m = (m_points >= 60 ? m * -1.0 : m);
+        
+    if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
+        m *= 3;
+        
+    return m;
 }
 
 QString MoneyResults::formatedPoints( Player* player )

@@ -128,7 +128,7 @@ void CardList::sort(eval_func eval, void *param)
 			//if(cmp>0)
 			x=(*eval)(at(i), param);
 			y=(*eval)(at(i+1), param);
-			qDebug("%d, %d: %d, %d\n", i, i+1, x, y);
+//			qDebug("%d, %d: %d, %d\n", i, i+1, x, y);
 			if(x>y)
 			{
 				tmp=at(i);
