@@ -39,7 +39,7 @@ class StichDlg : public KDialogBase
         ~StichDlg();
         
     private slots:
-        void changed();
+        void changed(unsigned int id);
         
     private:
         QLabel* cards[PLAYERS];

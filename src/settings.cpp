@@ -85,7 +85,7 @@ const QStringList Settings::playerNames() const
     list.append( config->readEntry( "Player1", user.loginName() ) );
     list.append( config->readEntry( "Player2", "Dom" ) );
     list.append( config->readEntry( "Player3", "Lenz" ) );
-    list.append( config->readEntry( "Player4", "Christian" ) );
+    list.append( config->readEntry( "Player4", "G.J." ) );
     return list;
 }
 

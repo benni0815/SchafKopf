@@ -57,8 +57,7 @@ class Game : public QObject
         Player* findIndex( unsigned int index ) const;
 
         bool istTrumpf(Card *card);
-
-
+        
     signals:
         void clearStich();
         void gameStateChanged();
@@ -80,6 +79,7 @@ class Game : public QObject
         GameCanvas *m_canvas;
         
         int highestCard();
+        bool isHigher( Card* card, Card* high );
 };
 
 #endif

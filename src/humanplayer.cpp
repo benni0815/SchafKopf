@@ -20,26 +20,22 @@
 
 #include "humanplayer.h"
 
+#include "cardlist.h"
 #include "game.h"
 #include "gamecanvas.h"
-
-#include <kapplication.h>
-#if QT_VERSION >= 0x030100
-    #include <qeventloop.h>
-#else
-    #include <qapplication.h>
-#endif
-#include "cardlist.h"
+#include "timer.h"
 
 HumanPlayer::HumanPlayer(CardList *cards,Game* game)
  : QObject( 0, 0 ), Player(cards,game)
 {
+    m_allowed = NULL;
     m_card = NULL;
 	m_cards->sort();
 }
 
 HumanPlayer::~HumanPlayer()
 {
+    delete m_allowed;
 }
 
 void HumanPlayer::klopfen()
@@ -49,26 +45,24 @@ void HumanPlayer::klopfen()
 
 Card *HumanPlayer::play()
 {
+    m_allowed = allowedCards();
     connect( m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->enterLoop();
-#else
-    kapp->enter_loop();
-#endif
+    ENTER_LOOP();
     qDebug("Human Clicked on Card: %i, %i", m_card->card(), m_card->color());
     return m_card;
 }
 
 void HumanPlayer::getCard(Card* card)
 {
-    // TODO: check if card is valid here
-    m_card = card;
-    disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->exitLoop();
-#else
-    kapp->exit_loop();
-#endif
+    if( m_allowed->containsRef( card ) )
+    {
+        m_card = card;
+        delete m_allowed;
+        m_allowed = 0;
+        disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
+        EXIT_LOOP();
+    } else
+        m_game->canvas()->cardForbidden(card);
 }
 
 void HumanPlayer::setCards( CardList *cards)

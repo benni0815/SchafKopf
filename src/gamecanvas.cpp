@@ -40,6 +40,7 @@
 // DISTANCE from the border
 #define DIST 20
 
+
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
@@ -48,7 +49,6 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_item = NULL;
     m_names[0] = NULL;
     m_stich = NULL;
-    
     canvas()->setBackgroundColor( Qt::darkGreen );
     canvas()->setAdvancePeriod( 200 );
     update();
@@ -114,6 +114,21 @@ void GameCanvas::setGame( Game* game )
     createObjects();
 }
 
+void GameCanvas::cardForbidden(Card* card)
+{
+    for(unsigned int z=0;z<PLAYERS;z++)
+        for(unsigned int i=0;i<m_items[z]->count();i++)
+        {
+            CanvasCard* c = static_cast<CanvasCard*>((*m_items[z])[i]);
+            if(c->card() == card)
+            {
+                qDebug("BLCOKING");
+                c->forbidden();
+                break;
+            }
+        }
+}
+
 void GameCanvas::createObjects()
 {
     if( !m_game )
@@ -131,6 +146,7 @@ void GameCanvas::createObjects()
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         Player* player = m_game->findIndex( i );
         m_names[i]->setText( player->name() );
+        m_ids[i] = player->id();
         for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
             CanvasCard *c = new CanvasCard( player->cards()->at(z), canvas() );
             c->setZ( double(-1 - z) );
@@ -283,6 +299,8 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
     if( !m_items[player] || !m_game || !m_stich )
         return;    
     
+    player = id2index( player );
+       
     for(unsigned int i=0;i<m_items[player]->count();i++)
     {
         CanvasCard* card = static_cast<CanvasCard*>((*m_items[player])[i]);
@@ -304,6 +322,8 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 
 void GameCanvas::slotPlayerMadeStich(unsigned int player)
 {
+    player = id2index( player );
+    
     int x = 0, y = 0;
     int w = canvas()->width()-DIST;
     int h = canvas()->height()-DIST;
@@ -378,4 +398,13 @@ void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
         m_item = NULL;
     }
 }
+
+int GameCanvas::id2index( int id )
+{
+    // convert id to index
+    for(unsigned int i=0;i<PLAYERS;i++)
+        if( m_ids[i] == id )
+            return i;
+}
+
 #include "gamecanvas.moc"

@@ -21,11 +21,11 @@
 #define CANVASCARD_H
 
 #include <qcanvas.h>
-#include <qpainter.h>
 
 #define CANVASCARD 1000
 
 class Card;
+class QPainter;
 
 class CanvasCard : public QCanvasRectangle
 {
@@ -42,6 +42,10 @@ class CanvasCard : public QCanvasRectangle
         
         void moveTo( QPoint p );
         
+        /** mark this card as forbidden to play
+          * in the UI
+          */
+        void forbidden();
     protected:
         void advance( int phase );
         
@@ -51,7 +55,9 @@ class CanvasCard : public QCanvasRectangle
         QPoint m_point;
         
         bool m_visible;
+        bool m_forbidden;
         int m_rotation;
+        
         Card* m_card;
 };
 

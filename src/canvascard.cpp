@@ -19,20 +19,17 @@
  ***************************************************************************/
 #include "canvascard.h"
 #include "card.h"
+#include "timer.h"
 
+#include <qpainter.h>
+#include <qpen.h>
 #include <qpixmap.h>
 #include <qwmatrix.h>
-
-#include <kapplication.h>
-#if QT_VERSION >= 0x030100
-    #include <qeventloop.h>
-#else
-    #include <qapplication.h>
-#endif
 
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
  : QCanvasRectangle(c), m_rotation(0)
 {
+    m_forbidden = false;
     m_card = card;
     show();
 }
@@ -54,6 +51,13 @@ void CanvasCard::draw( QPainter & p )
     wm.rotate( (double)m_rotation );
     
     QPixmap pix = pixmap->xForm( wm );
+    if( m_forbidden )
+    {
+        QPainter painter( &pix );
+        painter.setPen( QPen(Qt::red, 4) );
+        painter.drawRect( 0, 0, pix.width(), pix.height() );
+    }
+    
     setSize( pix.width(), pix.height() );
     bitBlt( p.device(), point.x(), point.y(), &pix );
 }
@@ -77,15 +81,16 @@ void CanvasCard::moveTo( QPoint p )
     double mx = p.x() - x();
     setXVelocity( mx );
     setYVelocity( my );
-  
-    // we better use Timer.block in Game  
-/*
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->enterLoop();
-#else
-    kapp->enter_loop();
-#endif
-*/
+}
+
+void CanvasCard::forbidden()
+{
+    m_forbidden = true;
+    update();
+    Timer t;
+    t.block( 1 );
+    m_forbidden = false;
+    update();
 }
 
 void CanvasCard::advance( int phase )
@@ -97,15 +102,6 @@ void CanvasCard::advance( int phase )
         setYVelocity( 0 );
     
     QCanvasItem::advance( phase );
-/*    
-    if( !xVelocity() && !yVelocity() ) {
-#if QT_VERSION >= 0x030100
-        kapp->eventLoop()->exitLoop();
-#else
-        kapp->exit_loop();
-#endif
-    }
-*/
 }
 
 

@@ -41,6 +41,6 @@ Card *ComputerPlayer::play()
 {
 	CardList* allowed=allowedCards();
 	Card* ToPlay=allowed->at(KApplication::random()%allowed->count());
-    	delete allowed;
+	delete allowed;
 	return ToPlay;
 }

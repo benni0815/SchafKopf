@@ -60,6 +60,15 @@ class Card : public QObject {
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
+        
+        /** this operator< is not quite correct,
+          * it just tells wether ass is bigger than 10 or 10 
+          * is bigger than king, but does not care
+          * for color or what is currently played.
+          * So it does not care for Wenz or Solo's.
+          * it is used in Game::highesCard
+          */
+        bool operator< ( Card* c );
 
 	bool isEqual(Card* othercard);
     private slots:

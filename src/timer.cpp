@@ -21,13 +21,6 @@
 
 #include <qtimer.h>
 
-#include <kapplication.h>
-#if QT_VERSION >= 0x030100
-    #include <qeventloop.h>
-#else
-    #include <qapplication.h>
-#endif
-
 Timer::Timer(QObject *parent, const char *name)
  : QObject(parent, name)
 {
@@ -41,20 +34,12 @@ Timer::~Timer()
 void Timer::block( int seconds )
 {
     QTimer::singleShot( seconds*1000, this, SLOT( returnLoop() ) );
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->enterLoop();
-#else
-    kapp->enter_loop();
-#endif
+    ENTER_LOOP();
 }
 
 void Timer::returnLoop()
 {
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->exitLoop();
-#else
-    kapp->exit_loop();
-#endif
+    EXIT_LOOP();
 }
 
 #include "timer.moc"

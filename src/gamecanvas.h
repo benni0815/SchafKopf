@@ -43,6 +43,11 @@ class GameCanvas : public QCanvasView
         
         void setGame( Game* game );
    
+        /** the user played card, which
+          * is forbidden to play!
+          */
+        void cardForbidden( Card* card );
+        
     signals:
         void clicked( QCanvasItem* item );
         void playCard( Card* card );
@@ -71,7 +76,9 @@ class GameCanvas : public QCanvasView
         void createObjects();
         void clearObjects();
         QPoint getStichPosition( int player );
+        int id2index( int id );
         
+        int m_ids[PLAYERS];
         QCanvasItemList* m_items[PLAYERS];
         QCanvasItemList* m_stich;
         QCanvasText* m_names[PLAYERS];

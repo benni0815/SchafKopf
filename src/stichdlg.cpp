@@ -29,7 +29,7 @@
 #include <klocale.h>
 
 StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
-    : KDialogBase( KDialogBase::Plain, i18n("&Last Stich"),
+    : KDialogBase( KDialogBase::Plain, i18n("Last Stich"),
       KDialogBase::Close, KDialogBase::Close, parent,name, false),
       m_game( g)
 {
@@ -42,11 +42,11 @@ StichDlg::StichDlg(Game* g,QWidget *parent, const char *name)
         layout->addWidget( players[i], 1, i );
     }
     
-    changed();
+    changed( m_game->findIndex( 0 )->id() );
     
     // close if there is no active game
     connect( m_game, SIGNAL( destroyed() ), this, SLOT( deleteLater() ));
-    connect( m_game, SIGNAL( playerMadeStich(unsigned int)), this, SLOT(changed()));
+    connect( m_game, SIGNAL( playerMadeStich(unsigned int)), this, SLOT(changed(unsigned int)));
 }
 
 
@@ -54,9 +54,9 @@ StichDlg::~StichDlg()
 {
 }
 
-void StichDlg::changed()
+void StichDlg::changed( unsigned int id )
 {
-    Player* player = m_game->findIndex( 0 );
+    Player* player = m_game->findId( id );
     CardList* stich = player->stiche();
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {

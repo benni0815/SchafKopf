@@ -137,7 +137,6 @@ bool Player::hasTrumpf(CardList* liste)
 
 CardList* Player::allowedCards()
 {
-
 	CardList* allowed= m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
 	if(m_game->gameInfo()->mode==Game::RUFSPIEL)
 	{
@@ -273,7 +272,5 @@ CardList* Player::allowedCards()
 	*/
 
 	}
-
-
 }
 

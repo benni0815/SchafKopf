@@ -22,6 +22,36 @@
 
 #include <qobject.h>
 
+/** includes for our eventloop hacks
+  */
+#include <kapplication.h>
+#include <setjmp.h> 
+#if QT_VERSION >= 0x030100
+    #include <qeventloop.h>
+#else
+    #include <qapplication.h>
+#endif
+
+/** macro to start our eventloop hacks 
+  */
+#if QT_VERSION >= 0x030100 
+    #define ENTER_LOOP() \
+        kapp->eventLoop()->enterLoop(); 
+#else 
+    #define ENTER_LOOP() \
+        kapp->enter_loop(); 
+#endif 
+
+/** macro to end our eventloop hacks 
+  */
+#if QT_VERSION >= 0x030100 
+    #define EXIT_LOOP() \
+        kapp->eventLoop()->exitLoop(); 
+#else 
+    #define EXIT_LOOP() \
+        kapp->exit_loop();
+#endif 
+
 class QTimer;
 /**
 @author Dominik Seichter

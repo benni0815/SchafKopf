@@ -46,6 +46,7 @@ class HumanPlayer : public QObject, public Player
         
     private:
         Card* m_card;
+        CardList* m_allowed;
         void setCards( CardList *cards);
 };
 
