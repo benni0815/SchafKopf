@@ -1,2 +1,11 @@
 
-Rufsau nach davonlaufen in allowedCards hinzufügen
+Fixen:
+- Umstellen der Spielkarten (und Rückseite) führt zu Darstellungsfehler
+- Rufsau nach davonlaufen in allowedCards hinzufügen
+
+neue Features:
+- Tastatursteuerung
+- "Momentan ist es so, dass ich sofort bei der Spielansage angeben muss, welches Spiel ich zu spielen gedenke. In der Realität kann ich es davon abhängig machen, ob hinter mir noch jemand ein Spiel angemeldet hat. Die exakte Spielauswahl sollte also erst zu dem Zeitpunkt erfolgen, an dem sie auch in der Ralität stattfindet." Und dann nur Spiele auswählbar machen die höher sind als die vorher angesagten.
+- AI verbessern
+- richtige Schafkopfkarten hinzufügen
+- netzwerktransparente Kommunikation (für neuronales Netzwerk)

@@ -282,6 +282,7 @@ void PreferencesDlg::addPageView()
     layout->addWidget( group2 );
     layout->addWidget( group );
     layout->addItem( spacer );
+    disableClearButton(m_linePathBackground->url());
     
     connect( m_pushURLClear, SIGNAL( clicked() ), m_linePathBackground, SLOT( clear() ) );
     connect( m_linePathBackground, SIGNAL( textChanged(const QString &) ), this, SLOT( disableClearButton(const QString &) ) );
