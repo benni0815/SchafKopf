@@ -21,6 +21,7 @@
 #include "card.h"
 #include "cardlist.h"
 #include "player.h"
+#include "settings.h"
 
 #include <klocale.h>
 #include <qstring.h>
@@ -139,8 +140,14 @@ bool GameInfo::istTrumpf(Card *card) const
     return false;
 }
 
+/** checks wether a game is allowed to play:
+  * 1. is it allowed to play this game with this cards (needed for callgames)
+  * 2. is it allowed to play this game according to the users preferences
+  */
 bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
+    t_AllowedGames* allowed = NULL;
+    
     if( mode==GameInfo::RUFSPIEL ) 
     {
         if( cards->contains( color, Card::SAU ) || color == Card::HERZ )
@@ -160,6 +167,29 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
     } else if( mode==GameInfo::STICHT && color==Card::NOCOLOR )
         return false;
     
+    // check for the users preferences now
+    allowed = Settings::instance()->allowedGames();
+    if( mode == GameInfo::DACHS && !allowed->dachs )
+    {
+        delete allowed;
+        return false;
+    }
+
+    if( (mode == GameInfo::WENZ && !allowed->wenz) ||
+        (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed->farb_wenz) )
+    {
+        delete allowed;
+        return false;
+    }
+    
+    if( (mode == GameInfo::GEIER && !allowed->geier) ||
+        (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed->farb_geier) )
+    {
+        delete allowed;
+        return false;
+    }
+   
+    delete allowed;
     return true;
 }
 
