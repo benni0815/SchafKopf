@@ -302,3 +302,20 @@ msgstr "Wenn du einen Wenz spielen willst, kannst du zusätzlich noch eine Farbe
 msgid "When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players."
 msgstr "Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Ober Trumpf.<br>Du spielst alleine gegen die drei anderen Spieler."
 
+msgid "Preferences"
+msgstr "Einstellungen"
+
+msgid "Callgame:"
+msgstr "Rufspiel:"
+
+msgid "Solo:"
+msgstr "Solo:"
+
+msgid "Cards in a row:"
+msgstr "je Laufende:"
+
+msgid "Notrick:"
+msgstr "Schwarz:"
+
+msgid "Schneider:"
+msgstr "Schneider:"
