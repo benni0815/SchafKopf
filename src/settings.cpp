@@ -17,56 +17,62 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "cardlist.h"
+#include "settings.h"
 
 #include <kapplication.h>
+#include <kcarddialog.h>
+#include <kconfig.h>
 
-CardList::CardList()
+Settings* Settings::m_instance = 0;
+
+Settings* Settings::instance() 
 {
-    setAutoDelete( false );
-}
-
-void CardList::init()
-{
-    clear();
-    setAutoDelete( true );
-
-    for( int i = 0; i < CARD_CNT ; i += 4  )
-        for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (enum Card::type)(i+1), (enum Card::color)z ) );
-}
-
-int CardList::points()
-{
-    int tmp;
-    for( unsigned int i = 0; i < this->count(); i++ )
-        tmp += at( i )->points();
+    if( !m_instance )
+        m_instance = new Settings();
         
-    return tmp;
+    return m_instance;
 }
 
-void CardList::randomize()
+Settings::Settings(QObject *parent, const char *name)
+ : QObject(parent, name)
 {
-    int rnd[CARD_CNT];
-    int i, a, rval;
+}
+
+
+Settings::~Settings()
+{
+    delete m_instance;
+}
+
+const QString Settings::cardDeck() const
+{
+    KConfig* config = kapp->config();
+    config->setGroup("CardDeck");
+    return config->readEntry("Cards", KCardDialog::getDefaultCardDir() );    
+}
+
+const QString Settings::cardBackground() const
+{
+    KConfig* config = kapp->config();
+    config->setGroup("CardDeck");
+    return config->readEntry("Deck", KCardDialog::getDefaultDeck() );    
+}
+
+void Settings::configureCardDecks( QWidget* parent = 0 )
+{
+    QString dir = cardDeck();
+    QString deck = cardBackground();
         
-    init();
-    for(i=0;i<CARD_CNT;i++)
+    if (KCardDialog::getCardDeck(deck, dir, parent, KCardDialog::Both ) == QDialog::Accepted)
     {
-        rval=KApplication::random()%32;
-        for(a=0;a<i;a++)
-        {
-            if(rnd[a]==rval)
-            {
-                i--;
-                break;
-            }
-        }
-        rnd[i]=rval;
+        KConfig* config = kapp->config();
+        config->setGroup("CardDeck");
+        config->writeEntry( "Cards", dir );
+        config->writeEntry( "Deck", deck );
+        kapp->config()->sync();
+        
+        emit cardChanged();
     }
-    for(i=0;i<CARD_CNT;i++)
-        append(at(rnd[i]));
-    for(i=0;i<CARD_CNT;i++)
-        remove(i);
 }
 
+#include "settings.moc"

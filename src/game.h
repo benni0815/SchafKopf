@@ -17,56 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef GAME_H
+#define GAME_H
+
 #include "cardlist.h"
 
-#include <kapplication.h>
+#include <qobject.h>
 
-CardList::CardList()
+#define PLAYERS 4
+#define TURNS 8
+
+class Player;
+/**
+@author Dominik Seichter
+*/
+class Game : public QObject
 {
-    setAutoDelete( false );
-}
-
-void CardList::init()
-{
-    clear();
-    setAutoDelete( true );
-
-    for( int i = 0; i < CARD_CNT ; i += 4  )
-        for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (enum Card::type)(i+1), (enum Card::color)z ) );
-}
-
-int CardList::points()
-{
-    int tmp;
-    for( unsigned int i = 0; i < this->count(); i++ )
-        tmp += at( i )->points();
-        
-    return tmp;
-}
-
-void CardList::randomize()
-{
-    int rnd[CARD_CNT];
-    int i, a, rval;
-        
-    init();
-    for(i=0;i<CARD_CNT;i++)
-    {
-        rval=KApplication::random()%32;
-        for(a=0;a<i;a++)
+    Q_OBJECT
+    public:
+        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
+        struct game_info
         {
-            if(rnd[a]==rval)
-            {
-                i--;
-                break;
-            }
-        }
-        rnd[i]=rval;
-    }
-    for(i=0;i<CARD_CNT;i++)
-        append(at(rnd[i]));
-    for(i=0;i<CARD_CNT;i++)
-        remove(i);
-}
+            int color;
+            __mode mode;
+            Player *spieler;
+        };
 
+        Game(QObject *parent = 0, const char *name = 0);
+        ~Game();
+        void gameLoop();
+        const CardList *currStich() const;
+        const Game::game_info *gameInfo() const;
+        
+        Player* findId( unsigned int id );
+
+        bool istTrumpf(Card *card);
+            
+    signals:
+        void gameStateChanged();
+    
+    public slots:
+        void endGame(void);
+        
+    private:
+        bool terminated;
+        Player *m_players[PLAYERS];
+        CardList m_allcards;
+        CardList m_playedcards;
+        CardList m_currstich;
+        Game::game_info m_gameinfo;
+        
+        int highestCard();
+};
+
+#endif

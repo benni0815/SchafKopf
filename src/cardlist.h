@@ -25,6 +25,7 @@
 
 #include <card.h>
 
+#define CARD_CNT 32
 /**
  * By default CardList does not delete its children
  * on destruction!
@@ -42,6 +43,8 @@ class CardList : public QPtrList<Card>
           * are delete on destruction.
           */
         void init();
+        void randomize();        
+        int points();
 };
 
 #endif

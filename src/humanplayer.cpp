@@ -17,56 +17,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "cardlist.h"
+#include "humanplayer.h"
 
-#include <kapplication.h>
-
-CardList::CardList()
+HumanPlayer::HumanPlayer(CardList *cards,Game* game)
+ : Player(cards,game)
 {
-    setAutoDelete( false );
 }
 
-void CardList::init()
-{
-    clear();
-    setAutoDelete( true );
 
-    for( int i = 0; i < CARD_CNT ; i += 4  )
-        for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (enum Card::type)(i+1), (enum Card::color)z ) );
+HumanPlayer::~HumanPlayer()
+{
 }
 
-int CardList::points()
+bool HumanPlayer::doppeln()
 {
-    int tmp;
-    for( unsigned int i = 0; i < this->count(); i++ )
-        tmp += at( i )->points();
-        
-    return tmp;
+    return false;
 }
 
-void CardList::randomize()
+Card *HumanPlayer::play()
 {
-    int rnd[CARD_CNT];
-    int i, a, rval;
-        
-    init();
-    for(i=0;i<CARD_CNT;i++)
-    {
-        rval=KApplication::random()%32;
-        for(a=0;a<i;a++)
-        {
-            if(rnd[a]==rval)
-            {
-                i--;
-                break;
-            }
-        }
-        rnd[i]=rval;
-    }
-    for(i=0;i<CARD_CNT;i++)
-        append(at(rnd[i]));
-    for(i=0;i<CARD_CNT;i++)
-        remove(i);
+    return 0;
 }
 

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "card.h"
+#include "settings.h"
 
 #include <qpixmap.h>
 
@@ -28,6 +29,7 @@
 QPixmap* Card::m_background = 0;
 
 Card::Card( const enum type t, const enum color c )
+    : QObject()
 {
     m_pixmap = 0;
     m_card = t;
@@ -51,6 +53,8 @@ Card::Card( const enum type t, const enum color c )
             m_points = 0;
             break;
     };
+    
+    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardChanged() ));
 }
 
 
@@ -62,11 +66,7 @@ Card::~Card()
 QPixmap* Card::pixmap()
 {
     if( !m_pixmap ) {
-        QString dir = QString::null;
-        QString deck = QString::null;
-        
-        Card::getDecks( dir, deck );
-            
+        QString dir = Settings::instance()->cardDeck();
         m_pixmap = new QPixmap( KCardDialog::getCardPath( dir, m_card + m_color ) );
     }
     
@@ -76,21 +76,18 @@ QPixmap* Card::pixmap()
 QPixmap* Card::backgroundPixmap()
 {
     if( !m_background ) {
-        QString dir = QString::null;
-        QString deck = QString::null;
-        
-        Card::getDecks( dir, deck );
-        
+        QString deck = Settings::instance()->cardDeck();
         m_background = new QPixmap( deck );
     }
     
     return m_background;
 }
 
-void Card::getDecks( QString & dir, QString & deck )
+void Card::cardChanged()
 {
-    KConfig* config = kapp->config();
-    config->setGroup("CardDeck");
-    dir = config->readEntry("Cards", KCardDialog::getDefaultCardDir() );
-    deck = config->readEntry("Deck", KCardDialog::getDefaultDeck() );    
+    delete m_pixmap;
+    if( m_background ) {
+        delete m_background;
+        m_background = NULL;
+    }
 }

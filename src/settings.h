@@ -17,56 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "cardlist.h"
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
-#include <kapplication.h>
+#include <qobject.h>
 
-CardList::CardList()
+class QWidget;
+
+/**
+@author Dominik Seichter
+*/
+class Settings : public QObject
 {
-    setAutoDelete( false );
-}
-
-void CardList::init()
-{
-    clear();
-    setAutoDelete( true );
-
-    for( int i = 0; i < CARD_CNT ; i += 4  )
-        for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (enum Card::type)(i+1), (enum Card::color)z ) );
-}
-
-int CardList::points()
-{
-    int tmp;
-    for( unsigned int i = 0; i < this->count(); i++ )
-        tmp += at( i )->points();
+    Q_OBJECT
+    public:
+        static Settings* instance();
         
-    return tmp;
-}
+        const QString cardDeck() const;
+        const QString cardBackground() const;
 
-void CardList::randomize()
-{
-    int rnd[CARD_CNT];
-    int i, a, rval;
+        void configureCardDecks( QWidget* parent = 0 );
         
-    init();
-    for(i=0;i<CARD_CNT;i++)
-    {
-        rval=KApplication::random()%32;
-        for(a=0;a<i;a++)
-        {
-            if(rnd[a]==rval)
-            {
-                i--;
-                break;
-            }
-        }
-        rnd[i]=rval;
-    }
-    for(i=0;i<CARD_CNT;i++)
-        append(at(rnd[i]));
-    for(i=0;i<CARD_CNT;i++)
-        remove(i);
-}
+    signals:
+        void cardChanged();
+        
+    private:
+        Settings(QObject *parent = 0, const char *name = 0);
+        ~Settings();
+        
+        static Settings* m_instance;
 
+};
+
+#endif

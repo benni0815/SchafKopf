@@ -20,6 +20,7 @@
 #ifndef CARD_H
 #define CARD_H
 
+#include <qobject.h>
 #include <qstring.h>
 
 class QPixmap;
@@ -28,7 +29,8 @@ This class represents one card.
 
 @author Dominik Seichter
 */
-class Card{
+class Card : public QObject {
+    Q_OBJECT
     public:
         // TODO: find better names
         enum type { ASS = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
@@ -58,13 +60,14 @@ class Card{
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
+    
+    private slots:
+        void cardChanged();
         
     private:
         int m_points;
         int m_color;
         int m_card;
-        
-        static void getDecks( QString & dir, QString & deck );
 
         QPixmap* m_pixmap;
         static QPixmap* m_background;

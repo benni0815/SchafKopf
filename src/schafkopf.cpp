@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "schafkopf.h"
 #include "card.h"
+#include "settings.h"
 
 #include <qlabel.h>
 #include <qpixmap.h>
@@ -26,8 +27,6 @@
 
 #include <kaction.h>
 #include <kapplication.h>
-#include <kcarddialog.h>
-#include <kconfig.h>
 #include <kgame/kgame.h>
 #include <klocale.h>
 #include <kmainwindow.h>
@@ -73,17 +72,7 @@ void SchafKopf::setupActions()
 
 void SchafKopf::carddecks()
 {
-    KConfig* config = kapp->config();
-    config->setGroup("CardDeck");
-    QString dir = config->readEntry("Cards", KCardDialog::getDefaultCardDir() );
-    QString deck = config->readEntry("Deck", KCardDialog::getDefaultDeck() );
-        
-    if (KCardDialog::getCardDeck(deck, dir, this, KCardDialog::Both ) == QDialog::Accepted)
-    {
-        config->writeEntry( "Cards", dir );
-        config->writeEntry( "Deck", deck );
-        kapp->config()->sync();
-    }
+    Settings::instance()->configureCardDecks( this );
 }
 
 #include "schafkopf.moc"
