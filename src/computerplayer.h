@@ -23,6 +23,7 @@
 #include <qobject.h>
 
 #include "player.h"
+#include "card.h"
 #include "gameinfo.h"
 
 class OpenBook;
@@ -61,7 +62,7 @@ class ComputerPlayer : public QObject,  public Player
 		bool canMakeStich(CardList *cards);		
 		bool ownStich();
 		bool istTrumpfFrei(int playerId);
-		bool istFarbFrei(int playerId, Card::color c);
+		bool istFarbFrei(int playerId, int c);
 		float gehtDurch(Card *card);
 		float gegnerSticht(Card *card);
 		Card *highestTrumpfInGame();

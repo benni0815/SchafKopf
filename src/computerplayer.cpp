@@ -281,7 +281,7 @@ bool ComputerPlayer::ownStich()
 	return false;
 }
 
-bool istTrumpfFrei(int playerId)
+bool ComputerPlayer::istTrumpfFrei(int playerId)
 {
 	int i;
 	
@@ -292,13 +292,13 @@ bool istTrumpfFrei(int playerId)
 	}
 	return false;
 }
-bool istFarbFrei(int playerId, Card::color c)
+bool ComputerPlayer::istFarbFrei(int playerId, int c)
 {
 	int i;
 	
 	for(i=0;i<m_angespielt->count();i++)
 	{
-		if(!m_game->gameInfo()->istTrumpf(m_angespielt->at()) && m_angespielt->at(i)->color()==c && !m_playedCards[playerId]->at(i)->color()==c)
+		if(!m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && m_angespielt->at(i)->color()==c && !m_playedCards[playerId]->at(i)->color()==c)
 			return true;
 	}
 	return false;
