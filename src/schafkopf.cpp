@@ -55,7 +55,10 @@ SchafKopf::SchafKopf()
         : KMainWindow( 0, "SchafKopf" )
 {
     split = new QSplitter( QSplitter::Horizontal, this );
+#if QT_VERSION >= 0x030200
     split->setChildrenCollapsible( true );
+#endif // QT_VERSION
+
     setCentralWidget( split );
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
