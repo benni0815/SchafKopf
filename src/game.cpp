@@ -22,6 +22,7 @@
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "cardlist.h"
+#include "gamecanvas.h"
 
 #include <kapplication.h>
 #if QT_VERSION >= 0x030100
@@ -33,6 +34,8 @@
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
 {
+    m_canvas = NULL;
+    
     CardList *playercards[PLAYERS];
     
     terminated=false;
@@ -103,7 +106,12 @@ const Game::game_info *Game::gameInfo() const
 {
     return &m_gameinfo;
 }
-        
+
+void Game::setCanvas( GameCanvas* c )
+{
+    m_canvas = c;
+}
+
 Player* Game::findId( unsigned int id ) const
 {
     for( unsigned int i = 0; i < PLAYERS; i++)
@@ -143,6 +151,18 @@ bool Game::istTrumpf(Card *card)
 int Game::highestCard()
 {
     return 0;
+}
+
+bool Game::askKlopfen()
+{
+    return;
+    emit signalKlopfen();
+#if QT_VERSION >= 0x030100
+    kapp->eventLoop()->enterLoop();
+#else
+    kapp->enter_loop();
+#endif
+    return true;
 }
 
 #include "game.moc"

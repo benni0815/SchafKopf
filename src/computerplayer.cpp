@@ -29,9 +29,9 @@ ComputerPlayer::~ComputerPlayer()
 {
 }
 
-bool ComputerPlayer::doppeln()
+void ComputerPlayer::klopfen()
 {
-    return false;
+    m_geklopft = false;
 }
 
 Card *ComputerPlayer::play()

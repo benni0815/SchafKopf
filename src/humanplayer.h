@@ -30,25 +30,23 @@ class HumanPlayer : public QObject, public Player
         HumanPlayer(CardList *cards,Game* game);
         ~HumanPlayer();
         
-        bool doppeln();
+        void klopfen();
         Card *play();
-        void setCards( CardList *cards);
-		
-        int rtti() const { return HUMAN; }       
-		 
+        
+        int rtti() const { return HUMAN; }        
+
 	public slots:
 		
 		/** Check if card can be played
 		*/
 		void isValid( const int index, bool &valid );
-		
-		/** Play the indexed card
-		*/
-		void playCard( const int index );
-	
-	private:
-		bool can_play;
-		int selected_card;
+                
+    private slots:
+        void getCard( Card* card );
+        
+    private:
+        Card* m_card;
+        void setCards( CardList *cards);
 };
 
 #endif

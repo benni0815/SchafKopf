@@ -18,21 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "humanplayer.h"
+
+#include "game.h"
+#include "gamecanvas.h"
+
 #include <kapplication.h>
 #if QT_VERSION >= 0x030100
     #include <qeventloop.h>
 #else
     #include <qapplication.h>
 #endif
-
-#include "humanplayer.h"
 #include "cardlist.h"
 
 HumanPlayer::HumanPlayer(CardList *cards,Game* game)
- : Player(cards,game), QObject()
+ : QObject( 0, 0 ), Player(cards,game)
 {
-	can_play=false;
-	selected_card=-1;
+    m_card = NULL;
 	m_cards->sort();
 }
 
@@ -40,44 +42,43 @@ HumanPlayer::~HumanPlayer()
 {
 }
 
-bool HumanPlayer::doppeln()
+void HumanPlayer::klopfen()
 {
-    return false;
+    m_geklopft = m_game->askKlopfen();
 }
 
 Card *HumanPlayer::play()
 {
-    can_play=true;
+    connect( m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
 #if QT_VERSION >= 0x030100
-	//kapp->eventLoop()->enterLoop();
+    kapp->eventLoop()->enterLoop();
 #else
-	//kapp->enter_loop();
+    kapp->enter_loop();
 #endif
-	can_play=false;
-	// Now return the card indexed by selected_card
-	m_cards->sort();
-	return 0;
+    qDebug("Human Clicked on Card: %i, %i", m_card->card(), m_card->color());
+    return m_card;
+}
+
+void HumanPlayer::getCard(Card* card)
+{
+    // TODO: check if card is valid here
+    m_card = card;
+    disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
+#if QT_VERSION >= 0x030100
+    kapp->eventLoop()->exitLoop();
+#else
+    kapp->exit_loop();
+#endif
 }
 
 void HumanPlayer::setCards( CardList *cards)
 {
 	Player::setCards(cards);
-	m_cards->sort();
+    m_cards->sort();
 }
 
 void HumanPlayer::isValid( const int index,  bool &valid )
 {
 	valid=false;
 }		
-		
-void HumanPlayer::playCard( const int index )
-{
-	if(!can_play)
-			return;
-	selected_card=index;
-#if QT_VERSION >= 0x030100
-	kapp->eventLoop()->exitLoop();
-#else
-    kapp->exit_loop();
-#endif
-}
+

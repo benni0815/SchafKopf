@@ -10,6 +10,8 @@ Player::Player(CardList *cards,Game* game)
 {
     m_stiche = new CardList();
     m_id=def_id++;
+    
+    m_geklopft = false;
 }
 
 Player::~ Player()
@@ -37,6 +39,9 @@ void Player::setCards( CardList *cards)
 {
     delete m_cards;
     m_cards=cards;
+    
+    klopfen();
+    // sortCards();
 }
         
 const CardList* Player::stiche() const

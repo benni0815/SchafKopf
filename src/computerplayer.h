@@ -28,7 +28,7 @@ class ComputerPlayer : public Player
         ComputerPlayer(CardList *cards,Game* game);
         ~ComputerPlayer();
         
-        bool doppeln();
+        void klopfen();
         Card *play();
         
         int rtti() const { return COMPUTER; }

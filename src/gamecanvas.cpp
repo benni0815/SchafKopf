@@ -21,6 +21,7 @@
 
 #include "card.h"
 #include "canvascard.h"
+#include "game.h"
 #include "player.h"
 #include "settings.h"
 
@@ -44,12 +45,14 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
 {
     m_game = NULL;
     m_items[0] = NULL;
+    m_item = NULL;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawAll()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
+    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
 }
     
 
@@ -80,6 +83,8 @@ void GameCanvas::setGame( Game* game )
     
     if( m_game == NULL )
         clearObjects();
+    else
+        m_game->setCanvas( this );
     
     createObjects();
 }
@@ -171,6 +176,28 @@ void GameCanvas::positionObjects()
     redrawAll();
 }
 
+void GameCanvas::cardClicked( QCanvasItem* item )
+{
+    if( item->rtti() == CANVASCARD ) 
+    {
+        CanvasCard* card = static_cast<CanvasCard*>(item);
+        
+        for( unsigned int i = 0; i < PLAYERS; i++ ) 
+        {
+            Player* player = m_game->findIndex( i );
+            if( player->rtti() == Player::HUMAN ) 
+            {
+                for( unsigned int z = 0; z < player->cards()->count(); z++ ) 
+                    if( player->cards()->at( z ) == card->card() ) {
+                        emit playCard( card->card() );
+                        break;
+                    }
+                break;
+            }
+        }
+    }
+}
+
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
 // TODO: remove this constants...
@@ -186,4 +213,22 @@ void GameCanvas::redrawAll()
     canvas()->update();
 }
 
+void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
+{
+    m_item = NULL;
+    if( e->button() == Qt::LeftButton ) {
+        QCanvasItemList list = canvas()->allItems();
+        for( unsigned int i = 0; i < list.count(); i++ )
+            if( list[i]->boundingRect().contains( e->pos() ) )
+                m_item = list[i];
+    }
+}
+
+void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
+{
+    if( e->button() == Qt::LeftButton && m_item ) {
+        emit clicked( m_item );
+        m_item = NULL;
+    }
+}
 #include "gamecanvas.moc"

@@ -21,9 +21,16 @@
 #define GAMECANVAS_H
 
 #include <qcanvas.h>
-#include "game.h"
 
+#ifndef PLAYERS
+    #define PLAYERS 4
+#endif
+
+class Card;
+class Game;
+class QCanvasItem;
 class QCanvasItemList;
+class QMouseEvent;
 class QResizeEvent;
 
 class GameCanvas : public QCanvasView
@@ -35,21 +42,32 @@ class GameCanvas : public QCanvasView
         
         void setGame( Game* game );
     
+    signals:
+        void clicked( QCanvasItem* item );
+        void playCard( Card* card );
+        
     private slots:
         void redrawAll();
         /** Position the cards on the screen correctly
           */
         void positionObjects();
+        
+        void cardClicked( QCanvasItem* item );
+
+    protected:
+        void resizeEvent( QResizeEvent *r );
+        
+        void contentsMousePressEvent(QMouseEvent*);
+        void contentsMouseReleaseEvent(QMouseEvent*);
                 
     private:
         /** Create QCanvasItem's for all Cards 
           */
         void createObjects();
         void clearObjects();
-
-        void resizeEvent( QResizeEvent *r );
-        
+      
         QCanvasItemList* m_items[PLAYERS];
+        QCanvasItem* m_item; // currently clicked item
         
         Game* m_game;
 };

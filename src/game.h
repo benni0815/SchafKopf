@@ -27,6 +27,7 @@
 #define PLAYERS 4
 #define TURNS 8
 
+class GameCanvas;
 class Player;
 /**
 @author Dominik Seichter
@@ -49,13 +50,21 @@ class Game : public QObject
         const CardList *currStich() const;
         const Game::game_info *gameInfo() const;
         
+        void setCanvas( GameCanvas* c );
+        GameCanvas* canvas() const { return m_canvas; }
+        
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 
         bool istTrumpf(Card *card);
+        
+        /** ask the user if he wants to double
+          */
+        bool askKlopfen();
             
     signals:
         void gameStateChanged();
+        void signalKlopfen();
     
     public slots:
         void endGame(void);
@@ -67,6 +76,8 @@ class Game : public QObject
         CardList m_playedcards;
         CardList m_currstich;
         Game::game_info m_gameinfo;
+        
+        GameCanvas *m_canvas;
         
         int highestCard();
 };

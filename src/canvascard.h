@@ -23,6 +23,8 @@
 #include <qcanvas.h>
 #include <qpainter.h>
 
+#define CANVASCARD 1000
+
 class Card;
 
 class CanvasCard : public QCanvasRectangle
@@ -35,6 +37,8 @@ class CanvasCard : public QCanvasRectangle
         
         void setFrontVisible( bool b );
         void setRotation( int d );
+        
+        int rtti() const { return CANVASCARD; }
         
     private:
         void draw( QPainter & p );

@@ -99,6 +99,7 @@ void SchafKopf::newGame()
     m_actEnd->setEnabled( true );
     
     m_game = new Game();
+    m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );    
     m_game->gameLoop();
 }
@@ -106,6 +107,7 @@ void SchafKopf::newGame()
 void SchafKopf::endGame()
 {
     m_actEnd->setEnabled( false );
+    m_game->endGame();
     m_canvasview->setGame( NULL );
     delete m_game;
     m_game = NULL;

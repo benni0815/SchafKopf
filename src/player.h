@@ -16,7 +16,7 @@ class Player
         Player(CardList *cards,Game* game);
         ~Player();
         
-        virtual bool doppeln() = 0;
+        virtual void klopfen() = 0;
         virtual Card *play() = 0;
 
         const QString & name() const;
@@ -29,12 +29,16 @@ class Player
         virtual int rtti() const = 0;
         const unsigned int id() const { return m_id; }
         
+        bool geklopft() const { return m_geklopft; };
+        
     protected:
         CardList *m_cards;
         CardList *m_stiche;
         Game *m_game;
         
         QString m_name;
+        
+        bool m_geklopft;
         
         unsigned int m_id;
     private:
