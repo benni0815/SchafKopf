@@ -81,10 +81,8 @@ Game::~Game()
 {
     int i;
     
-	std::cout << "Game destructor begin" << std::endl;
-    for(i=0;i<PLAYERS;i++)
+	for(i=0;i<PLAYERS;i++)
         delete m_players[i];
-	std::cout << "Game destructor end" << std::endl;
 }
 
 void Game::gameLoop()
@@ -101,7 +99,13 @@ void Game::gameLoop()
         for(a=0;a<PLAYERS;a++) 
         {
             Card *c = m_players[a]->play();
-            for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
+            if(c==NULL)
+			{
+				m_currstich.clear();
+    			emit clearStich();
+				return;
+			}
+			for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
                 if(m_players[a]->cards()->at(z) == c) 
                 {
                     m_players[a]->cards()->take(z);
@@ -138,16 +142,16 @@ const CardList *Game::currStich() const
 
 void Game::endGame(void)
 {
+	terminated=true;
 #if QT_VERSION >= 0x030100
 //    while( kapp->eventLoop()->loopLevel() > 1 )
-    if( kapp->eventLoop()->loopLevel() > 1 )
+	if( kapp->eventLoop()->loopLevel() > 1 )
         kapp->eventLoop()->exitLoop();
 #else
 //    while( kapp->loopLevel() - 1)
     if( kapp->loopLevel() > 1 )
         kapp->exit_loop();
 #endif
-    terminated=true;
 }
 
 const Game::game_info *Game::gameInfo() const
