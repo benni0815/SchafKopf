@@ -75,14 +75,21 @@ void CanvasPlayer::setPlayer( int i, Player* player )
 void CanvasPlayer::position( int i )
 {
     int x = 0, y = 0;
-    int num=NUMCARDS;
+    int num = 0;
     int w = m_canvas->width();//-DIST;
     int h = m_canvas->height();//-DIST;
     int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fr z.B. ein Bild des Spielers (fr Netzwerkmodus).
     int availw = m_canvas->width() - 2*DIST - offsetl;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
-        
+    
+    for( unsigned int z = 0; z < NUMCARDS; z++ )
+    {
+    	CanvasCard* card = m_items[z];
+        if(card->isVisible())
+		num++;
+    }
+    
     if(i==1||i==3)
         qSwap( cardw, cardh );
         
@@ -121,9 +128,11 @@ void CanvasPlayer::position( int i )
     for( unsigned int z = 0; z < NUMCARDS; z++ ) {
         CanvasCard* card = m_items[z];
         // only move if necessary!
-        if( x != card->x() || y != card->y() )
+        if(card->isVisible())
+	{
+	if( x != card->x() || y != card->y() )
             card->move( x, y );
-                
+         
         if(i==0)
 	    if(availw>num*cardw+(num-1))
             	x += cardw+1;
@@ -132,7 +141,8 @@ void CanvasPlayer::position( int i )
         else if(i==2)
             x += (cardw/6);
         else
-            y += (cardh/6);            
+            y += (cardh/6);
+	}
     }
         
     // swap them back
