@@ -51,13 +51,9 @@ Card *HumanPlayer::play()
     ENTER_LOOP();
 	if(m_card)
 		qDebug("Human Clicked on Card: %i, %i", m_card->card(), m_card->color());
-	else
-	{
-        /* Game ended  by user */
-		delete m_allowed;
-        m_allowed = 0;
-        disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
-	}
+	delete m_allowed;
+    m_allowed = 0;
+    disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
     return m_card;
 }
 
@@ -66,9 +62,6 @@ void HumanPlayer::getCard(Card* card)
     if( m_allowed->containsRef( card ) )
     {
         m_card = card;
-        delete m_allowed;
-        m_allowed = 0;
-        disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
         EXIT_LOOP();
     } 
 	else

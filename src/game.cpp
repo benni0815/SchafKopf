@@ -28,8 +28,6 @@
 
 #include <kmessagebox.h>
 
-#include <iostream>
-
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
 {
@@ -82,39 +80,44 @@ Game::~Game()
     int i;
     
 	for(i=0;i<PLAYERS;i++)
+	{
         delete m_players[i];
+		m_players[i]=NULL;
+	}
 }
 
 void Game::gameLoop()
 {
     int i, a, index;
     Player *tmp[PLAYERS];
+	Card *c;
     Timer timer;
         
-    for(i=0;i<TURNS || terminated;i++)
+    for(i=0;i<TURNS;i++)
     {
         m_currstich.clear();
         emit clearStich();
         
         for(a=0;a<PLAYERS;a++) 
         {
-            Card *c = m_players[a]->play();
-            if(c==NULL)
-			{
-				m_currstich.clear();
-    			emit clearStich();
+            if(m_players[a])
+				c = m_players[a]->play();
+			if(terminated || c==NULL)
 				return;
-			}
+			
 			for(unsigned int z=0;z<m_players[a]->cards()->count();z++) 
+			{
                 if(m_players[a]->cards()->at(z) == c) 
                 {
                     m_players[a]->cards()->take(z);
                     break;
                 }
+			}
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
             timer.block( 1 );
+			//sleep(1);
         }
         
         index = highestCard();
@@ -143,15 +146,7 @@ const CardList *Game::currStich() const
 void Game::endGame(void)
 {
 	terminated=true;
-#if QT_VERSION >= 0x030100
-//    while( kapp->eventLoop()->loopLevel() > 1 )
-	if( kapp->eventLoop()->loopLevel() > 1 )
-        kapp->eventLoop()->exitLoop();
-#else
-//    while( kapp->loopLevel() - 1)
-    if( kapp->loopLevel() > 1 )
-        kapp->exit_loop();
-#endif
+	EXIT_LOOP();
 }
 
 const Game::game_info *Game::gameInfo() const

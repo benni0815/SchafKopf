@@ -84,19 +84,22 @@ void CanvasCard::moveTo( QPoint p )
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    update();
-    Timer t;
-    t.block( 1 );
-    m_forbidden = false;
-    update();
+    QCanvasRectangle::update();
+    QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
+}
+
+void CanvasCard::disableForbidden()
+{
+	m_forbidden =false;
+	QCanvasRectangle::update();
 }
 
 void CanvasCard::advance( int phase )
 {
-    if( (int)x() == (int)m_point.x() )
+    if( fabs(x()-m_point.x()) <=2  )
         setXVelocity( 0 );
     
-    if( (int)y() == (int)m_point.y() ) 
+    if( fabs(y()-m_point.y()) <=2  )
         setYVelocity( 0 );
     
     QCanvasItem::advance( phase );

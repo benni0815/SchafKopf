@@ -85,7 +85,8 @@ QPixmap* Card::backgroundPixmap()
 bool Card::isEqual(Card *othercard)
 {
 	if(othercard->card()==this->card()&&othercard->color()==this->color()) return true;
-	else return false;
+	else 
+		return false;
 }
 
 void Card::cardChanged()

@@ -27,8 +27,9 @@
 class Card;
 class QPainter;
 
-class CanvasCard : public QCanvasRectangle
+class CanvasCard : public QObject, public QCanvasRectangle
 {
+	Q_OBJECT
     public:
         CanvasCard(Card* card,QCanvas*c);
         ~CanvasCard();
@@ -59,6 +60,9 @@ class CanvasCard : public QCanvasRectangle
         int m_rotation;
         
         Card* m_card;
+	
+	private slots:
+		void disableForbidden();
 };
 
 #endif

@@ -100,18 +100,26 @@ void GameCanvas::clearObjects()
 
 void GameCanvas::setGame( Game* game )
 {
-    m_game = game;
-    
-    if( m_game == NULL )
-        clearObjects();
-    else {
-        m_game->setCanvas( this );
-        connect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
-        connect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-        connect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
+    if( game == NULL )
+	{
+        if(m_game)
+		{
+			disconnect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
+        	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+        	disconnect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
+		}
+		clearObjects();
+		m_game=NULL;
+	}
+    else 
+	{
+        game->setCanvas( this );
+        connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
+        connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+        connect( game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
+		m_game = game;
+		createObjects();
     }
-    
-    createObjects();
 }
 
 void GameCanvas::cardForbidden(Card* card)

@@ -46,11 +46,15 @@
   */
 #if QT_VERSION >= 0x030100 
     #define EXIT_LOOP() \
-        kapp->eventLoop()->exitLoop(); 
+		if( kapp->eventLoop()->loopLevel() > 1 )\
+        	kapp->eventLoop()->exitLoop(); 
 #else 
     #define EXIT_LOOP() \
-        kapp->exit_loop();
+		if( kapp->loopLevel() > 1 ) \
+        	kapp->exit_loop();
 #endif 
+
+class Game;
 
 class QTimer;
 /**
@@ -69,7 +73,6 @@ class Timer : public QObject
         void returnLoop();
         
     private:
-        QTimer *m_timer;
 };
 
 #endif
