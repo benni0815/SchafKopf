@@ -117,9 +117,9 @@ msgid "Do you want to play?"
 msgstr "Hast Du ein Spiel?"
 
 #: humanplayer.moc.cpp:34 humanplayer.moc.cpp:42
-#, fuzzy
-msgid "HumanPlayer"
-msgstr "Eigener Spieler"
+
+msgid "Human Player:"
+msgstr "Eigener Spieler:"
 
 #: main.cpp:29
 msgid "Schafkopf is a popular card game in Bavaria."
@@ -323,10 +323,10 @@ msgstr "Die Karten werden nach jedem Stich neu angeordnet."
 msgid "Game Canvas:"
 msgstr "Spielfeld:"
 
-msgid "Background image:"
+msgid "&Background image:"
 msgstr "Hintergrundbild:"
 
-msgid "clear background image"
+msgid "&Clear background image"
 msgstr "Hintergrundbild entfernen"
 
 msgid "Games"
