@@ -24,6 +24,7 @@
 #include <klocale.h>
 #include <knuminput.h>
 #include <klineedit.h>
+#include <kurlrequester.h>
 
 #include <qframe.h>
 #include <qlayout.h>
@@ -92,7 +93,7 @@ void PreferencesDlg::accept()
     s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
     
     s->setRearrangeCards( m_checkRearrangeCards->isChecked() );
-    s->setBackgroundImage( m_linePathBackground->text() );
+    s->setBackgroundImage( m_linePathBackground->url() );
     
     // allowed games
     allowed.wenz = m_games_wenz->isChecked();
@@ -271,7 +272,7 @@ void PreferencesDlg::addPageView()
     
     QVButtonGroup* group2 = new QVButtonGroup( i18n("Game Canvas:"), box, "group2" );
     QLabel* label3 = new QLabel( i18n("Background image:"), group2, "label3" );
-    m_linePathBackground = new KLineEdit( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
+    m_linePathBackground = new KURLRequester( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
         
     QVButtonGroup* group = new QVButtonGroup( i18n("Card Arrangement:"), box, "group" );
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
