@@ -32,105 +32,105 @@
 #include <klocale.h>
 
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
-        : QWizard( parent, name, TRUE )
-{
-    setup_page_selectgame();
-}
+		: QWizard( parent, name, TRUE )
+	{
+	setup_page_selectgame();
+	}
 
 void newgamewizard::setup_page_selectgame()
-{
-    page_selectgame = new QHBox( this );
-    page_selectgame->setSpacing(8);
+	{
+	page_selectgame = new QHBox( this );
+	page_selectgame->setSpacing(8);
 
-    info = new QLabel( page_selectgame );
-    info->setMargin( 11 );
-    info->setPalette( yellow );
+	info = new QLabel( page_selectgame );
+	info->setMargin( 11 );
+	info->setPalette( yellow );
 
-    QVBox *page = new QVBox( page_selectgame );
+	QVBox *page = new QVBox( page_selectgame );
 
-    QHBox *row1 = new QHBox( page );
+	QHBox *row1 = new QHBox( page );
 
-    QButtonGroup* group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Select Type:"), row1 );
-    checkLocalGame = new QRadioButton( i18n("&Start local Game"), group_TypeSelect );
-    checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server"), group_TypeSelect );
-    checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client"), group_TypeSelect );
-    checkLocalGame->setChecked(TRUE);
+	QButtonGroup* group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Select Type:"), row1 );
+	checkLocalGame = new QRadioButton( i18n("&Start local Game"), group_TypeSelect );
+	checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server"), group_TypeSelect );
+	checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client"), group_TypeSelect );
+	checkLocalGame->setChecked(TRUE);
 
-    connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(dataChanged()));
+	connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(dataChanged()));
 
-    addPage( page_selectgame, "Select Game Type" );
+	addPage( page_selectgame, "Select Game Type" );
 
-    setNextEnabled( page_selectgame, FALSE );
-    setHelpEnabled( page_selectgame, FALSE );
-    dataChanged();
-}
+	setNextEnabled( page_selectgame, FALSE );
+	setHelpEnabled( page_selectgame, FALSE );
+	dataChanged();
+	}
 
 
 void newgamewizard::showPage( QWidget* page )
-{
-    QWizard::showPage(page);
-}
+	{
+	QWizard::showPage(page);
+	}
 
 int newgamewizard::getGame()
-{
-    if(checkLocalGame->isChecked())
-        return GAME_LOCAL;
-    else
-    {
-        if(checkNetworkServer->isChecked())
-            return GAME_NETWORK_SERVER;
-        else
-        {
-            if(checkNetworkClient->isChecked())
-                return GAME_NETWORK_CLIENT;
-            else
-                return -1;
-        }
-    }
+	{
+	if(checkLocalGame->isChecked())
+		return GAME_LOCAL;
+	else
+		{
+		if(checkNetworkServer->isChecked())
+			return GAME_NETWORK_SERVER;
+		else
+			{
+			if(checkNetworkClient->isChecked())
+				return GAME_NETWORK_CLIENT;
+			else
+				return -1;
+			}
+		}
 
-}
+	}
 
 QString newgamewizard::getGameInfoString(int gameType)
-{
-    switch(gameType)
-    {
-    case GAME_LOCAL:
-        return
-	 i18n("Start a local Game:\nYou will play against\n3 Computer Players");
-        break;
-    case GAME_NETWORK_SERVER:
-        return
-	 i18n("Start a Game Server\nYou will be the host\nof a new Network game");
-        break;
-    case GAME_NETWORK_CLIENT:
-    return
-        i18n("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
-        break;
-    }
-}
+	{
+	switch(gameType)
+		{
+			case GAME_LOCAL:
+			return
+			    i18n("Start a local Game:\nYou will play against\n3 Computer Players");
+			break;
+			case GAME_NETWORK_SERVER:
+			return
+			    i18n("Start a Game Server\nYou will be the host\nof a new Network game");
+			break;
+			case GAME_NETWORK_CLIENT:
+			return
+			    i18n("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
+			break;
+		}
+	}
 
 void newgamewizard::setInfoText(int gameType)
-{
+	{
 	info->setText(getGameInfoString(gameType));
 	info->setMaximumWidth( info->sizeHint().width() );
-}
+	}
 
 void newgamewizard::dataChanged(  )
-{
-    int game=getGame();
-    setInfoText(game);
-    switch(game)
-    {
-    case GAME_LOCAL:
-        setFinishEnabled( page_selectgame, TRUE );
-        break;
-    case GAME_NETWORK_SERVER:
-        setFinishEnabled( page_selectgame, FALSE );
-        nextButton()->setEnabled(FALSE);
-        break;
-    case GAME_NETWORK_CLIENT:
-        setFinishEnabled( page_selectgame, FALSE );
-        nextButton()->setEnabled(FALSE);
-        break;
-    }
-}
+	{
+	int game=getGame();
+	setInfoText(game);
+	switch(game)
+		{
+			case GAME_LOCAL:
+			setFinishEnabled( page_selectgame, TRUE );
+			break;
+			case GAME_NETWORK_SERVER:
+			setFinishEnabled( page_selectgame, FALSE );
+			nextButton()->setEnabled(FALSE);
+			break;
+			case GAME_NETWORK_CLIENT:
+			setFinishEnabled( page_selectgame, FALSE );
+			nextButton()->setEnabled(FALSE);
+			break;
+		}
+	}
