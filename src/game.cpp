@@ -267,7 +267,7 @@ int Game::evalCard(Card *card, GameInfo *gameinfo)
 		else
 			l_colors[a++]=i;
 	}
-	for(i=0;i<2;i++)
+	for(i=0;i<trumpf_cnt;i++)
 	{
 		if(card->card()==l_trumpf[i])
 		{
@@ -298,57 +298,6 @@ int Game::evalCard(Card *card, GameInfo *gameinfo)
 
 bool Game::isHigher( Card* card, Card* high )
 {
-/*
-	if( istTrumpf( card ) && !istTrumpf( high ) )
-        return true;
-    else if( istTrumpf( card ) && istTrumpf( high ) )
-    {
-        if( card->card() == high->card()  )
-            return (card->color() < high->color());
-        else if( card->card() != high->card() )
-        {
-            switch( m_gameinfo.mode )
-            {
-                case GameInfo::RAMSCH:
-                case GameInfo::RUFSPIEL:
-                case GameInfo::STICHT:
-                    if( card->card() == Card::OBER )
-                        return true;
-                    else if( high->card() == Card::OBER )
-                        return false;
-                    else if( card->card() == Card::UNTER )
-                        return !(high->card() == Card::OBER);
-                    else if( high->card() == Card::UNTER )        
-                        return !(card->card() == Card::OBER );
-                    break;
-                case GameInfo::GEIER:
-                    if( card->card() == Card::OBER )
-                        return true;
-                    else if( high->card() == Card::OBER )
-                        return false;
-                case GameInfo::WENZ:
-                    if( card->card() == Card::UNTER )
-                        return true;
-                    else if( high->card() == Card::UNTER )
-                        return false;
-                default:
-                    break;
-            }
-            
-            return (*card < high);
-        }
-    }
-    else if( !istTrumpf( card ) && !istTrumpf( high ) ) // beide kein trumpf
-    {
-        // die farbe ist anders als die farbe der ersten/hoechsten 
-        // karte aber diese karte is kein trumfh, kann
-        // also ned stechen
-        if( card->color() == high->color() && *card < high )
-            return true;
-    }
-
-    return false;
-*/
 	return evalCard(card, &m_gameinfo) > evalCard(high, &m_gameinfo);
 }
 

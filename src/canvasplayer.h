@@ -41,13 +41,14 @@ class CanvasPlayer{
         ~CanvasPlayer();
         
         void position( int i );
+		void init(int i);
         
         QCanvasItemList* items() const { return m_items; }
         CanvasCard* hasCard( Card* c ) const; 
         Player* player() const { return m_player; }
         
     private:
-        QCanvas* m_canvas;
+		QCanvas* m_canvas;
         QCanvasText* m_name;
         QCanvasItemList* m_items;
         

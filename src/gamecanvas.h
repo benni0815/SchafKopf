@@ -55,9 +55,10 @@ class GameCanvas : public QCanvasView
         
     private slots:
         void redrawAll();
+		void redrawPlayers();
         /** Position the cards on the screen correctly
           */
-        void positionObjects();
+        void positionObjects(bool redraw=true);
         
         void cardClicked( QCanvasItem* item );
 

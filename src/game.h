@@ -57,10 +57,13 @@ class Game : public QObject
 		/** returns a number between 1 and 32 according to the worth of the card
 		*/
 		static int evalCard(Card *card, GameInfo *gameinfo);
-        
+        void stateChanged()
+		{
+			emit gameStateChanged();
+		}
 		
-    signals:
-        void gameStateChanged();
+	signals:        
+		void gameStateChanged();
         void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );
         void playerMadeStich( unsigned int player );

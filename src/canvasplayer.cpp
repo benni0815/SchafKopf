@@ -41,26 +41,8 @@
 CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
     : m_player( player ), m_canvas( canvas )
 {
-    m_items = new QCanvasItemList();
-
-    qDebug("PLAYER=" +  player->name() );
-    qDebug("CNT=%i", player->cards()->count() );
-    for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
-        CanvasCard *c = new CanvasCard( player->cards()->at(z), m_canvas );
-        c->setZ( double(-1 - z) );
-            
-        if(i==1)
-            c->setRotation(90);
-        else if(i==3)
-            c->setRotation(270);
-#ifdef CHEAT
-        c->setFrontVisible( true );
-#else            
-        c->setFrontVisible( player->rtti() == Player::HUMAN );
-#endif
-        m_items->append( c );
-    }
-    
+	m_items=NULL;
+	init(i);    
     m_name = new QCanvasText( m_canvas );
     m_name->setColor( Qt::white );
     m_name->setFont( QFont( "Helvetica", 24 ) );
@@ -142,6 +124,38 @@ void CanvasPlayer::position( int i )
         if(i==1||i==3)
             qSwap( cardw, cardh );
     
+}
+
+void CanvasPlayer::init(int i)
+{
+    unsigned int a = 0;
+    
+    if(m_items)
+	{
+		for(a=0;a<m_items->count();a++)
+    	{
+        	QCanvasItem* item = (*m_items)[a];
+        	delete item;
+	    }
+		delete m_items;
+	}
+	m_items = new QCanvasItemList();
+    for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
+	{
+        CanvasCard *c = new CanvasCard( m_player->cards()->at(z), m_canvas );
+        c->setZ( double(-1 - z) );
+            
+        if(i==1)
+            c->setRotation(90);
+        else if(i==3)
+            c->setRotation(270);
+#ifdef CHEAT
+        c->setFrontVisible( true );
+#else            
+        c->setFrontVisible( m_player->rtti() == Player::HUMAN );
+#endif
+        m_items->append( c );
+    }
 }
 
 CanvasCard* CanvasPlayer::hasCard( Card* c ) const

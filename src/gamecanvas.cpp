@@ -40,6 +40,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawAll()));
+	connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
 }
@@ -78,6 +79,8 @@ void GameCanvas::setGame( Game* game )
 		{
 			disconnect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawAll()));
+			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
         	//disconnect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		}
 		clearObjects();
@@ -88,6 +91,8 @@ void GameCanvas::setGame( Game* game )
         game->setCanvas( this );
         connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+		connect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawAll()));
+		connect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
        // connect( game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		m_game = game;
 		createObjects();
@@ -125,7 +130,7 @@ void GameCanvas::createObjects()
     positionObjects();
 }
 
-void GameCanvas::positionObjects()
+void GameCanvas::positionObjects(bool redraw)
 {
     if( !m_players[0] || !m_game || !m_stich )
         return;
@@ -140,7 +145,8 @@ void GameCanvas::positionObjects()
         card->move( (int)p.x(), (int)p.y() );
     }
     
-    redrawAll();        
+    if(redraw)
+		redrawAll();        
 }
 
 QPoint GameCanvas::getStichPosition( int player )
@@ -232,8 +238,28 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
 
 void GameCanvas::redrawAll()
 {
-    canvas()->setAllChanged();
+    /*
+	int i;
+	
+	if(m_players[0])
+	{
+		for(i=0;i<PLAYERS;i++)
+				m_players[i]->init(i);
+		positionObjects(false);
+	}
+	*/
+	canvas()->setAllChanged();
     canvas()->update();
+}
+
+void GameCanvas::redrawPlayers()
+{
+	int i;
+	
+	for(i=0;i<PLAYERS;i++)
+		m_players[i]->init(i);
+	clearObjects();
+	createObjects();
 }
 
 void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
