@@ -45,6 +45,7 @@ SelectGameDlg::SelectGameDlg(CardList* list,QWidget *parent, const char *name)
     checkSolo = new QRadioButton( i18n("&Solo"), group1 );
     checkGeier = new QRadioButton( i18n("&Geier"), group1 );
     checkWenz = new QRadioButton( i18n("&Wenz"), group1 );
+    checkDachs = new QRadioButton( i18n("&Dachs"), group1 );
 
     QButtonGroup* group2 = new QButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plainPage() );
     checkEichel = new QRadioButton( i18n("&Eichel"), group2 );
@@ -96,7 +97,9 @@ GameInfo* SelectGameDlg::gameInfo() const
         info->setMode(GameInfo::GEIER);
     else if( checkWenz->isChecked() )
         info->setMode(GameInfo::WENZ);
-
+    else if( checkDachs->isChecked() )
+        info->setMode(GameInfo::DACHS);
+        
     return info;
 }
 
@@ -105,7 +108,7 @@ void SelectGameDlg::enableControls()
 {
     checkHerz->setEnabled( !checkRufspiel->isChecked() );
     checkFarblos->setEnabled( !checkRufspiel->isChecked() && !checkSolo->isChecked() );
-    
+
     if( checkRufspiel->isChecked() )
     {
         checkEichel->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::EICHEL ) );
@@ -116,6 +119,14 @@ void SelectGameDlg::enableControls()
             checkRufspiel->setEnabled( false );
         else
             checkRufspiel->setEnabled( true );
+    }
+    else if( checkDachs->isChecked() )
+    {
+        checkHerz->setChecked( false );
+        checkGras->setChecked( false );
+        checkEichel->setChecked( false );
+        checkSchellen->setChecked( false );
+        checkFarblos->setChecked( true );
     }
     else
     {

@@ -67,6 +67,8 @@ const QString GameInfo::toString() const
             g = i18n("Wenz"); break;
         case GameInfo::RAMSCH:
             g = i18n("Ramsch"); break;
+        case GameInfo::DACHS:
+            g = i18n("Badger"); break;
         case GameInfo::RUFSPIEL:
         default:            
             g = QString::null;
@@ -125,6 +127,9 @@ bool GameInfo::istTrumpf(Card *card) const
         case GameInfo::WENZ:
                 if(card->card()==Card::UNTER || card->color()==color())
                     return true;
+        case GameInfo::DACHS:
+                if(card->card()==Card::SAU || card->card()==Card::ZEHN)
+                    return true;
         default:
                 break;
     };
@@ -172,9 +177,11 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 	int l_trumpf_std[]={ Card::OBER, Card::UNTER };
 	int l_trumpf_geier=Card::OBER;
 	int l_trumpf_wenz=Card::UNTER;
+    int l_trumpf_dachs[]={ Card::SAU, Card::ZEHN };
 	int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
 	int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
 	int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+    int l_cards_dachs[]={ Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
 	int l_colors[4];
 	int trumpf_index=-1;
 	int cards_index=-1;
@@ -210,7 +217,14 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
         	l_trumpf=&l_trumpf_wenz;
 			l_cards=l_cards_wenz;
 			col=gameinfo->color();
-		default:
+            break;
+		case GameInfo::DACHS:
+            trumpf_cnt=2;
+            l_trumpf=l_trumpf_dachs;
+            l_cards=l_cards_dachs;
+            col=Card::NOCOLOR;
+            break;
+        default:
         	break;
 	}
 	l_colors[0]=col;

@@ -50,6 +50,8 @@ class CanvasPlayer{
         Player* player() const { return m_player; }
         
     private:
+        void create();
+        
 		QCanvas* m_canvas;
         QCanvasText* m_name;
         CanvasCard* m_items[8];

@@ -240,6 +240,11 @@ bool Game::isHigher( Card* card, Card* high )
                         return true;
                     else if( high->card() == Card::UNTER )
                         return false;
+                case GameInfo::DACHS:
+                    if( card->card() == Card::SAU )
+                        return true;
+                    else if( high->card() == Card::SAU )
+                        return false;
                 default:
                     break;
             }

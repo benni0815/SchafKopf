@@ -43,21 +43,14 @@
 CanvasPlayer::CanvasPlayer( QCanvas* canvas )
     :m_canvas( canvas )
 {
-    unsigned int z = 0;
-	for(z=0;z<NUMCARDS;z++)
-	    m_items[z] = new CanvasCard( m_canvas );
-        
-    m_player = NULL;
-    m_name = NULL;
+    create();
 }
 
 CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
     : m_player( player ), m_canvas( canvas )
 {
-    unsigned int z = 0;
-	for(z=0;z<NUMCARDS;z++)
-	    m_items[z] = new CanvasCard( m_canvas );
-        
+    create();
+    
     setPlayer( i, player );
 }
 
@@ -70,6 +63,19 @@ CanvasPlayer::~CanvasPlayer()
     delete m_name;
 }
 
+void CanvasPlayer::create()
+{
+    unsigned int z = 0;
+	for(z=0;z<NUMCARDS;z++)
+	    m_items[z] = new CanvasCard( m_canvas );
+
+    m_player = NULL;
+    m_name = new QCanvasText( m_canvas );
+    m_name->setColor( Qt::white );
+    m_name->setFont( QFont( "Helvetica", 24 ) );
+    m_name->hide();
+}
+
 void CanvasPlayer::setPlayer( int i, Player* player )
 {
     m_player = player;
@@ -77,15 +83,7 @@ void CanvasPlayer::setPlayer( int i, Player* player )
     if( m_player )
     {
         init(i);    
-        m_name = new QCanvasText( m_canvas );
-        m_name->setColor( Qt::white );
-        m_name->setFont( QFont( "Helvetica", 24 ) );
         m_name->setText( player->name() );
-        m_name->show();
-    }
-    else
-    {
-        delete m_name;
     }
 }
 
@@ -101,38 +99,34 @@ void CanvasPlayer::position( int i )
     if(i==1||i==3)
         qSwap( cardw, cardh );
         
-    if( m_name ) 
+    switch( i ) 
     {
-        switch( i ) 
-        {
-            case 0:
-                x=(w-cardw*num)/2;
-                y=h-cardh; 
-            
-                m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
-                break;
-            case 1:
-                x=DIST; 
-                y=(h-((cardh/2)*(num-1)+cardh))/2; 
-            
-                m_name->move(x,y-m_name->boundingRect().height());
-                break;
-            case 2: 
-                x=(w-((cardw/2)*(num-1)+cardw))/2;
-                y=DIST;
-            
-                m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
-                break;
-            case 3:
-            default:
-                x=w-cardw;
-                y=(h-((cardh/2)*(num-1)+cardh))/2; 
-            
-                m_name->move(x, y-m_name->boundingRect().height());
-                break;
-        }
+        case 0:
+            x=(w-cardw*num)/2;
+            y=h-cardh; 
+        
+            m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
+            break;
+        case 1:
+            x=DIST; 
+            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+        
+            m_name->move(x,y-m_name->boundingRect().height());
+            break;
+        case 2: 
+            x=(w-((cardw/2)*(num-1)+cardw))/2;
+            y=DIST;
+        
+            m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
+            break;
+        case 3:
+        default:
+            x=w-cardw;
+            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+        
+            m_name->move(x, y-m_name->boundingRect().height());
+            break;
     }
-            
         
     for( unsigned int z = 0; z < NUMCARDS; z++ ) {
         CanvasCard* card = m_items[z];
@@ -174,11 +168,14 @@ void CanvasPlayer::init(int i)
             c->setFrontVisible( m_player->rtti() == Player::HUMAN );
     #endif
         }
+        m_name->show();
     }
     else
     {
         for( unsigned int z = 0;z<NUMCARDS;z++)
             m_items[z]->hide();
+            
+        m_name->hide();
     }
 }
 

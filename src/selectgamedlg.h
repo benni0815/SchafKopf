@@ -52,6 +52,7 @@ class SelectGameDlg : public KDialogBase
         QRadioButton* checkSolo;
         QRadioButton* checkGeier;
         QRadioButton* checkWenz;
+        QRadioButton* checkDachs;
         
         QRadioButton* checkFarblos;
         QRadioButton* checkEichel;
