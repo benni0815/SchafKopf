@@ -83,12 +83,13 @@ void Game::gameLoop()
                 }
             
             m_currstich.append(c);
-            emit gameStateChanged();
+            emit playerPlayedCard(a,c);
             timer.block( 1 );
         }
         
         index = highestCard();
         m_players[index]->addStich( m_currstich );
+        emit playerMadeStich(index);
         // Sortiere so, das der stecher nächste karte spielt 
         for(a=0;a<PLAYERS;a++)
             tmp[a]=m_players[a];

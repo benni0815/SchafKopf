@@ -49,6 +49,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_stich = NULL;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
+    canvas()->setAdvancePeriod( 200 );
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawAll()));
@@ -95,7 +96,8 @@ void GameCanvas::setGame( Game* game )
         clearObjects();
     else {
         m_game->setCanvas( this );
-        connect( m_game, SIGNAL(gameStateChanged()), this, SLOT(updateObjects()));
+        connect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
+        connect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
     }
     
     createObjects();
@@ -141,14 +143,6 @@ void GameCanvas::createObjects()
     positionObjects();
 }
 
-void GameCanvas::updateObjects()
-{
-    // TODO: do only change the changed
-    // parts and do not recreated every thing!!
-    clearObjects();
-    createObjects();
-}
-
 void GameCanvas::positionObjects()
 {
     if( !m_items[0] || !m_game || !m_stich )
@@ -189,7 +183,10 @@ void GameCanvas::positionObjects()
 
         for( unsigned int z = 0; z < list->count(); z++ ) {
             CanvasCard* card = static_cast<CanvasCard*>((*list)[z]); 
-            card->move( x, y );
+            // only move if necessary!
+            if( x != card->x() || y != card->y() )
+                card->move( x, y );
+                
             if(i==0)
                 x += cardw;
             else if(i==2)
@@ -206,20 +203,37 @@ void GameCanvas::positionObjects()
     for( unsigned int i = 0; i < m_stich->count(); i++ ) 
     {
         CanvasCard* card = static_cast<CanvasCard*>((*m_stich)[i]);
-        int cx = w/2;
-        int cy = h/2;
-        
-        if( i == 0 )
-            card->move( cx, cy+cardh );
-        else if( i == 1 )
-            card->move( cx-cardw, cy );
-        else if( i == 2 )
-            card->move( cx, cy-cardh );
-        else if( i == 3 )
-            card->move( cx+cardw, cy );
+        QPoint p = getStichPosition(i);
+        card->move( (int)p.x(), (int)p.y() );
     }
     
-    redrawAll();
+    redrawAll();        
+}
+
+QPoint GameCanvas::getStichPosition( int player )
+{
+    QPoint p;
+    int w = canvas()->width()-DIST;
+    int h = canvas()->height()-DIST;
+    int cardw = Card::backgroundPixmap()->width();
+    int cardh = Card::backgroundPixmap()->height();
+    int cx = w/2;
+    int cy = h/2;
+    
+    switch( player ) 
+    {
+        case 0:
+            p = QPoint(cx, cy+(cardh/2)); break;
+        case 1:
+            p = QPoint(cx+cardw, cy); break;
+        case 2:
+            p = QPoint(cx, cy-(cardh/2)); break;
+        case 3:
+        default:
+            p = QPoint(cx-cardw, cy); break;
+    };
+        
+    return p;
 }
 
 void GameCanvas::cardClicked( QCanvasItem* item )
@@ -241,6 +255,69 @@ void GameCanvas::cardClicked( QCanvasItem* item )
                 break;
             }
         }
+    }
+}
+
+void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
+{
+    if( !m_items[player] || !m_game || !m_stich )
+        return;    
+    
+    for(unsigned int i=0;i<m_items[player]->count();i++)
+    {
+        CanvasCard* card = static_cast<CanvasCard*>((*m_items[player])[i]);
+        if(card->card() == c)
+        {
+            m_items[player]->remove( card );
+            m_stich->append( card );
+            
+            card->setRotation( 0 );
+            card->setZ( player );
+            
+            card->moveTo( getStichPosition(player) );
+            
+            
+            break;
+        }
+    }
+}
+
+void GameCanvas::slotPlayerMadeStich(unsigned int player)
+{
+    int x = 0, y = 0;
+    int w = canvas()->width()-DIST;
+    int h = canvas()->height()-DIST;
+    int cardw = Card::backgroundPixmap()->width();
+    int cardh = Card::backgroundPixmap()->height();
+    switch( player ) {
+        case 0:
+            x=(w-cardw)/2;
+            y=h-cardh; 
+            break;
+        case 1:
+            x=w-cardw;
+            y=(h-cardh)/2; 
+            break;
+        case 2: 
+            x=(w-cardw)/2;
+            y=DIST;
+            break;
+        case 3:
+        default:
+            x=DIST; 
+            y=(h-cardh)/2; 
+            break;
+    }                
+ 
+     while( !m_stich->isEmpty() ) {
+        QCanvasItem* item = m_stich->first();
+        CanvasCard* card = static_cast<CanvasCard*>(item);
+
+        card->moveTo( QPoint(x, y) );
+        m_stich->remove( item );
+// TODO: MEMORY LEAK
+// implement an autodeltion mechanism in CanvasCard
+//        delete card;
     }
 }
 

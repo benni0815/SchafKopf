@@ -23,6 +23,13 @@
 #include <qpixmap.h>
 #include <qwmatrix.h>
 
+#include <kapplication.h>
+#if QT_VERSION >= 0x030100
+    #include <qeventloop.h>
+#else
+    #include <qapplication.h>
+#endif
+
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
  : QCanvasRectangle(c), m_rotation(0)
 {
@@ -39,8 +46,6 @@ void CanvasCard::draw( QPainter & p )
 {
     QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
     
-    setSize( pixmap->width(), pixmap->height() );
-
     // this code handles already matrix transformations
     QWMatrix wm = p.worldMatrix();    
     QPoint point( (int)x(), (int)y() );
@@ -49,6 +54,7 @@ void CanvasCard::draw( QPainter & p )
     wm.rotate( (double)m_rotation );
     
     QPixmap pix = pixmap->xForm( wm );
+    setSize( pix.width(), pix.height() );
     bitBlt( p.device(), point.x(), point.y(), &pix );
 }
 
@@ -60,6 +66,28 @@ void CanvasCard::setFrontVisible( bool b )
 void CanvasCard::setRotation( int d )
 {
     m_rotation = d;
+}
+
+
+void CanvasCard::moveTo( QPoint p )
+{
+    m_point = p;
+        
+    double my = p.y() - y();
+    double mx = p.x() - x();
+    setXVelocity( mx );
+    setYVelocity( my );
+}
+
+void CanvasCard::advance( int phase )
+{
+    if( (int)x() == (int)m_point.x() )
+        setXVelocity( 0 );
+    
+    if( (int)y() == (int)m_point.y() ) 
+        setYVelocity( 0 );
+    
+    QCanvasItem::advance( phase );
 }
 
 

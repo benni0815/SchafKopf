@@ -61,6 +61,8 @@ class Game : public QObject
     signals:
         void gameStateChanged();
         void signalKlopfen();
+        void playerPlayedCard( unsigned int player, Card* );
+        void playerMadeStich( unsigned int player );
     
     public slots:
         void endGame(void);

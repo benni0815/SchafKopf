@@ -51,10 +51,12 @@ class GameCanvas : public QCanvasView
         /** Position the cards on the screen correctly
           */
         void positionObjects();
-        void updateObjects();
         
         void cardClicked( QCanvasItem* item );
 
+        void slotPlayerPlayedCard( unsigned int player, Card *c );
+        void slotPlayerMadeStich(unsigned int player);
+        
     protected:
         void resizeEvent( QResizeEvent *r );
         
@@ -66,7 +68,8 @@ class GameCanvas : public QCanvasView
           */
         void createObjects();
         void clearObjects();
-      
+        QPoint getStichPosition( int player );
+        
         QCanvasItemList* m_items[PLAYERS];
         QCanvasItemList* m_stich;
         QCanvasItem* m_item; // currently clicked item

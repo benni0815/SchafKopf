@@ -40,8 +40,15 @@ class CanvasCard : public QCanvasRectangle
         
         int rtti() const { return CANVASCARD; }
         
+        void moveTo( QPoint p );
+        
+    protected:
+        void advance( int phase );
+        
     private:
         void draw( QPainter & p );
+        
+        QPoint m_point;
         
         bool m_visible;
         int m_rotation;
