@@ -1,35 +1,38 @@
-# translation of de.po to 
-# , 2004.
-#: _translatorinfo.cpp:3
-msgid ""
-"_: EMAIL OF TRANSLATORS\n"
-"Your emails\n"
+#: canvascard.moc.cpp:34 canvascard.moc.cpp:42
+msgid "CanvasCard"
 msgstr ""
-"domseichter@web.de\n"
-"Last-Translator: \n"
-"PO-Revision-Date: 2004-12-13 23:59+0100\n"
-"Project-Id-Version: de\n"
-"Language-Team:  <de@li.org>\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9\n"
-"MIME-Version: 1.0\n"
 
-#: game.cpp:117
+#: card.moc.cpp:34 card.moc.cpp:42
+msgid "Card"
+msgstr ""
+
+#: computerplayer.moc.cpp:34 computerplayer.moc.cpp:42
+#, fuzzy
+msgid "ComputerPlayer"
+msgstr "Computerspieler"
+
+#: game.cpp:124
 msgid "%1 has doubled."
 msgstr "%1 hat geklopft."
 
-#: game.cpp:297
+#: game.cpp:307
 msgid "%1 has a game."
 msgstr "%1 hat ein Spiel"
 
-#: game.cpp:302
+#: game.cpp:312
 msgid "%1 has no game."
 msgstr "%1 sagt weiter."
 
-#: game.cpp:310
+#: game.cpp:323
 msgid "No one wants to play. Cards will thrown together."
-msgstr "Alle sind weiter.\nKarten werden zusammengeworfen."
+msgstr ""
+"Alle sind weiter.\n"
+"Karten werden zusammengeworfen."
+
+#: game.cpp:339
+#, fuzzy
+msgid "%1 has the Eichel Ober and has to play."
+msgstr "Der Spieler der den &Alten hat muss spielen."
 
 #: gameinfo.cpp:47
 msgid "colorless"
@@ -83,13 +86,18 @@ msgstr "Es wird ein Ramsch gespielt."
 msgid "%1 plays %2 %3."
 msgstr "%1 spielt %2 %3"
 
-#: humanplayer.cpp:47
+#: humanplayer.cpp:46
 msgid "Do you want to double?"
 msgstr "Willst Du klopfen?"
 
-#: humanplayer.cpp:66
+#: humanplayer.cpp:64
 msgid "Do you want to play?"
 msgstr "Hast Du ein Spiel?"
+
+#: humanplayer.moc.cpp:34 humanplayer.moc.cpp:42
+#, fuzzy
+msgid "HumanPlayer"
+msgstr "Eigener Spieler"
 
 #: main.cpp:29
 msgid "Schafkopf is a popular card game in Bavaria."
@@ -98,10 +106,6 @@ msgstr "Schafkopf ist ein beliebtes Kartenspiel in Bayern."
 #: main.cpp:40
 msgid "SchafKopf"
 msgstr "SchafKopf"
-
-#: newgamewizard.cpp:52
-msgid "Select Type:"
-msgstr "Typ Auswählen:"
 
 #: newgamewizard.cpp:57
 msgid "&Start local Game"
@@ -115,6 +119,7 @@ msgstr "Starte ein &Netzwerkspiel als Server"
 msgid "Start network Game as &Client"
 msgstr "Starte ein Netzwerkspiel als &Client"
 
+#: newgamewizard.cpp:65
 msgid "Select Game Type"
 msgstr "Spielmodus auswählen"
 
@@ -124,8 +129,8 @@ msgid ""
 "You will play against\n"
 "3 Computer Players"
 msgstr ""
-"<qt>Starte ein Spiel auf dem lokalen Rechner:<br>"
-"Du spielst gegen drei Computergegner.</qt>"
+"<qt>Starte ein Spiel auf dem lokalen Rechner:<br>Du spielst gegen drei "
+"Computergegner.</qt>"
 
 #: newgamewizard.cpp:107
 msgid ""
@@ -133,8 +138,8 @@ msgid ""
 "You will be the host\n"
 "of a new Network game"
 msgstr ""
-"<qt>Starte einen Spiel-Server:<br>"
-"Du bist der Host eines neuen Netzwerkspiels.</qt>"
+"<qt>Starte einen Spiel-Server:<br>Du bist der Host eines neuen "
+"Netzwerkspiels.</qt>"
 
 #: newgamewizard.cpp:111
 msgid ""
@@ -142,8 +147,144 @@ msgid ""
 "You will connect to a Computer,\n"
 "running a Schafkopf server"
 msgstr ""
-"<qt>Mit einem Spiel-Server verbinden:<br>"
-"Du wirst mit einem laufenden Schafkopf-Server verbunden.</qt>"
+"<qt>Mit einem Spiel-Server verbinden:<br>Du wirst mit einem laufenden "
+"Schafkopf-Server verbunden.</qt>"
+
+#: newgamewizard.moc.cpp:34 newgamewizard.moc.cpp:42
+msgid "newgamewizard"
+msgstr ""
+
+#: openbook.moc.cpp:34 openbook.moc.cpp:42
+#, fuzzy
+msgid "RuleBook"
+msgstr "Regeln"
+
+#: preferencesdlg.cpp:40
+msgid "Preferences"
+msgstr "Einstellungen"
+
+#: preferencesdlg.cpp:91
+msgid "Player Settings"
+msgstr "Spieler-Einstellungen"
+
+#: preferencesdlg.cpp:95
+msgid "Your Player"
+msgstr "Eigener Spieler"
+
+#: preferencesdlg.cpp:96
+#, fuzzy
+msgid "Name:"
+msgstr "Spiel:"
+
+#: preferencesdlg.cpp:99
+msgid "Computer Players"
+msgstr "Computerspieler"
+
+#: preferencesdlg.cpp:100
+msgid "Computer Player 1:"
+msgstr "Computerspieler 1:"
+
+#: preferencesdlg.cpp:102
+msgid "Computer Player 2:"
+msgstr "Computerspieler 2:"
+
+#: preferencesdlg.cpp:104
+msgid "Computer Player 3:"
+msgstr "Computerspieler 3:"
+
+#: preferencesdlg.cpp:113
+msgid "Rules"
+msgstr "Regeln"
+
+#: preferencesdlg.cpp:117
+msgid "No one wants to play:"
+msgstr "Niemand will spielen:"
+
+#: preferencesdlg.cpp:118
+msgid "&Throw cards together and give new ones."
+msgstr "Karten &zusammenwerfen und neu geben."
+
+#: preferencesdlg.cpp:119
+msgid "The player who has the Eichel &Ober has to play."
+msgstr "Der Spieler der den &Alten hat muss spielen."
+
+#: preferencesdlg.cpp:120
+msgid "Play Ramsch (not available yet)"
+msgstr "Einen Ramsch spielen (noch nicht mglich)"
+
+#: preferencesdlg.cpp:121
+msgid ""
+"The aim when playing a Ramsch is to make no tricks. The player who made the "
+"most points is the sole loser."
+msgstr ""
+"Das Ziel beim Ramsch ist es mglichst keinen Stich zu machen. Der Spieler mit "
+"den meisten Punkten ist der alleinige Verlierer."
+
+#: preferencesdlg.cpp:123
+msgid "The &last player who has doubled has to play."
+msgstr "Der Spieler, der als &letztes geklopft hat, muss spielen."
+
+#: preferencesdlg.cpp:124
+msgid ""
+"The last player who has doubled has to play. If no one has doubled the above "
+"rule takes effect."
+msgstr ""
+"Der Spieler, der als letztes geklopft hat, muss spielen. Falls niemand "
+"geklopft hat, tritt die obige Regel in Kraft."
+
+#: preferencesdlg.cpp:125
+msgid "&Double next game when cards were thrown together."
+msgstr "Das nchste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
+
+#: preferencesdlg.cpp:139
+msgid "Results"
+msgstr "Ergebnisse"
+
+#: preferencesdlg.cpp:144
+msgid "count &money"
+msgstr "&Geld schreiben"
+
+#: preferencesdlg.cpp:145
+msgid "count &points"
+msgstr "&Punkte schreiben"
+
+#: preferencesdlg.cpp:148
+msgid ""
+"<qt>SchafKopf can count in its results view either points for each game or a "
+"monetrary value for each game.<br>You can also configure how much points/"
+"money a game costs when won or lost.</qt>"
+msgstr ""
+"<qt>Beim Schafkopf kann entweder um Geld oder um Punkte gespielt werden."
+"<br>Du kannst auch einstellen wieviel Geld/Punkte ein gewonnenes Spiel "
+"bringt.</qt>"
+
+#: preferencesdlg.cpp:160
+msgid "Configure Money Values"
+msgstr "Geldbetrge festlegen"
+
+#: preferencesdlg.cpp:168 preferencesdlg.cpp:205
+msgid "Callgame:"
+msgstr "Rufspiel:"
+
+#: preferencesdlg.cpp:172 preferencesdlg.cpp:210
+msgid "Solo:"
+msgstr "Solo:"
+
+#: preferencesdlg.cpp:176 preferencesdlg.cpp:215
+msgid "Cards in a row:"
+msgstr "je Laufende:"
+
+#: preferencesdlg.cpp:180 preferencesdlg.cpp:220
+msgid "Notrick:"
+msgstr "Schwarz:"
+
+#: preferencesdlg.cpp:184 preferencesdlg.cpp:225
+msgid "Schneider:"
+msgstr "Schneider:"
+
+#: preferencesdlg.cpp:199
+msgid "Configure Point Values"
+msgstr "Punkte festlegen"
 
 #: results.cpp:44
 msgid " schneider"
@@ -169,27 +310,27 @@ msgstr " hatte %1 Laufende."
 msgid " played without %1 cards in a row."
 msgstr " spielte ohne %1."
 
-#: schafkopf.cpp:67
+#: schafkopf.cpp:70
 msgid "Results:"
 msgstr "Ergebnisse:"
 
-#: schafkopf.cpp:81
+#: schafkopf.cpp:86
 msgid "Game Information:"
 msgstr "Spiel-Information:"
 
-#: schafkopf.cpp:103
+#: schafkopf.cpp:110
 msgid "Show the last trick that was made."
 msgstr "Zeige den letzten Stich."
 
-#: schafkopf.cpp:136
+#: schafkopf.cpp:145
 msgid "&Last Trick"
 msgstr "&Letzter Stich"
 
-#: schafkopf.cpp:241
+#: schafkopf.cpp:247
 msgid "<qt>Current Game:<br><b>"
 msgstr "<qt>Aktuelles Spiel:<br><b>"
 
-#: schafkopf.cpp:250
+#: schafkopf.cpp:256
 msgid "<qt><b>%1</b> has doubled.</qt>"
 msgstr "<qt><b>%1</b> hat geklopft.</qt>"
 
@@ -217,6 +358,11 @@ msgstr "&Schellen"
 msgid "&Farblos"
 msgstr "&Farblos"
 
+#: selectgamecolorbox.moc.cpp:34 selectgamecolorbox.moc.cpp:42
+#, fuzzy
+msgid "SelectGameColorBox"
+msgstr "Spiel auswählen"
+
 #: selectgamedlg.cpp:38
 msgid "Select Game"
 msgstr "Spiel auswählen"
@@ -226,153 +372,160 @@ msgid "Game:"
 msgstr "Spiel:"
 
 #: selectgamedlg.cpp:44
-msgid "&Callgame"
-msgstr "&Rufspiel"
+msgid "&Rufspiel"
+msgstr ""
 
-#: selectgamedlg.cpp:45
+#: selectgamedlg.cpp:45 selectgametypebox.cpp:68
 msgid "&Solo"
 msgstr "&Solo"
 
-#: selectgamedlg.cpp:46
+#: selectgamedlg.cpp:46 selectgametypebox.cpp:69
 msgid "&Geier"
 msgstr "&Geier"
 
-#: selectgamedlg.cpp:47
+#: selectgamedlg.cpp:47 selectgametypebox.cpp:70
 msgid "&Wenz"
 msgstr "&Wenz"
 
-#: selectgamedlg.cpp:48
+#: selectgamedlg.cpp:48 selectgametypebox.cpp:71
 msgid "&Dachs"
 msgstr "&Dachs"
 
-msgid "Step 1/2: Select Game"
-msgstr "Schritt 1/2: Spiel auswählen"
+#: selectgametypebox.cpp:44
+msgid ""
+"When you play a \"Solo\", you have to additionally choose a color. Trumps "
+"are all \"Ober\", \"Unter\" and the color you chose. You will play alone "
+"against the other three players."
+msgstr ""
+"Wenn Du ein Solo spielen willst, musst Du zusätzlich noch eine Farbe "
+"auswählen. Trumpf sind alle Ober, Unter und die Farbe die du gewählt hast."
+"<br>Du spielst alleine gegen die drei anderen Spieler."
 
-msgid "Step 2/2: Select Color"
-msgstr "Schritt 2/2: Farbe auswählen"
+#: selectgametypebox.cpp:45
+msgid ""
+"When you play a \"Dachs\", the only trumps are aces and tenners. You will "
+"play alone against the other three players."
+msgstr ""
+"Wenn du einen Dachs spielst, sind die Asse und die Zehner die einzigen "
+"Trümpfe.<br>Du spielst alleine gegen die drei anderen Spieler."
 
-#: selectgametypebox.cpp:59
+#: selectgametypebox.cpp:46
+msgid ""
+"When you play a callgame, you will have to choose a color. You will then "
+"play in team with the player which has the ace of the color you chose. "
+"Hearts are trumps."
+msgstr ""
+"Wenn Du ein Rufspiel spielen willst, musst Du zusätzlich noch eine Farbe "
+"auswählen. Du spielst dann mit dem Spieler zusammen der das Ass dieser Farbe "
+"hat. Herz ist Trumpf."
+
+#: selectgametypebox.cpp:47
+msgid ""
+"When you play a \"Wenz\", you can choose a color. If you don't choose a "
+"color, only all \"Unter\" will be trumps. If you do, the cards of the chosen "
+"color will also be trumps. You will play alone against the other three "
+"players."
+msgstr ""
+"Wenn du einen Wenz spielen willst, kannst du zusätzlich noch eine Farbe "
+"auswählen. Es sind dann alle Unter sowie die gewählte Farbe Trumpf. Wählst du "
+"\"farblos\" sind nur die Unter Trumpf.<br>Du spielst alleine gegen die drei "
+"anderen Spieler."
+
+#: selectgametypebox.cpp:48
+msgid ""
+"When you play a \"Geier\", you can choose a color. If you don't choose a "
+"color, only all \"Ober\" will be trumps. If you do, the cards of the chosen "
+"color will also be trumps. You will play alone against the other three "
+"players."
+msgstr ""
+"Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farbe "
+"auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du "
+"\"farblos\" sind nur die Ober Trumpf.<br>Du spielst alleine gegen die drei "
+"anderen Spieler."
+
+#: selectgametypebox.cpp:64
 msgid "Game"
 msgstr "Spiel"
 
-#: selectgametypebox.cpp:62
-msgid "Play a Callgame"
-msgstr "Ein Rufspiel spielen"
+#: selectgametypebox.cpp:67
+msgid "&Callgame"
+msgstr "&Rufspiel"
 
-#: selectgametypebox.cpp:63
-msgid "Play a Solo"
-msgstr "Ein Solo spielen"
+#: selectgamewizard.cpp:47
+msgid "Step 1/2: Select Game"
+msgstr "Schritt 1/2: Spiel auswählen"
 
-#: selectgametypebox.cpp:64
-msgid "Play a Geier"
-msgstr "Einen Geier spielen"
+#: selectgamewizard.cpp:48
+msgid "Step 2/2: Select Color"
+msgstr "Schritt 2/2: Farbe auswählen"
 
-#: selectgametypebox.cpp:65
-msgid "Play a Wenz"
-msgstr "Einen Wenz spielen"
-
-#: selectgametypebox.cpp:66
-msgid "Play a Dachs"
-msgstr "Einen Dachs spielen"
+#: selectgamewizard.moc.cpp:34 selectgamewizard.moc.cpp:42
+#, fuzzy
+msgid "SelectGameWizard"
+msgstr "Spiel auswählen"
 
 #: stichdlg.cpp:32
 msgid "Last Trick"
 msgstr "Letzter Stich"
 
-#: stichdlg.cpp:66
+#: stichdlg.cpp:65
 msgid "Trick was made by: <b>"
-msgstr "Stich gehört: <b>"
+msgstr "Stich gehrt: <b>"
 
-#: stichdlg.cpp:68
+#: stichdlg.cpp:67
 msgid "No trick was made."
 msgstr "Kein Stich wurde bis jetzt gemacht."
 
-msgid "When you play a \"Solo\", you have to additionally choose a color. Trumps are all \"Ober\", \"Unter\" and the color you chose. You will play alone against the other three players."
-msgstr "Wenn Du ein Solo spielen willst, musst Du zusätzlich noch eine Farbe auswählen. Trumpf sind alle Ober, Unter und die Farbe die du gewählt hast.<br>Du spielst alleine gegen die drei anderen Spieler."
+# translation of de.po to 
+# , 2004.
+#: _translatorinfo.cpp:1
+#, fuzzy
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr ""
+"domseichter@web.de\n"
+"Last-Translator: \n"
+"PO-Revision-Date: 2004-12-13 23:59+0100\n"
+"Project-Id-Version: de\n"
+"Language-Team:  <de@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9\n"
+"MIME-Version: 1.0\n"
 
-msgid "When you play a \"Dachs\", the only trumps are aces and tenners. You will play alone against the other three players."
-msgstr "Wenn du einen Dachs spielst, sind die Asse und die Zehner die einzigen Trümpfe.<br>Du spielst  alleine gegen die drei anderen Spieler."
+# translation of de.po to 
+# , 2004.
+#: _translatorinfo.cpp:3
+#, fuzzy
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr ""
+"domseichter@web.de\n"
+"Last-Translator: \n"
+"PO-Revision-Date: 2004-12-13 23:59+0100\n"
+"Project-Id-Version: de\n"
+"Language-Team:  <de@li.org>\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9\n"
+"MIME-Version: 1.0\n"
 
-msgid "When you play a callgame, you will have to choose a color. You will then play in team with the player which has the ace of the color you chose. Hearts are trumps."
-msgstr "Wenn Du ein Rufspiel spielen willst, musst Du zusätzlich noch eine Farbe auswählen. Du spielst dann mit dem Spieler zusammen der das Ass dieser Farbe hat. Herz ist Trumpf."
+#~ msgid "Select Type:"
+#~ msgstr "Typ Auswhlen:"
 
-msgid "When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players."
-msgstr "Wenn du einen Wenz spielen willst, kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Unter sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Unter Trumpf.<br>Du spielst alleine gegen die drei anderen Spieler."
+#~ msgid "Play a Callgame"
+#~ msgstr "Ein Rufspiel spielen"
 
-msgid "When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players."
-msgstr "Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farbe auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du \"farblos\" sind nur die Ober Trumpf.<br>Du spielst alleine gegen die drei anderen Spieler."
+#~ msgid "Play a Solo"
+#~ msgstr "Ein Solo spielen"
 
-msgid "Preferences"
-msgstr "Einstellungen"
+#~ msgid "Play a Geier"
+#~ msgstr "Einen Geier spielen"
 
-msgid "Player Settings"
-msgstr "Spieler-Einstellungen"
+#~ msgid "Play a Wenz"
+#~ msgstr "Einen Wenz spielen"
 
-msgid "Your Player"
-msgstr "Eigener Spieler"
-
-msgid "Computer Players"
-msgstr "Computerspieler"
-
-msgid "Computer Player 1:"
-msgstr "Computerspieler 1:"
-
-msgid "Computer Player 2:"
-msgstr "Computerspieler 2:"
-
-msgid "Computer Player 3:"
-msgstr "Computerspieler 3:"
-
-msgid "Callgame:"
-msgstr "Rufspiel:"
-
-msgid "Solo:"
-msgstr "Solo:"
-
-msgid "Cards in a row:"
-msgstr "je Laufende:"
-
-msgid "Notrick:"
-msgstr "Schwarz:"
-
-msgid "Schneider:"
-msgstr "Schneider:"
-
-msgid "Results"
-msgstr "Ergebnisse"
-
-msgid "count &money"
-msgstr "&Geld schreiben"
-
-msgid "count &points"
-msgstr "&Punkte schreiben"
-
-msgid "<qt>SchafKopf can count in its results view either points for each game or a monetrary value for each game.<br>You can also configure how much points/money a game costs when won or lost.</qt>"
-msgstr "<qt>Beim Schafkopf kann entweder um Geld oder um Punkte gespielt werden.<br>Du kannst auch einstellen wieviel Geld/Punkte ein gewonnenes Spiel bringt.</qt>"
-
-msgid "Configure Money Values"
-msgstr "Geldbeträge festlegen"
-
-msgid "Configure Point Values"
-msgstr "Punkte festlegen"
-
-msgid "Rules"
-msgstr "Regeln"
-
-msgid "No one wants to play:"
-msgstr "Niemand will spielen:"
-
-msgid "The &last player who has doubled has to play."
-msgstr "Der Spieler, der als &letztes geklopft hat, muss spielen."
-
-msgid "The last player who has doubled has to play. If no one has doubled the above rule takes effect."
-msgstr "Der Spieler, der als letztes geklopft hat, muss spielen. Falls niemand geklopft hat, tritt die obige Regel in Kraft."
-
-msgid "&Throw cards together and give new ones."
-msgstr "Karten &zusammenwerfen und neu geben."
-
-msgid "The player who has the Eichel &Ober has to play."
-msgstr "Der Spieler der den &Alten hat muss spielen."
-
-msgid "&Double next game when cards were thrown together."
-msgstr "Das nächste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
+#~ msgid "Play a Dachs"
+#~ msgstr "Einen Dachs spielen"

@@ -106,9 +106,6 @@ void PreferencesDlg::addPagePlayer()
     
     layout2->addWidget( group2 );
     layout2->addWidget( group3 );
-      
-    // TODO: move into an own function  
-    //QFrame* box3 = addPage( i18n("Rules"), "" );
 }
 
 void PreferencesDlg::addPageRules()
@@ -120,6 +117,9 @@ void PreferencesDlg::addPageRules()
     QVButtonGroup* group = new QVButtonGroup( i18n("No one wants to play:"), box, "group" );
     m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
     m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
+    m_radioRamsch = new QRadioButton( i18n("Play Ramsch (not available yet)"), group );
+    QToolTip::add( m_radioRamsch, i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser.") );
+    m_radioRamsch->setEnabled( false );
     m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
     QToolTip::add( m_checkDoublerPlays, i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect.") );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );

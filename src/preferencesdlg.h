@@ -57,6 +57,7 @@ class PreferencesDlg : public KDialogBase
         QRadioButton* m_radioPoints;
         QRadioButton* m_radioThrowAway;
         QRadioButton* m_radioForcedGame;
+        QRadioButton* m_radioRamsch;
         
         QCheckBox* m_checkDoublerPlays;
         QCheckBox* m_checkDoubleNextGame; 
