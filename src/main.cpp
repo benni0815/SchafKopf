@@ -29,7 +29,7 @@ static const char description[] =
     I18N_NOOP("<qt>Schafkopf is a popular card game in Bavaria. "
               "SchafKopf ist the KDE version of this game.</qt>");
 
-static const char version[] = "0.5";
+static const char version[] = "0.6";
 
 static KCmdLineOptions options[] =
 {
