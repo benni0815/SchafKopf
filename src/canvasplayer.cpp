@@ -81,6 +81,8 @@ void CanvasPlayer::position( int i )
     int num=NUMCARDS;
     int w = m_canvas->width();//-DIST;
     int h = m_canvas->height();//-DIST;
+    int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen für z.B. ein Bild des Spielers (für Netzwerkmodus).
+    int availw = m_canvas->width() - 2*DIST - offsetl;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
         
@@ -90,10 +92,10 @@ void CanvasPlayer::position( int i )
     switch( i ) 
     {
         case 0:
-            if(w-2*DIST>num*cardw+(num-1))
-	    	x=(w-cardw*num)/2-(num-1)/2;
+            if(availw>num*cardw+(num-1))
+	    	x=(w-cardw*num)/2-(num-1)/2-offsetl;
 	    else
-	    	x=DIST;
+	    	x=DIST+offsetl;
             y=h-cardh-DIST; 
         
             m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
@@ -126,10 +128,10 @@ void CanvasPlayer::position( int i )
             card->move( x, y );
                 
         if(i==0)
-	    if(w-2*DIST>num*cardw+(num-1))
+	    if(availw>num*cardw+(num-1))
             	x += cardw+1;
 	    else
-	    	x += (w-2*DIST-cardw)/(num-1);
+	    	x += (availw-cardw)/(num-1);
         else if(i==2)
             x += (cardw/6);
         else
