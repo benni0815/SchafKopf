@@ -53,7 +53,7 @@ class GameInfo{
         int weight( Card* card ) const;
         bool istTrumpf(Card *card ) const;     
         
-        /** Is a player with the cards @p cards allowed to player
+        /** Is a player with the cards @p cards allowed to playe
           * the game @p mode with the color @p color.
           */
         static bool isAllowed( CardList* cards, int mode, int color );

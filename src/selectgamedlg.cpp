@@ -20,18 +20,22 @@
 #include "selectgamedlg.h"
 
 #include "card.h"
+#include "cardlist.h"
 #include "gameinfo.h"
 
 #include <qbuttongroup.h>
+#include <qlabel.h>
 #include <qlayout.h>
+#include <qpainter.h>
+#include <qpixmap.h>
 #include <qradiobutton.h>
 
 #include <klocale.h>
 
 
-SelectGameDlg::SelectGameDlg(QWidget *parent, const char *name)
+SelectGameDlg::SelectGameDlg(CardList* list,QWidget *parent, const char *name)
     : KDialogBase( KDialogBase::Plain, i18n("Select Game"),
-      KDialogBase::Ok, KDialogBase::Ok, parent,name, true)
+      KDialogBase::Ok, KDialogBase::Ok, parent,name, true), m_list( list )
 {
     QHBoxLayout* layout = new QHBoxLayout( plainPage() );    
     
@@ -42,19 +46,22 @@ SelectGameDlg::SelectGameDlg(QWidget *parent, const char *name)
     checkWenz = new QRadioButton( i18n("&Wenz"), group1 );
 
     QButtonGroup* group2 = new QButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plainPage() );
-    checkFarblos = new QRadioButton( i18n("&Farblos"), group2 );
     checkEichel = new QRadioButton( i18n("&Eichel"), group2 );
     checkGras = new QRadioButton( i18n("&Gras"), group2 );
     checkHerz = new QRadioButton( i18n("&Herz"), group2 );
     checkSchellen = new QRadioButton( i18n("&Schellen"), group2 );
+    checkFarblos = new QRadioButton( i18n("&Farblos"), group2 );
+    
+    preview = new QLabel( plainPage() );
     
     connect( group1, SIGNAL(clicked(int)), this, SLOT(enableControls()));
     connect( group2, SIGNAL(clicked(int)), this, SLOT(enableControls()));
     
     layout->addWidget( group1 );
     layout->addWidget( group2 );
+    layout->addWidget( preview );
     
-    checkRufspiel->setChecked( true );
+    checkSolo->setChecked( true );
     checkEichel->setChecked( true );
     
     enableControls();
@@ -97,6 +104,61 @@ void SelectGameDlg::enableControls()
 {
     checkHerz->setEnabled( !checkRufspiel->isChecked() );
     checkFarblos->setEnabled( !checkRufspiel->isChecked() && !checkSolo->isChecked() );
+    
+    if( checkRufspiel->isChecked() )
+    {
+        checkEichel->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::EICHEL ) );
+        checkGras->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::GRAS ) );
+        checkSchellen->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::SCHELLEN ) );
+        
+        if( !checkEichel->isEnabled() && !checkGras->isEnabled() && !checkSchellen->isEnabled() )
+            checkRufspiel->setEnabled( false );
+        else
+            checkRufspiel->setEnabled( true );
+    }
+    else
+    {
+        checkEichel->setEnabled( true );
+        checkGras->setEnabled( true );
+        checkSchellen->setEnabled( true );
+    }
+    
+    updatePreview();
+}
+
+void SelectGameDlg::updatePreview()
+{
+    unsigned int i = 0;
+    int x = 0, y = 0;
+    CardList list;
+    CardList trumpf;
+    GameInfo* info = gameInfo();
+    
+    list.init();
+    for(i=0;i<list.count();i++)
+        if( info->istTrumpf( list.at(i) ) )
+            trumpf.append( list.at(i) );
+    delete info;
+
+    QPixmap pix( 600, 400 );
+    pix.fill( Qt::darkGreen );
+    QPainter p( &pix );
+    for(i=0;i<trumpf.count();i++)
+    {
+        QPixmap* pixmap = trumpf.at(i)->pixmap();
+        p.drawPixmap( x, y, *pixmap );
+        x += pixmap->width();
+        
+        if( i % 4 == 0 )
+        {
+            x = 0;
+            y += pixmap->height();
+        }
+    }
+        
+    p.end();
+    preview->setPixmap( pix );
+    
 }
 
 #include "selectgamedlg.moc"

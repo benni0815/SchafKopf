@@ -22,7 +22,9 @@
 
 #include <kdialogbase.h>
 
+class CardList;
 class GameInfo;
+class QLabel;
 class QRadioButton;
 /**
 Allows the user to select a game he wants to play.
@@ -34,15 +36,18 @@ class SelectGameDlg : public KDialogBase
 {
     Q_OBJECT
     public:
-        SelectGameDlg(QWidget *parent = 0, const char *name = 0);
+        SelectGameDlg(CardList* list,QWidget *parent = 0, const char *name = 0);
         ~SelectGameDlg();
 
         GameInfo* gameInfo() const;
         
     private slots:
         void enableControls();
+        void updatePreview();
         
     private:
+        CardList* m_list;
+        
         QRadioButton* checkRufspiel;
         QRadioButton* checkSolo;
         QRadioButton* checkGeier;
@@ -53,6 +58,8 @@ class SelectGameDlg : public KDialogBase
         QRadioButton* checkGras;
         QRadioButton* checkHerz;
         QRadioButton* checkSchellen;
+        
+        QLabel* preview;
 };
 
 #endif

@@ -68,7 +68,7 @@ GameInfo* HumanPlayer::game()
     int m = KMessageBox::questionYesNo( 0, i18n("Do you want to play?") );
     if( m == KMessageBox::Yes )
     {
-        SelectGameDlg sgd( 0, "sgd" );
+        SelectGameDlg sgd( m_cards, 0, "sgd" );
         if( sgd.exec() == QDialog::Accepted )
         {
             return sgd.gameInfo();
