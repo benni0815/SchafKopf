@@ -19,7 +19,6 @@
  ***************************************************************************/
 #include "canvascard.h"
 #include "card.h"
-#include "timer.h"
 #include "settings.h"
 
 #include <qpainter.h>

@@ -24,7 +24,6 @@
 #include "game.h"
 #include "gamecanvas.h"
 #include "gameinfo.h"
-#include "timer.h"
 
 #include <klocale.h>
 

@@ -72,7 +72,6 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     canvas()->setAdvancePeriod( 20 );
     update();
     
-    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawPlayers()));
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
 }    
