@@ -180,37 +180,37 @@ QPoint GameCanvas::getStichPosition( int player )
     int h = canvas()->height();//-DIST;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
-    int stichcanvasw = canvas()->width() - (4*DIST) - (2*cardh);
-    int stichcanvash = canvas()->height() - (4*DIST) - (2*cardh);
+    int stichcanvasw = canvas()->width() - (2*DIST) - (2*cardh) - 50;
+    int stichcanvash = canvas()->height() - (2*DIST) - (2*cardh) - 50;
     int cx = w/2;
     int cy = h/2;
     
     switch( player ) 
     {
         case 0:
-            if(stichcanvash>(2*cardh))
-	    	p = QPoint(cx-(cardw/2), cy );
+            if(stichcanvash>(2*cardh-20))
+	    	p = QPoint(cx-(cardw/2)-5, cy-10 );
 	    else
-	    	p = QPoint(cx-(cardw/2), cy+(stichcanvash/2)-cardh);
+	    	p = QPoint(cx-(cardw/2)-5, cy+(stichcanvash/2)-cardh);
 	    break;
         case 1:
-	    if(stichcanvasw>(2*cardh))
-            	p = QPoint(cx-cardh, cy-(cardw/2));
+	    if(stichcanvasw>(2*cardh-20))
+            	p = QPoint(cx-cardh+10, cy-(cardw/2)-5);
 	    else
-	    	p = QPoint(cx-(stichcanvasw/2), cy-(cardw/2));
+	    	p = QPoint(cx-(stichcanvasw/2), cy-(cardw/2)-5);
 	    break;
         case 2:
-            if(stichcanvash>(2*cardh))
-            	p = QPoint(cx-(cardw/2), cy-cardh );
+            if(stichcanvash>(2*cardh-20))
+            	p = QPoint(cx-(cardw/2)+5, cy-cardh+10 );
 	    else
-	    	p = QPoint(cx-(cardw/2), cy-(stichcanvash/2));
+	    	p = QPoint(cx-(cardw/2)+5, cy-(stichcanvash/2));
 	    break;
         case 3:
         default:
-	    if(stichcanvasw>(2*cardh))
-            	p = QPoint(cx, cy-(cardw/2));
+	    if(stichcanvasw>(2*cardh-20))
+            	p = QPoint(cx-10, cy-(cardw/2)+5);
 	    else
-	    	p = QPoint(cx+(stichcanvasw/2)-cardh, cy-(cardw/2));
+	    	p = QPoint(cx+(stichcanvasw/2)-cardh, cy-(cardw/2)+5);
 	    break;
     };
         
@@ -326,6 +326,8 @@ void GameCanvas::updateBackground()
 {
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
     resizeBackground();
+    if(!loadOK)
+         canvas()->setBackgroundPixmap( NULL );
 }
 
 void GameCanvas::redrawPlayers()

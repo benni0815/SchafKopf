@@ -273,6 +273,7 @@ void PreferencesDlg::addPageView()
     QVButtonGroup* group2 = new QVButtonGroup( i18n("Game Canvas:"), box, "group2" );
     QLabel* label3 = new QLabel( i18n("Background image:"), group2, "label3" );
     m_linePathBackground = new KURLRequester( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
+    m_pushURLClear = new QPushButton( i18n("clear background image"), group2, "m_pushURLClear" );
         
     QVButtonGroup* group = new QVButtonGroup( i18n("Card Arrangement:"), box, "group" );
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
@@ -282,6 +283,8 @@ void PreferencesDlg::addPageView()
     layout->addWidget( group );
     layout->addItem( spacer );
     
+    connect( m_pushURLClear, SIGNAL( clicked() ), m_linePathBackground, SLOT( clear() ) );
+
     // load data from configuration
     m_checkRearrangeCards->setChecked( Settings::instance()->rearrangeCards() );
 }

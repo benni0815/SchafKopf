@@ -29,6 +29,7 @@ class QRadioButton;
 class QLabel;
 class QSpinBox;
 class QCheckBox;
+class QPushButton;
 class KURLRequester;
 
 /**
@@ -81,6 +82,8 @@ class PreferencesDlg : public KDialogBase
         KLineEdit* m_p4_name;
 
         KURLRequester* m_linePathBackground;
+
+        QPushButton* m_pushURLClear;
         
         KDoubleNumInput* m_money_solo;
         KDoubleNumInput* m_money_call;
