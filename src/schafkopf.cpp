@@ -118,8 +118,8 @@ void SchafKopf::newGame()
 void SchafKopf::endGame()
 {
     m_game->endGame();
-    m_canvasview->setGame( NULL );
-    delete m_game;
+	m_canvasview->setGame( NULL );
+	delete m_game;
     m_game = NULL;
     
     enableControls();

@@ -22,8 +22,8 @@ Player::Player(CardList *cards,Game* game)
 
 Player::~ Player()
 {
-    delete m_cards;
-    delete m_stiche;
+	delete m_cards;
+	delete m_stiche;
 }
 
 const QString & Player::name() const

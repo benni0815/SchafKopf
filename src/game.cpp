@@ -28,6 +28,8 @@
 
 #include <kmessagebox.h>
 
+#include <iostream>
+
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
 {
@@ -79,8 +81,10 @@ Game::~Game()
 {
     int i;
     
+	std::cout << "Game destructor begin" << std::endl;
     for(i=0;i<PLAYERS;i++)
         delete m_players[i];
+	std::cout << "Game destructor end" << std::endl;
 }
 
 void Game::gameLoop()

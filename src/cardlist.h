@@ -55,13 +55,14 @@ class CardList : public QPtrList<Card>
 
 	CardList* FindCards(int color, int type);
 	void RemoveCards(CardList* itemsToRem);
-
+	
+	void sort();
 
 	signals:
 		void changeEvent(void);
 
 	protected:
-		int compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 );
+		int compareItems ( Card *Item1, Card *Item2 );
 };
 
 #endif
