@@ -77,6 +77,15 @@ void CanvasCard::moveTo( QPoint p )
     double mx = p.x() - x();
     setXVelocity( mx );
     setYVelocity( my );
+  
+    // we better use Timer.block in Game  
+/*
+#if QT_VERSION >= 0x030100
+    kapp->eventLoop()->enterLoop();
+#else
+    kapp->enter_loop();
+#endif
+*/
 }
 
 void CanvasCard::advance( int phase )
@@ -88,6 +97,15 @@ void CanvasCard::advance( int phase )
         setYVelocity( 0 );
     
     QCanvasItem::advance( phase );
+/*    
+    if( !xVelocity() && !yVelocity() ) {
+#if QT_VERSION >= 0x030100
+        kapp->eventLoop()->exitLoop();
+#else
+        kapp->exit_loop();
+#endif
+    }
+*/
 }
 
 

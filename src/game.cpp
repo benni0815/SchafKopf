@@ -72,6 +72,8 @@ void Game::gameLoop()
     for(i=0;i<TURNS || terminated;i++)
     {
         m_currstich.clear();
+        emit clearStich();
+        
         for(a=0;a<PLAYERS;a++) 
         {
             Card *c = m_players[a]->play();
@@ -96,6 +98,10 @@ void Game::gameLoop()
         for(a=0;a<PLAYERS;a++)
             m_players[a]=tmp[(a+index)%PLAYERS];
     }
+    
+    m_currstich.clear();
+    emit clearStich();
+    
 }
 
 CardList *Game::currStich() const

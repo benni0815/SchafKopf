@@ -98,6 +98,7 @@ void GameCanvas::setGame( Game* game )
         m_game->setCanvas( this );
         connect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         connect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
+        connect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
     }
     
     createObjects();
@@ -309,15 +310,19 @@ void GameCanvas::slotPlayerMadeStich(unsigned int player)
             break;
     }                
  
-     while( !m_stich->isEmpty() ) {
-        QCanvasItem* item = m_stich->first();
+    for( unsigned int i=0; i < m_stich->count();i++) {
+        QCanvasItem* item = (*m_stich)[i];
         CanvasCard* card = static_cast<CanvasCard*>(item);
-
         card->moveTo( QPoint(x, y) );
+    }
+}
+
+void GameCanvas::slotClearStich()
+{
+    while( !m_stich->isEmpty() ) {
+        QCanvasItem* item = m_stich->first();
         m_stich->remove( item );
-// TODO: MEMORY LEAK
-// implement an autodeltion mechanism in CanvasCard
-//        delete card;
+        delete item;
     }
 }
 

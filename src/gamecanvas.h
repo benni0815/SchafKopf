@@ -56,6 +56,7 @@ class GameCanvas : public QCanvasView
 
         void slotPlayerPlayedCard( unsigned int player, Card *c );
         void slotPlayerMadeStich(unsigned int player);
+        void slotClearStich();
         
     protected:
         void resizeEvent( QResizeEvent *r );

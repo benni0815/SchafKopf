@@ -59,6 +59,7 @@ class Game : public QObject
         bool istTrumpf(Card *card);
         
     signals:
+        void clearStich();
         void gameStateChanged();
         void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );
