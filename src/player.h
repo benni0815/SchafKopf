@@ -13,10 +13,10 @@ class Player
 {
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
-        
+
         Player(CardList *cards,Game* game);
         ~Player();
-        
+
         virtual void klopfen() = 0;
         virtual Card *play() = 0;
         virtual GameInfo* game() = 0;
@@ -27,10 +27,10 @@ class Player
         virtual void setCards( CardList *cards);
         CardList* stiche() const;
         void addStich( CardList stich );
-        
-        virtual int rtti() const = 0;
+
+        virtual int rtti() const = HUMAN;
         const unsigned int id() const { return m_id; }
-        
+
         bool geklopft() const { return m_geklopft; };
 
 
@@ -50,6 +50,10 @@ class Player
         unsigned int m_id;
     private:
         static unsigned int def_id;
+	bool istTrumpf(Card* card);
+	CardList* cardsOfSameType(Card* card);
+	Card* firstPlayedCard();
+	CardList* PlayerCards();
 };
 
 #endif /* PLAYER_H */
