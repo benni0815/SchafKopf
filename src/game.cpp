@@ -25,6 +25,9 @@
 #include "gamecanvas.h"
 #include "gameinfo.h"
 #include "results.h"
+#include "moneyresults.h"
+#include "pointresults.h"
+
 #include "settings.h"
 #include "timer.h"
 
@@ -266,7 +269,12 @@ void Game::gameResults()
     // BIG TODO:
     // IT CRASHES WITH THIS LINE UNCOMMENTED
     // BUT, WE HAVE TO DELETE r, OTHERWISE WE HAVE A MEMORY LEAK!
-    //delete r;
+	// FIXED!!!!
+	// You have to tell delete what type r is
+	if(dynamic_cast<MoneyResults *>(r))
+		delete dynamic_cast<MoneyResults *>(r);
+	else if(dynamic_cast<PointResults *>(r))
+		delete dynamic_cast<PointResults *>(r);
 }
 
 bool Game::setupGameInfo()
