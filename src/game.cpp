@@ -28,6 +28,7 @@
 #include "timer.h"
 
 #include <kmessagebox.h>
+#include <string.h>
 
 Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
@@ -77,6 +78,8 @@ void Game::gameLoop()
     // and setup m_gameinfo    
     setupGameInfo();
     
+	for(i=0;i<PLAYERS;i++)
+		m_players[i]->init();
     for(i=0;i<TURNS;i++)
     {
         m_currstich.clear();
@@ -200,9 +203,97 @@ int Game::highestCard()
     return i;
 }
 
+int Game::evalCard(Card *card, GameInfo *gameinfo)
+{
+	/* Not very nice. Try to find a better way */
+	
+	int *l_trumpf;
+	int *l_cards;
+	int l_trumpf_std[]={ Card::OBER, Card::UNTER };
+	int l_trumpf_geier=Card::OBER;
+	int l_trumpf_wenz=Card::UNTER;
+	int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
+	int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+	int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+	int l_colors[4];
+	int trumpf_index=-1;
+	int cards_index=-1;
+	int colors_index=-1;
+	int trumpf_cnt;
+	int col;
+	int i, a;
+	
+	switch( gameinfo->mode )
+    {
+		case GameInfo::RAMSCH:
+        case GameInfo::RUFSPIEL:
+			trumpf_cnt=2;
+			l_trumpf=l_trumpf_std;
+			l_cards=l_cards_std;
+			col=Card::HERZ;
+			
+			break;
+        case GameInfo::STICHT:
+			trumpf_cnt=2;
+			l_trumpf=l_trumpf_std;
+			l_cards=l_cards_std;
+			col=gameinfo->color;
+			break;
+		case GameInfo::GEIER:
+			trumpf_cnt=1;
+        	l_trumpf=&l_trumpf_geier;
+			l_cards=l_cards_geier;
+			col=gameinfo->color;
+			break;
+		case GameInfo::WENZ:
+			trumpf_cnt=1;
+        	l_trumpf=&l_trumpf_wenz;
+			l_cards=l_cards_wenz;
+			col=gameinfo->color;
+		default:
+        	break;
+	}
+	l_colors[0]=col;
+	for(i=0, a=1;i<4;i++)
+	{
+		if(col==i)
+			continue;
+		else
+			l_colors[a++]=i;
+	}
+	for(i=0;i<2;i++)
+	{
+		if(card->card()==l_trumpf[i])
+		{
+			trumpf_index=i;
+			break;
+		}
+	}
+	for(i=0;i<7;i++)
+	{
+		if(card->card()==l_cards[i])
+		{
+			cards_index=i;
+			break;
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		if(card->color()==l_colors[i])
+		{
+			colors_index=i;
+			break;
+		}
+	}
+	if(trumpf_index!=-1)
+		return 32-(trumpf_index*4+card->color());
+	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
+}
+
 bool Game::isHigher( Card* card, Card* high )
 {
-    if( istTrumpf( card ) && !istTrumpf( high ) )
+/*
+	if( istTrumpf( card ) && !istTrumpf( high ) )
         return true;
     else if( istTrumpf( card ) && istTrumpf( high ) )
     {
@@ -251,6 +342,8 @@ bool Game::isHigher( Card* card, Card* high )
     }
 
     return false;
+*/
+	return evalCard(card, &m_gameinfo) < evalCard(high, &m_gameinfo);
 }
 
 void Game::gameResults()

@@ -30,7 +30,8 @@ class HumanPlayer : public QObject, public Player
         HumanPlayer(CardList *cards,Game* game);
         ~HumanPlayer();
         
-        void klopfen();
+		void klopfen();
+		void init();
         Card *play();
         GameInfo* game();
         

@@ -31,7 +31,6 @@ HumanPlayer::HumanPlayer(CardList *cards,Game* game)
 {
     m_allowed = NULL;
     m_card = NULL;
-	m_cards->sort();
 }
 
 HumanPlayer::~HumanPlayer()
@@ -41,6 +40,11 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
+}
+
+void HumanPlayer::init()
+{
+	m_cards->sort((eval_func)m_game->evalCard, (void *)m_game->gameInfo());
 }
 
 Card *HumanPlayer::play()
@@ -84,7 +88,7 @@ void HumanPlayer::getCard(Card* card)
 void HumanPlayer::setCards( CardList *cards)
 {
 	Player::setCards(cards);
-    m_cards->sort();
+    m_cards->sort((eval_func)m_game->evalCard, (void *)m_game->gameInfo());
 }
 
 void HumanPlayer::isValid( const int index,  bool &valid )

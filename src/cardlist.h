@@ -27,6 +27,9 @@
 
 
 #define CARD_CNT 32
+
+typedef int (*eval_func)(Card *card, void *param);
+
 /**
  * By default CardList does not delete its children
  * on destruction!
@@ -56,13 +59,10 @@ class CardList : public QPtrList<Card>
 	CardList* FindCards(int color, int type);
 	void RemoveCards(CardList* itemsToRem);
 	
-	void sort();
+	void sort(eval_func eval, void *param);
 
 	signals:
 		void changeEvent(void);
-
-	protected:
-		int compareItems ( Card *Item1, Card *Item2 );
 };
 
 #endif

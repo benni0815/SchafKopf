@@ -18,6 +18,7 @@ class Player
         ~Player();
 
         virtual void klopfen() = 0;
+		virtual void init() {};
         virtual Card *play() = 0;
         virtual GameInfo* game() = 0;
 

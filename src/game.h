@@ -52,6 +52,13 @@ class Game : public QObject
         bool istTrumpf(Card *card);     
 		bool isTerminated() const { return terminated; }
 		
+		bool isHigher( Card* card, Card* high );
+		
+		/** returns a number between 1 and 32 according to the worth of the card
+		*/
+		static int evalCard(Card *card, GameInfo *gameinfo);
+        
+		
     signals:
         void gameStateChanged();
         void signalKlopfen();
@@ -72,9 +79,8 @@ class Game : public QObject
         GameCanvas *m_canvas;
         
         int highestCard();
-        bool isHigher( Card* card, Card* high );
         void gameResults();
-        
+		
         /** find a player who wants to playerPlayedCard 
           * and setup m_gameinfo according to this
           */
