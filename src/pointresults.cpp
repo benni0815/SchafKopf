@@ -51,7 +51,7 @@ double PointResults::points( Player* player )
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
         m = (m_points > 60 ? m : m * -1);
     else
-        m = (m_points >= 60 ? m * -1 : m);
+        m = (m_points > 60 ? m * -1 : m);
         
     if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
         m *= 3;

@@ -37,7 +37,8 @@ double MoneyResults::points( Player* player )
     double m = 0.0;
     
     parse();
-    
+    m_points = 60;
+        
     if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
         m = r->solo; // SOLO = 20cent
     else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
@@ -51,7 +52,7 @@ double MoneyResults::points( Player* player )
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
         m = (m_points > 60 ? m : m * -1.0);
     else
-        m = (m_points >= 60 ? m * -1.0 : m);
+        m = (m_points > 60 ? m * -1.0 : m);
         
     if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
         m *= 3;
