@@ -100,6 +100,9 @@ class Settings : public QObject
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
 
+        void setBackgroundImage( QString b);
+        QString backgroundImage() const;
+
         void setRearrangeCards( bool b);
         bool rearrangeCards() const;
 

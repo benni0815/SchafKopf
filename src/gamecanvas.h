@@ -23,6 +23,7 @@
 #include "schafkopfdef.h"
 
 #include <qcanvas.h>
+#include <qimage.h>
 
 class CanvasCard;
 class Card;
@@ -102,6 +103,8 @@ class GameCanvas : public QCanvasView
         QCanvasText* m_ok;
                 
         Game* m_game;
+
+        QImage ImgBack, ImgBack2;
 };
 
 #endif

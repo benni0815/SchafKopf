@@ -78,6 +78,7 @@ class PreferencesDlg : public KDialogBase
         KLineEdit* m_p2_name;
         KLineEdit* m_p3_name;
         KLineEdit* m_p4_name;
+        KLineEdit* m_linePathBackground;
         
         KDoubleNumInput* m_money_solo;
         KDoubleNumInput* m_money_call;

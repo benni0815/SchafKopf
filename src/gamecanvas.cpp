@@ -30,6 +30,8 @@
 #include <kapplication.h>
 #include <klocale.h>
 #include <qtimer.h>
+#include <qpixmap.h>
+#include <qimage.h>
 
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
@@ -67,6 +69,8 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_result = 0;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
+    
+    ImgBack.load( Settings::instance()->backgroundImage() );
     canvas()->setAdvancePeriod( 20 );
     update();
     
@@ -162,7 +166,7 @@ void GameCanvas::positionObjects(bool redraw)
                  m_message->y() + m_message->boundingRect().height()*2/3 );
     m_no->move( m_message->x() + m_message->boundingRect().width()/2 - m_no->boundingRect().width(), 
                 m_message->y() + m_message->boundingRect().height()*2/3 );
-    
+
     if(redraw)
     {
         canvas()->setAllChanged();
@@ -305,6 +309,9 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
     QCanvasView::resizeEvent( r );
     
     positionObjects();
+    
+    ImgBack2=ImgBack.smoothScale( canvas()->width(), canvas()->height() );
+    canvas()->setBackgroundPixmap( ImgBack2 );
 }
 
 void GameCanvas::redrawPlayers()

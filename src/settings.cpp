@@ -294,6 +294,25 @@ bool Settings::rearrangeCards() const
     return b;
 }
 
+void Settings::setBackgroundImage( QString b)
+{
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    config->writeEntry( "backgroundImage", b );
+    config->sync();
+}
+
+
+QString Settings::backgroundImage() const
+{
+    QString b="";
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    b = config->readEntry( "backgroundImage", b );
+    return b;
+}
+
+
 t_AllowedGames* Settings::allowedGames() const
 {
     t_AllowedGames* a = new t_AllowedGames;

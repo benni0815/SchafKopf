@@ -92,6 +92,7 @@ void PreferencesDlg::accept()
     s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
     
     s->setRearrangeCards( m_checkRearrangeCards->isChecked() );
+    s->setBackgroundImage( m_linePathBackground->text() );
     
     // allowed games
     allowed.wenz = m_games_wenz->isChecked();
@@ -268,10 +269,15 @@ void PreferencesDlg::addPageView()
     QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     
+    QVButtonGroup* group2 = new QVButtonGroup( i18n("Game Canvas:"), box, "group2" );
+    QLabel* label3 = new QLabel( i18n("Background image:"), group2, "label3" );
+    m_linePathBackground = new KLineEdit( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
+        
     QVButtonGroup* group = new QVButtonGroup( i18n("Card Arrangement:"), box, "group" );
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
     QToolTip::add( m_checkRearrangeCards, i18n("Cards will be rearranged after each trick.") );
  
+    layout->addWidget( group2 );
     layout->addWidget( group );
     layout->addItem( spacer );
     
