@@ -28,7 +28,7 @@
 static const char description[] =
     I18N_NOOP("Schafkopf is a popular card game in Bavaria.");
 
-static const char version[] = "0.1";
+static const char version[] = "0.3";
 
 static KCmdLineOptions options[] =
 {

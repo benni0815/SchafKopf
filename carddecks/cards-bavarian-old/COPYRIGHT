@@ -1,0 +1,7 @@
+This KDE Cardset was created by Dominik Seichter
+
+Copyright (C) 2004 Dominik Seichter <domseichter@web.de>
+
+This card set is a Bavarian card deck. With numbers 5, 4, 3 and 2 added. Those are very uncommon for a Bavarian card deck, but were added so that all KDE games can be played with this deck. The cards are created by a small Qt C++ application, which will also be released under the GPL soon. The font used on the cards is called "Bayern" and is an old Bavarian font. The cards were mainly created for the upcoming game "SchafKopf" which needs a Bavarian card deck.
+
+This card set is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.

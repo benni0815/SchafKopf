@@ -3,7 +3,7 @@
   <general>
     <author>Dominik Seichter</author>
     <email>domseichter@web.de</email>
-    <version>0.2</version>
+    <version>0.3</version>
     <projectmanagement>KDevKDEAutoProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
