@@ -28,6 +28,7 @@ class KLineEdit;
 class QRadioButton;
 class QLabel;
 class QSpinBox;
+class QCheckBox;
 
 /**
 Preferences dialog for schafkopf
@@ -56,6 +57,12 @@ class PreferencesDlg : public KDialogBase
         QRadioButton* m_radioPoints;
         QRadioButton* m_radioThrowAway;
         QRadioButton* m_radioForcedGame;
+        QRadioButton* m_radioForcedGame2;
+        QRadioButton* m_radioForcedGame3;
+        QRadioButton* m_radioForcedGame4;
+
+
+        QCheckBox* m_checkDoubleNextGame; 
 
         KLineEdit* m_p1_name;
         KLineEdit* m_p2_name;
