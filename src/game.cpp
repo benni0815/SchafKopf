@@ -28,6 +28,7 @@
 #include "settings.h"
 #include "timer.h"
 
+#include <klocale.h>
 #include <kmessagebox.h>
 #include <string.h>
 
@@ -36,6 +37,7 @@ Game::Game(QObject *parent, const char *name)
 {
     m_canvas = NULL;
     m_players[0] = NULL;
+    m_laufende = 0;
     
     start();
 }
@@ -96,7 +98,11 @@ void Game::gameLoop()
     
     // find a player you can playercards
     // and setup m_gameinfo    
-    setupGameInfo();
+    if( !setupGameInfo() )
+    {
+        start();
+        gameLoop();
+    }
     
 	for(i=0;i<PLAYERS;i++)
 		m_players[i]->init();
@@ -345,6 +351,7 @@ bool Game::isHigher( Card* card, Card* high )
 void Game::gameResults()
 {
     Results* r = Settings::instance()->results();
+    r->setLaufende( m_laufende );
     r->setGameInfo( &m_gameinfo );
     for( unsigned int i=0;i<PLAYERS;i++)
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
@@ -357,7 +364,7 @@ void Game::gameResults()
     //delete r;
 }
 
-void Game::setupGameInfo()
+bool Game::setupGameInfo()
 {
     // list of games the players want to playercards
     // maximum 4 entries
@@ -377,11 +384,8 @@ void Game::setupGameInfo()
     
     if( games.isEmpty() )
     {
-        // nobody wants to play
-        // TODO: future: Ramsch, zamschmeissen, etc.
-        m_gameinfo.setColor( Card::EICHEL );
-        m_gameinfo.setMode( GameInfo::RUFSPIEL );
-        m_gameinfo.setSpieler( m_players[0] );
+        KMessageBox::information( 0, i18n("No one wants to play. Cards will thrown together.") );
+        return false;
     } 
     else
     {
@@ -408,8 +412,10 @@ void Game::setupGameInfo()
                 }
         }
     }
-
+    
+    m_laufende = m_gameinfo.laufende();
     KMessageBox::information( 0, m_gameinfo.toString() );
+    return true;
 }
 
 #include "game.moc"

@@ -27,7 +27,6 @@ class Card;
 class CanvasCard;
 class Player;
 class QCanvas;
-class QCanvasItemList;
 class QCanvasText;
 
 /**
@@ -43,14 +42,14 @@ class CanvasPlayer{
         void position( int i );
 		void init(int i);
         
-        QCanvasItemList* items() const { return m_items; }
+        void cardPlayed( Card* c );
         CanvasCard* hasCard( Card* c ) const; 
         Player* player() const { return m_player; }
         
     private:
 		QCanvas* m_canvas;
         QCanvasText* m_name;
-        QCanvasItemList* m_items;
+        CanvasCard* m_items[8];
         
         Player* m_player;
 };

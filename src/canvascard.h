@@ -31,9 +31,11 @@ class CanvasCard : public QObject, public QCanvasRectangle
 {
 	Q_OBJECT
     public:
+        CanvasCard(QCanvas*c);
         CanvasCard(Card* card,QCanvas*c);
         ~CanvasCard();
 
+        void setCard(Card* card);
         Card* card() const { return m_card; }
         
         void setFrontVisible( bool b );

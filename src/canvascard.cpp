@@ -28,36 +28,51 @@
 #include <kpixmap.h>
 #include <kpixmapeffect.h> 
 
-CanvasCard::CanvasCard(Card* card,QCanvas*c)
+CanvasCard::CanvasCard(QCanvas*c)
  : QCanvasRectangle(c), m_rotation(0)
 {
+    m_card = 0;
     m_forbidden = false;
-    m_card = card;
     show();
 }
 
+CanvasCard::CanvasCard(Card* card,QCanvas*c)
+ : QCanvasRectangle(c), m_rotation(0)
+{
+    setCard( card );
+    m_forbidden = false;
+    show();
+}
 
 CanvasCard::~CanvasCard()
 {
 }
 
+void CanvasCard::setCard( Card* card )
+{
+    m_card = card;
+}
+
 void CanvasCard::draw( QPainter & p )
 {
-    QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
+    if( m_card )
+    {
+        QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
     
-    // this code handles already matrix transformations
-    QWMatrix wm = p.worldMatrix();    
-    QPoint point( (int)x(), (int)y() );
-    point = wm * point;
+        // this code handles already matrix transformations
+        QWMatrix wm = p.worldMatrix();    
+        QPoint point( (int)x(), (int)y() );
+        point = wm * point;
     
-    wm.rotate( (double)m_rotation );
+        wm.rotate( (double)m_rotation );
     
-    KPixmap pix = pixmap->xForm( wm );
-    if( m_forbidden )
-        pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
+        KPixmap pix = pixmap->xForm( wm );
+        if( m_forbidden )
+            pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
     
-    setSize( pix.width(), pix.height() );
-    bitBlt( p.device(), point.x(), point.y(), &pix );
+        setSize( pix.width(), pix.height() );
+        bitBlt( p.device(), point.x(), point.y(), &pix );
+    }
 }
 
 void CanvasCard::setFrontVisible( bool b )
@@ -69,7 +84,6 @@ void CanvasCard::setRotation( int d )
 {
     m_rotation = d;
 }
-
 
 void CanvasCard::forbidden()
 {
@@ -83,6 +97,4 @@ void CanvasCard::disableForbidden()
 	m_forbidden =false;
 	QCanvasRectangle::update();
 }
-
-
 

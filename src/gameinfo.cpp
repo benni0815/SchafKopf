@@ -37,7 +37,6 @@ GameInfo::~GameInfo()
 {
 }
 
-
 const QString GameInfo::toString() const
 {
     QString s, c, g;
@@ -151,7 +150,7 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 bool GameInfo::operator>( GameInfo info )
 {
 /*
-  2.2.3. Hat ein Teilnehmer einen Wenz oder ein Solo und vorher schon ein Spiel angesagt worden, so muß der Einzelspieler erklären "Ich spiele auch". Wenn der Erstmeldende "Gut" sagt, kann der Einzelspieler sein Spiel bekanntgeben. Will der Voransitzende aber selber alleine spielen, so nennt er sein Einzelspiel. Der nachfolgende Teilnehmer kann nun nur noch mit einem höherrangigen Einzelspiel ans Spiel kommen. Denn: Bei gleichrangigen Spielen entscheidet die Sitzreihenfolge, wer zum Zuge kommt. Farbsoli sind untereinander alle gleichberechtigt. Herzsoli geht nicht vor.
+  2.2.3. Hat ein Teilnehmer einen Wenz oder ein Solo und vorher schon ein Spiel angesagt worden, so muï¿½der Einzelspieler erklï¿½en "Ich spiele auch". Wenn der Erstmeldende "Gut" sagt, kann der Einzelspieler sein Spiel bekanntgeben. Will der Voransitzende aber selber alleine spielen, so nennt er sein Einzelspiel. Der nachfolgende Teilnehmer kann nun nur noch mit einem hï¿½errangigen Einzelspiel ans Spiel kommen. Denn: Bei gleichrangigen Spielen entscheidet die Sitzreihenfolge, wer zum Zuge kommt. Farbsoli sind untereinander alle gleichberechtigt. Herzsoli geht nicht vor.
 */  
     if( this->mode() == info.mode() )
     {
@@ -163,3 +162,13 @@ bool GameInfo::operator>( GameInfo info )
     } else
         return this->mode() < info.mode();
 }
+
+int GameInfo::laufende()
+{
+    CardList laufend = *(spieler()->cards());
+    if( mitspieler() )
+        laufend.appendList( mitspieler()->cards() );
+
+            
+    return 0;
+}       

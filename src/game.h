@@ -83,7 +83,8 @@ class Game : public QObject
         CardList m_playedcards;
         CardList m_currstich;
         GameInfo m_gameinfo;
-        
+        int m_laufende;
+                
         GameCanvas *m_canvas;
         
         int highestCard();
@@ -91,8 +92,11 @@ class Game : public QObject
 		
         /** find a player who wants to playerPlayedCard 
           * and setup m_gameinfo according to this
+          * returns true on succes
+          * and false when no one wants to playerPlayedCard
+          * and a new game should be started
           */
-       void setupGameInfo();
+       bool setupGameInfo();
 };
 
 #endif

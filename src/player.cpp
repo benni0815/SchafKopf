@@ -155,10 +155,10 @@ Card* Player::firstPlayedCard()
 CardList* Player::cardsOfSameType(Card* card)
 {
 	CardList* SpielerKarten=PlayerCards();
-	if(card==NULL) return SpielerKarten; //müssen alle Karten zurückgegeben werden
+	if(card==NULL) return SpielerKarten; //mssen alle Karten zurckgegeben werden
 	else
 	{
-		if(istTrumpf(card)) //müssen alle trümpfe zurückgegeben werden
+		if(istTrumpf(card)) //mssen alle trmpfe zurckgegeben werden
 		{
 		CardList* AntiMaske=PlayerCards();
 		removeTrumpf(AntiMaske);
@@ -166,7 +166,7 @@ CardList* Player::cardsOfSameType(Card* card)
 		delete AntiMaske;
 		return SpielerKarten;
 		}
-		else	//muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
+		else	//muss die gleiche Farbe ohne Trmpfe zurckgegeben werden
 		{
 		removeTrumpf(SpielerKarten);
 		CardList* SpielerFarbe=	SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
@@ -186,11 +186,19 @@ CardList* Player::allowedCards()
 		allowed=PlayerCards();
 	}
 
-	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) //weiß nicht wieso dass Game::RUFSPIEL nimmer geht, seit letzter aktualisierung... naja, wird so schon gehn (mit GameInfo)
+	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) //weiï¿½nicht wieso dass Game::RUFSPIEL nimmer geht, seit letzter aktualisierung... naja, wird so schon gehn (mit GameInfo)
 	{
 		CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
 		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
-		if(!Sau->isEmpty())	//muss nur was machen wenn ich die Sau habe
+		// entferne alle trumpfe aus Spielfarbe
+        for(unsigned int i=0;i<Spielfarbe->count();i++)
+            if( istTrumpf( Spielfarbe->at(i) ) )
+            {
+                Spielfarbe->removeRef( Spielfarbe->at(i) );
+                qDebug("Entferne trumpf aus Spielfarbe");
+            }
+                
+        if(!Sau->isEmpty())	//muss nur was machen wenn ich die Sau habe
 		{
 			if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
 			{

@@ -26,6 +26,7 @@
     #define PLAYERS 4
 #endif
 
+class CanvasCard;
 class Card;
 class Game;
 class CanvasPlayer;
@@ -54,8 +55,8 @@ class GameCanvas : public QCanvasView
         void playCard( Card* card );
         
     private slots:
-        void redrawAll();
 		void redrawPlayers();
+        
         /** Position the cards on the screen correctly
           */
         void positionObjects(bool redraw=true);
@@ -79,7 +80,7 @@ class GameCanvas : public QCanvasView
         QPoint getStichPosition( int player );
         
         CanvasPlayer* m_players[PLAYERS];
-        QCanvasItemList* m_stich;
+        CanvasCard* m_stich[4];
         QCanvasItem* m_item; // currently clicked item
         
         Game* m_game;

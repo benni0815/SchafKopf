@@ -53,6 +53,10 @@ class GameInfo{
         int weight( Card* card ) const;
         bool istTrumpf(Card *card ) const;     
         
+        /** calculate the number of "laufende" ticks
+          */
+        int laufende();
+        
         /** Is a player with the cards @p cards allowed to playe
           * the game @p mode with the color @p color.
           */
