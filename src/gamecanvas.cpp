@@ -30,7 +30,7 @@
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */
-//#define CHEAT
+#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"
@@ -381,6 +381,7 @@ int GameCanvas::id2index( int id )
     for(unsigned int i=0;i<PLAYERS;i++)
         if( m_ids[i] == id )
             return i;
+    return 0;
 }
 
 #include "gamecanvas.moc"

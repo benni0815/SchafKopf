@@ -21,6 +21,7 @@
 
 #include "cardlist.h"
 #include "game.h"
+#include "gameinfo.h"
 
 #include <kapplication.h>
 
@@ -50,5 +51,67 @@ Card *ComputerPlayer::play()
 
 GameInfo* ComputerPlayer::game()
 {
+    int trumpf = 0;
+    int fehlfarbe = 0;
+    unsigned int i = 0, c = 0;
+    int z = 0;
+
+    // it's ugly to have three list, but smaller
+    // than having one list containing a struct
+    QValueList<GameInfo> lstInfo;
+    QValueList<int> lstTrumpf;
+    QValueList<int> lstFehlFarbe;
+        
+    for(i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
+    {
+        trumpf = fehlfarbe = 0;
+        
+        for( z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
+        {
+            if( i==GameInfo::RUFSPIEL ) 
+            {
+                CardList* sau = m_cards->FindCards(m_game->gameInfo()->color, Card::SAU);
+                if( z==Card::NOCOLOR || z==Card::HERZ || !sau->isEmpty() ) {
+                    delete sau;
+                    continue;
+                } else
+                    delete sau;
+            }
+            
+            GameInfo info;
+            info.mode = i;
+            info.color = z;        
+            for( c=0;c<m_cards->count();c++)
+                if( m_game->istTrumpf( m_cards->at(c), &info ) )
+                    trumpf++;
+                else if( !m_game->istTrumpf( m_cards->at(c), &info ) && m_cards->at(c)->card() != Card::SAU )
+                    fehlfarbe++;
+            
+            if( trumpf >= 4 && fehlfarbe <= 2 )
+            {
+                qDebug( name() + "SPIEL!!!");
+                lstInfo.append( info );
+                lstTrumpf.append( trumpf );
+                lstFehlFarbe.append( fehlfarbe );
+            }
+        }
+    }
+    
+    // now we have all possible games in list,
+    // let's find the best one;
+    if( !lstInfo.isEmpty() )
+    {
+        int best = 0;
+        for( i=0;i<lstInfo.count();i++)
+            if( lstTrumpf[i] > lstTrumpf[best] && lstFehlFarbe[i] < lstFehlFarbe[i] )
+            {
+                best = i;
+                continue;
+            }
+        
+        GameInfo* gi = new GameInfo;
+        *gi = lstInfo[best];
+        return gi;
+    }
     return 0;
 }

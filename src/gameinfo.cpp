@@ -19,9 +19,17 @@
  ***************************************************************************/
 #include "gameinfo.h"
 #include "card.h"
+#include "player.h"
+
+#include <klocale.h>
+#include <qstring.h>
 
 GameInfo::GameInfo()
 {
+    color=Card::NOCOLOR;
+    mode=GameInfo::STICHT;
+    spieler=0;
+    mitspieler=0;
 }
 
 
@@ -29,6 +37,51 @@ GameInfo::~GameInfo()
 {
 }
 
+
+const QString GameInfo::toString() const
+{
+    QString s, c, g;
+    switch( color )
+    {
+        case Card::NOCOLOR:
+            c = i18n("colorless"); break;
+        case Card::EICHEL:
+            c = i18n("Eichel"); break;
+        case Card::GRAS:
+            c = i18n("Gras"); break;
+        case Card::HERZ:
+            c = i18n("Heart"); break;
+        case Card::SCHELLEN:
+            c = i18n("Schellen"); break;
+        default:
+            c = QString::null;
+            break;
+    }
+    
+    switch( mode )
+    {
+        case GameInfo::STICHT:
+            g = i18n("Sticht"); break;
+        case GameInfo::GEIER:
+            g = i18n("Geier"); break;
+        case GameInfo::WENZ:
+            g = i18n("Wenz"); break;
+        case GameInfo::RAMSCH:
+            g = i18n("Ramsch"); break;
+        case GameInfo::RUFSPIEL:
+        default:            
+            g = QString::null;
+    }
+    
+    if( mode == GameInfo::RUFSPIEL )
+        s = i18n("%1 plays on the %2 Ace.").arg( spieler ? spieler->name() : QString::null ).arg(c);
+    else if( mode == GameInfo::RAMSCH )
+        s = i18n("Ramsch is played.");
+    else
+        s = i18n("%1 plays %2 %3.").arg( spieler ? spieler->name() : QString::null ).arg(c).arg(g);
+
+    return s; 
+}
 
 bool GameInfo::operator>( GameInfo info )
 {

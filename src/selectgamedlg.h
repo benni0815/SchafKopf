@@ -17,33 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef GAMEINFO_H
-#define GAMEINFO_H
+#ifndef SELECTGAMEDLG_H
+#define SELECTGAMEDLG_H
 
-class Player;
-class QString;
+#include <kdialogbase.h>
+
+class GameInfo;
+class QRadioButton;
 /**
-Keeps all information on the current game (e.g. wenz or rufspiel)
+Allows the user to select a game he wants to play.
 
 @author Dominik Seichter
 */
 
-class GameInfo{
+class SelectGameDlg : public KDialogBase
+{
+    Q_OBJECT
     public:
-        enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH };
-        
-        int color;
-        __mode mode;
-        Player *spieler;
-        Player *mitspieler;
+        SelectGameDlg(QWidget *parent = 0, const char *name = 0);
+        ~SelectGameDlg();
 
+        GameInfo* gameInfo() const;
         
-        GameInfo();
-        ~GameInfo();
-                        
-        const QString toString() const;
-
-        bool operator>( GameInfo info );
+    private slots:
+        void enableControls();
+        
+    private:
+        QRadioButton* checkRufspiel;
+        QRadioButton* checkSolo;
+        QRadioButton* checkGeier;
+        QRadioButton* checkWenz;
+        
+        QRadioButton* checkFarblos;
+        QRadioButton* checkEichel;
+        QRadioButton* checkGras;
+        QRadioButton* checkHerz;
+        QRadioButton* checkSchellen;
 };
 
 #endif

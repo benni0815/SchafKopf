@@ -135,8 +135,6 @@ bool Player::hasTrumpf(CardList* liste)
 	return false;
 }
 
-
-
 bool Player::istTrumpf(Card* card)
 {
 	return m_game->istTrumpf(card);

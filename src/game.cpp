@@ -156,9 +156,12 @@ Player* Game::findIndex( unsigned int index ) const
     return ( index < PLAYERS ? m_players[index] : 0 );
 }
 
-bool Game::istTrumpf(Card *card)
+bool Game::istTrumpf(Card *card,GameInfo* gameinfo)
 {
-    switch(m_gameinfo.mode)
+    if( !gameinfo )
+        gameinfo = &m_gameinfo;
+        
+    switch(gameinfo->mode)
     {
         case GameInfo::RUFSPIEL:
         case GameInfo::RAMSCH:
@@ -166,15 +169,15 @@ bool Game::istTrumpf(Card *card)
                     return true;
                 break;
         case GameInfo::STICHT:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==m_gameinfo.color)
+                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==gameinfo->color)
                     return true;
                 break;
         case GameInfo::GEIER:
-                if(card->card()==Card::OBER || card->color()==m_gameinfo.color)
+                if(card->card()==Card::OBER || card->color()==gameinfo->color)
                     return true;
                 break;
         case GameInfo::WENZ:
-                if(card->card()==Card::UNTER || card->color()==m_gameinfo.color)
+                if(card->card()==Card::UNTER || card->color()==gameinfo->color)
                     return true;
         default:
                 break;
@@ -373,7 +376,11 @@ void Game::setupGameInfo()
     {
         GameInfo* info = m_players[i]->game();
         if( info )
+        {
+            info->spieler = m_players[i];
+            info->mitspieler = 0;
             games.append( info );
+        }
     }
     
     if( games.isEmpty() )
@@ -410,8 +417,8 @@ void Game::setupGameInfo()
                 }
         }
     }
-    
-    qDebug("Game=%i, Color=%i", m_gameinfo.mode, m_gameinfo.color );
+
+    KMessageBox::information( 0, m_gameinfo.toString() );
 }
 
 #include "game.moc"

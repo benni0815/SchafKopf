@@ -49,7 +49,7 @@ class Game : public QObject
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 
-        bool istTrumpf(Card *card);     
+        bool istTrumpf(Card *card, GameInfo* gameinfo = 0 );     
 		bool isTerminated() const { return terminated; }
 		
 		bool isHigher( Card* card, Card* high );
