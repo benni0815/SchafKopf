@@ -21,6 +21,7 @@
 
 #include "card.h"
 #include "cardlist.h"
+#include "game.h"
 #include "gameinfo.h"
 
 #include <qbuttongroup.h>
@@ -139,8 +140,10 @@ void SelectGameDlg::updatePreview()
         if( info->istTrumpf( list.at(i) ) )
             trumpf.append( list.at(i) );
     delete info;
-
-    QPixmap pix( 600, 400 );
+    trumpf.sort((eval_func)Game::evalCard, (void *)info);
+    
+    Card c( Card::SAU, Card::EICHEL );
+    QPixmap pix(c.pixmap()->width()*4,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
     for(i=0;i<trumpf.count();i++)
@@ -149,7 +152,7 @@ void SelectGameDlg::updatePreview()
         p.drawPixmap( x, y, *pixmap );
         x += pixmap->width();
         
-        if( i % 4 == 0 )
+        if(!((i+1)%4))
         {
             x = 0;
             y += pixmap->height();
