@@ -31,6 +31,7 @@ class QSpinBox;
 class QCheckBox;
 class QPushButton;
 class KURLRequester;
+class QWidgetStack;
 
 /**
 Preferences dialog for schafkopf
@@ -54,13 +55,15 @@ class PreferencesDlg : public KDialogBase
     private:
         void addPagePlayer();
         void addPageResults();
-        void addPageResultsMoney();
-        void addPageResultsPoints();
         void addPageRules();
         void addPageView();
         void addPageGames();
         
     private:
+	QVBox* stackMoney;
+	QVBox* stackPoints;
+	QWidgetStack* stack;
+
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
         QRadioButton* m_radioThrowAway;
