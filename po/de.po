@@ -24,15 +24,17 @@ msgid "%1 has no game."
 msgstr "%1 sagt weiter."
 
 #: game.cpp:323
-msgid "No one wants to play. Cards will thrown together."
+msgid "No one wants to play.\nCards will be thrown together."
 msgstr ""
 "Alle sind weiter.\n"
 "Karten werden zusammengeworfen."
 
 #: game.cpp:339
-#, fuzzy
-msgid "%1 has the Eichel Ober and has to play."
-msgstr "Der Spieler der den &Alten hat muss spielen."
+msgid "%1 has got the Eichel Ober\nand has to play."
+msgstr "%1 hat den Eichel Ober\nund muss spielen."
+
+msgid "%1 has doubled last\nand has to play now."
+msgstr "%1 hat als letzter\ngeklopft und muss nun spielen."
 
 #: gameinfo.cpp:47
 msgid "colorless"
@@ -234,7 +236,7 @@ msgstr ""
 
 #: preferencesdlg.cpp:125
 msgid "&Double next game when cards were thrown together."
-msgstr "Das nchste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
+msgstr "Das nächste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
 
 #: preferencesdlg.cpp:139
 msgid "Results"

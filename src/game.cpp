@@ -364,10 +364,10 @@ bool Game::setupGameInfoForced()
     {
         // if someone has doubled he is forced to player
         // if more players have doubled the last one has to play
-        for( i=PLAYERS-1;i<=0;i-- )
+        for( i=PLAYERS-1;i>=0;i-- )
             if( m_players[i]->geklopft() )
             {
-                m_canvas->information( i18n("%1 has doubled and has to play now.").arg( m_players[i]->name() ) );
+                m_canvas->information( i18n("%1 has doubled last\nand has to play now.").arg( m_players[i]->name() ) );
     
                 info = m_players[i]->gameInfo( true );
                 info->setSpieler( m_players[i] );
@@ -379,7 +379,7 @@ bool Game::setupGameInfoForced()
         
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
     {
-        m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
+        m_canvas->information( i18n("No one wants to play.\nCards will be thrown together.") );
         m_gameinfo.setValid( false );
         emit signalSetupGameInfo();
         return false;
@@ -390,7 +390,7 @@ bool Game::setupGameInfoForced()
         for( i=0;i<PLAYERS;i++ )
             if( m_players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
             {
-                m_canvas->information( i18n("%1 has the Eichel Ober and has to play.").arg( m_players[i]->name() ) );
+                m_canvas->information( i18n("%1 has got the Eichel Ober\nand has to play.").arg( m_players[i]->name() ) );
                 
                 info = m_players[i]->gameInfo( true );
                 info->setSpieler( m_players[i] );
