@@ -46,12 +46,6 @@ void HumanPlayer::klopfen()
 {
 }
 
-void HumanPlayer::init()
-{
-	m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-	m_game->stateChanged();
-}
-
 Card *HumanPlayer::play()
 {
    	m_allowed = allowedCards();
@@ -91,13 +85,6 @@ void HumanPlayer::getCard(Card* card)
 	{
 		m_game->canvas()->cardForbidden(card);
 	}
-}
-
-void HumanPlayer::setCards( CardList *cards)
-{
-	Player::setCards(cards);
-    m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-	m_game->stateChanged();
 }
 
 

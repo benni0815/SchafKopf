@@ -18,16 +18,17 @@ class Player
         ~Player();
 
         virtual void klopfen() = 0;
-		virtual void init() {};
         virtual Card *play() = 0;
         virtual GameInfo* gameInfo() = 0;
+        
+        void sortCards();
         
         Game* game() const { return m_game; }
 
         const QString & name() const;
         void setName( const QString & n );
         CardList *cards() const;
-        virtual void setCards( CardList *cards);
+        void setCards( CardList *cards);
         CardList* stiche() const;
         void addStich( CardList stich );
 

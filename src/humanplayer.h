@@ -31,7 +31,6 @@ class HumanPlayer : public QObject, public Player
         ~HumanPlayer();
         
 		void klopfen();
-		void init();
         Card *play();
         GameInfo* gameInfo();
         
@@ -43,7 +42,6 @@ class HumanPlayer : public QObject, public Player
     private:
         Card* m_card;
         CardList* m_allowed;
-        void setCards( CardList *cards);
 };
 
 #endif

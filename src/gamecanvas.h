@@ -49,14 +49,15 @@ class GameCanvas : public QCanvasView
           * is forbidden to play!
           */
         void cardForbidden( Card* card );
+
+    public slots:
+        void redrawPlayers();
         
     signals:
         void clicked( QCanvasItem* item );
         void playCard( Card* card );
         
     private slots:
-		void redrawPlayers();
-        
         /** Position the cards on the screen correctly
           */
         void positionObjects(bool redraw=true);

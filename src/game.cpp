@@ -101,8 +101,9 @@ void Game::gameLoop()
     if( !setupGameInfo() )
         gameLoop();
     
-	for(i=0;i<PLAYERS && !terminated;i++)
-		m_players[i]->init();
+    for(i=0;i<PLAYERS && !terminated;i++)
+		m_players[i]->sortCards();
+    m_canvas->redrawPlayers();
     
     for(i=0;i<TURNS && !terminated ;i++)
     {

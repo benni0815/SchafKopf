@@ -54,17 +54,10 @@ class Game : public QObject
 		
 		bool isHigher( Card* card, Card* high );
 		
-        void stateChanged()
-		{
-			emit gameStateChanged();
-		}
-		
 	signals:        
         void gameStarted();
         void gameEnded();
     
-		void gameStateChanged();
-        void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );
         void playerMadeStich( unsigned int player );
         void playerResult( const QString & name, const QString & result );

@@ -49,7 +49,13 @@ void Player::setCards( CardList *cards)
     m_cards=cards;
 
     klopfen();
-    // sortCards();
+    
+    sortCards();
+}
+
+void Player::sortCards()
+{
+    m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
 }
 
 void Player::DebugCardOutput(Card* card)
@@ -101,8 +107,6 @@ void Player::DebugCardOutput(Card* card)
 	}
 	 qDebug("Entferne: %s, %s", c, s);
 }
-
-
 
 CardList* Player::stiche() const
 {
