@@ -87,7 +87,13 @@ void PreferencesDlg::accept()
     names << m_p4_name->text();
     s->setPlayerNames( names );
     
-    s->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
+    if( m_radioThrowAway->isChecked() )
+        s->setNoGame( Settings::NOGAME_NEUGEBEN );
+    else if ( m_radioForcedGame->isChecked() )
+        s->setNoGame( Settings::NOGAME_ALTERSPIELT );
+    else if( m_radioRamsch->isChecked() )
+        s->setNoGame( Settings::NOGAME_RAMSCH );
+        
     s->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
     
     s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
@@ -138,8 +144,8 @@ void PreferencesDlg::addPageRules()
     m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
     m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
     m_radioRamsch = new QRadioButton( i18n("Play Ramsch (not available yet)"), group );
+    
     QToolTip::add( m_radioRamsch, i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser.") );
-    m_radioRamsch->setEnabled( false );
     m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
     QToolTip::add( m_checkDoublerPlays, i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect.") );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
@@ -150,8 +156,10 @@ void PreferencesDlg::addPageRules()
     // load data from configuration
     if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
         m_radioForcedGame->setChecked( true );
-    else
+    else if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
         m_radioThrowAway->setChecked( true );
+    else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
+        m_radioRamsch->setChecked( true );
         
     m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
     
@@ -160,6 +168,7 @@ void PreferencesDlg::addPageRules()
     // connections
     connect( m_radioThrowAway, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
     connect( m_radioForcedGame, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect( m_radioRamsch, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
 }
 
 void PreferencesDlg::addPageResults()

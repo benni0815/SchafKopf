@@ -302,18 +302,18 @@ bool Game::isHigher( Card* card, Card* high )
 
 void Game::gameResults()
 {
-    Results* r = Settings::instance()->results();
-    r->setLaufende( m_laufende );
-    r->setGameInfo( &m_gameinfo );
+    Results r;
+    r.setLaufende( m_laufende );
+    r.setGame( this );
+    
     for( unsigned int i=0;i<PLAYERS;i++)
     {
-        postEvent( PlayerResults, m_players[i]->id(), 0, r->formatedPoints(m_players[i]), true );
+        postEvent( PlayerResults, m_players[i]->id(), 0, r.formatedPoints(m_players[i]), true );
         // emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     }
       
-    postEvent( InfoMessage, 0, 0, r->result(), true );
+    postEvent( InfoMessage, 0, 0, r.result(), true );
     //m_canvas->information( r->result() );
-    delete r;
     m_timesThrownTogether = 0;
     
     // the game is over, so the GameInfo structure is not
@@ -442,6 +442,15 @@ bool Game::setupGameInfoForced()
                 delete info;
                 return true;
             }
+    }
+    else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
+    {
+        postEvent( InfoMessage, 0, 0, i18n("No one wants to play.\nRamsch will be played."), true );
+        m_gameinfo.setSpieler( NULL );
+        m_gameinfo.setMitspieler( NULL );
+        m_gameinfo.setMode( GameInfo::RAMSCH );
+        m_gameinfo.setColor( Card::NOCOLOR );
+        return true;
     }
     
     return false;

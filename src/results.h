@@ -20,8 +20,10 @@
 #ifndef RESULTS_H
 #define RESULTS_H
 
+#include <qptrlist.h>
 #include <qstring.h>
 
+class Game;
 class GameInfo;
 class Player;
 
@@ -35,26 +37,30 @@ or money who has to give to whom.
 
 class Results{
     public:
-        virtual ~Results() {}
+        Results();
+        ~Results() {}
         
         void setLaufende( int l ) { m_laufende = l; }
-        void setGameInfo( GameInfo* info ) { m_gameinfo = info; }
-
+        void setGame( Game* game );
+        
         /** get a message of the game results, which can be displayed
           * to the user.
           */
         QString result();
-        virtual double points( Player* player ) = 0;
-        virtual QString formatedPoints( Player* player ) = 0;
+        double points( Player* player );
+        QString formatedPoints( Player* player );
         
         double klopfen(int anzahl, double betrag);
     
     protected:        
-        Results();
-				        
         void parse();
 
+        QPtrList<Player> m_winners;
+        QPtrList<Player> m_losers;
+        
         GameInfo* m_gameinfo;
+        Game* m_game;
+        
         int m_laufende;
         
         int m_points;

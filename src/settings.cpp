@@ -19,8 +19,6 @@
  ***************************************************************************/
 #include "settings.h"
 
-#include "moneyresults.h"
-#include "pointresults.h"
 #include "schafkopfdef.h"
 
 #include <kapplication.h>
@@ -188,19 +186,6 @@ int Settings::resultsType() const
     KConfig* config = kapp->config();
     config->setGroup( "SchafKopf" );
     return config->readNumEntry("ResultMode", MONEY );
-}
-
-Results* Settings::results() const
-{
-    QMutexLocker locker( m_mutex );
-    
-    int r = resultsType();
-    if( r == MONEY )
-        return new MoneyResults();
-    else if( r == POINTS )
-        return new PointResults();
-        
-    return NULL;
 }
 
 void Settings::setMoneyResults( const t_ResultValues* r )

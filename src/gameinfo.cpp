@@ -148,6 +148,10 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
     t_AllowedGames* allowed = NULL;
     
+    // it is never allowed to decide to play Ramsch
+    if( mode == GameInfo::RAMSCH )
+        return false;
+        
     if( mode==GameInfo::RUFSPIEL ) 
     {
         if( cards->contains( color, Card::SAU ) || color == Card::HERZ )
@@ -310,6 +314,15 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 
 int GameInfo::laufende()
 {
+#warning "Im Ramsch werden keine Laufenden gezaehlt!"
+    if( m_mode == RAMSCH )
+        return 0;
+        
+    /** TODO: jeder spieler sollte eine laufende property haben und
+      * selst zählen wie viele laufende er hat.
+      * danach können diese in results einfach addiert werden
+      */
+        
     unsigned int i = 0;
     int l = 0;
     CardList* all = new CardList();

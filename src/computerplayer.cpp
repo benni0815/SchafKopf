@@ -109,7 +109,9 @@ void ComputerPlayer::init()
 			if(m_game->findIndex(mitspieler)==m_game->gameInfo()->spieler())
 				break;
 	}
-	else if(m_game->gameInfo()->mode()!=GameInfo::RUFSPIEL && m_game->gameInfo()->spieler()!=this)
+	else if(m_game->gameInfo()->mode()!=GameInfo::RUFSPIEL && 
+            m_game->gameInfo()->mode()!=GameInfo::RAMSCH &&
+            m_game->gameInfo()->spieler()!=this)
 		mitspieler=m_game->gameInfo()->spieler()->id();
 	else
 		mitspieler=-1;

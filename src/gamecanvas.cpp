@@ -254,6 +254,9 @@ void GameCanvas::cardClicked( QCanvasItem* item )
             {
                 m_result = card->card()->id();
                 disconnect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
+                
+                // be sure that focusOutEvent does not use its parameter
+                focusOutEvent( NULL );
                 EXIT_LOOP();
             }
         }

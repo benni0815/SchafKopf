@@ -384,7 +384,8 @@ void SchafKopf::updateInfo()
         lblDoubled->setText( QString::null );
         return;
     }
-    
+
+
     QString sDoubled;
     for(unsigned int i=0;i<PLAYERS;i++)
     {
