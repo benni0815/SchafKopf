@@ -1,17 +1,18 @@
 #include <iostream>
 #include <sys/socket.h>
+#include <sys/un.h>
 #include <sys/poll.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include "commsocketclient.h"
 #include "commsocketserver.h"
 
-CommSocketClient::CommSocketClient(const char *hostname, unsigned int port, bool local, CommSocketServer::ClientType type)
+CommSocketClient::CommSocketClient(const char *hostname, unsigned int port, bool global, CommSocketServer::ClientType type)
     : CommBase(hostname)
 {
     CommSocketServer::RegisterMessage msg;
     
-    clientSocket=open_socket(hostname, port, local);
+    clientSocket=open_socket(hostname, port, global);
     if(clientSocket<0)
         throw EConnectError();
     msg.data.msg=CommBase::msg_msg;
@@ -107,24 +108,34 @@ int CommSocketClient::init_sockaddr (sockaddr_in *name, const char *hostname, un
     return 1;
 }
 
-int CommSocketClient::open_socket(const char *hostname, unsigned int port, bool local)
+int CommSocketClient::open_socket(const char *hostname, unsigned int port, bool global)
 {
     int sock;
-    sockaddr_in addr;
+    sockaddr_in gaddr;
+    sockaddr_un laddr;
+    sockaddr *addr=(sockaddr *)&gaddr;
+    int n=sizeof(sockaddr_in);
+    int set=1;
     
-    sock=socket(PF_INET, SOCK_STREAM, 0);
+    sock=socket(global ? PF_INET : PF_LOCAL, SOCK_STREAM, 0);
     if(sock<0)
-    {
         return -1;
+    if(!global)
+    {
+        laddr.sun_family=AF_LOCAL;
+        sprintf(laddr.sun_path, "%d", port);
+        addr=(sockaddr *) &laddr;
+        n=SUN_LEN(&laddr);
     }
-    if(!init_sockaddr(&addr, hostname, port))
+    else if(!init_sockaddr(&gaddr, "localhost", port))
     {
         close(sock);
         return -1;
     }
-    if(connect(sock, (sockaddr *)&addr, sizeof(sockaddr_in))<0)
+    if(connect(sock, addr, n)<0)
     {
         close(sock);
+        cerr << "connect failed" << endl;
         return -1;
     }
     return sock;

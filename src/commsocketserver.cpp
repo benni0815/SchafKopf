@@ -1,6 +1,8 @@
 
 #include <iostream>
 #include <sys/poll.h>
+#include <sys/socket.h>
+#include <sys/un.h>
 #include "commsocketserver.h"
 
 CommSocketServer::CommSocketServer(const char *name, int port, bool global)
@@ -161,18 +163,28 @@ bool CommSocketServer::init_sockaddr(sockaddr_in *name, const char *hostname, un
 int CommSocketServer::create_socket(unsigned int port, bool global)
 {
     int sock;
-    sockaddr_in addr;
+    sockaddr_in gaddr;
+    sockaddr_un laddr;
+    sockaddr *addr=(sockaddr *)&gaddr;
+    int n=sizeof(sockaddr_in);
     int set=1;
     
-    sock=socket (global ? PF_INET : PF_LOCAL, SOCK_STREAM, 0);
+    sock=socket(global ? PF_INET : PF_LOCAL, SOCK_STREAM, 0);
     if(sock<0)
         return -1;
-    if(!init_sockaddr(&addr, "localhost", port))
+    if(!global)
+    {
+        laddr.sun_family=AF_LOCAL;
+        sprintf(laddr.sun_path, "%d", port);
+        addr=(sockaddr *) &laddr;
+        n=SUN_LEN(&laddr);
+    }
+    else if(!init_sockaddr(&gaddr, "localhost", port))
     {
         close(sock);
         return -1;
     }
-    if(bind(sock, (sockaddr *)&addr, sizeof(sockaddr_in))<0)
+    if(bind(sock, addr, n)<0)
     {
         close(sock);
         return -1;

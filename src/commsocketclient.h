@@ -28,7 +28,7 @@ class CommSocketClient
     : public CommBase
 {
     public:
-        CommSocketClient(const char *hostname, unsigned int port, bool local, CommSocketServer::ClientType type); 
+        CommSocketClient(const char *hostname, unsigned int port, bool global, CommSocketServer::ClientType type); 
         ~CommSocketClient(); 
         bool waitMsg(int timeout=-1, int *rec=NULL); 
         bool receiveMsg(Message *msg);
@@ -38,7 +38,7 @@ class CommSocketClient
         int clientSocket;
         
         static int init_sockaddr (sockaddr_in *name, const char *hostname, unsigned int port);
-        static int open_socket(const char *hostname, unsigned int port, bool local);
+        static int open_socket(const char *hostname, unsigned int port, bool global);
 };
 
 #endif
