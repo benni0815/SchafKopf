@@ -50,6 +50,7 @@ class ComputerPlayer : public QObject,  public Player
             GameInfo info;        
         };
 		CardList *m_playedCards[4];
+		CardList *m_angespielt;
         OpenBook* book;
 		int mitspieler;
 		
@@ -59,6 +60,13 @@ class ComputerPlayer : public QObject,  public Player
 		Card *findCheapestCard(CardList *cards);
 		bool canMakeStich(CardList *cards);		
 		bool ownStich();
+		bool istTrumpfFrei(int playerId);
+		bool istFarbFrei(int playerId, Card::color c);
+		float gehtDurch(Card *card);
+		float gegnerSticht(Card *card);
+		Card *highestTrumpfInGame();
+		int myTrumpfs();
+		int trumpfsInGame();
 				
 	private slots:
 		void cardPlayed(unsigned int player, Card *c);

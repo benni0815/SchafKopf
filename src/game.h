@@ -40,8 +40,9 @@ class Game : public QObject
         Game(QObject *parent = 0, const char *name = 0);
         ~Game();
         void gameLoop();
-		/*const*/ CardList *currStich();// const;
-		/*const*/ GameInfo *gameInfo();// const;
+		CardList *currStich();
+		CardList *allCards() { return &m_allcards; }
+		GameInfo *gameInfo();
         
         void setCanvas( GameCanvas* c );
         GameCanvas* canvas() const { return m_canvas; }

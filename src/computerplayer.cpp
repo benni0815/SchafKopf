@@ -34,6 +34,7 @@ ComputerPlayer::ComputerPlayer(Game* game)
 	book = new OpenBook( this, game );
 	for(i=0;i<PLAYERS;i++)
 		m_playedCards[i]=new CardList();
+	m_angespielt=new CardList();
 	connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int, Card*) ) );
 }
 
@@ -43,6 +44,7 @@ ComputerPlayer::~ComputerPlayer()
 	
 	for(i=0;i<PLAYERS;i++)
 		delete m_playedCards[i];
+	delete m_angespielt;
 	delete book;
 }
 
@@ -65,6 +67,7 @@ void ComputerPlayer::init()
 	
 	for(i=0;i<PLAYERS;i++)
 		m_playedCards[i]->clear();
+	m_angespielt->clear();
 	if(m_game->gameInfo()->mitspieler()==this)
 	{
 		for(mitspieler=0;mitspieler<PLAYERS;mitspieler++)
@@ -114,7 +117,10 @@ Card *ComputerPlayer::play()
 		allowed=allowedCards();
         
 	ToPlay=findCardToPlay(allowed);
-	
+	if(m_game->currStich()->isEmpty())
+		m_angespielt->append(ToPlay);
+	else
+		m_angespielt->append(m_game->currStich()->first());
 	delete allowed;
 	return ToPlay;
 }
@@ -275,10 +281,92 @@ bool ComputerPlayer::ownStich()
 	return false;
 }
 
+bool istTrumpfFrei(int playerId)
+{
+	int i;
+	
+	for(i=0;i<m_angespielt->count();i++)
+	{
+		if(m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && !m_game->gameInfo()->istTrumpf(m_playedCards[playerId]->at(i)))
+			return true;
+	}
+	return false;
+}
+bool istFarbFrei(int playerId, Card::color c)
+{
+	int i;
+	
+	for(i=0;i<m_angespielt->count();i++)
+	{
+		if(!m_game->gameInfo()->istTrumpf(m_angespielt->at()) && m_angespielt->at(i)->color()==c && !m_playedCards[playerId]->at(i)->color()==c)
+			return true;
+	}
+	return false;
+}
+
+float ComputerPlayer::gehtDurch(Card *card)
+{
+}
+
+float ComputerPlayer::gegnerSticht(Card *card)
+{
+}
+
+Card *ComputerPlayer::highestTrumpfInGame()
+{
+	CardList *trumpfs=new CardList();
+	Card *c;
+	int i;
+	
+	//trumpfs.setAutoDelete(false);
+	for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
+		if(m_game->gameInfo()->istTrumpf(c))
+			trumpfs->append(c);
+	for(i=0;i<PLAYERS;i++)
+	{
+		for(c=trumpfs->first();c;c=trumpfs->next())
+			if(m_playedCards[i]->containsRef(c))
+				trumpfs->removeRef(c);
+	}
+	for(c=m_cards->first();c;c=m_cards->next())
+		trumpfs->removeRef(c);
+	trumpfs->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
+	c=trumpfs->at(trumpfs->count()-1);
+	delete trumpfs;
+	return c;
+}
+
+int ComputerPlayer::myTrumpfs()
+{
+	int trumpfs=0;
+	Card *c;
+	
+	for(c=m_cards->first();c;c=m_cards->next())
+		if(m_game->gameInfo()->istTrumpf(c))
+			trumpfs++;
+	return trumpfs;
+}
+
+int ComputerPlayer::trumpfsInGame()
+{
+	Card *c;
+	int trumpfs=0;
+	int i;
+	
+	for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
+		if(m_game->gameInfo()->istTrumpf(c))
+			trumpfs++;
+	for(i=0;i<PLAYERS;i++)
+	{
+		for(c=m_playedCards[i]->first();c;c=m_playedCards[i]->next())
+			if(m_game->gameInfo()->istTrumpf(c))
+				trumpfs--;
+	}
+	return trumpfs-myTrumpfs();
+}
+
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 {
-	int self_index, spieler_index;
-	
 	m_playedCards[player]->append(c);
 	if(mitspieler!=-1)
 		return;
