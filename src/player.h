@@ -23,7 +23,10 @@ class Player
 		virtual void init() {};
 		virtual void klopfen();
         virtual Card *play() = 0;
-        virtual GameInfo* gameInfo() = 0;
+        /** if @p force is true the player has to play wether he wants or not
+          * a valid GameInfo object has to be returned in this case!
+          */
+        virtual GameInfo* gameInfo( bool force = false ) = 0;
         
         void sortCards();
         

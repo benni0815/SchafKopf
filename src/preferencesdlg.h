@@ -49,10 +49,13 @@ class PreferencesDlg : public KDialogBase
         void addPageResults();
         void addPageResultsMoney();
         void addPageResultsPoints();
+        void addPageRules();
         
     private:
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
+        QRadioButton* m_radioThrowAway;
+        QRadioButton* m_radioForcedGame;
 
         KLineEdit* m_p1_name;
         KLineEdit* m_p2_name;

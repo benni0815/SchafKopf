@@ -53,6 +53,7 @@ class Settings : public QObject
     Q_OBJECT
     public:
         enum { MONEY, POINTS };
+        enum { NOGAME_NEUGEBEN, NOGAME_ALTERSPIELT };
         
         static Settings* instance();
         
@@ -69,10 +70,15 @@ class Settings : public QObject
         void setResultsType( int r );
         int resultsType() const;
         Results* results() const;
+
+        void setNoGame( int e );
+        /** returns what has to happen when no player wants to play
+          */
+        int noGame() const;
         
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
-	void setPlayers( const t_Players* p );
+        void setPlayers( const t_Players* p );
         /** delete after usage
           */
         t_ResultValues* moneyResults() const;

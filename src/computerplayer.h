@@ -39,7 +39,7 @@ class ComputerPlayer : public QObject,  public Player
 		void init();
 		void klopfen();
         Card *play();
-        GameInfo* gameInfo();
+        GameInfo* gameInfo( bool force = false );
         
 		int rtti() const { return COMPUTER; }
 

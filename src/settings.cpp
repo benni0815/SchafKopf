@@ -218,4 +218,22 @@ t_ResultValues* Settings::pointResults() const
     return r;    
 }
 
+void Settings::setNoGame( int e )
+{
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    config->writeEntry( "KeinSpiel", e );
+    config->sync();
+}
+
+int Settings::noGame() const
+{
+    int e = NOGAME_NEUGEBEN;
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    e = config->readNumEntry( "KeinSpiel", e );
+    
+    return e;
+}
+
 #include "settings.moc"

@@ -306,14 +306,33 @@ bool Game::setupGameInfo(Player *players[])
         }
     }
     
-	if(terminated)
-		return false;
+    if(terminated)
+        return false;
+    
     if( games.isEmpty() )
     {
-        m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
-        m_gameinfo.setValid( false );
-        emit signalSetupGameInfo();
-        return false;
+        if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
+        {
+            m_canvas->information( i18n("No one wants to play. Cards will thrown together.") );
+            m_gameinfo.setValid( false );
+            emit signalSetupGameInfo();
+            return false;
+        }
+        else if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
+        {
+            // find player with eichel ober
+            for( i=0;i<PLAYERS;i++ )
+                if( m_players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
+                {
+                    GameInfo* info = m_players[i]->gameInfo( true );
+                    info->setSpieler( m_players[i] );
+                    m_gameinfo = *info;
+                    delete info;
+                    
+                    m_canvas->information( i18n("%1 has the Eichel Ober and has to play.").arg( m_players[i]->name() ) );
+                    break;
+                }
+        }
     } 
     else
     {

@@ -40,16 +40,19 @@ class SelectGameWizard : public KWizard
 
 public:
 
-	SelectGameWizard(CardList* list, QWidget *parent = 0, const char *name = 0 );
+	SelectGameWizard(bool force, CardList* list, QWidget *parent = 0, const char *name = 0 );
 	~SelectGameWizard();
 	 void showPage(QWidget* page);
 	 CardList* getCardList();
 	GameInfo* gameInfo();
 	void canFinish(bool fin);
 	
+    void reject();
+    
 protected:
 	CardList* m_list;
 	bool m_closing;
+    bool m_force;
 	SelectGameTypeBox *box1;
 	SelectGameColorBox *box2;
 

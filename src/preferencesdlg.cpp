@@ -41,6 +41,7 @@ PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     addPagePlayer();
     // addPageGame(); // erlaubte spiele
     // addPageSchafkopf(); // ton an aus .....
+    addPageRules();
     addPageResults();
     addPageResultsMoney();
     addPageResultsPoints();
@@ -78,6 +79,8 @@ void PreferencesDlg::accept()
     p.p4_name = m_p4_name->text();
     Settings::instance()->setPlayers( &p );
     
+    Settings::instance()->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
+    
     KDialogBase::accept();
 }
 
@@ -106,6 +109,26 @@ void PreferencesDlg::addPagePlayer()
       
     // TODO: move into an own function  
     //QFrame* box3 = addPage( i18n("Rules"), "" );
+}
+
+void PreferencesDlg::addPageRules()
+{
+    QFrame* box = addPage( i18n("Rules"), QString::null, BarIcon("schafkopf") );
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+    
+    QVButtonGroup* group = new QVButtonGroup( i18n("No one wants to play:"), box, "group" );
+    m_radioThrowAway = new QRadioButton( i18n("&Throw cards away and give new ones"), group );
+    m_radioForcedGame = new QRadioButton( i18n("&Forced game (Eichel Ober plays)"), group );
+ 
+    layout->addWidget( group );
+    layout->addItem( spacer );
+    
+    // load data from configuration
+    if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
+        m_radioForcedGame->setChecked( true );
+    else
+        m_radioThrowAway->setChecked( true );
 }
 
 void PreferencesDlg::addPageResults()

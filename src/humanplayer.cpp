@@ -59,31 +59,17 @@ Card *HumanPlayer::play()
     return m_card;
 }
 
-GameInfo* HumanPlayer::gameInfo()
+GameInfo* HumanPlayer::gameInfo( bool force )
 {
-
-   if( m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
+    if( force || m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
     {
-    /*
-        SelectGameWizard* sgw = new SelectGameWizard(m_cards);
-    		if(sgw->exec() == QDialog::Accepted)
-    		{
-			GameInfo* gi = sgw->gameInfo();
-			delete sgw;
-    			return gi;
-    		}	*/
-	//delete sgw;*/
-	//sgw=0;
-    
-    
-	
-	SelectGameWizard sgw( m_cards );
+   
+        SelectGameWizard sgw( force, m_cards );
         if( sgw.exec() == QDialog::Accepted )
-        {
             return sgw.gameInfo();
-        }
     }
-    return 0;
+    
+    return NULL;
 }
 
 void HumanPlayer::getCard(Card* card)

@@ -36,9 +36,10 @@
 #include "cardlist.h"
 #include "card.h"
 
-SelectGameWizard::SelectGameWizard(CardList* list, QWidget *parent, const char *name )
+SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, const char *name )
 		: KWizard( parent, name, TRUE )
 {
+    m_force = force;
 	m_list=list;
 	m_closing=false;
 	box1 = new SelectGameTypeBox(this, 0);
@@ -46,6 +47,8 @@ SelectGameWizard::SelectGameWizard(CardList* list, QWidget *parent, const char *
 	addPage( box1, i18n("Step 1/2: Select Game") );
 	addPage( box2, i18n("Step 2/2: Select Color") );
 
+    
+    cancelButton()->setEnabled( !m_force );    
 	setNextEnabled( box1, TRUE );
 	setFinishEnabled(box2, TRUE);
 	setHelpEnabled( box1, FALSE );
@@ -54,7 +57,7 @@ SelectGameWizard::SelectGameWizard(CardList* list, QWidget *parent, const char *
 
 CardList* SelectGameWizard::getCardList()
 {
-return m_list;
+    return m_list;
 }
 
 GameInfo* SelectGameWizard::gameInfo()
@@ -85,4 +88,11 @@ void SelectGameWizard::canFinish(bool fin)
 SelectGameWizard::~SelectGameWizard()
 {
 	m_closing=true;
+}
+
+void SelectGameWizard::reject()
+{
+    // only allow reject if player is not forced to play something
+    if( !m_force )
+        KWizard::reject();
 }

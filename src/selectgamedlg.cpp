@@ -34,7 +34,7 @@
 #include <klocale.h>
 
 
-SelectGameDlg::SelectGameDlg(CardList* list,QWidget *parent, const char *name)
+SelectGameDlg::SelectGameDlg(bool force, CardList* list,QWidget *parent, const char *name)
     : KDialogBase( KDialogBase::Plain, i18n("Select Game"),
       KDialogBase::Ok, KDialogBase::Ok, parent,name, true), m_list( list )
 {
@@ -66,6 +66,9 @@ SelectGameDlg::SelectGameDlg(CardList* list,QWidget *parent, const char *name)
     checkSolo->setChecked( true );
     checkEichel->setChecked( true );
     
+    if( force )
+        enableButtonCancel( false );
+        
     enableControls();
 }
 

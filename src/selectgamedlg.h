@@ -36,7 +36,7 @@ class SelectGameDlg : public KDialogBase
 {
     Q_OBJECT
     public:
-        SelectGameDlg(CardList* list,QWidget *parent = 0, const char *name = 0);
+        SelectGameDlg(bool force, CardList* list,QWidget *parent = 0, const char *name = 0);
         ~SelectGameDlg();
 
         GameInfo* gameInfo() const;

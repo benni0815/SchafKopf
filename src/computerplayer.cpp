@@ -136,10 +136,10 @@ Card *ComputerPlayer::play()
 	return ToPlay;
 }
 
-GameInfo* ComputerPlayer::gameInfo()
+GameInfo* ComputerPlayer::gameInfo( bool force )
 {
     QValueList<game_data> lst;
-        
+    
     for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
     {
         for( int z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
@@ -190,7 +190,17 @@ GameInfo* ComputerPlayer::gameInfo()
         *gi = lst[best].info;
         return gi;
     }
-    return 0;
+    
+    if( force && lst.isEmpty() )
+    {
+        // Play eichel sticht for now. Optimize later
+        GameInfo* gi = new GameInfo;
+        gi->setColor( Card::EICHEL );
+        gi->setMode( GameInfo::STICHT );
+        return gi;
+    }
+    
+    return NULL;
 }
 
 Card *ComputerPlayer::findCardToPlay(CardList *cards)

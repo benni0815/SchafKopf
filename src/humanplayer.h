@@ -32,7 +32,7 @@ class HumanPlayer : public QObject, public Player
         
 		void klopfen();
         Card *play();
-        GameInfo* gameInfo();
+        GameInfo* gameInfo( bool force = false );
         
 		int rtti() const { return HUMAN; }        
 
