@@ -65,7 +65,7 @@ void StichDlg::changed()
         else
             cards[i]->setPixmap( *Card::backgroundPixmap() );
 
-        players[i]->setText( m_game->findIndex( i )->name() );
+        players[i]->setText( "<qt><b>"+m_game->findIndex( i )->name()+"</b></qt>" );
     }
 }
 

@@ -46,6 +46,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_game = NULL;
     m_items[0] = NULL;
     m_item = NULL;
+    m_names[0] = NULL;
     m_stich = NULL;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
@@ -73,6 +74,15 @@ void GameCanvas::clearObjects()
             
             delete m_items[i];
             m_items[i] = NULL;
+        }
+    }
+    
+    if( m_names[0] )
+    {
+        for( unsigned int i = 0; i < PLAYERS; i++ )
+        {
+            delete m_names[i];
+            m_names[i] = NULL;
         }
     }
     
@@ -110,10 +120,17 @@ void GameCanvas::createObjects()
         return;
         
     for( unsigned int i = 0; i < PLAYERS; i++ ) 
+    {
         m_items[i] = new QCanvasItemList();
+        m_names[i] = new QCanvasText( canvas() );
+        m_names[i]->setColor( Qt::white );
+        m_names[i]->setFont( QFont( "Helvetica", 24 ) );
+        m_names[i]->show();
+    }
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         Player* player = m_game->findIndex( i );
+        m_names[i]->setText( player->name() );
         for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
             CanvasCard *c = new CanvasCard( player->cards()->at(z), canvas() );
             c->setZ( double(-1 - z) );
@@ -133,13 +150,6 @@ void GameCanvas::createObjects()
     }
     
     m_stich = new QCanvasItemList();
-    for( unsigned int i = 0; i < m_game->currStich()->count(); i++ )
-    {
-        CanvasCard *c = new CanvasCard( m_game->currStich()->at(i), canvas() );
-        c->setZ( i );
-        
-        m_stich->append( c );
-    }
     
     positionObjects();
 }
@@ -166,23 +176,32 @@ void GameCanvas::positionObjects()
             case 0:
                 x=(w-cardw*num)/2;
                 y=h-cardh; 
+                
+                m_names[i]->move( (w-m_names[i]->boundingRect().width())/2, y-m_names[i]->boundingRect().height() );
                 break;
             case 1:
                 x=w-cardw;
                 y=(h-((cardh/2)*(num-1)+cardh))/2; 
+                
+                m_names[i]->move(x, y-m_names[i]->boundingRect().height());
                 break;
             case 2: 
                 x=(w-((cardw/2)*(num-1)+cardw))/2;
                 y=DIST;
+                
+                m_names[i]->move( (w-m_names[i]->boundingRect().width())/2, y+cardh );
+
                 break;
             case 3:
             default:
                 x=DIST; 
                 y=(h-((cardh/2)*(num-1)+cardh))/2; 
+                
+                m_names[i]->move(x,y-m_names[i]->boundingRect().height());
                 break;
         }
-
-        for( unsigned int z = 0; z < list->count(); z++ ) {
+        
+       for( unsigned int z = 0; z < list->count(); z++ ) {
             CanvasCard* card = static_cast<CanvasCard*>((*list)[z]); 
             // only move if necessary!
             if( x != card->x() || y != card->y() )

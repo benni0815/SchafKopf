@@ -22,6 +22,7 @@
 #include <kapplication.h>
 #include <kcarddialog.h>
 #include <kconfig.h>
+#include <kuser.h>
 
 Settings* Settings::m_instance = 0;
 
@@ -73,6 +74,19 @@ void Settings::configureCardDecks( QWidget* parent )
         
         emit cardChanged();
     }
+}
+
+const QStringList Settings::playerNames() const
+{
+    QStringList list;
+    KUser user;
+    KConfig* config = kapp->config();
+    config->setGroup("PlayerNames");
+    list.append( config->readEntry( "Player1", user.loginName() ) );
+    list.append( config->readEntry( "Player2", "Dom" ) );
+    list.append( config->readEntry( "Player3", "Lenz" ) );
+    list.append( config->readEntry( "Player4", "Christian" ) );
+    return list;
 }
 
 #include "settings.moc"

@@ -23,7 +23,9 @@
 #include "computerplayer.h"
 #include "cardlist.h"
 #include "gamecanvas.h"
+#include "settings.h"
 #include "timer.h"
+
 
 #include <kapplication.h>
 #if QT_VERSION >= 0x030100
@@ -45,10 +47,16 @@ Game::Game(QObject *parent, const char *name)
         playercards[i]=new CardList();
     for( unsigned int i=0; i<CARD_CNT; i++)
         playercards[i%PLAYERS]->append(m_allcards.at(i));
-        
+
+    QStringList list = Settings::instance()->playerNames();
     m_players[0] = new HumanPlayer(playercards[0] ,this );
+    m_players[0]->setName( list[0] );
     for( unsigned int i=1;i<PLAYERS;i++)
+    {
         m_players[i] = new ComputerPlayer(playercards[i] ,this );
+        m_players[i]->setName( list[i] );
+    }
+    
     m_gameinfo.color=Card::HERZ;
     m_gameinfo.mode=Game::STICHT;
     m_gameinfo.spieler=m_players[0];

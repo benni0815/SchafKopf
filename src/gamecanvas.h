@@ -30,6 +30,7 @@ class Card;
 class Game;
 class QCanvasItem;
 class QCanvasItemList;
+class QCanvasText;
 class QMouseEvent;
 class QResizeEvent;
 
@@ -73,6 +74,7 @@ class GameCanvas : public QCanvasView
         
         QCanvasItemList* m_items[PLAYERS];
         QCanvasItemList* m_stich;
+        QCanvasText* m_names[PLAYERS];
         QCanvasItem* m_item; // currently clicked item
         
         Game* m_game;

@@ -35,6 +35,8 @@ class Settings : public QObject
         
         const QString cardDeck() const;
         const QString cardBackground() const;
+        
+        const QStringList playerNames() const;
 
         void configureCardDecks( QWidget* parent = 0 );
         
