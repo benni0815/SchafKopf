@@ -73,7 +73,7 @@ msgstr "Dachs"
 
 #: gameinfo.cpp:79
 msgid "%1 plays on the %2 Ace."
-msgstr "%1 spielt auf die %2 Sau."
+msgstr "%1 spielt auf die %2-Sau."
 
 #: gameinfo.cpp:81
 msgid "Ramsch is played."
@@ -223,7 +223,7 @@ msgid "Game:"
 msgstr "Spiel:"
 
 #: selectgamedlg.cpp:44
-msgid "&Rufspiel"
+msgid "&Callgame"
 msgstr "&Rufspiel"
 
 #: selectgamedlg.cpp:45

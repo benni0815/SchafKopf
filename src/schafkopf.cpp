@@ -62,7 +62,8 @@ SchafKopf::SchafKopf()
     m_game = new Game();
     m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );
-
+    m_canvasview->setHScrollBarMode(QScrollView::AlwaysOff);
+    m_canvasview->setVScrollBarMode(QScrollView::AlwaysOff);
     QVBox * leftBox = new QVBox( split );
     new QLabel( i18n("Results:"), leftBox );
 

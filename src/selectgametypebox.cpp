@@ -64,11 +64,11 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(
 	group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
 
 
-	checkRufspiel = new QRadioButton( i18n("Play a &Callgame"), group_TypeSelect );
-	checkSolo = new QRadioButton( i18n("Play a &Solo"), group_TypeSelect );
-	checkGeier = new QRadioButton( i18n("Play a &Geier"), group_TypeSelect );
-	checkWenz = new QRadioButton( i18n("Play a &Wenz"), group_TypeSelect );
-	checkDachs = new QRadioButton( i18n("Play a &Dachs"), group_TypeSelect );
+	checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );
+	checkSolo = new QRadioButton( i18n("&Solo"), group_TypeSelect );
+	checkGeier = new QRadioButton( i18n("&Geier"), group_TypeSelect );
+	checkWenz = new QRadioButton( i18n("&Wenz"), group_TypeSelect );
+	checkDachs = new QRadioButton( i18n("&Dachs"), group_TypeSelect );
 	connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(typeChanged()));
 
 	checkRufspiel->setChecked(TRUE);
