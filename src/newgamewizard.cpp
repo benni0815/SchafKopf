@@ -47,7 +47,6 @@ void newgamewizard::setup_page_selectgame()
 
     info = new QLabel( page_selectgame );
     info->setMargin( 11 );
-  //  info->setPalette( yellow );
     info->setMinimumWidth( 220);
 
     QVBox *page = new QVBox( page_selectgame );

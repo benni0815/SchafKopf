@@ -77,6 +77,7 @@ SchafKopf::SchafKopf()
         m_table->setColumnWidth( i, w );
     }
 
+    
     QVGroupBox* groupInfo = new QVGroupBox( i18n("Game Information:"), leftBox );
     lblCurGame = new QLabel( groupInfo );
     lblDoubled = new QLabel( groupInfo );
