@@ -304,17 +304,28 @@ void GameCanvas::slotPlayerMadeStich(unsigned int)
 
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
-    QImage ImgBack2;
     canvas()->resize( this->width() -2, this->height()-2 );
     QCanvasView::resizeEvent( r );
     
     positionObjects();
-    
+    resizeBackground();
+}
+
+void GameCanvas::resizeBackground()
+{
+    QImage ImgBack2;
     if(loadOK)
     {
          ImgBack2=ImgBack.smoothScale( canvas()->width(), canvas()->height() );
          canvas()->setBackgroundPixmap( ImgBack2 );
     }
+
+}
+
+void GameCanvas::updateBackground()
+{
+    loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
+    resizeBackground();
 }
 
 void GameCanvas::redrawPlayers()

@@ -59,6 +59,7 @@ class GameCanvas : public QCanvasView
         /** display an information message to the user
           */
         void information( const QString & message );
+        void updateBackground();
           
     public slots:
         void redrawPlayers();
@@ -80,7 +81,8 @@ class GameCanvas : public QCanvasView
         
     protected:
         void resizeEvent( QResizeEvent *r );
-        
+        void resizeBackground();
+
         void contentsMousePressEvent(QMouseEvent*);
         void contentsMouseReleaseEvent(QMouseEvent*);
                 

@@ -297,7 +297,7 @@ void SchafKopf::configure()
     PreferencesDlg prefs( this, "prefs");
     if( prefs.exec() == QDialog::Accepted )
     {
-    
+    m_canvasview->updateBackground();
     }
 }
 
