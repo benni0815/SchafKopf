@@ -176,6 +176,7 @@ void SchafKopf::endGame()
 {
     disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
 	m_game->endGame();
+	clearTable();
 }
 
 void SchafKopf::showStich()
@@ -232,5 +233,16 @@ void SchafKopf::updateInfo()
     
     lblDoubled->setText( sDoubled );
 }
+
+void SchafKopf::clearTable()
+{
+	QMemArray<int> cols(m_table->numRows());
+	int i;
+	
+	for(i=0;i<m_table->numRows();i++)
+		cols[i]=i;
+	m_table->removeRows(cols);
+}
+
 
 #include "schafkopf.moc"

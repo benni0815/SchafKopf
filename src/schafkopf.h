@@ -78,6 +78,8 @@ class SchafKopf : public KMainWindow
         void saveConfig();
         
         void updateInfo();
+		
+		void clearTable();
     private:
         void setupActions();
         
