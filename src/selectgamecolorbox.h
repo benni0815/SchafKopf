@@ -35,6 +35,8 @@ class Card;
 class SelectGameWizard;
 class GameInfo;
 
+struct t_AllowedGames;
+
 /**
 @author Christian Kern
 */
@@ -49,6 +51,10 @@ public:
 	void setGameInfo(GameInfo* info);
 	GameInfo* getGameInfo();
 	bool getFinish();
+    
+private:
+    t_AllowedGames* m_allowed;
+    
 protected:
 	GameInfo* m_gameinfo;
 	QButtonGroup* color_group;

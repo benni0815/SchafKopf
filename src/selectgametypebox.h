@@ -31,6 +31,8 @@ class QRadioButton;
 class QButtonGroup;
 class GameInfo;
 
+struct t_AllowedGames;
+
 /**
 @author Christian Kern
 */
@@ -42,6 +44,10 @@ public:
 
 	~SelectGameTypeBox();
 	GameInfo* gameInfo() const;
+    
+private:
+    t_AllowedGames* m_allowed;
+    
 protected:
 	QRadioButton* checkRufspiel;
 	QRadioButton* checkSolo;

@@ -23,6 +23,7 @@
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
+#include "settings.h"
 
 #include <qwidget.h>
 #include <qhbox.h>
@@ -49,6 +50,8 @@
 
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(parent, name, 0)
 {
+    m_allowed = Settings::instance()->allowedGames();
+    
 	setSpacing(8);
 	page = new QHBox( this );
 	row1 = new QVBox( page );
@@ -73,9 +76,18 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(
 
 	checkRufspiel->setChecked(TRUE);
 
+    checkGeier->setEnabled( m_allowed->geier );
+    checkWenz->setEnabled( m_allowed->wenz );
+    checkDachs->setEnabled( m_allowed->dachs );
+    
 	typeChanged();
 	infoLabel->setMaximumWidth(preview->size().width());
 
+}
+
+SelectGameTypeBox::~SelectGameTypeBox()
+{
+    delete m_allowed;
 }
 
 void SelectGameTypeBox::typeChanged()
@@ -110,11 +122,6 @@ void SelectGameTypeBox::setInfoText(QString Text)
 {
 	infoLabel->setText(Text);
 }
-
-SelectGameTypeBox::~SelectGameTypeBox()
-{
-}
-
 
 void SelectGameTypeBox::updatePreview()
 {

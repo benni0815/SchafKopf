@@ -23,6 +23,7 @@
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
+#include "settings.h"
 
 #include <qwidget.h>
 #include <qhbox.h>
@@ -44,6 +45,8 @@
 
 SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):QHBox(parent, name, 0)
 {
+    m_allowed = Settings::instance()->allowedGames();
+    
 	m_gameinfo=0;
 	setSpacing(8);
 	page = new QVBox( this );
@@ -70,6 +73,16 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):QHBo
 	checkEichel->setPixmap(*m_Eichel->pixmap());
 	checkSchellen->setPixmap(*m_Schelle->pixmap());
 
+}
+
+
+SelectGameColorBox::~SelectGameColorBox()
+{
+	delete m_Herz;
+	delete m_Schelle;
+	delete m_Eichel;
+	delete m_Gras;
+    delete m_allowed;
 }
 
 int SelectGameColorBox::getColor()
@@ -159,13 +172,21 @@ void SelectGameColorBox::checkFirstVisible()
 
 void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos)
 {
-	if(Eichel==true) checkEichel->show();
+    bool allow_colors = true;
+    
+    if( m_gameinfo->mode() == GameInfo::WENZ )
+        allow_colors = allow_colors & m_allowed->farb_wenz;
+        
+    if( m_gameinfo->mode() == GameInfo::GEIER )
+        allow_colors = allow_colors & m_allowed->farb_geier;
+    
+	if(allow_colors&&Eichel==true) checkEichel->show();
 	else checkEichel->hide();
-	if(Gras==true) checkGras->show();
+	if(allow_colors&&Gras==true) checkGras->show();
 	else checkGras->hide();
-	if(Herz==true) checkHerz->show();
+	if(allow_colors&&Herz==true) checkHerz->show();
 	else checkHerz->hide();
-	if(Schellen==true) checkSchellen->show();
+	if(allow_colors&&Schellen==true) checkSchellen->show();
 	else checkSchellen->hide();
 	if(Farblos==true) checkFarblos->show();
 	else checkFarblos->hide();
@@ -177,14 +198,6 @@ void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schel
 bool SelectGameColorBox::getFinish()
 {
 	return m_finish;
-}
-
-SelectGameColorBox::~SelectGameColorBox()
-{
-	delete m_Herz;
-	delete m_Schelle;
-	delete m_Eichel;
-	delete m_Gras;
 }
 
 void SelectGameColorBox::setGameInfo(GameInfo* info)
