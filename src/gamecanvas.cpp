@@ -122,7 +122,6 @@ void GameCanvas::cardForbidden(Card* card)
             CanvasCard* c = static_cast<CanvasCard*>((*m_items[z])[i]);
             if(c->card() == card)
             {
-                qDebug("BLCOKING");
                 c->forbidden();
                 break;
             }

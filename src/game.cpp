@@ -54,6 +54,10 @@ Game::Game(QObject *parent, const char *name)
     m_gameinfo.color=Card::EICHEL;
     m_gameinfo.mode=Game::RUFSPIEL;
     m_gameinfo.spieler=m_players[0];
+    
+    Card c( Card::SAU, Card::EICHEL );
+    if( istTrumpf( &c ))
+        qDebug("JJJAAAA");
 }
 
 
@@ -156,12 +160,15 @@ bool Game::istTrumpf(Card *card)
         case RAMSCH:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
                     return true;
+                break;
         case STICHT:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
+                break;
         case GEIER:
                 if(card->card()==Card::OBER || card->color()==m_gameinfo.color)
                     return true;
+                break;
         case WENZ:
                 if(card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
@@ -198,34 +205,39 @@ bool Game::isHigher( Card* card, Card* high )
         return true;
     else if( istTrumpf( card ) && istTrumpf( high ) )
     {
-        if( card->card() == high->card() && card->color() < high->color() )
-            return true;
-        else 
+        if( card->card() == high->card()  )
+            return (card->color() < high->color());
+        else if( card->card() != high->card() )
         {
-            bool higher = false;
             switch( m_gameinfo.mode )
             {
                 case RAMSCH:
                 case RUFSPIEL:
                 case STICHT:
-                    if( (card->card() == Card::OBER && high->card() != Card::OBER) ||
-                        ( card->card() == Card::UNTER && high->card() != Card::UNTER ) )
-                        higher = true;
+                    if( card->card() == Card::OBER )
+                        return true;
+                    else if( high->card() == Card::OBER )
+                        return false;
+                    else if( card->card() == Card::UNTER )
+                        return !(high->card() == Card::OBER);
+                    else if( high->card() == Card::UNTER )        
+                        return !(card->card() == Card::OBER );
                     break;
                 case GEIER:
-                    if( card->card() == Card::OBER && high->card() != Card::OBER )
-                        higher = true; 
-                    break;
+                    if( card->card() == Card::OBER )
+                        return true;
+                    else if( high->card() == Card::OBER )
+                        return false;
                 case WENZ:
-                    if( card->card() == Card::UNTER && high->card() != Card::UNTER )
-                        higher = true;
-                    break;
+                    if( card->card() == Card::UNTER )
+                        return true;
+                    else if( high->card() == Card::UNTER )
+                        return false;
                 default:
                     break;
             }
             
-            if( higher || (!higher && *card < high)) 
-                return true;
+            return (*card < high);
         }
     }
     else if( !istTrumpf( card ) && !istTrumpf( high ) ) // beide kein trumpf
@@ -234,10 +246,7 @@ bool Game::isHigher( Card* card, Card* high )
         // karte aber diese karte is kein trumfh, kann
         // also ned stechen
         if( card->color() == high->color() && *card < high )
-        {
-            qDebug("Same Color, but lower");
             return true;
-        }
     }
 
     return false;
