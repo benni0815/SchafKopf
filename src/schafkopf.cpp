@@ -103,6 +103,8 @@ SchafKopf::SchafKopf()
     QToolTip::add
         ( btnLastTrick, i18n("Show the last trick that was made.") );
 
+    m_stichdlg = new StichDlg( m_game, this );            
+    
     updateInfo();
 }
 
@@ -203,9 +205,6 @@ void SchafKopf::showStich()
 {
     if( m_game->isTerminated() )
         return;
-
-    if( !m_stichdlg )
-        m_stichdlg = new StichDlg( m_game, this );
 
     m_stichdlg->show();
 }
