@@ -1,0 +1,1 @@
+SUBDIRS = cards-bavarian-old decks
