@@ -72,14 +72,16 @@ SchafKopf::SchafKopf()
     m_table = new QTable( leftBox );
     m_table->setReadOnly( true );
     m_table->setNumCols( PLAYERS );
+    m_table->setLeftMargin( 0 );
     m_table->setColumnLabels( Settings::instance()->playerNames() );
-    QFontMetrics fm( m_table->horizontalHeader()->font() );
+    //QFontMetrics fm( m_table->horizontalHeader()->font() );
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        int w = fm.width( m_table->horizontalHeader()->label(i) ) + 10;
-        m_table->setColumnWidth( i, w );
+        /*int w = fm.width( m_table->horizontalHeader()->label(i) ) + 10;
+        if(w<45) w=45;
+        m_table->setColumnWidth( i, w );*/
+        m_table->setColumnStretchable( i, true );
     }
-
     
     QVGroupBox* groupInfo = new QVGroupBox( i18n("Game Information:"), leftBox );
     lblCurGame = new QLabel( groupInfo );

@@ -305,6 +305,24 @@ msgstr "Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farb
 msgid "Preferences"
 msgstr "Einstellungen"
 
+msgid "Player Settings"
+msgstr "Spieler-Einstellungen"
+
+msgid "Your Player"
+msgstr "Eigener Spieler"
+
+msgid "Computer Players"
+msgstr "Computerspieler"
+
+msgid "Computer Player 1:"
+msgstr "Computerspieler 1:"
+
+msgid "Computer Player 2:"
+msgstr "Computerspieler 2:"
+
+msgid "Computer Player 3:"
+msgstr "Computerspieler 3:"
+
 msgid "Callgame:"
 msgstr "Rufspiel:"
 
@@ -319,3 +337,21 @@ msgstr "Schwarz:"
 
 msgid "Schneider:"
 msgstr "Schneider:"
+
+msgid "Results"
+msgstr "Ergebnisse"
+
+msgid "count &money"
+msgstr "&Geld schreiben"
+
+msgid "count &points"
+msgstr "&Punkte schreiben"
+
+msgid "<qt>SchafKopf can count in its results view either points for each game or a monetrary value for each game.<br>You can also configure how much points/money a game costs when won or lost.</qt>"
+msgstr "<qt>Beim Schafkopf kann entweder um Geld oder um Punkte gespielt werden.<br>Du kannst auch einstellen wieviel Geld/Punkte ein gewonnenes Spiel bringt.</qt>"
+
+msgid "Configure Money Values"
+msgstr "Geldbeträge festlegen"
+
+msgid "Configure Point Values"
+msgstr "Punkte festlegen"

@@ -23,6 +23,7 @@
 #include <kiconloader.h>
 #include <klocale.h>
 #include <knuminput.h>
+#include <klineedit.h>
 
 #include <qframe.h>
 #include <qlayout.h>
@@ -53,6 +54,7 @@ PreferencesDlg::~PreferencesDlg()
 void PreferencesDlg::accept()
 {
     t_ResultValues r;
+    t_Players p;
     
     Settings::instance()->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
     
@@ -70,6 +72,12 @@ void PreferencesDlg::accept()
     r.schwarz = m_point_notrick->value();
     Settings::instance()->setPointResults( &r );
     
+    p.p1_name = m_p1_name->text();
+    p.p2_name = m_p2_name->text();
+    p.p3_name = m_p3_name->text();
+    p.p4_name = m_p4_name->text();
+    Settings::instance()->setPlayers( &p );
+    
     KDialogBase::accept();
 }
 
@@ -77,14 +85,24 @@ void PreferencesDlg::addPagePlayer()
 {
     QFrame* box2 = addPage( i18n("Player Settings"), QString::null, BarIcon("identity") );
     QVBoxLayout* layout2 = new QVBoxLayout( box2, 6, 6  );
-    
-    QVButtonGroup* group2 = new QVButtonGroup( i18n("Own Player"), box2, "group2" );
-    QLabel* label3 = new QLabel( i18n("Name:"), group2, "label3" );
-    QVButtonGroup* group3 = new QVButtonGroup( i18n("Other Players"), box2, "group3" );
-    QLabel* label4 = new QLabel( i18n("Player 1:"), group3, "label4" );
+    t_Players* p = Settings::instance()->players();
 
+    QVButtonGroup* group2 = new QVButtonGroup( i18n("Your Player"), box2, "group2" );
+    QLabel* label3 = new QLabel( i18n("Name:"), group2, "label3" );
+    m_p1_name = new KLineEdit( p->p1_name, group2, "m_p1_name" );
+    
+    QVButtonGroup* group3 = new QVButtonGroup( i18n("Computer Players"), box2, "group3" );
+    QLabel* label4 = new QLabel( i18n("Computer Player 1:"), group3, "label4" );
+    m_p2_name = new KLineEdit( p->p2_name, group3, "m_p2_name" );
+    QLabel* label5 = new QLabel( i18n("Computer Player 2:"), group3, "label5" );
+    m_p3_name = new KLineEdit( p->p3_name, group3, "m_p3_name" );
+    QLabel* label6 = new QLabel( i18n("Computer Player 3:"), group3, "label6" );
+    m_p4_name = new KLineEdit( p->p4_name, group3, "m_p4_name" );
+    
     layout2->addWidget( group2 );
     layout2->addWidget( group3 );
+        
+    delete p;
       
     // TODO: move into an own function  
     //QFrame* box3 = addPage( i18n("Rules"), "" );
@@ -92,16 +110,16 @@ void PreferencesDlg::addPagePlayer()
 
 void PreferencesDlg::addPageResults()
 {    
-    QFrame* box = addPage( i18n("Results"), "" );
+    QFrame* box = addPage( i18n("Results"), QString::null );
     QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
-
-    QVButtonGroup* group = new QVButtonGroup( i18n("Results"), box, "group" );
-    m_radioMoney = new QRadioButton( i18n("Count &money"), group );
-    m_radioPoints = new QRadioButton( i18n("Count &points"), group );
+    
+    QVButtonGroup* group = new QVButtonGroup( "", box, "group" );
+    m_radioMoney = new QRadioButton( i18n("count &money"), group );
+    m_radioPoints = new QRadioButton( i18n("count &points"), group );
     
     layout->addWidget( group );
-    layout->addWidget( new QLabel( i18n("<qt>Schafkopf can count in its results view either points for each game or a monetrary value for each game.<br>You can also configure how much points/money a game costs when won or lost.</qt>"), box ) );
+    layout->addWidget( new QLabel( i18n("<qt>SchafKopf can count in its results view either points for each game or a monetrary value for each game.<br>You can also configure how much points/money a game costs when won or lost.</qt>"), box ) );
     layout->addItem( spacer );
     
     // load data from configuration

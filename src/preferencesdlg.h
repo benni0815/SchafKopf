@@ -24,6 +24,7 @@
 
 class KIntNumInput;
 class KDoubleNumInput;
+class KLineEdit;
 class QRadioButton;
 class QLabel;
 class QSpinBox;
@@ -52,6 +53,11 @@ class PreferencesDlg : public KDialogBase
     private:
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
+
+        KLineEdit* m_p1_name;
+        KLineEdit* m_p2_name;
+        KLineEdit* m_p3_name;
+        KLineEdit* m_p4_name;
         
         KDoubleNumInput* m_money_solo;
         KDoubleNumInput* m_money_call;

@@ -92,6 +92,31 @@ const QStringList Settings::playerNames() const
     return list;
 }
 
+t_Players* Settings::players() const
+{
+    KUser user;
+    KConfig* config = kapp->config();
+    t_Players* p = new t_Players;
+    config->setGroup("PlayerNames");
+    p->p1_name = config->readEntry( "Player1", user.loginName() );
+    p->p2_name = config->readEntry( "Player2", "Dom" );
+    p->p3_name = config->readEntry( "Player3", "Lenz" );
+    p->p4_name = config->readEntry( "Player4", "G.J." );
+    return p;
+}
+
+void Settings::setPlayers( const t_Players* p )
+{
+    KConfig* config = kapp->config();
+    config->setGroup( "PlayerNames" );
+    config->writeEntry( "Player1", p->p1_name );
+    config->writeEntry( "Player2", p->p2_name );
+    config->writeEntry( "Player3", p->p3_name );
+    config->writeEntry( "Player4", p->p4_name );
+    config->sync();
+    
+}
+
 QValueList<int> Settings::splitterSizes( int width )
 {
     KConfig* config = kapp->config();
