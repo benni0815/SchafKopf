@@ -142,15 +142,23 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
     if( mode==GameInfo::RUFSPIEL ) 
     {
-        CardList* sau = cards->FindCards(color, Card::SAU);
-        if( color==Card::NOCOLOR || color==Card::HERZ || !sau->isEmpty() ) {
-            delete sau;
+        if( cards->contains( color, Card::SAU ) || color == Card::HERZ )
             return false;
-        } else
-            delete sau;
+    
+        // ok now we have to test if we have a card in this color with is no trumpf_index
+        for( unsigned int i=0;i<cards->count();i++)
+        {
+            Card* c = cards->at(i);
+            if( c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER )
+            {
+                return true;
+            }
+        }
+        
+        return false;
     } else if( mode==GameInfo::STICHT && color==Card::NOCOLOR )
         return false;
-
+    
     return true;
 }
 

@@ -114,11 +114,11 @@ void SelectGameDlg::enableControls()
         checkEichel->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::EICHEL ) );
         checkGras->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::GRAS ) );
         checkSchellen->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::SCHELLEN ) );
-        
+        /*
         if( !checkEichel->isEnabled() && !checkGras->isEnabled() && !checkSchellen->isEnabled() )
             checkRufspiel->setEnabled( false );
         else
-            checkRufspiel->setEnabled( true );
+            checkRufspiel->setEnabled( true );*/
     }
     else if( checkDachs->isChecked() )
     {
