@@ -102,6 +102,7 @@ void Game::gameLoop()
     for(i=0;i<PLAYERS && !terminated;i++)
     {
         m_players[i]->klopfen();
+        m_players[i]->sortCards();
         if( m_players[i]->geklopft() )   
             m_canvas->information( i18n("%1 has doubled.").arg( m_players[i]->name() ) );
     }

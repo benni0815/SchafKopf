@@ -52,8 +52,6 @@ void Player::setCards( CardList *cards)
     m_geklopft = false;
     
     m_cards=cards;
-
-    sortCards();
 }
 
 void Player::sortCards()
