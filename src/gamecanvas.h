@@ -102,8 +102,6 @@ class GameCanvas : public QCanvasView
         QCanvasText* m_ok;
                 
         Game* m_game;
-
-        QTimer* update_timer;
 };
 
 #endif

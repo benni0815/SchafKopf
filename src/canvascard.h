@@ -50,8 +50,6 @@ class CanvasCard : public QObject, public QCanvasRectangle
           * in the UI
           */
         void forbidden();
-    signals:
-	void checkStop();
     
     private:
         void draw( QPainter & p );
