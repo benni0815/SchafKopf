@@ -20,7 +20,9 @@
 #include "preferencesdlg.h"
 #include "settings.h"
 
+#include <kiconloader.h>
 #include <klocale.h>
+#include <knuminput.h>
 
 #include <qframe.h>
 #include <qlayout.h>
@@ -35,6 +37,9 @@ PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     : KDialogBase( IconList, i18n("Preferences"), KDialogBase::Ok|KDialogBase::Cancel,
       KDialogBase::Ok, parent, name, true, true )
 {
+    addPagePlayer();
+    // addPageGame(); // erlaubte spiele
+    // addPageSchafkopf(); // ton an aus .....
     addPageResults();
     addPageResultsMoney();
     addPageResultsPoints();
@@ -47,43 +52,57 @@ PreferencesDlg::~PreferencesDlg()
 
 void PreferencesDlg::accept()
 {
+    t_ResultValues r;
+    
     Settings::instance()->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
+    
+    r.rufspiel = m_money_call->value();
+    r.solo = m_money_solo->value();
+    r.laufende = m_money_lauf->value();
+    r.schneider = m_money_schneider->value();
+    r.schwarz = m_money_notrick->value();
+    Settings::instance()->setMoneyResults( &r );
+    
+    r.rufspiel = m_point_call->value();
+    r.solo = m_point_solo->value();
+    r.laufende = m_point_lauf->value();
+    r.schneider = m_point_schneider->value();
+    r.schwarz = m_point_notrick->value();
+    Settings::instance()->setPointResults( &r );
     
     KDialogBase::accept();
 }
 
-void PreferencesDlg::addPageResults()
+void PreferencesDlg::addPagePlayer()
 {
-    QFrame* box2 = addPage( i18n("Player Settings"), "" );
+    QFrame* box2 = addPage( i18n("Player Settings"), QString::null, BarIcon("identity") );
     QVBoxLayout* layout2 = new QVBoxLayout( box2, 6, 6  );
     
     QVButtonGroup* group2 = new QVButtonGroup( i18n("Own Player"), box2, "group2" );
-    m_label3 = new QLabel( i18n("Name:"), group2, "m_label3" );
+    QLabel* label3 = new QLabel( i18n("Name:"), group2, "label3" );
     QVButtonGroup* group3 = new QVButtonGroup( i18n("Other Players"), box2, "group3" );
-    m_label4 = new QLabel( i18n("Player 1:"), group3, "m_label4" );
-        
-    QFrame* box3 = addPage( i18n("Rules"), "" );
+    QLabel* label4 = new QLabel( i18n("Player 1:"), group3, "label4" );
 
-    
+    layout2->addWidget( group2 );
+    layout2->addWidget( group3 );
+      
+    // TODO: move into an own function  
+    //QFrame* box3 = addPage( i18n("Rules"), "" );
+}
+
+void PreferencesDlg::addPageResults()
+{    
     QFrame* box = addPage( i18n("Results"), "" );
     QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
     QVButtonGroup* group = new QVButtonGroup( i18n("Results"), box, "group" );
     m_radioMoney = new QRadioButton( i18n("Count &money"), group );
-    m_label1 = new QLabel( i18n("Cost of a call game:"), group, "m_label1" );
-    m_spinCallGame = new QSpinBox( group, "m_spinCallGame" );
-    m_label2 = new QLabel( i18n("Cost of a solo game:"), group, "m_label2" );
-    m_spinSoloGame = new QSpinBox( group, "m_spinSoloGame" );
     m_radioPoints = new QRadioButton( i18n("Count &points"), group );
     
-
-    
     layout->addWidget( group );
-    layout2->addWidget( group2 );
-    layout2->addWidget( group3 );
+    layout->addWidget( new QLabel( i18n("<qt>Schafkopf can count in its results view either points for each game or a monetrary value for each game.<br>You can also configure how much points/money a game costs when won or lost.</qt>"), box ) );
     layout->addItem( spacer );
-    
     
     // load data from configuration
     if( Settings::instance()->resultsType() == Settings::MONEY )
@@ -94,12 +113,83 @@ void PreferencesDlg::addPageResults()
 
 void PreferencesDlg::addPageResultsMoney()
 {
+    QFrame* box = addPage( i18n("Configure Money Values"), QString::null, BarIcon("edit") );
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+    t_ResultValues* r = Settings::instance()->moneyResults();
+    
+    KLocale* locale = KGlobal::locale();
 
+    m_money_call = new KDoubleNumInput( 0.0, 100.00, r->rufspiel, 0.10, 2, box, "m_money_call" );
+    m_money_call->setLabel( i18n("Callgame:"), AlignLeft | AlignVCenter );
+    m_money_call->setSuffix( locale->currencySymbol() );
+    
+    m_money_solo = new KDoubleNumInput( m_money_call, 0.0, 100.00, r->solo, 0.10, 2, box, "m_money_solo" );
+    m_money_solo->setLabel( i18n("Solo:"), AlignLeft | AlignVCenter );
+    m_money_solo->setSuffix( locale->currencySymbol() );
+    
+    m_money_lauf = new KDoubleNumInput( m_money_solo, 0.0, 100.00, r->laufende, 0.10, 2, box, "m_money_lauf" );
+    m_money_lauf->setLabel( i18n("Cards in a row:"), AlignLeft | AlignVCenter );
+    m_money_lauf->setSuffix( locale->currencySymbol() );
+    
+    m_money_notrick = new KDoubleNumInput( m_money_lauf, 0.0, 100.00, r->schwarz, 0.10, 2, box, "m_money_notrick" );
+    m_money_notrick->setLabel( i18n("Notrick:"), AlignLeft | AlignVCenter );
+    m_money_notrick->setSuffix( locale->currencySymbol() );
+    
+    m_money_schneider = new KDoubleNumInput( m_money_notrick, 0.0, 100.00, r->schneider, 0.10, 2, box, "m_money_schneider" );
+    m_money_schneider->setLabel( i18n("Schneider:"), AlignLeft | AlignVCenter );
+    m_money_schneider->setSuffix( locale->currencySymbol() );
+    
+    layout->addWidget( m_money_call );    
+    layout->addWidget( m_money_solo );
+    layout->addWidget( m_money_lauf );
+    layout->addWidget( m_money_notrick );
+    layout->addWidget( m_money_schneider );
+    layout->addItem( spacer );
+    
+    delete r;
 }
 
 void PreferencesDlg::addPageResultsPoints()
 {
+    QFrame* box = addPage( i18n("Configure Point Values"), QString::null, BarIcon("edit") );
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+    t_ResultValues* r = Settings::instance()->pointResults();
 
+    m_point_call = new KIntNumInput( (int)r->rufspiel, box, 10, "m_point_call" );
+    m_point_call->setLabel( i18n("Callgame:"), AlignLeft | AlignVCenter );
+    m_point_call->setMinValue( 0 );
+    m_point_call->setMaxValue( 100 );
+    
+    m_point_solo = new KIntNumInput( m_point_call, (int)r->solo, box, 10, "m_point_solo" );
+    m_point_solo->setLabel( i18n("Solo:"), AlignLeft | AlignVCenter );
+    m_point_solo->setMinValue( 0 );
+    m_point_solo->setMaxValue( 100 );
+    
+    m_point_lauf = new KIntNumInput( m_point_solo, (int)r->laufende, box, 10, "m_point_lauf" );
+    m_point_lauf->setLabel( i18n("Cards in a row:"), AlignLeft | AlignVCenter );
+    m_point_lauf->setMinValue( 0 );
+    m_point_lauf->setMaxValue( 100 );
+    
+    m_point_notrick = new KIntNumInput( m_point_lauf, (int)r->schwarz, box, 10, "m_point_notrick" );
+    m_point_notrick->setLabel( i18n("Notrick:"), AlignLeft | AlignVCenter );
+    m_point_notrick->setMinValue( 0 );
+    m_point_notrick->setMaxValue( 100 );
+    
+    m_point_schneider = new KIntNumInput( m_point_notrick, (int)r->schneider, box, 10, "m_point_schneider" );
+    m_point_schneider->setLabel( i18n("Schneider:"), AlignLeft | AlignVCenter );
+    m_point_schneider->setMinValue( 0 );
+    m_point_schneider->setMaxValue( 100 );
+    
+    layout->addWidget( m_point_call );    
+    layout->addWidget( m_point_solo );
+    layout->addWidget( m_point_lauf );
+    layout->addWidget( m_point_notrick );
+    layout->addWidget( m_point_schneider );
+    layout->addItem( spacer );
+    
+    delete r;
 }
 
 #include "preferencesdlg.moc"

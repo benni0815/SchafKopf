@@ -21,6 +21,7 @@
 #include "player.h"
 #include "game.h"
 #include "gameinfo.h"
+#include "settings.h"
 
 #include <kglobal.h>
 #include <klocale.h>
@@ -32,17 +33,19 @@ MoneyResults::MoneyResults()
 
 double MoneyResults::points( Player* player )
 {
+    t_ResultValues* r = Settings::instance()->moneyResults();
+    double m = 0.0;
+    
     parse();
     
-    double m = 0.0;
     if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
-        m = 0.20; // SOLO = 20cent
+        m = r->solo; // SOLO = 20cent
     else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
-        m = 0.10;
+        m = r->rufspiel;
         
-    m += m_schneider ? 0.10 : 0.0;
-    m += m_schwarz ? 0.10 : 0.0;
-    m += m_laufende * 0.10;
+    m += m_schneider ? r->schneider : 0.0;
+    m += m_schwarz ? r->schwarz : 0.0;
+    m += m_laufende * r->laufende;
     m = klopfen( player->game()->timesDoubled(), m );
     
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )

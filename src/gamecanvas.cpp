@@ -56,6 +56,14 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_no->setColor( Qt::yellow );
     m_ok->setColor( Qt::yellow );
     
+    // Does not work :-(
+    /*
+    m_message->setZ( 100 );
+    m_yes->setZ( 100 );
+    m_no->setZ( 100 );
+    m_ok->setZ( 100 );
+    */
+    
     m_result = 0;
     
     canvas()->setBackgroundColor( Qt::darkGreen );

@@ -21,6 +21,7 @@
 #include "player.h"
 #include "game.h"
 #include "gameinfo.h"
+#include "settings.h"
 
 #include <kglobal.h>
 #include <klocale.h>
@@ -32,17 +33,19 @@ PointResults::PointResults()
 
 double PointResults::points( Player* player )
 {
-    parse();
-    
     int m = 0;
+    t_ResultValues* r = Settings::instance()->pointResults();
+    
+    parse();
+
     if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
-        m = 2; // SOLO = 2
+        m = (int)r->solo; // SOLO = 2
     else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
-        m = 1;
+        m = (int)r->rufspiel;
         
-    m += m_schneider ? 1 : 0;
-    m += m_schwarz ? 1 : 0;
-    m += m_laufende * 1;
+    m += m_schneider ? (int)r->schneider : 0;
+    m += m_schwarz ? (int)r->schwarz : 0;
+    m += m_laufende * (int)r->laufende;
     m = klopfen( player->game()->timesDoubled(), m );
     
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )

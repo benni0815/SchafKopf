@@ -143,4 +143,54 @@ Results* Settings::results() const
     return NULL;
 }
 
+void Settings::setMoneyResults( const t_ResultValues* r )
+{
+    KConfig* config = kapp->config();
+    config->setGroup( "MoneyValues" );
+    config->writeEntry( "Solo", r->solo );
+    config->writeEntry( "Rufspiel", r->rufspiel );
+    config->writeEntry( "Laufende", r->laufende );
+    config->writeEntry( "Schneider", r->schneider );
+    config->writeEntry( "Schwarz", r->schwarz );
+    config->sync();
+}
+
+void Settings::setPointResults( const t_ResultValues* r )
+{
+    KConfig* config = kapp->config();
+    config->setGroup( "PointValues" );
+    config->writeEntry( "Solo", (int)r->solo );
+    config->writeEntry( "Rufspiel", (int)r->rufspiel );
+    config->writeEntry( "Laufende", (int)r->laufende );
+    config->writeEntry( "Schneider", (int)r->schneider );
+    config->writeEntry( "Schwarz", (int)r->schwarz );
+    config->sync();
+}
+
+t_ResultValues* Settings::moneyResults() const
+{
+    t_ResultValues* r = new t_ResultValues;
+    KConfig* config = kapp->config();
+    config->setGroup( "MoneyValues" );
+    r->solo = config->readDoubleNumEntry( "Solo", 0.2 );
+    r->rufspiel = config->readDoubleNumEntry( "Rufspiel", 0.1 );
+    r->laufende = config->readDoubleNumEntry( "Laufende", 0.1 );
+    r->schneider = config->readDoubleNumEntry( "Schneider", 0.1 );
+    r->schwarz = config->readDoubleNumEntry( "Schwarz", 0.1 );
+    return r;    
+}
+
+t_ResultValues* Settings::pointResults() const
+{
+    t_ResultValues* r = new t_ResultValues;
+    KConfig* config = kapp->config();
+    config->setGroup( "PointValues" );
+    r->solo = config->readNumEntry( "Solo", 2 );
+    r->rufspiel = config->readNumEntry( "Rufspiel", 1 );
+    r->laufende = config->readNumEntry( "Laufende", 1 );
+    r->schneider = config->readNumEntry( "Schneider", 1 );
+    r->schwarz = config->readNumEntry( "Schwarz", 1 );
+    return r;    
+}
+
 #include "settings.moc"

@@ -22,6 +22,8 @@
 
 #include <kdialogbase.h>
 
+class KIntNumInput;
+class KDoubleNumInput;
 class QRadioButton;
 class QLabel;
 class QSpinBox;
@@ -42,6 +44,7 @@ class PreferencesDlg : public KDialogBase
         void accept();
         
     private:
+        void addPagePlayer();
         void addPageResults();
         void addPageResultsMoney();
         void addPageResultsPoints();
@@ -49,12 +52,18 @@ class PreferencesDlg : public KDialogBase
     private:
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
-	QLabel* m_label1;
-	QLabel* m_label2;
-	QLabel* m_label3;
-	QLabel* m_label4;
-	QSpinBox* m_spinCallGame;
-	QSpinBox* m_spinSoloGame;
+        
+        KDoubleNumInput* m_money_solo;
+        KDoubleNumInput* m_money_call;
+        KDoubleNumInput* m_money_lauf;
+        KDoubleNumInput* m_money_notrick;
+        KDoubleNumInput* m_money_schneider;
+        
+        KIntNumInput* m_point_solo;
+        KIntNumInput* m_point_call;
+        KIntNumInput* m_point_lauf;
+        KIntNumInput* m_point_notrick;
+        KIntNumInput* m_point_schneider;
 };
 
 #endif

@@ -22,6 +22,17 @@
 
 #include <qobject.h>
 
+/** a small datatype which contains configureable 
+  * values to calculate how much a game was.
+  */
+struct t_ResultValues {
+    double solo;
+    double rufspiel;
+    double laufende;
+    double schwarz;
+    double schneider;
+};
+
 class Results;
 class QWidget;
 
@@ -49,6 +60,15 @@ class Settings : public QObject
         void setResultsType( int r );
         int resultsType() const;
         Results* results() const;
+        
+        void setMoneyResults( const t_ResultValues* r );
+        void setPointResults( const t_ResultValues* r );
+        /** delete after usage
+          */
+        t_ResultValues* moneyResults() const;
+        /** delete after usage
+          */
+        t_ResultValues* pointResults() const;
         
     signals:
         void cardChanged();
