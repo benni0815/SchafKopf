@@ -38,7 +38,7 @@ HumanPlayer::HumanPlayer(Game* game)
 
 HumanPlayer::~HumanPlayer()
 {
-    delete m_allowed;
+	delete m_allowed;
 }
 
 void HumanPlayer::klopfen()

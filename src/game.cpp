@@ -49,11 +49,12 @@ Game::Game(QObject *parent, const char *name)
     QStringList list = Settings::instance()->playerNames();
     m_players[0] = new HumanPlayer( this );
     m_players[0]->setName( list[0] );
-    for( i=1;i<PLAYERS;i++)
+	for( i=1;i<PLAYERS;i++)
     {
         m_players[i] = new ComputerPlayer( this );
         m_players[i]->setName( list[i] );
     }
+
 }
 
 Game::~Game()
@@ -123,7 +124,10 @@ void Game::gameLoop()
 		if( !setupGameInfo(tmp) )
 			continue;
         for(i=0;i<PLAYERS;i++)
+		{
 			tmp[i]->sortCards();
+			tmp[i]->init();
+		}
     	m_canvas->redrawPlayers();
     
     	for(i=0;i<TURNS ;i++)
@@ -169,7 +173,7 @@ void Game::gameLoop()
     }
 }
 
-const CardList *Game::currStich() const
+/*const*/ CardList *Game::currStich() //const
 {
     return &m_currstich;
 }
@@ -181,7 +185,7 @@ void Game::endGame(void)
 	EXIT_LOOP();
 }
 
-const GameInfo *Game::gameInfo() const
+/*const*/ GameInfo *Game::gameInfo() //const
 {
     return &m_gameinfo;
 }
@@ -208,6 +212,8 @@ int Game::highestCard()
 {
 	Card* high = m_currstich.first();
     Card* card = m_currstich.first();
+	int i = 0;
+	
     while( (card = m_currstich.next() ) )
     {
         if( isHigher( card, high ) )
@@ -217,7 +223,6 @@ int Game::highestCard()
         }
     }
     
-    int i = 0;
     for( ; i < (signed int)m_currstich.count(); i++ )
         if( m_currstich.at(i) == high )
             break;

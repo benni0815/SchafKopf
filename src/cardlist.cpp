@@ -92,9 +92,11 @@ void CardList::randomize()
 CardList* CardList::FindCards(int color, int type)
 {
 	CardList* found=new CardList();
-    	for( unsigned int i = 0; i < this->count(); i++ )
+    
+	for( unsigned int i = 0; i < this->count(); i++ )
 	{
-	if( (color==Card::NOCOLOR||at(i)->color()==color) && (type==Card::NOSTICH||at(i)->card()==type) )	found->append(at(i));
+		if( (color==Card::NOCOLOR || at(i)->color()==color) && (type==Card::NOSTICH || at(i)->card()==type) )
+			found->append(at(i));
 	}
 
 	return found;

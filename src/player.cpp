@@ -157,38 +157,43 @@ bool Player::istTrumpf(Card* card)
 
 CardList* Player::PlayerCards()
 {
-	return m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
+	return  m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
 }
 
 Card* Player::firstPlayedCard()
 {
-	if(m_game->currStich()->isEmpty()==true) return NULL;
-	else return (const_cast<CardList *>(m_game->currStich())->first());
+	if(m_game->currStich()->isEmpty()==true) 
+		return NULL;
+	else 
+		return (const_cast<CardList *>(m_game->currStich())->first());
 }
 
 CardList* Player::cardsOfSameType(Card* card)
 {
 	CardList* SpielerKarten=PlayerCards();
-	if(card==NULL) return SpielerKarten; //mssen alle Karten zurckgegeben werden
+	CardList* SpielerFarbe;
+	CardList* AntiMaske;
+	
+	if(card==NULL) 
+		return SpielerKarten; //mssen alle Karten zurckgegeben werden
 	else
 	{
 		if(istTrumpf(card)) //mssen alle trmpfe zurckgegeben werden
 		{
-		CardList* AntiMaske=PlayerCards();
-		removeTrumpf(AntiMaske);
-		SpielerKarten->RemoveCards(AntiMaske);
-		delete AntiMaske;
-		return SpielerKarten;
+			AntiMaske=PlayerCards();
+			removeTrumpf(AntiMaske);
+			SpielerKarten->RemoveCards(AntiMaske);
+			delete AntiMaske;
+			return SpielerKarten;
 		}
 		else	//muss die gleiche Farbe ohne Trmpfe zurckgegeben werden
 		{
-		removeTrumpf(SpielerKarten);
-		CardList* SpielerFarbe=	SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
-		delete SpielerKarten;
-		return SpielerFarbe;
+			removeTrumpf(SpielerKarten);
+			SpielerFarbe=SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
+			delete SpielerKarten;
+			return SpielerFarbe;
 		}
 	}
-
 }
 
 CardList* Player::allowedCards()

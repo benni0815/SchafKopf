@@ -34,7 +34,7 @@ class HumanPlayer : public QObject, public Player
         Card *play();
         GameInfo* gameInfo();
         
-        int rtti() const { return HUMAN; }        
+		int rtti() const { return HUMAN; }        
 
     private slots:
         void getCard( Card* card );

@@ -29,7 +29,6 @@ class MoneyResults : virtual public Results
 {
     public:
         MoneyResults();
-        
         double points( Player* player );
         QString formatedPoints( Player* player );
 };

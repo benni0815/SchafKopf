@@ -20,22 +20,27 @@
 #ifndef COMPUTERPLAYER_H
 #define COMPUTERPLAYER_H
 
+#include <qobject.h>
+
 #include "player.h"
 #include "gameinfo.h"
 
 class OpenBook;
+class CardList;
 
-class ComputerPlayer : public Player
+class ComputerPlayer : public QObject,  public Player
 {
+	Q_OBJECT
     public:
         ComputerPlayer(Game* game);
         ~ComputerPlayer();
         
-        void klopfen();
+		void init();
+		void klopfen();
         Card *play();
         GameInfo* gameInfo();
         
-        int rtti() const { return COMPUTER; }
+		int rtti() const { return COMPUTER; }
 
     private:
         typedef struct game_data {
@@ -44,8 +49,19 @@ class ComputerPlayer : public Player
             int weight;
             GameInfo info;        
         };
-
+		CardList *m_playedCards[4];
         OpenBook* book;
+		int mitspieler;
+		
+		Card *findCardToPlay(CardList *cards);
+		Card *findHighestCard(CardList *cards);
+		Card *findSchmiere(CardList *cards);		// Nice name, isn't it? :)
+		Card *findCheapestCard(CardList *cards);
+		bool canMakeStich(CardList *cards);		
+		bool ownStich();
+				
+	private slots:
+		void cardPlayed(unsigned int player, Card *c);
 };
 
 #endif

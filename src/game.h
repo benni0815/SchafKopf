@@ -40,18 +40,17 @@ class Game : public QObject
         Game(QObject *parent = 0, const char *name = 0);
         ~Game();
         void gameLoop();
-        const CardList *currStich() const;
-        const GameInfo *gameInfo() const;
+		/*const*/ CardList *currStich();// const;
+		/*const*/ GameInfo *gameInfo();// const;
         
         void setCanvas( GameCanvas* c );
         GameCanvas* canvas() const { return m_canvas; }
         
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
-
-	bool isTerminated() const { return terminated; }
-		
-	bool isHigher( Card* card, Card* high );
+		bool isTerminated() const { return terminated; }
+		int highestCard();
+		bool isHigher( Card* card, Card* high );
 		
     signals:        
         void gameStarted();
@@ -81,7 +80,6 @@ class Game : public QObject
 		/** give cards to the player and begin a new gameinfo
 		 */
 		void start();
-		int highestCard();
         void gameResults();
 		
         /** find a player who wants to playerPlayedCard 

@@ -13,11 +13,12 @@ class Player
 {
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
+		
+		Player(Game* game);
+		~Player();
 
-        Player(Game* game);
-        ~Player();
-
-        virtual void klopfen();
+		virtual void init() {};
+		virtual void klopfen();
         virtual Card *play() = 0;
         virtual GameInfo* gameInfo() = 0;
         
@@ -60,14 +61,15 @@ class Player
         // was called
         bool m_has_doubled;
         unsigned int m_id;
-    
+    	
+		CardList* cardsOfSameType(Card* card);
+		Card* firstPlayedCard();
+		bool istTrumpf(Card* card);
     private:
         static unsigned int def_id;
         double m_points;
-	bool istTrumpf(Card* card);
-	CardList* cardsOfSameType(Card* card);
-	Card* firstPlayedCard();
-	CardList* PlayerCards();
+		
+		CardList* PlayerCards();
 };
 
 #endif /* PLAYER_H */

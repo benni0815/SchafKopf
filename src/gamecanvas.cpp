@@ -111,22 +111,24 @@ void GameCanvas::createObjects()
     unsigned int i = 0;
     unsigned int h = 0;
     unsigned int z = 0;
-    
+	
     /** We have to make sure that the human player == m_player[0] !
       */
     for( h=0;h<PLAYERS;h++ )    
-        if( m_game->findIndex( h )->rtti() == Player::HUMAN )
+	{
+		if( m_game->findIndex( h )->rtti() == Player::HUMAN )
         {
-            m_players[0]->setPlayer( 0, m_game->findIndex( h ) );
+			m_players[0]->setPlayer( 0, m_game->findIndex( h ) );
             break;
         }
-
+	}
+		
     for( i=h+1;i<PLAYERS;i++ )
         m_players[i-h]->setPlayer( i-h, m_game->findIndex( i ) );            
-
+	
     for( z=0;z<h;z++)    
         m_players[i-h+z]->setPlayer( i-h+z, m_game->findIndex( z ) );
-    
+	
     positionObjects();
 }
 

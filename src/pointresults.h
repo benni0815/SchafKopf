@@ -29,8 +29,7 @@ class PointResults : virtual public Results
 {
     public:
         PointResults();
-     
-        double points( Player* player );
+		double points( Player* player );
         QString formatedPoints( Player* player );
 };
 

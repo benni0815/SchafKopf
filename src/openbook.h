@@ -47,9 +47,6 @@ class OpenBook : public QObject {
     private:
         Game* m_game;
         Player* m_self;
-		
-		/** played cards for each player */
-		CardList *m_playedCards;
 };
 
 #endif

@@ -61,10 +61,10 @@ class CardList : public QPtrList<Card>
           */
         bool contains( int color, int type );
         
-	CardList* FindCards(int color, int type);
-	void RemoveCards(CardList* itemsToRem);
+		CardList* FindCards(int color, int type);
+		void RemoveCards(CardList* itemsToRem);
 	
-	void sort(eval_func eval, void *param);
+		void sort(eval_func eval, void *param);
 
 	signals:
 		void changeEvent(void);

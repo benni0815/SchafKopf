@@ -57,11 +57,11 @@ SchafKopf::SchafKopf()
     
     m_canvas = new QCanvas( this, "canvas" );
     m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
-    
+	
     m_game = new Game();
-    m_game->setCanvas( m_canvasview );
-    m_canvasview->setGame( m_game );    
-
+	m_game->setCanvas( m_canvasview );
+	m_canvasview->setGame( m_game );    
+		
     QVBox * leftBox = new QVBox( split );
     new QLabel( i18n("Results:"), leftBox );
     
@@ -98,7 +98,7 @@ SchafKopf::SchafKopf()
     connect(m_game,SIGNAL(signalDoubled()),this,SLOT(updateInfo()));
     
     QToolTip::add( btnLastTrick, i18n("Show the last trick that was made.") );
-    
+	
     updateInfo();
 }
 

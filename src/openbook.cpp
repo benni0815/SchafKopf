@@ -106,14 +106,12 @@ OpenBook::OpenBook( Player* player, Game* game )
 {
     m_self = player;
     m_game = game;
-	m_playedCards=new CardList[4];    
-    connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int,Card*) ) );
+	connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int,Card*) ) );
 }
 
 
 OpenBook::~OpenBook()
 {
-	delete[] m_playedCards;
 }
 
 CardList* OpenBook::possibleCards()
@@ -162,6 +160,5 @@ CardList* OpenBook::possibleCards()
 void OpenBook::cardPlayed( unsigned int player, Card* card )
 {
     // todo: move this in to an own class later
-    // Player* p = m_game->findId( player );
-	m_playedCards[player].append(card);
+    Player* p = m_game->findId( player );
 }
