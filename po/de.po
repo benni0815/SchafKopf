@@ -320,6 +320,12 @@ msgstr "Karten nach jedem Stich neu anordnen."
 msgid "Cards will be rearranged after each trick."
 msgstr "Die Karten werden nach jedem Stich neu angeordnet."
 
+msgid "Game Canvas:"
+msgstr "Spielfeld:"
+
+msgid "Background image:"
+msgstr "Hintergrundbild:"
+
 msgid "Games"
 msgstr "Spiele"
 

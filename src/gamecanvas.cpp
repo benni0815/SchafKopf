@@ -30,7 +30,6 @@
 #include <kapplication.h>
 #include <klocale.h>
 #include <qtimer.h>
-#include <qpixmap.h>
 #include <qimage.h>
 
 GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
