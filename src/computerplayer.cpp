@@ -70,7 +70,7 @@ GameInfo* ComputerPlayer::game()
         {
             if( i==GameInfo::RUFSPIEL ) 
             {
-                CardList* sau = m_cards->FindCards(m_game->gameInfo()->color, Card::SAU);
+                CardList* sau = m_cards->FindCards(m_game->gameInfo()->color(), Card::SAU);
                 if( z==Card::NOCOLOR || z==Card::HERZ || !sau->isEmpty() ) {
                     delete sau;
                     continue;
@@ -79,8 +79,8 @@ GameInfo* ComputerPlayer::game()
             }
             
             GameInfo info;
-            info.mode = i;
-            info.color = z;        
+            info.setMode( i );
+            info.setColor( z );        
             for( c=0;c<m_cards->count();c++)
                 if( m_game->istTrumpf( m_cards->at(c), &info ) )
                     trumpf++;
@@ -89,7 +89,6 @@ GameInfo* ComputerPlayer::game()
             
             if( trumpf >= 4 && fehlfarbe <= 2 )
             {
-                qDebug( name() + "SPIEL!!!");
                 lstInfo.append( info );
                 lstTrumpf.append( trumpf );
                 lstFehlFarbe.append( fehlfarbe );

@@ -37,12 +37,6 @@ class HumanPlayer : public QObject, public Player
         
         int rtti() const { return HUMAN; }        
 
-	public slots:
-		
-		/** Check if card can be played
-		*/
-		void isValid( const int index, bool &valid );
-                
     private slots:
         void getCard( Card* card );
         

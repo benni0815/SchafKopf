@@ -185,13 +185,13 @@ CardList* Player::allowedCards()
 		allowed=PlayerCards();
 	}
 
-	if(m_game->gameInfo()->mode==GameInfo::RUFSPIEL) //weiß nicht wieso dass Game::RUFSPIEL nimmer geht, seit letzter aktualisierung... naja, wird so schon gehn (mit GameInfo)
+	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) //weiß nicht wieso dass Game::RUFSPIEL nimmer geht, seit letzter aktualisierung... naja, wird so schon gehn (mit GameInfo)
 	{
-		CardList* Sau=allowed->FindCards(m_game->gameInfo()->color, Card::SAU);
-		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color, Card::NOSTICH);
+		CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
+		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
 		if(!Sau->isEmpty())	//muss nur was machen wenn ich die Sau habe
 		{
-			if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color)
+			if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
 			{
 				delete allowed;
 				allowed=Sau;

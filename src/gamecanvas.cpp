@@ -333,7 +333,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
     }
 }
 
-void GameCanvas::slotPlayerMadeStich(unsigned int player)
+void GameCanvas::slotPlayerMadeStich(unsigned int)
 {
     while( !m_stich->isEmpty() ) {
         QCanvasItem* item = m_stich->first();

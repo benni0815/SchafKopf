@@ -32,18 +32,30 @@ class GameInfo{
     public:
         enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH };
         
-        int color;
-        __mode mode;
-        Player *spieler;
-        Player *mitspieler;
-
-        
         GameInfo();
         ~GameInfo();
-                        
+
+        int color() const { return m_color; }
+        void setColor( int c ) { m_color = c; }
+        
+        __mode mode() const { return m_mode; }
+        void setMode( int m ) { m_mode = (__mode)m; }
+        
+        Player* spieler() const { return m_spieler; }
+        void setSpieler( Player* p ) { m_spieler = p; }
+        
+        Player* mitspieler() const { return m_mitspieler; }
+        void setMitspieler( Player* p ) { m_mitspieler = p; }
+        
         const QString toString() const;
 
         bool operator>( GameInfo info );
+        
+    private:
+        int m_color;
+        __mode m_mode;
+        Player *m_spieler;
+        Player *m_mitspieler;
 };
 
 #endif

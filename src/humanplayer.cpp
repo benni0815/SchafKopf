@@ -71,9 +71,7 @@ GameInfo* HumanPlayer::game()
         SelectGameDlg sgd( 0, "sgd" );
         if( sgd.exec() == QDialog::Accepted )
         {
-            GameInfo* info = sgd.gameInfo();
-            info->spieler=this;
-            return info;
+            return sgd.gameInfo();
         }
     } 
     return 0;
@@ -90,7 +88,6 @@ void HumanPlayer::getCard(Card* card)
     } 
 	else
 	{
-        qDebug("m_game=%x, canvas=%x", m_game, m_game->canvas());
 		m_game->canvas()->cardForbidden(card);
 	}
 }
@@ -101,8 +98,4 @@ void HumanPlayer::setCards( CardList *cards)
     m_cards->sort((eval_func)m_game->evalCard, (void *)m_game->gameInfo());
 }
 
-void HumanPlayer::isValid( const int index,  bool &valid )
-{
-	valid=false;
-}		
 

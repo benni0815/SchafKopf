@@ -161,7 +161,7 @@ bool Game::istTrumpf(Card *card,GameInfo* gameinfo)
     if( !gameinfo )
         gameinfo = &m_gameinfo;
         
-    switch(gameinfo->mode)
+    switch(gameinfo->mode())
     {
         case GameInfo::RUFSPIEL:
         case GameInfo::RAMSCH:
@@ -169,15 +169,15 @@ bool Game::istTrumpf(Card *card,GameInfo* gameinfo)
                     return true;
                 break;
         case GameInfo::STICHT:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==gameinfo->color)
+                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==gameinfo->color())
                     return true;
                 break;
         case GameInfo::GEIER:
-                if(card->card()==Card::OBER || card->color()==gameinfo->color)
+                if(card->card()==Card::OBER || card->color()==gameinfo->color())
                     return true;
                 break;
         case GameInfo::WENZ:
-                if(card->card()==Card::UNTER || card->color()==gameinfo->color)
+                if(card->card()==Card::UNTER || card->color()==gameinfo->color())
                     return true;
         default:
                 break;
@@ -199,7 +199,7 @@ int Game::highestCard()
     }
     
     int i = 0;
-    for( ; i < m_currstich.count(); i++ )
+    for( ; i < (signed int)m_currstich.count(); i++ )
         if( m_currstich.at(i) == high )
             break;
             
@@ -226,7 +226,7 @@ int Game::evalCard(Card *card, GameInfo *gameinfo)
 	int col;
 	int i, a;
 	
-	switch( gameinfo->mode )
+	switch( gameinfo->mode() )
     {
 		case GameInfo::RAMSCH:
         case GameInfo::RUFSPIEL:
@@ -240,19 +240,19 @@ int Game::evalCard(Card *card, GameInfo *gameinfo)
 			trumpf_cnt=2;
 			l_trumpf=l_trumpf_std;
 			l_cards=l_cards_std;
-			col=gameinfo->color;
+			col=gameinfo->color();
 			break;
 		case GameInfo::GEIER:
 			trumpf_cnt=1;
         	l_trumpf=&l_trumpf_geier;
 			l_cards=l_cards_geier;
-			col=gameinfo->color;
+			col=gameinfo->color();
 			break;
 		case GameInfo::WENZ:
 			trumpf_cnt=1;
         	l_trumpf=&l_trumpf_wenz;
 			l_cards=l_cards_wenz;
-			col=gameinfo->color;
+			col=gameinfo->color();
 		default:
         	break;
 	}
@@ -353,15 +353,15 @@ void Game::gameResults()
 {
     // TODO: handle schneider + schwarz ....
     // sauberen code...
-    int points = m_gameinfo.spieler->stiche()->points();
-    if( m_gameinfo.mitspieler )
-        points += m_gameinfo.mitspieler->stiche()->points();
+    int points = m_gameinfo.spieler()->stiche()->points();
+    if( m_gameinfo.mitspieler() )
+        points += m_gameinfo.mitspieler()->stiche()->points();
         
         
     if( points > 60 )
-        KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" gewinnt mit %1 Punkten.").arg( points ) );
+        KMessageBox::information( 0,m_gameinfo.spieler()->name() + QString(" gewinnt mit %1 Punkten.").arg( points ) );
     else
-        KMessageBox::information( 0,m_gameinfo.spieler->name() + QString(" verliert mit %1 Punkten.").arg( points ) );
+        KMessageBox::information( 0,m_gameinfo.spieler()->name() + QString(" verliert mit %1 Punkten.").arg( points ) );
 }
 
 void Game::setupGameInfo()
@@ -377,8 +377,7 @@ void Game::setupGameInfo()
         GameInfo* info = m_players[i]->game();
         if( info )
         {
-            info->spieler = m_players[i];
-            info->mitspieler = 0;
+            info->setSpieler( m_players[i] );
             games.append( info );
         }
     }
@@ -387,10 +386,9 @@ void Game::setupGameInfo()
     {
         // nobody wants to play
         // TODO: future: Ramsch, zamschmeissen, etc.
-        m_gameinfo.color=Card::EICHEL;
-        m_gameinfo.mode=GameInfo::RUFSPIEL;
-        m_gameinfo.spieler=m_players[0];
-        m_gameinfo.mitspieler=0;
+        m_gameinfo.setColor( Card::EICHEL );
+        m_gameinfo.setMode( GameInfo::RUFSPIEL );
+        m_gameinfo.setSpieler( m_players[0] );
     } 
     else
     {
@@ -404,15 +402,15 @@ void Game::setupGameInfo()
     }
     
     // finde den mitspieler:
-    if( m_gameinfo.mode==GameInfo::RUFSPIEL ) 
+    if( m_gameinfo.mode()==GameInfo::RUFSPIEL ) 
     {
-        Card sau( Card::SAU, static_cast<enum Card::color>(m_gameinfo.color) );
-        for( i=0;i<PLAYERS || !m_gameinfo.mitspieler;i++ )
+        Card sau( Card::SAU, static_cast<enum Card::color>(m_gameinfo.color()) );
+        for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
         {
             for( unsigned int z=0;z<CARD_CNT/PLAYERS;z++ )
                 if( m_players[i]->cards()->at(z)->isEqual( &sau ) )
                 {
-                    m_gameinfo.mitspieler=m_players[i];
+                    m_gameinfo.setMitspieler(m_players[i]);
                     break;
                 }
         }

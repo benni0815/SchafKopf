@@ -70,24 +70,24 @@ GameInfo* SelectGameDlg::gameInfo() const
     GameInfo* info = new GameInfo();
 
     if( checkFarblos->isChecked() )        
-        info->color=Card::NOCOLOR;
+        info->setColor(Card::NOCOLOR);
     else if( checkEichel->isChecked() )
-        info->color=Card::EICHEL;
+        info->setColor(Card::EICHEL);
     else if( checkGras->isChecked() )
-        info->color=Card::GRAS;
+        info->setColor(Card::GRAS);
     else if( checkHerz->isChecked() )
-        info->color=Card::HERZ;
+        info->setColor(Card::HERZ);
     else if( checkSchellen->isChecked() )
-        info->color=Card::SCHELLEN;
+        info->setColor(Card::SCHELLEN);
         
     if( checkRufspiel->isChecked() )
-        info->mode=GameInfo::RUFSPIEL;
+        info->setMode(GameInfo::RUFSPIEL);
     else if( checkSolo->isChecked() )
-        info->mode=GameInfo::STICHT;
+        info->setMode(GameInfo::STICHT);
     else if( checkGeier->isChecked() )
-        info->mode=GameInfo::GEIER;
+        info->setMode(GameInfo::GEIER);
     else if( checkWenz->isChecked() )
-        info->mode=GameInfo::WENZ;
+        info->setMode(GameInfo::WENZ);
 
     return info;
 }
