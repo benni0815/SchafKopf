@@ -65,6 +65,8 @@ SchafKopf::SchafKopf()
 #endif // QT_VERSION
 
     setCentralWidget( split );
+    // do not start with a too tiny window at the first start
+    resize( 800, 550 );
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
 
@@ -252,7 +254,6 @@ void SchafKopf::customEvent( QCustomEvent* e )
         }
     }
 }
-
 
 void SchafKopf::saveConfig()
 {
