@@ -39,5 +39,8 @@ void ComputerPlayer::klopfen()
 
 Card *ComputerPlayer::play()
 {
-    return m_cards->at(KApplication::random()%m_cards->count());
+	CardList* allowed=allowedCards();
+	Card* ToPlay=allowed->at(KApplication::random()%allowed->count());
+    	delete allowed;
+	return ToPlay;
 }

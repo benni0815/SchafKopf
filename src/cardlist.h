@@ -25,13 +25,14 @@
 
 #include <card.h>
 
+
 #define CARD_CNT 32
 /**
  * By default CardList does not delete its children
  * on destruction!
  * @author Dominik Seichter
  */
- 
+
 class CardList : public QPtrList<Card>
 {
     public:
@@ -43,18 +44,22 @@ class CardList : public QPtrList<Card>
           * are deleted on destruction.
           */
         void init();
-		
+
 		/** generate a randomized list of 32 cards
 		*/
-        void randomize();        
-		
+        void randomize();
+
 		/** Evaluate the all cards in this list
 		*/
         int points();
-		
+
+	CardList* FindCards(int color, int type);
+	void RemoveCards(CardList* itemsToRem);
+
+
 	signals:
 		void changeEvent(void);
-	
+
 	protected:
 		int compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 );
 };

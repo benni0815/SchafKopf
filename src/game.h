@@ -57,7 +57,8 @@ class Game : public QObject
         Player* findIndex( unsigned int index ) const;
 
         bool istTrumpf(Card *card);
-        
+
+
     signals:
         void clearStich();
         void gameStateChanged();

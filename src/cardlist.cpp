@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "cardlist.h"
 
+
 #include <kapplication.h>
 
 CardList::CardList()
@@ -75,10 +76,49 @@ void CardList::randomize()
                        // enabled!!! 
 }
 
+
+
+
+
+
+
+/*
+	typedef bool (*__isTrumpf)(Card* Karte);
+	CardList* FindCards(int color, int type, __isTrumpf _trumpf_func);*/
+
+CardList* CardList::FindCards(int color, int type)
+{
+	CardList* found=new CardList();
+    	for( unsigned int i = 0; i < this->count(); i++ )
+	{
+	if( (color==Card::NOCOLOR||at(i)->color()==color) && (type==Card::NOSTICH||at(i)->card()==type) )	found->append(at(i));
+	}
+
+	return found;
+}
+
+
+void CardList::RemoveCards(CardList* itemsToRem)
+{
+	Card *card;
+	Card *thiscard;
+	for ( card = itemsToRem->first(); card; card = itemsToRem->next() )
+    	{
+		for(thiscard = this->first(); thiscard; thiscard = this->next() )
+		{
+		if(thiscard->isEqual(card)) this->removeNode(this->currentNode());
+		}
+	}
+}
+
+
+
+
+
 int CardList::compareItems ( QPtrCollection::Item Item1, QPtrCollection::Item Item2 )
 {
 	Card *tmp, *item1=(Card *)Item1, *item2=(Card *)Item2;
-	
+
 	if(item2->card()==Card::OBER || item2->card()==Card::UNTER)
 	{
 		tmp=item1;

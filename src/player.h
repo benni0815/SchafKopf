@@ -30,16 +30,21 @@ class Player
         const unsigned int id() const { return m_id; }
         
         bool geklopft() const { return m_geklopft; };
-        
+
+
+	CardList *allowedCards();
+	void removeTrumpf(CardList* liste);
+	bool hasTrumpf(CardList* liste);
+	void DebugCardOutput(Card* card);
     protected:
         CardList *m_cards;
         CardList *m_stiche;
         Game *m_game;
-        
+
         QString m_name;
-        
+
         bool m_geklopft;
-        
+
         unsigned int m_id;
     private:
         static unsigned int def_id;

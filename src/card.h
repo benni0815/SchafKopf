@@ -33,7 +33,7 @@ class Card : public QObject {
     Q_OBJECT
     public:
         // TODO: find better names, Edit bei lenz: done =;-)
-        enum type { /*ASS*/ SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
+        enum type { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
         enum color { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
 
         Card( const enum type t, const enum color c );
@@ -60,7 +60,8 @@ class Card : public QObject {
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
-    
+
+	bool isEqual(Card* othercard);
     private slots:
         void cardChanged();
         
