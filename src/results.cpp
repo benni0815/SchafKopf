@@ -123,7 +123,7 @@ void Results::parse()
        
         m_points = stiche.points();
         m_schwarz = ( stiche.isEmpty() || stiche.count() == NUMCARDS * PLAYERS );
-        m_schneider = (m_points < 31 || m_points > 90 );
+        m_schneider = (m_points < 31 || m_points >= 90 );
     
         if( m_points > 60 )
         {
