@@ -47,6 +47,8 @@ class Results{
         virtual double points( Player* player ) = 0;
         virtual QString formatedPoints( Player* player ) = 0;
         
+        double klopfen(int anzahl, double betrag);
+    
     protected:        
         Results();
 				        

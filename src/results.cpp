@@ -86,4 +86,11 @@ void Results::parse()
     m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
 }
 
+double Results::klopfen(int anzahl, double betrag)
+{
+    if(anzahl==0) 
+        return betrag; 
+    else 
+        return klopfen(anzahl-1, betrag)*2.0; 
+}
 
