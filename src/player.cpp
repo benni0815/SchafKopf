@@ -170,7 +170,7 @@ CardList* Player::allowedCards()
 		}
 		else
 		{
-			if(m_game->istTrumpf(m_game->currStich()->first()))
+			if(m_game->istTrumpf(const_cast<CardList *>(m_game->currStich())->first()))
 			{
 				if(hasTrumpf(m_cards))
 				{
@@ -212,7 +212,7 @@ CardList* Player::allowedCards()
 			else
 			{
 
-				if( (m_game->currStich()->first()->color()==m_game->gameInfo()->color) && (!Sau->isEmpty()) )
+				if( (const_cast<CardList *>(m_game->currStich())->first()->color()==m_game->gameInfo()->color) && (!Sau->isEmpty()) )
 				{
 						delete allowed;
 						delete Spielfarbe;
@@ -220,7 +220,7 @@ CardList* Player::allowedCards()
 				}
 				else
 				{
-				CardList *Farbe=m_cards->FindCards(m_game->currStich()->first()->color(), Card::NOSTICH);
+				CardList *Farbe=m_cards->FindCards(const_cast<CardList *>(m_game->currStich())->first()->color(), Card::NOSTICH);
 				removeTrumpf(Farbe);
 					if(!Farbe->isEmpty())
 					{

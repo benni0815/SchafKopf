@@ -110,7 +110,7 @@ void Game::gameLoop()
     
 }
 
-CardList *Game::currStich() const
+const CardList *Game::currStich() const
 {
     return &m_currstich;
 }
