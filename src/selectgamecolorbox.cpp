@@ -84,22 +84,7 @@ int SelectGameColorBox::getColor()
 
 void SelectGameColorBox::colorChanged()
 {
-	/*
-	switch(getColor())
-	{
-		
-		case (Card::EICHEL):
-		break;
-		case (Card::GRAS):
-		break;
-		case (Card::HERZ):
-		break;
-		case (Card::SCHELLEN):
-		break;
-		case (Card::NOCOLOR):
-		break;
-	}*/
-		m_gameinfo->setColor(getColor());
+	m_gameinfo->setColor(getColor());
 }
 
 
@@ -196,21 +181,10 @@ bool SelectGameColorBox::getFinish()
 
 SelectGameColorBox::~SelectGameColorBox()
 {
-	//cleanGameInfo();
-	delete checkEichel;
-	delete checkGras;
-	delete checkHerz;
-	delete checkSchellen;
-	delete checkFarblos;
-	delete color_group;
 	delete m_Herz;
 	delete m_Schelle;
 	delete m_Eichel;
 	delete m_Gras;
-
-	
-	delete page;
-	//delete row1;
 }
 
 void SelectGameColorBox::setGameInfo(GameInfo* info)

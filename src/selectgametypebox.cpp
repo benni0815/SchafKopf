@@ -106,17 +106,6 @@ void SelectGameTypeBox::setInfoText(QString Text)
 
 SelectGameTypeBox::~SelectGameTypeBox()
 {
-/*
-	delete checkRufspiel;
-	delete checkSolo;
-	delete checkGeier;
-	delete checkWenz;
-	delete checkDachs;
-	delete group_TypeSelect;
-	delete page;
-	delete row1;*/
-	//delete preview;
-	//delete infoLabel;
 }
 
 

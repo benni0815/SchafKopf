@@ -86,10 +86,4 @@ void SelectGameWizard::canFinish(bool fin)
 SelectGameWizard::~SelectGameWizard()
 {
 	m_closing=true;
-	//removePage(box1);
-	//removePage(box2);
-	delete box1;
-	delete box2;
-	box1=0;
-	box2=0;
 }
