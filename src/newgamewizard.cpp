@@ -35,7 +35,9 @@
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
         : KWizard( parent, name, TRUE )
 {
+    
     setup_page_selectgame();
+    //this->setSize(300,300,300,300);
 }
 
 void newgamewizard::setup_page_selectgame()
@@ -45,7 +47,8 @@ void newgamewizard::setup_page_selectgame()
 
     info = new QLabel( page_selectgame );
     info->setMargin( 11 );
-    info->setPalette( yellow );
+  //  info->setPalette( yellow );
+    info->setMinimumWidth( 220);
 
     QVBox *page = new QVBox( page_selectgame );
 
@@ -113,7 +116,7 @@ QString newgamewizard::getGameInfoString(int gameType)
 void newgamewizard::setInfoText(int gameType)
 {
     info->setText(getGameInfoString(gameType));
-    info->setMaximumWidth( info->sizeHint().width() );
+
 }
 
 void newgamewizard::dataChanged(  )
