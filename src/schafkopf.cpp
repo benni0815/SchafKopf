@@ -88,6 +88,7 @@ SchafKopf::SchafKopf()
     setupActions();
     
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
+	connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
     
     connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
     connect(m_game,SIGNAL(gameStarted()),this,SLOT(enableControls()));
@@ -104,8 +105,8 @@ SchafKopf::~SchafKopf()
 {
     saveConfig();
 
-    if( m_game )
-        endGame();
+    //if( m_game )
+    //    endGame();
         
     if( m_stichdlg )
         delete m_stichdlg;
