@@ -28,18 +28,8 @@ msgid ""
 "Your emails"
 msgstr "domseichter@web.de\nbenjamin.loewe@freenet.de"
 
-#: canvascard.moc.cpp:34 canvascard.moc.cpp:42
-msgid "CanvasCard"
-msgstr ""
-
-#: card.moc.cpp:34 card.moc.cpp:42
-msgid "Card"
-msgstr ""
-
-#: computerplayer.moc.cpp:34 computerplayer.moc.cpp:42
-#, fuzzy
-msgid "ComputerPlayer"
-msgstr "Computerspieler"
+msgid "<qt>Schafkopf is a popular card game in Bavaria. SchafKopf ist the KDE version of this game.</qt>"
+msgstr "<qt>Schafkopf ist ein beliebtes Kartenspiel in Bayern. SchafKopf ist die KDE-Version dieses Spiels.</qt>"
 
 #: game.cpp:124
 msgid "%1 has doubled."
@@ -292,7 +282,7 @@ msgstr ""
 
 #: preferencesdlg.cpp:160
 msgid "Configure Money Values"
-msgstr "Geldbetrge festlegen"
+msgstr "Geldbeträge festlegen"
 
 #: preferencesdlg.cpp:168 preferencesdlg.cpp:205
 msgid "Callgame:"
@@ -508,26 +498,8 @@ msgstr "Letzter Stich"
 
 #: stichdlg.cpp:65
 msgid "Trick was made by: <b>"
-msgstr "Stich gehrt: <b>"
+msgstr "Stich gehört: <b>"
 
 #: stichdlg.cpp:67
 msgid "No trick was made."
-msgstr "Kein Stich wurde bis jetzt gemacht."
-
-#~ msgid "Select Type:"
-#~ msgstr "Typ Auswhlen:"
-
-#~ msgid "Play a Callgame"
-#~ msgstr "Ein Rufspiel spielen"
-
-#~ msgid "Play a Solo"
-#~ msgstr "Ein Solo spielen"
-
-#~ msgid "Play a Geier"
-#~ msgstr "Einen Geier spielen"
-
-#~ msgid "Play a Wenz"
-#~ msgstr "Einen Wenz spielen"
-
-#~ msgid "Play a Dachs"
-#~ msgstr "Einen Dachs spielen"
+msgstr "Bis jetzt wurde kein Stich gemacht."

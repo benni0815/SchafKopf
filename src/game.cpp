@@ -117,9 +117,9 @@ void Game::gameLoop()
         start();
         
 		for(i=0;i<PLAYERS;i++)
-    	{
+		{
 	        tmp[i]->klopfen();
-    	    tmp[i]->sortCards();
+	        tmp[i]->sortCards();
         	if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN ) 
         	{
             	m_canvas->information( i18n("%1 has doubled.").arg( tmp[i]->name() ) );
@@ -141,7 +141,7 @@ void Game::gameLoop()
 			tmp[i]->init();
 		}
     	m_canvas->redrawPlayers();
-    
+
     	for(i=0;i<TURNS ;i++)
 	    {
     	    m_currstich.clear();
