@@ -86,7 +86,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     canvas()->setBackgroundColor( Qt::darkGreen );
     
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
-    canvas()->setAdvancePeriod( 20 );
+    canvas()->setAdvancePeriod( 30 );
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));

@@ -124,14 +124,17 @@ void CanvasCard::animatedMove()
 
 void CanvasCard::moveLoop()
 {
+	int speedx=1, speedy=1;
+	if( tox-x()>60 || x()-tox>60 ) speedx=20;
+	if( toy-y()>60 || y()-toy>60 ) speedy=20;
 	if(tox>x())
-		moveBy( 1, 0 );
+		moveBy( speedx, 0 );
 	else if(tox!=x())
-		moveBy( -1, 0 );
+		moveBy( -speedx, 0 );
 	if(toy>y())
-		moveBy( 0, 1 );
+		moveBy( 0, speedy );
 	else if(toy!=y())
-		moveBy( 0, -1 );
+		moveBy( 0, -speedy );
 	if(tox==x() && toy==y())
 	{
 		timer->stop();
