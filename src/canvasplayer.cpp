@@ -91,7 +91,7 @@ void CanvasPlayer::position( int i )
     {
         case 0:
             if(w-2*DIST>num*cardw+(num-1))
-	    	x=(w-cardw*num)/2;
+	    	x=(w-cardw*num)/2-(num-1)/2;
 	    else
 	    	x=DIST;
             y=h-cardh-DIST; 
