@@ -107,18 +107,18 @@ GameInfo* SelectGameDlg::gameInfo() const
 void SelectGameDlg::enableControls()
 {
     checkHerz->setEnabled( !checkRufspiel->isChecked() );
+    checkControls( checkHerz );
     checkFarblos->setEnabled( !checkRufspiel->isChecked() && !checkSolo->isChecked() );
+    checkControls( checkFarblos );
 
     if( checkRufspiel->isChecked() )
     {
-        checkEichel->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::EICHEL ) );
-        checkGras->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::GRAS ) );
-        checkSchellen->setEnabled( GameInfo::isAllowed( m_list, GameInfo::RUFSPIEL, Card::SCHELLEN ) );
-        /*
-        if( !checkEichel->isEnabled() && !checkGras->isEnabled() && !checkSchellen->isEnabled() )
-            checkRufspiel->setEnabled( false );
-        else
-            checkRufspiel->setEnabled( true );*/
+        checkEichel->setEnabled( GameInfo::isAllowed( m_list,GameInfo::RUFSPIEL, Card::EICHEL ) );
+        checkControls( checkEichel );
+        checkGras->setEnabled( GameInfo::isAllowed( m_list,GameInfo::RUFSPIEL, Card::GRAS ) );
+        checkControls( checkGras );
+        checkSchellen->setEnabled( GameInfo::isAllowed( m_list,GameInfo::RUFSPIEL, Card::SCHELLEN ) );
+        checkControls( checkSchellen );
     }
     else if( checkDachs->isChecked() )
     {
@@ -127,6 +127,7 @@ void SelectGameDlg::enableControls()
         checkEichel->setEnabled( false );
         checkSchellen->setEnabled( false );
         checkFarblos->setEnabled( true );
+        checkFarblos->setChecked( true );
     }
     else
     {
@@ -134,8 +135,20 @@ void SelectGameDlg::enableControls()
         checkGras->setEnabled( true );
         checkSchellen->setEnabled( true );
     }
+    if ( checkEichel->isChecked() || checkGras->isChecked() ||
+         checkHerz->isChecked() || checkSchellen->isChecked() ||
+         checkFarblos->isChecked() )
+       KDialogBase::enableButtonOK ( true );
+    else
+       KDialogBase::enableButtonOK ( false );
     
     updatePreview();
+}
+
+void SelectGameDlg::checkControls(QRadioButton * RadioButton)
+{
+    if( RadioButton->isChecked() )
+        RadioButton->setChecked( RadioButton->isEnabled() );
 }
 
 void SelectGameDlg::updatePreview()

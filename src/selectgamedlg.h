@@ -46,6 +46,8 @@ class SelectGameDlg : public KDialogBase
         void updatePreview();
         
     private:
+        void checkControls(QRadioButton * RadioButton);
+        
         CardList* m_list;
         
         QRadioButton* checkRufspiel;

@@ -103,7 +103,7 @@ void Game::gameLoop()
     {
         m_players[i]->klopfen();
         m_players[i]->sortCards();
-        if( m_players[i]->geklopft() )   
+        if( m_players[i]->geklopft() && m_players[i]->rtti() != Player::HUMAN )   
             m_canvas->information( i18n("%1 has doubled.").arg( m_players[i]->name() ) );
     }
     
@@ -310,9 +310,14 @@ bool Game::setupGameInfo()
         {
             info->setSpieler( m_players[i] );
             games.append( info );
-            m_canvas->information( i18n("%1 has a game.").arg( m_players[i]->name() ) );
-        } else
-            m_canvas->information( i18n("%1 has no game.").arg( m_players[i]->name() ) );
+            if( m_players[i]->rtti() != Player::HUMAN )
+                m_canvas->information( i18n("%1 has a game.").arg( m_players[i]->name() ) );
+        }
+        else
+        {
+            if( m_players[i]->rtti() != Player::HUMAN )
+                m_canvas->information( i18n("%1 has no game.").arg( m_players[i]->name() ) );
+        }
     }
     
     if( games.isEmpty() )

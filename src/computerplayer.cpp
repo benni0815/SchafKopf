@@ -40,6 +40,11 @@ ComputerPlayer::~ComputerPlayer()
 void ComputerPlayer::klopfen()
 {
     m_geklopft = false;
+    unsigned int i=0;
+    for(i=0;i<m_cards->count();i++)
+    {
+    
+    }
     
     Player::klopfen();
 }
