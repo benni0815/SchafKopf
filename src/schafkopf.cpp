@@ -69,7 +69,6 @@ SchafKopf::~SchafKopf()
 void SchafKopf::setupActions()
 {
     KAction *m_actNew;
-	//KAction *m_actExit;
 	KPopupMenu* mnuGame = new KPopupMenu( this );
     KPopupMenu* mnuSettings = new KPopupMenu( this );
     
@@ -79,8 +78,7 @@ void SchafKopf::setupActions()
 
     m_actNew = KStdGameAction::gameNew( this, SLOT( newGame() ) );
     m_actEnd = KStdGameAction::end( this, SLOT( endGame() ) );
-    // TODO: DOM: translate me correctly!!!    
-    m_actStich = new KAction( i18n( "&Last Stich" ), 0, 0, this, SLOT( showStich() ), actionCollection() );
+    m_actStich = new KAction( i18n( "&Last Trick" ), 0, 0, this, SLOT( showStich() ), actionCollection() );
     
     m_actNew->plug( mnuGame );
     m_actEnd->plug( mnuGame );
@@ -90,10 +88,8 @@ void SchafKopf::setupActions()
     m_actEnd->plug( toolBar() );
 
     KStdGameAction::quit( kapp, SLOT( quit() ) )->plug( mnuGame );
-	//m_actExit = KStdGameAction::quit( this, SLOT( endGame() ) );
-	connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
-	//m_actExit->plug( mnuGame );
-	
+    connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+
     KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
     KStdAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
     
