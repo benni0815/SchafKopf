@@ -89,6 +89,7 @@ const CardList *Game::currStich() const
 
 void Game::endGame(void)
 {
+    terminated=true;
 #if QT_VERSION >= 0x030100
     while( kapp->eventLoop()->loopLevel() )
         kapp->eventLoop()->exitLoop();
@@ -96,7 +97,6 @@ void Game::endGame(void)
     while( kapp->loopLevel() )
         kapp->exit_loop();
 #endif
-    terminated=true;
 }
 
 const Game::game_info *Game::gameInfo() const
