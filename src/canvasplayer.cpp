@@ -90,7 +90,10 @@ void CanvasPlayer::position( int i )
     switch( i ) 
     {
         case 0:
-            x=(w-cardw*num)/2;
+            if(w-2*DIST>num*cardw+(num-1))
+	    	x=(w-cardw*num)/2;
+	    else
+	    	x=DIST;
             y=h-cardh-DIST; 
         
             m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
@@ -123,7 +126,10 @@ void CanvasPlayer::position( int i )
             card->move( x, y );
                 
         if(i==0)
-            x += cardw;
+	    if(w-2*DIST>num*cardw+(num-1))
+            	x += cardw+1;
+	    else
+	    	x += (w-2*DIST-cardw)/(num-1);
         else if(i==2)
             x += (cardw/6);
         else

@@ -311,13 +311,25 @@ void GameCanvas::redrawPlayers()
 void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
 {
     m_item = NULL;
+    double z;
+    bool first=true;
     if( e->button() == Qt::LeftButton ) {
         QCanvasItemList list = canvas()->allItems();
-        for( unsigned int i = 0; i < list.count(); i++ )
+	for( unsigned int i = 0; i < list.count(); i++ )
             if( list[i]->boundingRect().contains( e->pos() ) && list[i]->isVisible() )
             {
-                m_item = list[i];
-                break;
+	        if(first)
+		{
+			first=false;
+			z=list[i]->z();
+			m_item = list[i];
+		}
+                //qDebug("z-wert:"+QString::number(list[i]->z()));
+                if(list[i]->z()>z)
+		{
+			z=list[i]->z();
+			m_item = list[i];
+		}
             }
     }
 }
