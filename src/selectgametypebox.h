@@ -58,9 +58,9 @@ protected:
 	QVBox *row1;
 	QButtonGroup* group_TypeSelect;
 	QLabel* preview;
-	QLabel* info;
+	QLabel* infoLabel;
 	
-	void setInfoText(const QString &Text);
+	void setInfoText(QString Text);
 protected slots:
 	void updatePreview();
 	void typeChanged();

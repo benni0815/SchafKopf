@@ -49,12 +49,13 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(
 	row1 = new QVBox( page );
 
 	preview = new QLabel( row1);
-	info = new QLabel( row1);
-	info->setMargin( 11 );
-	info->setAlignment( AlignBottom | AlignLeft | Qt::WordBreak);
+	infoLabel = new QLabel( row1);
+	//infoLabel=QLabel(row1);
+	infoLabel->setMargin( 11 );
+	infoLabel->setAlignment( AlignBottom | AlignLeft | Qt::WordBreak);
 
 
-	info->setMinimumHeight(100);
+	infoLabel->setMinimumHeight(100);
 	group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
 
 
@@ -68,7 +69,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(
 	checkRufspiel->setChecked(TRUE);
 
 	typeChanged();
-	info->setMaximumWidth(preview->size().width());
+	infoLabel->setMaximumWidth(preview->size().width());
 
 }
 
@@ -95,18 +96,17 @@ void SelectGameTypeBox::typeChanged()
 			break;
 
 	}
-
-
 	delete info;
 }
 
-void SelectGameTypeBox::setInfoText(const QString &Text)
+void SelectGameTypeBox::setInfoText(QString Text)
 {
-	info->setText(Text);
+	infoLabel->setText(Text);
 }
 
 SelectGameTypeBox::~SelectGameTypeBox()
 {
+/*
 	delete checkRufspiel;
 	delete checkSolo;
 	delete checkGeier;
@@ -114,9 +114,9 @@ SelectGameTypeBox::~SelectGameTypeBox()
 	delete checkDachs;
 	delete group_TypeSelect;
 	delete page;
-	delete row1;
-	delete preview;
-	delete info;
+	delete row1;*/
+	//delete preview;
+	//delete infoLabel;
 }
 
 
