@@ -308,11 +308,10 @@ void GameCanvas::cardClicked( QCanvasItem* item )
 void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 {
     QPoint point;
+    player = id2index( player );
 	if( !m_items[player] || !m_game || !m_stich )
         return;    
-    
-    player = id2index( player );
-       
+           
     for(unsigned int i=0;i<m_items[player]->count();i++)
     {
         CanvasCard* card = static_cast<CanvasCard*>((*m_items[player])[i]);
@@ -328,6 +327,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 			point = getStichPosition(player);   
             card->move( point.x(), point.y() );
             
+            qDebug( "Moving card to: x=%i, y=%i",point.x(), point.y());
             break;
         }
     }
