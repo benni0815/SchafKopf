@@ -19,8 +19,6 @@
  ***************************************************************************/
 #include "selectgamewizard.h"
 
-
-
 #include <qwidget.h>
 #include <qhbox.h>
 #include <qvbox.h>
@@ -45,8 +43,8 @@ SelectGameWizard::SelectGameWizard(CardList* list, QWidget *parent, const char *
 	m_closing=false;
 	box1 = new SelectGameTypeBox(this, 0);
 	box2 = new SelectGameColorBox(this, 0);
-	addPage( box1, "Step 1/2: Select Game Type" );
-	addPage( box2, "Step 2/2: Select Game Color" );
+	addPage( box1, i18n("Step 1/2: Select Game Type") );
+	addPage( box2, i18n("Step 2/2: Select Game Color") );
 
 	setNextEnabled( box1, TRUE );
 	setFinishEnabled(box2, TRUE);
@@ -61,8 +59,9 @@ return m_list;
 
 GameInfo* SelectGameWizard::gameInfo()
 {
-if(box2)
-	return(box2->getGameInfo());
+    if(box2)
+	   return(box2->getGameInfo());
+    return NULL;
 }
 
 void SelectGameWizard::showPage( QWidget* page )

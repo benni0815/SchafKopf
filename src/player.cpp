@@ -69,6 +69,8 @@ void Player::klopfen()
 
 void Player::DebugCardOutput(Card* card)
 {
+// DS: disabled to fix compiler warnings
+/*
 	char* c;
 	char* s;
 
@@ -114,7 +116,8 @@ void Player::DebugCardOutput(Card* card)
 			s="SIEBEN";
 			break;
 	}
-	 qDebug("Entferne: %s, %s", c, s);
+	 qDebug("Entferne: %s, %s", c, s);     
+*/
 }
 
 CardList* Player::stiche() const

@@ -54,7 +54,6 @@ Game::Game(QObject *parent, const char *name)
         m_players[i] = new ComputerPlayer( this );
         m_players[i]->setName( list[i] );
     }
-
 }
 
 Game::~Game()
@@ -93,7 +92,7 @@ void Game::gameLoop()
 {
     int i, a, index, realindex;
     Player *tmp[PLAYERS];
-	Card *c;
+	Card *c=NULL;
     Timer timer;
 	int gamecnt=0;
     

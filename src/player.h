@@ -15,6 +15,9 @@ class Player
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
 		
 		Player(Game* game);
+        // this destructor should be virtual
+        // but setting it to virtual makes everything
+        // crash. Seems to be a good lenz-job ;) ...
 		~Player();
 
 		virtual void init() {};

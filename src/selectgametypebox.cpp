@@ -40,7 +40,12 @@
 #include <qpainter.h>
 #include <qpixmap.h>
 
-
+// DS: moved those from the header into the source file so that these messages are found during make messages-merge
+#define HELP_GAMETYPE_SOLO i18n("When you Play a Solo, you have additionally to choose a color. Trumpf are all Ober, Unter, and the Color you Choose. You will play alone against the other 3 Players!")
+#define HELP_GAMETYPE_DACHS i18n("When you Play a Dachs, you have to choose a color. Trumpf are all Ass and 10 cards, and cards from the color you choose. You will play alone against the other 3 Players!")
+#define HELP_GAMETYPE_RUFSPIEL i18n("When you Play a Callgame, you will have to choose a color. You will then play in team with the player which has the Ass of the color you choosed.")
+#define HELP_GAMETYPE_WENZ i18n("When you Play a Wenz, you can choose a color. If you don't choose a color, all Unter will be Trumpf. If you do, the cards of the choosen color will also be Trumpf.")
+#define HELP_GAMETYPE_GEIER i18n("When you Play a Geier, you can choose a color. If you don't choose a color, all Ober will be Trumpf. If you do, the cards of the choosen color will also be Trumpf.")
 
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(parent, name, 0)
 {
@@ -59,11 +64,11 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(
 	group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
 
 
-	checkRufspiel = new QRadioButton( i18n("Play a Callgame"), group_TypeSelect );
-	checkSolo = new QRadioButton( i18n("Play a Solo"), group_TypeSelect );
-	checkGeier = new QRadioButton( i18n("Play a Geier"), group_TypeSelect );
-	checkWenz = new QRadioButton( i18n("Play a Wenz"), group_TypeSelect );
-	checkDachs = new QRadioButton( i18n("Play a Dachs"), group_TypeSelect );
+	checkRufspiel = new QRadioButton( i18n("Play a &Callgame"), group_TypeSelect );
+	checkSolo = new QRadioButton( i18n("Play a &Solo"), group_TypeSelect );
+	checkGeier = new QRadioButton( i18n("Play a &Geier"), group_TypeSelect );
+	checkWenz = new QRadioButton( i18n("Play a &Wenz"), group_TypeSelect );
+	checkDachs = new QRadioButton( i18n("Play a &Dachs"), group_TypeSelect );
 	connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(typeChanged()));
 
 	checkRufspiel->setChecked(TRUE);
@@ -94,7 +99,9 @@ void SelectGameTypeBox::typeChanged()
 			case (GameInfo::DACHS):
 						setInfoText(HELP_GAMETYPE_DACHS);
 			break;
-
+            // DS: Fix a compiler warning
+            default:
+            break;
 	}
 	delete info;
 }

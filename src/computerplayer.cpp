@@ -84,7 +84,6 @@ Card *ComputerPlayer::play()
 {
 	CardList* allowed=NULL;
 	Card* ToPlay;
-	Card *c;
 	int i;
 			
     if( m_game->currStich()->isEmpty() )
@@ -258,7 +257,7 @@ bool ComputerPlayer::canMakeStich(CardList *cards)
 	{
 		if(m_game->isHigher(card, highestCard))
 				 return true;
-	} while(card=cards->next());
+	} while( (card=cards->next()) );
 	return false;
 }
 
@@ -376,6 +375,6 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 			mitspieler=player;
 		else
 			mitspieler=0+1+2+3-(id()+m_game->gameInfo()->spieler()->id()+player);
-		qDebug("Mitspieler gefunden:" + m_game->findIndex(mitspieler)->name());
+		qDebug("Mitspieler gefunden: %s",m_game->findIndex(mitspieler)->name().latin1());
 	}
 }

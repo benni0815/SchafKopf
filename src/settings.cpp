@@ -123,6 +123,8 @@ Results* Settings::results() const
         return new MoneyResults();
     else if( r == POINTS )
         return new PointResults();
+        
+    return NULL;
 }
 
 #include "settings.moc"

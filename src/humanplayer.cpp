@@ -24,7 +24,6 @@
 #include "game.h"
 #include "gamecanvas.h"
 #include "gameinfo.h"
-#include "selectgamedlg.h"
 #include "timer.h"
 #include "selectgamewizard.h"
 
@@ -83,14 +82,6 @@ GameInfo* HumanPlayer::gameInfo()
         {
             return sgw.gameInfo();
         }
-	
-		
-    /*
-        SelectGameDlg sgd( m_cards, 0, "sgd" );
-        if( sgd.exec() == QDialog::Accepted )
-        {
-            return sgd.gameInfo();
-        }*/
     }
     return 0;
 }
