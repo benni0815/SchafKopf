@@ -20,10 +20,12 @@
 #include "canvascard.h"
 #include "card.h"
 #include "timer.h"
+#include "settings.h"
 
 #include <qpainter.h>
 #include <qtimer.h>
 #include <qwmatrix.h>
+#include <qpixmap.h>
 
 #include <kpixmap.h>
 #include <kpixmapeffect.h> 
@@ -35,6 +37,8 @@ CanvasCard::CanvasCard(QCanvas*c)
     m_forbidden = false;
     show();
     timer = new QTimer( this );
+    Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
+    Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
 }
 
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
@@ -74,6 +78,10 @@ void CanvasCard::draw( QPainter & p )
         
         setSize( pix.width(), pix.height() );
         bitBlt( p.device(), point.x(), point.y(), &pix );
+        if( m_rotation==0 || m_rotation==180)
+            bitBlt( p.device(), point.x(), point.y(), &Shadow );
+        else
+            bitBlt( p.device(), point.x(), point.y(), &Shadow2 );
     }
 }
 
