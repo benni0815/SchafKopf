@@ -39,7 +39,9 @@ int main(int argc, char **argv)
 {
     KAboutData about("schafkopf", I18N_NOOP("SchafKopf"), version, description,
                      KAboutData::License_GPL, "(C) 2004 Dominik Seichter", 0, 0, "domseichter@web.de");
-    about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de" );
+    about.addAuthor( "Christian Kern", 0, "kernch@in.tum.de" );	
+    about.addAuthor( "Lorenz Moesenlechner", 0, "moesenle@in.tum.de" );
+    about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de", "http://www.krename.net" );
 
     KCmdLineArgs::init(argc, argv, &about);
     KCmdLineArgs::addCmdLineOptions( options );
