@@ -37,7 +37,6 @@ double MoneyResults::points( Player* player )
     double m = 0.0;
     
     parse();
-    m_points = 60;
         
     if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
         m = r->solo; // SOLO = 20cent
