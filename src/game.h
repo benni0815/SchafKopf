@@ -70,6 +70,10 @@ class Game : public QObject
         void endGame(void);
         
     private:
+        /** give cards to the player and begin a new gameinfo
+          */
+        void start();
+        
         bool terminated;
         Player *m_players[PLAYERS];
         CardList m_allcards;

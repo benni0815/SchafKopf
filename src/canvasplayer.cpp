@@ -42,7 +42,9 @@ CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
     : m_player( player ), m_canvas( canvas )
 {
     m_items = new QCanvasItemList();
-    
+
+    qDebug("PLAYER=" +  player->name() );
+    qDebug("CNT=%i", player->cards()->count() );
     for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
         CanvasCard *c = new CanvasCard( player->cards()->at(z), m_canvas );
         c->setZ( double(-1 - z) );

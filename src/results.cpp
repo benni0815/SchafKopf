@@ -30,6 +30,11 @@ Results::Results()
     m_parsed = false;
 }
 
+Results::~Results()
+{
+
+}
+
 QString Results::result()
 {
     parse();

@@ -35,24 +35,9 @@ Game::Game(QObject *parent, const char *name)
  : QObject(parent, name)
 {
     m_canvas = NULL;
+    m_players[0] = NULL;
     
-    CardList *playercards[PLAYERS];
-    
-    terminated=false;
-    m_allcards.randomize();
-    for( unsigned int i=0; i<PLAYERS; i++)
-        playercards[i]=new CardList();
-    for( unsigned int i=0; i<CARD_CNT; i++)
-        playercards[i%PLAYERS]->append(m_allcards.at(i));
-
-    QStringList list = Settings::instance()->playerNames();
-    m_players[0] = new HumanPlayer(playercards[0] ,this );
-    m_players[0]->setName( list[0] );
-    for( unsigned int i=1;i<PLAYERS;i++)
-    {
-        m_players[i] = new ComputerPlayer(playercards[i] ,this );
-        m_players[i]->setName( list[i] );
-    }
+    start();
 }
 
 
@@ -66,6 +51,49 @@ Game::~Game()
         delete m_players[i];
 		m_players[i]=NULL;
 	}
+}
+
+void Game::start()
+{
+    unsigned int i = 0;
+    CardList *playercards[PLAYERS];
+
+    terminated=false;
+    m_allcards.randomize();
+    for( i=0; i<PLAYERS; i++)
+        playercards[i]=new CardList();
+    for( i=0; i<CARD_CNT; i++)
+        playercards[i%PLAYERS]->append(m_allcards.at(i));
+
+    if( m_players[0] == NULL )
+    {
+        QStringList list = Settings::instance()->playerNames();
+        m_players[0] = new HumanPlayer(playercards[0] ,this );
+        m_players[0]->setName( list[0] );
+        for( i=1;i<PLAYERS;i++)
+        {
+            m_players[i] = new ComputerPlayer(playercards[i] ,this );
+            m_players[i]->setName( list[i] );
+        }
+    }
+    else
+    {
+        for( i=0;i<PLAYERS;i++)
+        {
+            m_players[i]->setCards( playercards[i] );
+            m_players[i]->stiche()->clear();
+        }
+    }
+    
+    // TODO:
+    // correct sorting, next player to the player who started the last game
+    // has to start this game!
+    
+    if( m_canvas )
+    {
+        m_canvas->setGame( NULL );
+        m_canvas->setGame( this );    
+    }
 }
 
 void Game::gameLoop()
@@ -103,8 +131,7 @@ void Game::gameLoop()
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
-            timer.block( 1 );
-			//sleep(1);
+            //timer.block( 1 );
         }
         
         index = highestCard();
@@ -120,7 +147,11 @@ void Game::gameLoop()
     }
     
     if( !terminated )
+    { 
         gameResults();
+        start();
+        gameLoop();
+    }
 }
 
 const CardList *Game::currStich() const
@@ -329,7 +360,11 @@ void Game::gameResults()
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     
     KMessageBox::information( 0, r->result() );
-    delete r;
+    // TODO:
+    // BIG TODO:
+    // IT CRASHES WITH THIS LINE UNCOMMENTED
+    // BUT, WE HAVE TO DELETE r, OTHERWISE WE HAVE A MEMORY LEAK!
+    //delete r;
 }
 
 void Game::setupGameInfo()
