@@ -22,9 +22,11 @@
 #include "timer.h"
 
 #include <qpainter.h>
-#include <qpen.h>
-#include <qpixmap.h>
+#include <qtimer.h>
 #include <qwmatrix.h>
+
+#include <kpixmap.h>
+#include <kpixmapeffect.h> 
 
 CanvasCard::CanvasCard(Card* card,QCanvas*c)
  : QCanvasRectangle(c), m_rotation(0)
@@ -50,13 +52,9 @@ void CanvasCard::draw( QPainter & p )
     
     wm.rotate( (double)m_rotation );
     
-    QPixmap pix = pixmap->xForm( wm );
+    KPixmap pix = pixmap->xForm( wm );
     if( m_forbidden )
-    {
-        QPainter painter( &pix );
-        painter.setPen( QPen(Qt::red, 4) );
-        painter.drawRect( 0, 0, pix.width(), pix.height() );
-    }
+        pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
     
     setSize( pix.width(), pix.height() );
     bitBlt( p.device(), point.x(), point.y(), &pix );

@@ -113,7 +113,7 @@ bool Card::operator< ( Card* c )
     
     for(i=0;i<(sizeof(a)/sizeof(int));i++)
         if( a[i] == c->card() )
-            return i < pos ? true : false;
+            return i < pos ? false : true;
 
 }
 

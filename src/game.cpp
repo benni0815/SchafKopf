@@ -198,7 +198,6 @@ bool Game::isHigher( Card* card, Card* high )
         return true;
     else if( istTrumpf( card ) && istTrumpf( high ) )
     {
-        qDebug("BEIDE TRUMPF");
         if( card->card() == high->card() && card->color() < high->color() )
             return true;
         else 
@@ -231,16 +230,12 @@ bool Game::isHigher( Card* card, Card* high )
     }
     else if( !istTrumpf( card ) && !istTrumpf( high ) ) // beide kein trumpf
     {
-        qDebug("KEIN TRUMPF");
         // die farbe ist anders als die farbe der ersten/hoechsten 
         // karte aber diese karte is kein trumfh, kann
         // also ned stechen
-        if( card->color() != high->color() )
-            return false;
-                
-        if( *card < high )
+        if( card->color() == high->color() && *card < high )
         {
-            qDebug("---2. FARBE IST GLEICH" );
+            qDebug("Same Color, but lower");
             return true;
         }
     }
