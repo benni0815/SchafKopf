@@ -121,7 +121,9 @@ void Game::gameLoop()
         }
         
         index = highestCard();
-        m_players[index]->addStich( m_currstich );
+        if( terminated )
+			return;
+		m_players[index]->addStich( m_currstich );
         emit playerMadeStich(m_players[index]->id());
         // Sortiere so, das der stecher nächste karte spielt 
         for(a=0;a<PLAYERS;a++)

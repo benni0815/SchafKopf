@@ -104,7 +104,7 @@ void SchafKopf::carddecks()
 void SchafKopf::newGame()
 {
     endGame();
-	QTimer::singleShot(1, this, SLOT(realNewGame()));
+	QTimer::singleShot(0, this, SLOT(realNewGame()));
 }
 
 void SchafKopf::realNewGame()
