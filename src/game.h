@@ -41,7 +41,8 @@ class Game : public QObject
         ~Game();
         void gameLoop();
 		CardList *currStich();
-		CardList *allCards() { return &m_allcards; }
+		inline CardList *allCards() { return &m_allcards; }
+        inline CardList *playedCards() { return &m_playedcards; }
 		GameInfo *gameInfo();
         
         void setCanvas( GameCanvas* c );

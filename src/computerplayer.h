@@ -46,7 +46,19 @@ class ComputerPlayer : public QObject,  public Player
         Card *findHighestCard(CardList *cards);
         Card *findSchmiere(CardList *cards);		// Nice name, isn't it? :)
         Card *findCheapestCard(CardList *cards);
+        /** Finde die niedrigste Karte aus @p cards um @p highest zu stechen
+          */
+        Card *findLowestPossibleCard(Card* highest, CardList *cards);
 
+        /** gibt zurueck wievile karten eines typs noch im
+          * spiel sind.
+          * Dabei wird die farbe als farbe im Spiel betrachtet:
+          * I.e. der EichelOber zaehlt als trumpf und nicht als eichel.
+          * 
+          * Um truempfte zu zaehlen bitte NOCOLOR angeben
+          */
+        int cardsStillInGame( int c );
+        
     private:
         typedef struct game_data {
             int trumpf;

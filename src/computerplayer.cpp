@@ -202,8 +202,30 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
 	}
 	else if(canMakeStich(cards))
 	{
-		qDebug("versuche zu stechen");
-		return findHighestCard(cards);
+        CardList* stich = m_game->currStich();
+        bool gestochen = false;
+        int i;
+        
+        // sicher stellen das noch niemand gestochen hat
+        for( i=0;i<stich->count();i++)
+            if( m_game->gameInfo()->istTrumpf( stich->at(i) ) )
+            {
+                gestochen = true;
+                break;
+            }
+        
+        if( !stich->isEmpty() && !gestochen && cardsStillInGame( m_game->currStich()->at( 0 )->color() ) >= 3 )
+        {
+            // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
+            // sind versucht er so niedrig wie möglich zu stechen
+            qDebug("versuche so niedrig wie möglich zu stechen");
+            return findLowestPossibleCard(findHighestCard(stich),cards);
+        }
+        else
+        {
+		  qDebug("versuche zu stechen");
+		  return findHighestCard(cards);
+        }
 	}
 	qDebug("spiele billigste karte");
 	return findCheapestCard(cards);
@@ -223,6 +245,20 @@ Card *ComputerPlayer::findHighestCard(CardList *cards)
 		}
 	}
 	return high;
+}
+
+Card *ComputerPlayer::findLowestPossibleCard(Card* highest, CardList *cards)
+{
+    Card* high = findHighestCard( cards );
+    Card* card = cards->first();
+
+    while( (card = cards->next() ) )    
+    {
+        if( m_game->isHigher( card, highest ) && !m_game->isHigher( card, high ) )
+            high = card;
+    }
+    
+    return high;
 }
 
 Card *ComputerPlayer::findSchmiere(CardList *cards)
@@ -390,3 +426,44 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 		qDebug("Mitspieler gefunden: %s",m_game->findIndex(mitspieler)->name().latin1());
 	}
 }
+
+int ComputerPlayer::cardsStillInGame( int c )
+{
+    int n = 0, n2 = 0;
+    int i;
+    CardList list;
+    CardList* all = m_game->allCards();
+    
+    list.appendList( m_game->playedCards() );
+    list.appendList( m_game->currStich() );
+    for( i=0; i<list.count();i++ )
+    {
+        if( m_game->gameInfo()->istTrumpf( list.at( i ) ) )
+        {
+            if( Card::NOCOLOR == c )
+                n++;
+        }
+        else
+        {
+            if( list.at( i )->color() == c )
+                n++;
+        }
+    }
+    
+    for( i=0; i<all->count();i++ )
+    {
+        if( m_game->gameInfo()->istTrumpf( all->at( i ) ) )
+        {
+            if( Card::NOCOLOR == c )
+                n2++;
+        }
+        else
+        {
+            if( all->at( i )->color() == c )
+                n2++;
+        }
+    }
+    
+    return n2 - n;
+}
+    

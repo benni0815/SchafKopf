@@ -219,19 +219,8 @@ CardList* StrategyBook::possibleCards()
         // 2. feststellen ob sich der stich lohnen wuerde
         Card* c = allowed->at( m_game->highestCard( allowed ) );
         if( c && m_game->isHigher( c, highest ) && stiche->points() > 6 )
-        {
-            // stich lohnt sich also suche die kleinste karte
-            // die groesser als die bisher hoechste karte im stich ist
-            Card* cur = c;
-            for( i = 0; i < allowed->count(); i++ )
-            {
-                Card* card = allowed->at( i );
-                if( m_game->isHigher( card, highest) && !m_game->isHigher( card, c ) )
-                    cur = card;
-            }
-            
-            list->append( cur );
-        } else
+            list->append( m_self->findLowestPossibleCard( highest, allowed ) );
+        else
             abspatzen = true;
     }
 
