@@ -49,7 +49,7 @@ void newgamewizard::setup_page_selectgame()
 	QVBox *page = new QVBox( page_selectgame );
 	QHBox *row1 = new QHBox( page );
 
-	QButtonGroup* group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n(""), row1 );
+	QButtonGroup* group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, "", row1 );
 	info = new QLabel( page_selectgame);
 	info->setMargin( 11 );
 	info->setMinimumWidth( 220);
