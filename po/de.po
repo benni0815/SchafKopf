@@ -320,6 +320,25 @@ msgstr "Karten nach jedem Stich neu anordnen."
 msgid "Cards will be rearranged after each trick."
 msgstr "Die Karten werden nach jedem Stich neu angeordnet."
 
+msgid "Games"
+msgstr "Spiele"
+
+msgid "Colored &Wenz"
+msgstr "Farbwenz"
+
+msgid "Colored &Geier"
+msgstr "Farbgeier"
+
+msgid "&Badger"
+msgstr "&Dachs"
+
+msgid "<qt>You can configure which games are allowed to play."
+                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"
+msgstr "<qt>Hier kannst du einstellen welche Spiele gespielt werden dürfen. Bestimmte Spiele, wie Rufspiel und Solo, können nicht deaktiviert werden.</qt>"
+
+msgid "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>"
+msgstr "<qt>Der Dachs ist kein offizielles Spiel, und wird daher bei Turnieren nicht gespielt.</qt>"
+
 #: results.cpp:44
 msgid " schneider"
 msgstr " Schneider"

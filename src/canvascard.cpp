@@ -108,9 +108,8 @@ void CanvasCard::setDestination( int x, int y )
 
 void CanvasCard::animatedMove()
 {
-	//timer = new QTimer( this );
         connect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
-        timer->start( 5 );
+        timer->start( 2 );
 }
 
 void CanvasCard::moveLoop()

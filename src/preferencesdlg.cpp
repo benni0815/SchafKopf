@@ -298,7 +298,7 @@ void PreferencesDlg::addPageGames()
     m_games_dachs = new QCheckBox( i18n("&Badger"), box );
     
     layout->addWidget( new QLabel( i18n("<qt>You can configure which games are allowed to play."
-                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default."), box ) );
+                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"), box ) );
                                         
     farbWenzLayout->addItem( smallSpace );
     farbWenzLayout->addWidget( m_games_farbwenz );
@@ -326,7 +326,7 @@ void PreferencesDlg::addPageGames()
     connect( m_games_geier, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
     
     // tool tips
-    QToolTip::add( m_games_dachs, i18n("<qt>The badger is no official game in SchafKopf and is therefore not played and tournaments.") );
+    QToolTip::add( m_games_dachs, i18n("<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>") );
 }
 
 void PreferencesDlg::enableControls()
