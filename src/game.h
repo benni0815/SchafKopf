@@ -57,6 +57,7 @@ class Game : public QObject
         /** returns how many players have doubled
           */
         int timesDoubled();
+        int timesThrownTogether();
 
     signals:        
         void gameStarted();
@@ -116,6 +117,7 @@ class Game : public QObject
         CardList m_currstich;
         GameInfo m_gameinfo;
         int m_laufende;
+        int m_timesThrownTogether;
                 
         GameCanvas *m_canvas;
         

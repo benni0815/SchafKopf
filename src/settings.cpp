@@ -243,4 +243,22 @@ bool Settings::doublerHasToPlay() const
     return b;
 }
 
+void Settings::setDoubleNextGame( bool b )
+{
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    config->writeEntry( "DoubleNextGame", b );
+    config->sync();
+}
+
+bool Settings::doubleNextGame() const
+{
+    bool b = false;
+    KConfig* config = kapp->config();
+    config->setGroup("SchafKopf");
+    b = config->readBoolEntry( "DoubleNextGame", b );
+    return b;
+}
+
+
 #include "settings.moc"

@@ -86,6 +86,8 @@ void PreferencesDlg::accept()
     Settings::instance()->setNoGame( m_radioThrowAway->isChecked() ? Settings::NOGAME_NEUGEBEN : Settings::NOGAME_ALTERSPIELT );
     Settings::instance()->setDoublerHasToPlay( m_checkDoublerPlays->isChecked() );
     
+    Settings::instance()->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
+    
     KDialogBase::accept();
 }
 
@@ -137,6 +139,8 @@ void PreferencesDlg::addPageRules()
         m_radioThrowAway->setChecked( true );
         
     m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
+    
+    m_checkDoubleNextGame->setChecked( Settings::instance()->doubleNextGame() );
     
     // connections
     connect( m_radioThrowAway, SIGNAL( clicked() ), this, SLOT( enableControls() ) );

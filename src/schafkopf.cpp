@@ -243,6 +243,8 @@ void SchafKopf::slotPlayerResult( const QString & name, const QString & result )
 
 void SchafKopf::updateInfo()
 {
+    int timesDoubled = 0, timesThrownTogether = 0;
+    int valuation;
     if( m_game->gameInfo()->isValid() )
         lblCurGame->setText( i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
     else
@@ -253,10 +255,22 @@ void SchafKopf::updateInfo()
     {
         Player* player = m_game->findIndex( i );
         if( player->geklopft() )
+        {
             sDoubled.append( i18n("<qt><b>%1</b> has doubled.</qt>").arg( player->name() ) );
+            timesDoubled++;
+        }
     }
-
+    timesThrownTogether = m_game->timesThrownTogether();
+    if(timesThrownTogether>0)
+        sDoubled.append( i18n("<qt>Times thrown together: <b>%1</b></qt>").arg(timesThrownTogether) );
+    valuation=pow(2, timesDoubled);
+    if( Settings::instance()->doubleNextGame() )
+        valuation = valuation * pow(2, timesThrownTogether );
+    sDoubled.append( i18n("<qt>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
+    
     lblDoubled->setText( sDoubled );
+    
+    
 }
 
 void SchafKopf::clearTable()

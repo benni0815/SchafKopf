@@ -212,14 +212,14 @@ msgstr "Der Spieler der den &Alten hat muss spielen."
 
 #: preferencesdlg.cpp:120
 msgid "Play Ramsch (not available yet)"
-msgstr "Einen Ramsch spielen (noch nicht mglich)"
+msgstr "Einen Ramsch spielen (noch nicht möglich)"
 
 #: preferencesdlg.cpp:121
 msgid ""
 "The aim when playing a Ramsch is to make no tricks. The player who made the "
 "most points is the sole loser."
 msgstr ""
-"Das Ziel beim Ramsch ist es mglichst keinen Stich zu machen. Der Spieler mit "
+"Das Ziel beim Ramsch ist es möglichst keinen Stich zu machen. Der Spieler mit "
 "den meisten Punkten ist der alleinige Verlierer."
 
 #: preferencesdlg.cpp:123
@@ -335,6 +335,12 @@ msgstr "<qt>Aktuelles Spiel:<br><b>"
 #: schafkopf.cpp:256
 msgid "<qt><b>%1</b> has doubled.</qt>"
 msgstr "<qt><b>%1</b> hat geklopft.</qt>"
+
+msgid "<qt>Times thrown together: <b>%1</b></qt>"
+msgstr "<qt>Zusammen geworfen: <b>%1 Mal</b></qt>"
+
+msgid "<qt>Game counts <b>%1-fold</b>.</qt>"
+msgstr "<qt>Spiel zählt <b>%1-fach</b>.</qt>"
 
 #: selectgamecolorbox.cpp:53 selectgamedlg.cpp:50
 msgid "Color:"

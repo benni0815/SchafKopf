@@ -43,6 +43,7 @@ Game::Game(QObject *parent, const char *name)
     
     m_canvas = NULL;
     m_laufende = 0;
+    m_timesThrownTogether = 0;
     
     // Create our player objects
     // delete these only in the destructor    
@@ -284,6 +285,7 @@ void Game::gameResults()
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     m_canvas->information( r->result() );
     delete r;
+    m_timesThrownTogether = 0;
 }
 
 bool Game::setupGameInfo(Player *players[])
@@ -380,6 +382,7 @@ bool Game::setupGameInfoForced()
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
     {
         m_canvas->information( i18n("No one wants to play.\nCards will be thrown together.") );
+        m_timesThrownTogether++;
         m_gameinfo.setValid( false );
         emit signalSetupGameInfo();
         return false;
@@ -409,6 +412,7 @@ void Game::resetGameResults()
     // reset points (i.e. results) from a previous game
     for(i=0;i<PLAYERS;i++)
         m_players[i]->setPoints( 0.0 );    
+    m_timesThrownTogether = 0;
 }
 
 int Game::timesDoubled()
@@ -418,8 +422,14 @@ int Game::timesDoubled()
     for( i=0;i<PLAYERS;i++)
         if( m_players[i]->geklopft() )
             d++;
-            
+    if( Settings::instance()->doubleNextGame() )
+        d = d + m_timesThrownTogether;
     return d;
+}
+
+int Game::timesThrownTogether()
+{
+    return m_timesThrownTogether;
 }
 
 void Game::updatePlayerNames()
