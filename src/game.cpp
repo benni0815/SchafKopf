@@ -312,7 +312,7 @@ bool Game::setupGameInfo()
         GameInfo* info = m_players[i]->gameInfo();
         if( info )
         {
-            info->setSpieler( m_players[i] );
+			info->setSpieler( m_players[i] );
             games.append( info );
             if( m_players[i]->rtti() != Player::HUMAN )
                 m_canvas->information( i18n("%1 has a game.").arg( m_players[i]->name() ) );
