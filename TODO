@@ -1,5 +1,5 @@
-18.02.2005
-
+<b>18.02.2005</b>
+<pre>
 Fixen:
 - Rufsau nach davonlaufen in allowedCards hinzufügen
 
@@ -10,6 +10,7 @@ AI:
 - Öfters Rufspiele spielen
 - "Wird eine Farbe das zweite Mal gespielt, so sollte ein AI-Spieler mindestens mit einem Unter stechen, sofern hinter ihm noch ein Gegner kommt." (auf keinen Fall schmieren!!)
 - "Als Spieler nicht die Sau suchen, sondern Trumpf ausspielen"
+- Computer waehlt kein Spiel aus, sondern spielt Eichel-Sticht, wenn er spielen muss (aber nicht will).
 
 neue Features:
 - Tastatursteuerung
@@ -20,3 +21,4 @@ neue Features:
 - Trainingsmodus mit "Rückgängig"-Funktion (auch mehrere Stiche)
 - "Letzter Stich"-Dialog: Karten so anordnen wie auf dem Spielfeld
 - Kontra, Reh, ...
+</pre>
