@@ -33,7 +33,7 @@ schafkopf_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 schafkopf_LDADD = -lkdegames $(LIB_KDEUI)
 
 # this is where the desktop file will go 
-shelldesktopdir   = $(kde_appsdir)/Utilities
+shelldesktopdir   = $(kde_appsdir)/Games/
 shelldesktop_DATA = schafkopf.desktop
 
 # this is where the shell's XML-GUI resource file goes
