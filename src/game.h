@@ -54,9 +54,6 @@ class Game : public QObject
 		
 		bool isHigher( Card* card, Card* high );
 		
-		/** returns a number between 1 and 32 according to the worth of the card
-		*/
-		static int evalCard(Card *card, GameInfo *gameinfo);
         void stateChanged()
 		{
 			emit gameStateChanged();

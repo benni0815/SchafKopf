@@ -48,7 +48,7 @@ void HumanPlayer::klopfen()
 
 void HumanPlayer::init()
 {
-	m_cards->sort((eval_func)m_game->evalCard, (void *)m_game->gameInfo());
+	m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
 	m_game->stateChanged();
 }
 
@@ -96,7 +96,7 @@ void HumanPlayer::getCard(Card* card)
 void HumanPlayer::setCards( CardList *cards)
 {
 	Player::setCards(cards);
-    m_cards->sort((eval_func)m_game->evalCard, (void *)m_game->gameInfo());
+    m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
 	m_game->stateChanged();
 }
 

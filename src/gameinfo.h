@@ -53,6 +53,13 @@ class GameInfo{
         int weight( Card* card ) const;
         bool istTrumpf(Card *card ) const;     
         
+        /** returns a number between 1 and 32 according to the worth of the card. 
+          *I.e. the highest card will get a value of 32 assigned
+          * be sure that autodelete is turned of when using this function!
+          */
+        static int evalCard(Card *card, GameInfo *gameinfo);
+
+        
         /** calculate the number of "laufende" ticks
           */
         int laufende();

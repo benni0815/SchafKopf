@@ -36,11 +36,14 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
+        CanvasPlayer( QCanvas* canvas );
         CanvasPlayer( int i, Player* player, QCanvas* canvas );
         ~CanvasPlayer();
         
         void position( int i );
 		void init(int i);
+        
+        void setPlayer( int, Player* player );
         
         void cardPlayed( Card* c );
         CanvasCard* hasCard( Card* c ) const; 

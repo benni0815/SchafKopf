@@ -39,6 +39,17 @@
 #endif
 #define NUMCARDS 8
 
+CanvasPlayer::CanvasPlayer( QCanvas* canvas )
+    :m_canvas( canvas )
+{
+    unsigned int z = 0;
+	for(z=0;z<NUMCARDS;z++)
+	    m_items[z] = new CanvasCard( m_canvas );
+        
+    m_player = NULL;
+    m_name = NULL;
+}
+
 CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
     : m_player( player ), m_canvas( canvas )
 {
@@ -46,14 +57,8 @@ CanvasPlayer::CanvasPlayer( int i, Player* player, QCanvas* canvas )
 	for(z=0;z<NUMCARDS;z++)
 	    m_items[z] = new CanvasCard( m_canvas );
         
-    init(i);    
-    m_name = new QCanvasText( m_canvas );
-    m_name->setColor( Qt::white );
-    m_name->setFont( QFont( "Helvetica", 24 ) );
-    m_name->setText( player->name() );
-    m_name->show();
+    setPlayer( i, player );
 }
-
 
 CanvasPlayer::~CanvasPlayer()
 {
@@ -62,6 +67,25 @@ CanvasPlayer::~CanvasPlayer()
         delete m_items[i];
     
     delete m_name;
+}
+
+void CanvasPlayer::setPlayer( int i, Player* player )
+{
+    m_player = player;
+    
+    if( m_player )
+    {
+        init(i);    
+        m_name = new QCanvasText( m_canvas );
+        m_name->setColor( Qt::white );
+        m_name->setFont( QFont( "Helvetica", 24 ) );
+        m_name->setText( player->name() );
+        m_name->show();
+    }
+    else
+    {
+        delete m_name;
+    }
 }
 
 void CanvasPlayer::position( int i )
@@ -76,58 +100,62 @@ void CanvasPlayer::position( int i )
     if(i==1||i==3)
         qSwap( cardw, cardh );
         
-    switch( i ) {
-        case 0:
-            x=(w-cardw*num)/2;
-            y=h-cardh; 
+    if( m_name ) 
+    {
+        switch( i ) 
+        {
+            case 0:
+                x=(w-cardw*num)/2;
+                y=h-cardh; 
             
-            m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
-            break;
-        case 1:
-            x=DIST; 
-            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+                m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
+                break;
+            case 1:
+                x=DIST; 
+                y=(h-((cardh/2)*(num-1)+cardh))/2; 
             
-            m_name->move(x,y-m_name->boundingRect().height());
-            break;
-        case 2: 
-            x=(w-((cardw/2)*(num-1)+cardw))/2;
-            y=DIST;
+                m_name->move(x,y-m_name->boundingRect().height());
+                break;
+            case 2: 
+                x=(w-((cardw/2)*(num-1)+cardw))/2;
+                y=DIST;
             
-            m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
-
-            break;
-        case 3:
-        default:
-            x=w-cardw;
-            y=(h-((cardh/2)*(num-1)+cardh))/2; 
+                m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
+                break;
+            case 3:
+            default:
+                x=w-cardw;
+                y=(h-((cardh/2)*(num-1)+cardh))/2; 
             
-            m_name->move(x, y-m_name->boundingRect().height());
-            break;
+                m_name->move(x, y-m_name->boundingRect().height());
+                break;
         }
+    }
+            
         
-       for( unsigned int z = 0; z < NUMCARDS; z++ ) {
-            CanvasCard* card = m_items[z];
-            // only move if necessary!
-            if( x != card->x() || y != card->y() )
-                card->move( x, y );
+    for( unsigned int z = 0; z < NUMCARDS; z++ ) {
+        CanvasCard* card = m_items[z];
+        // only move if necessary!
+        if( x != card->x() || y != card->y() )
+            card->move( x, y );
                 
-            if(i==0)
-                x += cardw;
-            else if(i==2)
-                x += (cardw/2);
-            else
-                y += (cardh/2);            
-        }
+        if(i==0)
+            x += cardw;
+        else if(i==2)
+            x += (cardw/2);
+        else
+            y += (cardh/2);            
+    }
         
-        // swap them back
-        if(i==1||i==3)
-            qSwap( cardw, cardh );
-    
+    // swap them back
+    if(i==1||i==3)
+        qSwap( cardw, cardh );
 }
 
 void CanvasPlayer::init(int i)
 {
-    unsigned int a = 0;
+    if( !m_player )
+        return;
 
     for( unsigned int z = 0; z < m_player->cards()->count(); z++ ) 
 	{

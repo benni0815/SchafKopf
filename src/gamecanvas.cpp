@@ -35,12 +35,15 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
     unsigned int i = 0;
-    for(;i<4;i++)
+    for(;i<PLAYERS;i++)
+    {
         m_stich[i]=new CanvasCard( c );
-        
+        m_players[i]=new CanvasPlayer( c );
+    }
+    
     m_game = NULL;
     m_item = NULL;
-    m_players[0] = NULL;
+    
     canvas()->setBackgroundColor( Qt::darkGreen );
     canvas()->setAdvancePeriod( 200 );
     update();
@@ -53,19 +56,10 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
 
 GameCanvas::~GameCanvas()
 {
-    for( unsigned int i = 0; i < 4; i++ )
-        delete m_stich[i];
-    
-    clearObjects();
-}
-
-void GameCanvas::clearObjects()
-{
-    if( m_players[0] ) 
+    for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        for( unsigned int i = 0; i < PLAYERS; i++ )
-            delete m_players[i];
-        m_players[0] = NULL;
+        delete m_stich[i];
+        delete m_players[i];
     }
 }
 
@@ -75,11 +69,15 @@ void GameCanvas::setGame( Game* game )
 	{
         if(m_game)
 		{
+            unsigned int i = 0;
+            
 			disconnect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
 			disconnect( game, SIGNAL(gameStateChanged()), this, SLOT(redrawPlayers()));
+            
+            for(;i<PLAYERS;i++)
+                m_players[i]->setPlayer( i, NULL );
 		}
-		clearObjects();
 		m_game=NULL;
 	}
     else 
@@ -97,9 +95,6 @@ void GameCanvas::cardForbidden(Card* card)
 {
     for(unsigned int z=0;z<PLAYERS;z++)
 	{
-		if(!m_players[z])
-			continue;
-
         CanvasCard* c = m_players[z]->hasCard( card );
         if( c )            
         {
@@ -123,15 +118,15 @@ void GameCanvas::createObjects()
     for( h=0;h<PLAYERS;h++ )    
         if( m_game->findIndex( h )->rtti() == Player::HUMAN )
         {
-            m_players[0] = new CanvasPlayer( 0, m_game->findIndex( h ), canvas() );
+            m_players[0]->setPlayer( 0, m_game->findIndex( h ) );
             break;
         }
 
     for( i=h+1;i<PLAYERS;i++ )
-        m_players[i-h] = new CanvasPlayer( i-h, m_game->findIndex( i ), canvas() );            
+        m_players[i-h]->setPlayer( i-h, m_game->findIndex( i ) );            
 
     for( z=0;z<h;z++)    
-        m_players[i-h+z] = new CanvasPlayer( i-h+z, m_game->findIndex( z ), canvas() );
+        m_players[i-h+z]->setPlayer( i-h+z, m_game->findIndex( z ) );
     
     positionObjects();
 }
@@ -144,7 +139,7 @@ void GameCanvas::positionObjects(bool redraw)
     for( unsigned int i = 0; i < PLAYERS; i++ )
         m_players[i]->position( i );
     
-    for( unsigned int i = 0; i < 4; i++ ) 
+    for( unsigned int i = 0; i < PLAYERS; i++ ) 
     {
         QPoint p = getStichPosition(i);
         m_stich[i]->move( (int)p.x(), (int)p.y() );
@@ -232,7 +227,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 void GameCanvas::slotPlayerMadeStich(unsigned int)
 {
     unsigned int i=0;
-    for(;i<4;i++)
+    for(;i<PLAYERS;i++)
         m_stich[i]->hide();
 }
 
@@ -248,16 +243,11 @@ void GameCanvas::redrawPlayers()
 {
     // Maybe we should call this from a QTimer::singleShot( 100 )
     // so that all events are processed, will surely save us a crash!
-	int i;
+	unsigned int i = 0;
 	
-    
-	for(i=0;i<PLAYERS;i++)
+    for(i=0;i<PLAYERS;i++)
 		m_players[i]->init(i);
-	clearObjects();
-	createObjects();
-    
-    canvas()->setAllChanged();
-    canvas()->update();
+
 }
 
 void GameCanvas::contentsMousePressEvent(QMouseEvent* e)

@@ -23,6 +23,8 @@
 #include "gameinfo.h"
 #include "player.h"
 
+#include <klocale.h>
+
 Results::Results()
 {
     m_laufende = 0;
@@ -40,14 +42,19 @@ QString Results::result()
     parse();
     
     QString s;
-    QString schneider = m_schneider ? " schneider" : QString::null;
-    QString schwarz = m_schwarz ? " schwarz" : QString::null;
+    QString schneider = m_schneider ? i18n(" schneider" ) : QString::null;
+    QString schwarz = m_schwarz ? i18n(" no-trick") : QString::null;
     
     if( m_points > 60 )
-        s = m_gameinfo->spieler()->name() + QString(" gewinnt mit %1 Punkten%2.").arg( m_points ).arg( schneider + schwarz );
+        s = m_gameinfo->spieler()->name() + QString(i18n(" win with %1 Points%2.")).arg( m_points ).arg( schneider + schwarz );
     else
-        s = m_gameinfo->spieler()->name() + QString(" verliert mit %1 Punkten%2.").arg( m_points ).arg( schneider + schwarz );
+        s = m_gameinfo->spieler()->name() + QString(i18n(" looses with %1 Points%2.") ).arg( m_points ).arg( schneider + schwarz );
     
+    if( m_laufende > 0 )
+        s += m_gameinfo->spieler()->name() + QString( i18n(" get %1 cards in a row.").arg( m_laufende ) );
+    else
+        s += m_gameinfo->spieler()->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
+        
     return s;
 }
 

@@ -76,11 +76,10 @@ class GameCanvas : public QCanvasView
         /** Create QCanvasItem's for all Cards 
           */
         void createObjects();
-        void clearObjects();
         QPoint getStichPosition( int player );
         
         CanvasPlayer* m_players[PLAYERS];
-        CanvasCard* m_stich[4];
+        CanvasCard* m_stich[PLAYERS];
         QCanvasItem* m_item; // currently clicked item
         
         Game* m_game;

@@ -163,12 +163,125 @@ bool GameInfo::operator>( GameInfo info )
         return this->mode() < info.mode();
 }
 
+int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
+{
+	/* Not very nice. Try to find a better way */
+	
+	int *l_trumpf;
+	int *l_cards;
+	int l_trumpf_std[]={ Card::OBER, Card::UNTER };
+	int l_trumpf_geier=Card::OBER;
+	int l_trumpf_wenz=Card::UNTER;
+	int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
+	int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+	int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+	int l_colors[4];
+	int trumpf_index=-1;
+	int cards_index=-1;
+	int colors_index=-1;
+	int trumpf_cnt;
+	int col;
+	int i, a;
+	
+	switch( gameinfo->mode() )
+    {
+		case GameInfo::RAMSCH:
+        case GameInfo::RUFSPIEL:
+			trumpf_cnt=2;
+			l_trumpf=l_trumpf_std;
+			l_cards=l_cards_std;
+			col=Card::HERZ;
+			
+			break;
+        case GameInfo::STICHT:
+			trumpf_cnt=2;
+			l_trumpf=l_trumpf_std;
+			l_cards=l_cards_std;
+			col=gameinfo->color();
+			break;
+		case GameInfo::GEIER:
+			trumpf_cnt=1;
+        	l_trumpf=&l_trumpf_geier;
+			l_cards=l_cards_geier;
+			col=gameinfo->color();
+			break;
+		case GameInfo::WENZ:
+			trumpf_cnt=1;
+        	l_trumpf=&l_trumpf_wenz;
+			l_cards=l_cards_wenz;
+			col=gameinfo->color();
+		default:
+        	break;
+	}
+	l_colors[0]=col;
+	for(i=0, a=1;i<4;i++)
+	{
+		if(col==i)
+			continue;
+		else
+			l_colors[a++]=i;
+	}
+	for(i=0;i<trumpf_cnt;i++)
+	{
+		if(card->card()==l_trumpf[i])
+		{
+			trumpf_index=i;
+			break;
+		}
+	}
+	for(i=0;i<7;i++)
+	{
+		if(card->card()==l_cards[i])
+		{
+			cards_index=i;
+			break;
+		}
+	}
+	for(i=0;i<4;i++)
+	{
+		if(card->color()==l_colors[i])
+		{
+			colors_index=i;
+			break;
+		}
+	}
+	if(trumpf_index!=-1)
+		return 32-(trumpf_index*4+card->color());
+	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
+}
+
 int GameInfo::laufende()
 {
+    unsigned int i = 0;
+    int l = 0;
+    CardList* all = new CardList();
     CardList laufend = *(spieler()->cards());
     if( mitspieler() )
         laufend.appendList( mitspieler()->cards() );
 
-            
-    return 0;
+    all->init();
+    all->setAutoDelete( false );
+    all->sort( (eval_func)evalCard, (void *)this);
+    all->setAutoDelete( true );
+        
+    for( i=all->count()-1;i>=0;--i)
+    {
+        Card* c = all->at( i );
+        CardList* list = laufend.FindCards( c->color(), c->card() );
+        if( list->count() && ( l>0 || i == all->count()-1 ) )
+            l++;
+        else if( !list->count() && l<0 || i == all->count() -1 )
+            l--;
+        else
+        {
+            delete list;
+            break;
+        }
+        
+        delete list;
+    }
+
+    delete all;   
+    qDebug("LAUFENDE=%i", l);
+    return l;
 }       

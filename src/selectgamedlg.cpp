@@ -140,7 +140,7 @@ void SelectGameDlg::updatePreview()
         if( info->istTrumpf( list.at(i) ) )
             trumpf.append( list.at(i) );
     delete info;
-    trumpf.sort((eval_func)Game::evalCard, (void *)info);
+    trumpf.sort((eval_func)info->evalCard, (void *)info);
     
     Card c( Card::SAU, Card::EICHEL );
     QPixmap pix(c.pixmap()->width()*4,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));

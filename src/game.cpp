@@ -79,13 +79,15 @@ void Game::start()
     }
     else
     {
+        qDebug("HIER3");
         for( i=0;i<PLAYERS;i++)
         {
             m_players[i]->setCards( playercards[i] );
             m_players[i]->stiche()->clear();
         }
+        qDebug("SETN NEW CASRD");
     }
-    
+    qDebug("DONE");
     emit gameStateChanged();
 }
 
@@ -104,9 +106,10 @@ void Game::gameLoop()
         gameLoop();
     }
     
-	for(i=0;i<PLAYERS;i++)
+	for(i=0;i<PLAYERS && !terminated;i++)
 		m_players[i]->init();
-    for(i=0;i<TURNS;i++)
+    
+    for(i=0;i<TURNS && !terminated ;i++)
     {
         m_currstich.clear();
            
@@ -204,93 +207,6 @@ int Game::highestCard()
             break;
             
     return i;
-}
-
-int Game::evalCard(Card *card, GameInfo *gameinfo)
-{
-	/* Not very nice. Try to find a better way */
-	
-	int *l_trumpf;
-	int *l_cards;
-	int l_trumpf_std[]={ Card::OBER, Card::UNTER };
-	int l_trumpf_geier=Card::OBER;
-	int l_trumpf_wenz=Card::UNTER;
-	int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
-	int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
-	int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
-	int l_colors[4];
-	int trumpf_index=-1;
-	int cards_index=-1;
-	int colors_index=-1;
-	int trumpf_cnt;
-	int col;
-	int i, a;
-	
-	switch( gameinfo->mode() )
-    {
-		case GameInfo::RAMSCH:
-        case GameInfo::RUFSPIEL:
-			trumpf_cnt=2;
-			l_trumpf=l_trumpf_std;
-			l_cards=l_cards_std;
-			col=Card::HERZ;
-			
-			break;
-        case GameInfo::STICHT:
-			trumpf_cnt=2;
-			l_trumpf=l_trumpf_std;
-			l_cards=l_cards_std;
-			col=gameinfo->color();
-			break;
-		case GameInfo::GEIER:
-			trumpf_cnt=1;
-        	l_trumpf=&l_trumpf_geier;
-			l_cards=l_cards_geier;
-			col=gameinfo->color();
-			break;
-		case GameInfo::WENZ:
-			trumpf_cnt=1;
-        	l_trumpf=&l_trumpf_wenz;
-			l_cards=l_cards_wenz;
-			col=gameinfo->color();
-		default:
-        	break;
-	}
-	l_colors[0]=col;
-	for(i=0, a=1;i<4;i++)
-	{
-		if(col==i)
-			continue;
-		else
-			l_colors[a++]=i;
-	}
-	for(i=0;i<trumpf_cnt;i++)
-	{
-		if(card->card()==l_trumpf[i])
-		{
-			trumpf_index=i;
-			break;
-		}
-	}
-	for(i=0;i<7;i++)
-	{
-		if(card->card()==l_cards[i])
-		{
-			cards_index=i;
-			break;
-		}
-	}
-	for(i=0;i<4;i++)
-	{
-		if(card->color()==l_colors[i])
-		{
-			colors_index=i;
-			break;
-		}
-	}
-	if(trumpf_index!=-1)
-		return 32-(trumpf_index*4+card->color());
-	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
 }
 
 bool Game::isHigher( Card* card, Card* high )

@@ -69,7 +69,7 @@ void CanvasCard::draw( QPainter & p )
         KPixmap pix = pixmap->xForm( wm );
         if( m_forbidden )
             pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
-    
+        
         setSize( pix.width(), pix.height() );
         bitBlt( p.device(), point.x(), point.y(), &pix );
     }
