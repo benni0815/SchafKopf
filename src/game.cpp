@@ -57,8 +57,8 @@ Game::Game(QObject *parent, const char *name)
         m_players[i]->setName( list[i] );
     }
     
-    m_gameinfo.color=Card::HERZ;
-    m_gameinfo.mode=Game::STICHT;
+    m_gameinfo.color=Card::SCHELLEN;
+    m_gameinfo.mode=Game::RUFSPIEL;
     m_gameinfo.spieler=m_players[0];
 }
 
@@ -162,18 +162,23 @@ bool Game::istTrumpf(Card *card)
         case RUFSPIEL:
 		if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
 			return true;
+		break;
         case RAMSCH:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
                     return true;
+		break;
         case STICHT:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
+		break;
         case GEIER:
                 if(card->card()==Card::OBER || card->color()==m_gameinfo.color)
                     return true;
+		break;
         case WENZ:
                 if(card->card()==Card::UNTER || card->color()==m_gameinfo.color)
                     return true;
+		break;
         default:
                 break;
     }
