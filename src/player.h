@@ -18,7 +18,7 @@ class Player
         // this destructor should be virtual
         // but setting it to virtual makes everything
         // crash. Seems to be a good lenz-job ;) ...
-		~Player();
+		virtual ~Player();
 
 		virtual void init() {};
 		virtual void klopfen();

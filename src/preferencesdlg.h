@@ -17,61 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef COMPUTERPLAYER_H
-#define COMPUTERPLAYER_H
+#ifndef PREFERENCESDLG_H
+#define PREFERENCESDLG_H
 
-#include <qobject.h>
+#include <kdialogbase.h>
 
-#include "player.h"
-#include "card.h"
-#include "gameinfo.h"
+class QRadioButton;
 
-class OpenBook;
-class CardList;
+/**
+Preferences dialog for schafkopf
 
-class ComputerPlayer : public QObject,  public Player
+@author Dominik Seichter
+*/
+class PreferencesDlg : public KDialogBase
 {
-	Q_OBJECT
+    Q_OBJECT
     public:
-        ComputerPlayer(Game* game);
-        ~ComputerPlayer();
+        PreferencesDlg(QWidget *parent = 0, const char *name = 0);
+        ~PreferencesDlg();
+       
+    protected:
+        void accept();
         
-		void init();
-		void klopfen();
-        Card *play();
-        GameInfo* gameInfo();
-        
-		int rtti() const { return COMPUTER; }
-
-        Card *findHighestCard(CardList *cards);
-        Card *findSchmiere(CardList *cards);		// Nice name, isn't it? :)
-        Card *findCheapestCard(CardList *cards);
-
     private:
-        typedef struct game_data {
-            int trumpf;
-            int fehlfarbe;
-            int weight;
-            GameInfo info;        
-        };
-		CardList *m_playedCards[4];
-		CardList *m_angespielt;
-        OpenBook* book;
-		int mitspieler;
-		
-		Card *findCardToPlay(CardList *cards);
-		bool canMakeStich(CardList *cards);		
-		bool ownStich();
-		bool istTrumpfFrei(int playerId);
-		bool istFarbFrei(int playerId, int c);
-		float gehtDurch(Card *card);
-		float gegnerSticht(Card *card);
-		Card *highestTrumpfInGame();
-		int myTrumpfs();
-		int trumpfsInGame();
-				
-	private slots:
-		void cardPlayed(unsigned int player, Card *c);
+        void addPageResults();
+        void addPageResultsMoney();
+        void addPageResultsPoints();
+        
+    private:
+        QRadioButton* m_radioMoney;
+        QRadioButton* m_radioPoints;
 };
 
 #endif

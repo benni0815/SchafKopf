@@ -310,6 +310,5 @@ int GameInfo::laufende()
     }
 
     delete all;   
-    qDebug("LAUFENDE=%i", l);
     return l;
 }       

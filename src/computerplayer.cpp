@@ -112,6 +112,18 @@ Card *ComputerPlayer::play()
 				i++;
 		}
 	}
+    else if( m_game->currStich()->count() == 3 )
+    {
+        // last one to play a card
+        // don't know if this will be helpfull
+        // as it does merely the same the KI does already
+        // just for a special case.
+        // So it takes some work away from the real KI.
+        StrategyBook strategy( this, m_game );
+        allowed = strategy.possibleCards();
+        
+        
+    }
 	if(!allowed)
 		allowed=allowedCards();
         

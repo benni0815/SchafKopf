@@ -115,10 +115,26 @@ void Settings::setSplitterSizes( QValueList<int> list )
     config->sync();
 }
 
-Results* Settings::results() const
+void Settings::setResultsType( int r )
 {
     KConfig* config = kapp->config();
-    int r = config->readNumEntry("ResultMode", MONEY );
+    config->setGroup( "SchafKopf" );
+    config->writeEntry("ResultMode", r );
+    config->sync();
+    
+    emit resultsTypeChanged();
+}
+
+int Settings::resultsType() const
+{
+    KConfig* config = kapp->config();
+    config->setGroup( "SchafKopf" );
+    return config->readNumEntry("ResultMode", MONEY );
+}
+
+Results* Settings::results() const
+{
+    int r = resultsType();
     if( r == MONEY )
         return new MoneyResults();
     else if( r == POINTS )

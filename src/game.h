@@ -50,7 +50,7 @@ class Game : public QObject
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 		bool isTerminated() const { return terminated; }
-		int highestCard();
+		int highestCard( CardList* list = 0 );
 		bool isHigher( Card* card, Card* high );
 		
     signals:        
@@ -66,6 +66,13 @@ class Game : public QObject
         
     public slots:
         void endGame(void);
+
+    private slots:
+        /** set the results of all players to 0. This is necessary
+          * if for example the class for the results calculation was changed
+          * or when a new game is started.
+          */
+        void resetGameResults();
         
     private:
         bool terminated;

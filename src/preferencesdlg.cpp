@@ -17,48 +17,66 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "pointresults.h"
-#include "player.h"
-#include "gameinfo.h"
+#include "preferencesdlg.h"
+#include "settings.h"
 
-#include <kglobal.h>
 #include <klocale.h>
 
-PointResults::PointResults()
- : Results()
+#include <qframe.h>
+#include <qlayout.h>
+#include <qradiobutton.h>
+#include <qvbox.h>
+#include <qvbuttongroup.h>
+
+PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
+    : KDialogBase( IconList, i18n("Preferences"), KDialogBase::Ok|KDialogBase::Cancel,
+      KDialogBase::Ok, parent, name, true, true )
+{
+    addPageResults();
+    addPageResultsMoney();
+    addPageResultsPoints();
+}
+
+
+PreferencesDlg::~PreferencesDlg()
 {
 }
 
-double PointResults::points( Player* player )
+void PreferencesDlg::accept()
 {
-    parse();
+    Settings::instance()->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
     
-    int m = 0;
-    if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
-        m = 2; // SOLO = 2
-    else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
-        m = 1;
-        
-    m += m_schneider ? 1 : 0;
-    m += m_schwarz ? 1 : 0;
-    m += m_laufende * 1;
-//	if(player->geklopft())
-//		m*=2;
-	
-    if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
-        m = (m_points > 60 ? m : m * -1.0);
-    else
-        m = (m_points >= 60 ? m * -1.0 : m);
-        
-    if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
-        m *= 3;
-        
-    return (double)m;
+    KDialogBase::accept();
 }
 
-QString PointResults::formatedPoints( Player* player )
+void PreferencesDlg::addPageResults()
 {
-    player->setPoints( points( player ) + player->points() );
-    return QString::number( (int)player->points() );
+    QFrame* box = addPage( i18n("Results"), "" );
+    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+
+    QVButtonGroup* group = new QVButtonGroup( i18n("Results"), box, "group" );
+    m_radioMoney = new QRadioButton( i18n("Count &money"), group );
+    m_radioPoints = new QRadioButton( i18n("Count &points"), group );
+    
+    layout->addWidget( group );
+    layout->addItem( spacer );
+    
+    // load data from configuration
+    if( Settings::instance()->resultsType() == Settings::MONEY )
+        m_radioMoney->setChecked( true );
+    else
+        m_radioPoints->setChecked( true );
 }
 
+void PreferencesDlg::addPageResultsMoney()
+{
+
+}
+
+void PreferencesDlg::addPageResultsPoints()
+{
+
+}
+
+#include "preferencesdlg.moc"

@@ -24,6 +24,7 @@
 #include "stichdlg.h"
 #include "player.h"
 #include "newgamewizard.h"
+#include "preferencesdlg.h"
 
 #include <qfontmetrics.h>
 #include <qheader.h>
@@ -101,6 +102,8 @@ SchafKopf::SchafKopf()
     connect(m_game,SIGNAL(signalSetupGameInfo()),this,SLOT(updateInfo()));
     connect(m_game,SIGNAL(signalDoubled()),this,SLOT(updateInfo()));
 
+    connect(Settings::instance(),SIGNAL(resultsTypeChanged()),this,SLOT(clearTable()));
+    
     QToolTip::add
         ( btnLastTrick, i18n("Show the last trick that was made.") );
 
@@ -198,8 +201,8 @@ void SchafKopf::endGame()
 {
     disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
 
-	m_game->endGame();
-	clearTable();
+    m_game->endGame();
+    clearTable();
 }
 
 void SchafKopf::showStich()
@@ -256,13 +259,21 @@ void SchafKopf::updateInfo()
 
 void SchafKopf::clearTable()
 {
-	QMemArray<int> cols(m_table->numRows());
-	int i;
-	
-	for(i=0;i<m_table->numRows();i++)
-		cols[i]=i;
-	m_table->removeRows(cols);
+    QMemArray<int> cols(m_table->numRows());
+    int i;
+    
+    for(i=0;i<m_table->numRows();i++)
+        cols[i]=i;
+    m_table->removeRows(cols);
 }
 
+void SchafKopf::configure()
+{
+    PreferencesDlg prefs( this, "prefs");
+    if( prefs.exec() == QDialog::Accepted )
+    {
+    
+    }
+}
 
 #include "schafkopf.moc"

@@ -70,7 +70,11 @@ class SchafKopf : public KMainWindow
         /** takes care of enabling and disabling actions
           */
         void enableControls();
-		
+        
+        /** guess what? shows the preferences dialog to the user
+          */
+        void configure();
+        
 		void realNewGame();
         
         void slotPlayerResult( const QString & name, const QString & result );
@@ -78,8 +82,10 @@ class SchafKopf : public KMainWindow
         void saveConfig();
         
         void updateInfo();
-		
-		void clearTable();
+
+        /** remove all items from the table displaying the results
+          */
+        void clearTable();
     private:
         void setupActions();
         

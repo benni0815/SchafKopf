@@ -3,10 +3,10 @@ INCLUDES = $(all_includes)
 
 # these are the headers for your project
 noinst_HEADERS = schafkopf.h card.h cardlist.h player.h game.h settings.h \
-		computerplayer.h humanplayer.h gamecanvas.h canvascard.h timer.h stichdlg.h gameinfo.h \
-		canvasplayer.h results.h moneyresults.h pointresults.h openbook.h \
-		schafkopfdef.h newgamewizard.h selectgamewizard.h selectgametypebox.h \
-	selectgamecolorbox.h
+			computerplayer.h humanplayer.h gamecanvas.h canvascard.h timer.h stichdlg.h gameinfo.h \
+			canvasplayer.h results.h moneyresults.h pointresults.h openbook.h 		schafkopfdef.h \
+	newgamewizard.h selectgamewizard.h selectgametypebox.h 	selectgamecolorbox.h \
+	preferencesdlg.h
 
 # let automoc handle all of the meta source files (moc)
 METASOURCES = AUTO
@@ -25,10 +25,10 @@ bin_PROGRAMS = schafkopf
 
 # the application source, library search path, and link libraries
 schafkopf_SOURCES = main.cpp schafkopf.cpp card.cpp cardlist.cpp player.cpp \
-		game.cpp settings.cpp computerplayer.cpp humanplayer.cpp gamecanvas.cpp \
-		canvascard.cpp timer.cpp stichdlg.cpp gameinfo.cpp canvasplayer.cpp \
-		results.cpp moneyresults.cpp pointresults.cpp openbook.cpp newgamewizard.cpp \
-	selectgamewizard.cpp selectgametypebox.cpp selectgamecolorbox.cpp
+			game.cpp settings.cpp computerplayer.cpp humanplayer.cpp gamecanvas.cpp \
+			canvascard.cpp timer.cpp stichdlg.cpp gameinfo.cpp canvasplayer.cpp 		results.cpp \
+	moneyresults.cpp pointresults.cpp openbook.cpp newgamewizard.cpp 	selectgamewizard.cpp \
+	selectgametypebox.cpp selectgamecolorbox.cpp preferencesdlg.cpp
 schafkopf_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 schafkopf_LDADD = -lkdegames $(LIB_KDEUI)
 

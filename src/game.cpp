@@ -54,6 +54,9 @@ Game::Game(QObject *parent, const char *name)
         m_players[i] = new ComputerPlayer( this );
         m_players[i]->setName( list[i] );
     }
+    
+    // make sure that results get cleaned up, when the results type is changed
+    connect( Settings::instance(), SIGNAL( resultsTypeChanged() ), this, SLOT( resetGameResults() ) );
 }
 
 Game::~Game()
@@ -98,9 +101,7 @@ void Game::gameLoop()
     
 	terminated = false;
 
-    // reset points (i.e. results) from a previous game
-    for(i=0;i<PLAYERS;i++)
-        m_players[i]->setPoints( 0.0 );
+    resetGameResults();
     
 	while(!terminated)
 	{
@@ -211,13 +212,16 @@ Player* Game::findIndex( unsigned int index ) const
     return ( index < PLAYERS ? m_players[index] : 0 );
 }
 
-int Game::highestCard()
+int Game::highestCard( CardList* list )
 {
-	Card* high = m_currstich.first();
-    Card* card = m_currstich.first();
+    if( !list )
+        list = &m_currstich;
+        
+	Card* high = list->first();
+    Card* card = list->first();
 	int i = 0;
 	
-    while( (card = m_currstich.next() ) )
+    while( (card = list->next() ) )
     {
         if( isHigher( card, high ) )
         {
@@ -226,8 +230,8 @@ int Game::highestCard()
         }
     }
     
-    for( ; i < (signed int)m_currstich.count(); i++ )
-        if( m_currstich.at(i) == high )
+    for( ; i < (signed int)list->count(); i++ )
+        if( list->at(i) == high )
             break;
             
     return i;
@@ -271,8 +275,8 @@ void Game::gameResults()
     r->setGameInfo( &m_gameinfo );
     for( unsigned int i=0;i<PLAYERS;i++)
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
-	m_canvas->information( r->result() );
-	delete r;
+    m_canvas->information( r->result() );
+    delete r;
 }
 
 bool Game::setupGameInfo(Player *players[])
@@ -343,6 +347,14 @@ bool Game::setupGameInfo(Player *players[])
     m_gameinfo.setValid( true );
     emit signalSetupGameInfo();
     return true;
+}
+
+void Game::resetGameResults()
+{
+    int i;
+    // reset points (i.e. results) from a previous game
+    for(i=0;i<PLAYERS;i++)
+        m_players[i]->setPoints( 0.0 );    
 }
 
 #include "game.moc"

@@ -25,28 +25,49 @@
 class Card;
 class CardList;
 class Game;
-class Player;
+class ComputerPlayer;
 
-/**
-Our OpenBook implementation.
-
-@author Dominik Seichter
-*/
-
-class OpenBook : public QObject {    
+class RuleBook : public QObject {
     Q_OBJECT
     public:
-        OpenBook( Player* player, Game* game );
-        ~OpenBook();
+        RuleBook( ComputerPlayer* player, Game* game );
+        virtual ~RuleBook();
 
-        CardList* possibleCards();
-        
-    private slots:
-        void cardPlayed( unsigned int player, Card* card );
-        
-    private:
+        virtual CardList* possibleCards() = 0;
+
+    protected:
         Game* m_game;
-        Player* m_self;
+        ComputerPlayer* m_self;
+        bool m_player;
+};
+
+/**
+ * Our OpenBook implementation.
+ * Finds a card which can be played as a first card.
+ *
+ * @author Dominik Seichter
+ */
+
+class OpenBook : public RuleBook {    
+    public:
+        OpenBook( ComputerPlayer* player, Game* game );
+        
+        CardList* possibleCards();
+};
+
+/**
+ * Contains strategies when we are the last player
+ * to a play a card
+ * If this class finds a good card to player
+ * it is really safe to play it.
+ *
+ * @author Dominik Seichter
+ */
+class StrategyBook : public RuleBook {
+    public:
+        StrategyBook( ComputerPlayer* player, Game* game );
+        
+        CardList* possibleCards();
 };
 
 #endif

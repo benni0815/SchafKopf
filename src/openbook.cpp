@@ -23,7 +23,7 @@
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
-#include "player.h"
+#include "computerplayer.h"
 
 /* A few macros which make it quite simple to build macros for openbook rules */
 #define RULE( function, description, condition, eval ) \
@@ -55,7 +55,7 @@ namespace OpeningRules
         bool player;
     };
     
-    RULE( player1, "davon-laufen - hängt von allowedCards ab und läuft nicht mit dem zehner davon", 
+    RULE( player1, "davon-laufen - hï¿½gt von allowedCards ab und lï¿½ft nicht mit dem zehner davon", 
         ( info->mode() == GameInfo::RUFSPIEL && 
           !allowed->contains( info->color(), Card::SAU ) ),
         ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )
@@ -72,7 +72,6 @@ namespace OpeningRules
           info->mode() == GameInfo::GEIER ),
         ( !info->istTrumpf( c ) && c->card() == Card::SAU )
     )
-
     
     // TODO: nur suchen wenn noch niemand gesucht hat 
     // bzw. davon gelaufen ist
@@ -102,27 +101,30 @@ namespace OpeningRules
 
 using namespace OpeningRules;
 
-OpenBook::OpenBook( Player* player, Game* game )
+RuleBook::RuleBook( ComputerPlayer* player, Game* game )
 {
     m_self = player;
     m_game = game;
-	connect( m_game, SIGNAL( playerPlayedCard( unsigned int, Card* ) ), this, SLOT( cardPlayed(unsigned int,Card*) ) );
+    
+    m_player = ((Player*)m_self == m_game->gameInfo()->spieler() || (Player*)m_self == m_game->gameInfo()->mitspieler() );
 }
 
-
-OpenBook::~OpenBook()
+RuleBook::~RuleBook()
 {
+
+}
+
+//////////////////////////////////
+// OpenBook
+//////////////////////////////////
+OpenBook::OpenBook( ComputerPlayer* player, Game* game )
+    : RuleBook( player, game )
+{
+
 }
 
 CardList* OpenBook::possibleCards()
 {
-    bool m_player = (m_self == m_game->gameInfo()->spieler() || m_self == m_game->gameInfo()->mitspieler() );
-    if( m_player )
-        qDebug("Spieler=Ja");
-    else
-        qDebug("SPIELER=NEIN");
-    qDebug("Name=" + m_self->name() );
-
     CardList* allowed = m_self->allowedCards();
     CardList* list = new CardList();
     unsigned int i = 0;
@@ -151,14 +153,104 @@ CardList* OpenBook::possibleCards()
         return list;
     else
     {
-        qDebug("OpenBook did not find a good card to play!");
         delete list;
-        return 0;
+        return NULL;
     }
 }
 
-void OpenBook::cardPlayed( unsigned int player, Card* card )
+//////////////////////////////////
+// StrategyBook 
+//////////////////////////////////
+StrategyBook::StrategyBook( ComputerPlayer* player, Game* game )
+    : RuleBook( player, game )
 {
-    // todo: move this in to an own class later
-    Player* p = m_game->findId( player );
+
 }
+        
+CardList* StrategyBook::possibleCards()
+{
+    // the strategy book works only when it is called
+    // for the last player    
+    CardList* stiche = m_game->currStich();
+    if( stiche && stiche->count() != 3 )
+        return NULL;
+        
+    CardList* allowed = m_self->allowedCards();
+    CardList* list = new CardList();
+    Card* highest = NULL;
+    bool unser_stich = false;
+    unsigned int i = 0;
+    bool abspatzen = false;
+    
+    /* Moeglichkeiten:
+     * 1. Der stich gehoert dem mitspieler 
+     *    - schmieren
+     *    - abspatzen
+     * 2. Der stich gehoert den gegner:
+     *    - stechen
+     *    - abspatzen
+     */
+    highest = stiche->at( m_game->highestCard() );
+    if( highest->owner() == m_game->gameInfo()->spieler() || 
+        highest->owner() == m_game->gameInfo()->mitspieler() )
+    {
+        // der stich gehÃ¶rt der spieler partei
+        unser_stich = m_player;
+    }
+    else
+        // der stich gehÃ¶rt nicht der spieler partei
+        unser_stich = !m_player;
+    
+        
+    if( unser_stich )
+    {
+        // unser stich: suche die karte mit den meisten punkten
+        Card* c = m_self->findSchmiere( allowed );
+        // nur karten die hoeher als ein koenig sind schmieren
+        if( c && c->points() >= 4 )
+            list->append( c );
+        else
+            abspatzen = true;
+    }
+    else
+    {
+        // stich des gegners
+        // 1. feststellen ob wir den stich ueberhaupt machen koennen
+        // 2. feststellen ob sich der stich lohnen wuerde
+        Card* c = allowed->at( m_game->highestCard( allowed ) );
+        if( c && m_game->isHigher( c, highest ) && stiche->points() > 6 )
+        {
+            // stich lohnt sich also suche die kleinste karte
+            // die groesser als die bisher hoechste karte im stich ist
+            Card* cur = c;
+            for( i = 0; i < allowed->count(); i++ )
+            {
+                Card* card = allowed->at( i );
+                if( m_game->isHigher( card, highest) && !m_game->isHigher( card, c ) )
+                    cur = card;
+            }
+            
+            list->append( cur );
+        } else
+            abspatzen = true;
+    }
+
+    if( abspatzen )
+    {
+        // nichts zum schmieren gefunden
+        // abspatzen:
+        Card* c = m_self->findCheapestCard( allowed );
+        if( c && c->points() == 0 )
+            list->append( c );
+    }
+    
+    delete allowed;
+    if( !list->isEmpty() )
+        return list;
+    else
+    {
+        delete list;
+        return NULL;
+    }
+}
+

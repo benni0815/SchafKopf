@@ -32,6 +32,8 @@ class Settings : public QObject
 {
     Q_OBJECT
     public:
+        enum { MONEY, POINTS };
+        
         static Settings* instance();
         
         const QString cardDeck() const;
@@ -44,13 +46,15 @@ class Settings : public QObject
         QValueList<int> splitterSizes( int width );
         void setSplitterSizes( QValueList<int> list );
         
+        void setResultsType( int r );
+        int resultsType() const;
         Results* results() const;
         
     signals:
         void cardChanged();
+        void resultsTypeChanged();
         
     private:
-        enum { MONEY, POINTS };
         
         Settings(QObject *parent = 0, const char *name = 0);
         ~Settings();

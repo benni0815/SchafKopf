@@ -208,7 +208,7 @@ CardList* Player::allowedCards()
 		allowed=PlayerCards();
 	}
 
-	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) //wei�nicht wieso dass Game::RUFSPIEL nimmer geht, seit letzter aktualisierung... naja, wird so schon gehn (mit GameInfo)
+	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) 
 	{
 		CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
 		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
