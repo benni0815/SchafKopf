@@ -30,6 +30,7 @@
 class QCanvas;
 class GameCanvas;
 class Game;
+class KAction;
 /**
  * @short Application Main Window
  * @author Dominik Seichter <domseichter@web.de>
@@ -41,11 +42,19 @@ class SchafKopf : public KMainWindow
     public:
         SchafKopf();
         ~SchafKopf();
-    
+        
     private slots:
         /** Configure the carddeck to be used 
           */
         void carddecks();
+        
+        /** Start a new game 
+          */
+        void newGame();
+        
+        /** abort current game
+          */
+        void endGame();
         
     private:
         void setupActions();
@@ -53,6 +62,8 @@ class SchafKopf : public KMainWindow
         Game* m_game;
         GameCanvas* m_canvasview;
         QCanvas* m_canvas;    
+        
+        KAction* m_actEnd;
 };
 
 #endif // _SCHAFKOPF_H_
