@@ -43,38 +43,60 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
  : QCanvasView(c,parent, name)
 {
     m_game = NULL;
+    m_items[0] = NULL;
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(redrawAll()));
-    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(lineupCards()));
+    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
 }
     
 
 GameCanvas::~GameCanvas()
 {
-    // TODO: delete m_items, crashes for some reeson MEMORY LEAK!!!
-    // for( unsigned int i = 0; i < PLAYERS; i++ )
-    //    delete m_items[i];
+    clearObjects();
+}
+
+void GameCanvas::clearObjects()
+{
+    if( !m_items[0] )
+        return;
+        
+    for( unsigned int i = 0; i < PLAYERS; i++ ) {
+        for( unsigned int z = 0; z < m_items[i]->count(); z++ )
+            delete (*m_items[i])[z];
+            
+        delete m_items[i];
+        m_items[i] = NULL;
+    }
+    
+    redrawAll();
 }
 
 void GameCanvas::setGame( Game* game )
 {
-    // no need to delete m_game, because it is a QObject
     m_game = game;
-    createCards();
+    
+    if( m_game == NULL )
+        clearObjects();
+    
+    createObjects();
 }
 
-void GameCanvas::createCards()
+void GameCanvas::createObjects()
 {
-    for( unsigned int i = 0; i < PLAYERS; i++ )
+    if( !m_game )
+        return;
+        
+    for( unsigned int i = 0; i < PLAYERS; i++ ) 
         m_items[i] = new QCanvasItemList();
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         Player* player = m_game->findIndex( i );
         for( unsigned int z = 0; z < player->cards()->count(); z++ ) {
             CanvasCard *c = new CanvasCard( player->cards()->at(z), canvas() );
+            c->setZ( double(-1 - z) );
             
             if(i==1)
                 c->setRotation(90);
@@ -90,13 +112,14 @@ void GameCanvas::createCards()
         }
     }
     
-    lineupCards();
+    positionObjects();
 }
 
-void GameCanvas::lineupCards()
+void GameCanvas::positionObjects()
 {
-    //TODO: check first wether m_items is initialized
-    
+    if( !m_items[0] || !m_game )
+        return;
+
     int w = canvas()->width()-DIST;
     int h = canvas()->height()-DIST;
     int cardw = Card::backgroundPixmap()->width();
@@ -145,7 +168,7 @@ void GameCanvas::lineupCards()
             qSwap( cardw, cardh );
     }
     
-    canvas()->update();
+    redrawAll();
 }
 
 void GameCanvas::resizeEvent( QResizeEvent * r )
@@ -154,7 +177,7 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
     canvas()->resize( this->width() -20, this->height()-20 );
     QCanvasView::resizeEvent( r );
     
-    lineupCards();
+    positionObjects();
 }
 
 void GameCanvas::redrawAll()
