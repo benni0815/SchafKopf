@@ -22,12 +22,19 @@
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
+#include "openbook.h"
 
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(CardList *cards,Game* game)
  : Player(cards,game)
 {
+    book = new OpenBook( this, game );
+}
+
+ComputerPlayer::~ComputerPlayer()
+{
+    delete book;
 }
 
 void ComputerPlayer::klopfen()
@@ -37,7 +44,12 @@ void ComputerPlayer::klopfen()
 
 Card *ComputerPlayer::play()
 {
-	CardList* allowed=allowedCards();
+	CardList* allowed=0;
+    if( m_game->currStich()->isEmpty() )
+        allowed=book->possibleCards();
+    else
+        allowed=allowedCards();
+        
 	Card* ToPlay=allowed->at(KApplication::random()%allowed->count());
 
 	delete allowed;

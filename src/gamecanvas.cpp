@@ -196,7 +196,10 @@ void GameCanvas::cardClicked( QCanvasItem* item )
         {
             Player* player = m_players[i]->player();
             if( m_players[i]->hasCard( card->card() ) && player->rtti() == Player::HUMAN )
+            {
+                qDebug("card=%i color=%i", card->card()->card(), card->card()->color() );
                 emit playCard( card->card() );
+            }
         }
     }
 }

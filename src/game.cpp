@@ -122,7 +122,7 @@ void Game::gameLoop()
             
             m_currstich.append(c);
             emit playerPlayedCard(m_players[a]->id(),c);
-            //timer.block( 1 );
+            timer.block( 1 );
         }
         
         index = highestCard();
@@ -130,7 +130,7 @@ void Game::gameLoop()
 			return;
 		m_players[index]->addStich( m_currstich );
         emit playerMadeStich(m_players[index]->id());
-        // Sortiere so, das der stecher nächste karte spielt 
+        // Sortiere so, das der stecher nï¿½hste karte spielt 
         for(a=0;a<PLAYERS;a++)
             tmp[a]=m_players[a];
         for(a=0;a<PLAYERS;a++)
@@ -289,7 +289,57 @@ int Game::evalCard(Card *card, GameInfo *gameinfo)
 
 bool Game::isHigher( Card* card, Card* high )
 {
-	return evalCard(card, &m_gameinfo) > evalCard(high, &m_gameinfo);
+    if( m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) )
+        return true;
+    else if( m_gameinfo.istTrumpf( card ) && m_gameinfo.istTrumpf( high ) )
+    {
+        if( card->card() == high->card()  )
+            return (card->color() < high->color());
+        else if( card->card() != high->card() )
+        {
+            switch( m_gameinfo.mode() )
+            {
+                case GameInfo::RAMSCH:
+                case GameInfo::RUFSPIEL:
+                case GameInfo::STICHT:
+                    if( card->card() == Card::OBER )
+                        return true;
+                    else if( high->card() == Card::OBER )
+                        return false;
+                    else if( card->card() == Card::UNTER )
+                        return !(high->card() == Card::OBER);
+                    else if( high->card() == Card::UNTER )        
+                        return !(card->card() == Card::OBER );
+                    break;
+                case GameInfo::GEIER:
+                    if( card->card() == Card::OBER )
+                        return true;
+                    else if( high->card() == Card::OBER )
+                        return false;
+                case GameInfo::WENZ:
+                    if( card->card() == Card::UNTER )
+                        return true;
+                    else if( high->card() == Card::UNTER )
+                        return false;
+                default:
+                    break;
+            }
+            
+            return (*card < high);
+        }
+    }
+    else if( !m_gameinfo.istTrumpf( card ) && !m_gameinfo.istTrumpf( high ) ) // beide kein trumpf
+    {
+        // die farbe ist anders als die farbe der ersten/hoechsten 
+        // karte aber diese karte is kein trumfh, kann
+        // also ned stechen
+        if( card->color() == high->color() && *card < high )
+            return true;
+    }
+
+    return false;
+
+//	return evalCard(card, &m_gameinfo) > evalCard(high, &m_gameinfo);
 }
 
 void Game::gameResults()

@@ -17,35 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef COMPUTERPLAYER_H
-#define COMPUTERPLAYER_H
+#ifndef OPENBOOK_H
+#define OPENBOOK_H
 
-#include "player.h"
-#include "gameinfo.h"
+#include <qobject.h>
 
-class OpenBook;
+class Card;
+class CardList;
+class Game;
+class Player;
 
-class ComputerPlayer : public Player
-{
+/**
+Our OpenBook implementation.
+
+@author Dominik Seichter
+*/
+
+class OpenBook : public QObject {    
+    Q_OBJECT
     public:
-        ComputerPlayer(CardList *cards,Game* game);
-        ~ComputerPlayer();
-        
-        void klopfen();
-        Card *play();
-        GameInfo* game();
-        
-        int rtti() const { return COMPUTER; }
+        OpenBook( Player* player, Game* game );
+        ~OpenBook();
 
+        CardList* possibleCards();
+        
+    private slots:
+        void cardPlayed( unsigned int player, Card* card );
+        
     private:
-        typedef struct game_data {
-            int trumpf;
-            int fehlfarbe;
-            int weight;
-            GameInfo info;        
-        };
-
-        OpenBook* book;
+        void nichtSpieler( CardList* list );
+        void spieler( CardList* list );
+        
+        Game* m_game;
+        Player* m_self;
+        bool m_player;
 };
 
 #endif
