@@ -44,7 +44,7 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-    m_geklopft = m_game->askKlopfen();
+
 }
 
 Card *HumanPlayer::play()

@@ -58,10 +58,6 @@ class Game : public QObject
 
         bool istTrumpf(Card *card);
         
-        /** ask the user if he wants to double
-          */
-        bool askKlopfen();
-            
     signals:
         void gameStateChanged();
         void signalKlopfen();

@@ -153,16 +153,4 @@ int Game::highestCard()
     return 0;
 }
 
-bool Game::askKlopfen()
-{
-    return;
-    emit signalKlopfen();
-#if QT_VERSION >= 0x030100
-    kapp->eventLoop()->enterLoop();
-#else
-    kapp->enter_loop();
-#endif
-    return true;
-}
-
 #include "game.moc"
