@@ -62,6 +62,7 @@ Card *HumanPlayer::play()
 
 GameInfo* HumanPlayer::gameInfo()
 {
+/*
     if( m_game->canvas()->questionYesNo( i18n("Do you want to play?") ) )
     {
     
@@ -72,7 +73,7 @@ GameInfo* HumanPlayer::gameInfo()
 			delete sgw;
     			return gi;
     		}	
-	delete sgw;
+	delete sgw;*/
 	//sgw=0;
     
     
@@ -84,12 +85,12 @@ GameInfo* HumanPlayer::gameInfo()
     		}	*/
 	//delete sgw;
 	//sgw=0;
-	/*
+	
 	SelectGameWizard sgw( m_cards );
         if( sgw.exec() == QDialog::Accepted )
         {
             return sgw.gameInfo();
-        }*/
+        }
 	
 	
     /*
@@ -98,7 +99,7 @@ GameInfo* HumanPlayer::gameInfo()
         {
             return sgd.gameInfo();
         }*/
-    } 
+    
     return 0;
 }
 
