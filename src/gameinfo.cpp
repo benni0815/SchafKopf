@@ -83,6 +83,36 @@ const QString GameInfo::toString() const
     return s; 
 }
 
+int GameInfo::weight( Card* card ) const
+{
+}
+
+bool GameInfo::istTrumpf(Card *card) const
+{
+    switch(mode())
+    {
+        case GameInfo::RUFSPIEL:
+        case GameInfo::RAMSCH:
+                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
+                    return true;
+                break;
+        case GameInfo::STICHT:
+                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==color())
+                    return true;
+                break;
+        case GameInfo::GEIER:
+                if(card->card()==Card::OBER || card->color()==color())
+                    return true;
+                break;
+        case GameInfo::WENZ:
+                if(card->card()==Card::UNTER || card->color()==color())
+                    return true;
+        default:
+                break;
+    };
+    return false;
+}
+
 bool GameInfo::operator>( GameInfo info )
 {
 /*

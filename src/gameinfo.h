@@ -20,6 +20,7 @@
 #ifndef GAMEINFO_H
 #define GAMEINFO_H
 
+class Card;
 class Player;
 class QString;
 /**
@@ -48,6 +49,8 @@ class GameInfo{
         void setMitspieler( Player* p ) { m_mitspieler = p; }
         
         const QString toString() const;
+        int weight( Card* card ) const;
+        bool istTrumpf(Card *card ) const;     
 
         bool operator>( GameInfo info );
         

@@ -156,35 +156,6 @@ Player* Game::findIndex( unsigned int index ) const
     return ( index < PLAYERS ? m_players[index] : 0 );
 }
 
-bool Game::istTrumpf(Card *card,GameInfo* gameinfo)
-{
-    if( !gameinfo )
-        gameinfo = &m_gameinfo;
-        
-    switch(gameinfo->mode())
-    {
-        case GameInfo::RUFSPIEL:
-        case GameInfo::RAMSCH:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
-                    return true;
-                break;
-        case GameInfo::STICHT:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==gameinfo->color())
-                    return true;
-                break;
-        case GameInfo::GEIER:
-                if(card->card()==Card::OBER || card->color()==gameinfo->color())
-                    return true;
-                break;
-        case GameInfo::WENZ:
-                if(card->card()==Card::UNTER || card->color()==gameinfo->color())
-                    return true;
-        default:
-                break;
-    };
-    return false;
-}
-
 int Game::highestCard()
 {
     Card* high = m_currstich.first();

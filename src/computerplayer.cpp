@@ -82,9 +82,9 @@ GameInfo* ComputerPlayer::game()
             info.setMode( i );
             info.setColor( z );        
             for( c=0;c<m_cards->count();c++)
-                if( m_game->istTrumpf( m_cards->at(c), &info ) )
+                if( info.istTrumpf( m_cards->at(c) ) )
                     trumpf++;
-                else if( !m_game->istTrumpf( m_cards->at(c), &info ) && m_cards->at(c)->card() != Card::SAU )
+                else if( !info.istTrumpf( m_cards->at(c) ) && m_cards->at(c)->card() != Card::SAU )
                     fehlfarbe++;
             
             if( trumpf >= 4 && fehlfarbe <= 2 )

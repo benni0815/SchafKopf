@@ -119,7 +119,7 @@ void Player::removeTrumpf(CardList* liste)
 	CardList* entfernen=new CardList;
 	for ( card = liste->first(); card; card = liste->next() )
     	{
-			if(m_game->istTrumpf(card))	entfernen->append(card);
+			if(m_game->gameInfo()->istTrumpf(card))	entfernen->append(card);
 	}
 	liste->RemoveCards(entfernen);
 	delete entfernen;
@@ -130,14 +130,14 @@ bool Player::hasTrumpf(CardList* liste)
 	Card* card;
 	for ( card = liste->first(); card; card = liste->next() )
     	{
-			if(m_game->istTrumpf(card))	return true;
+			if(m_game->gameInfo()->istTrumpf(card))	return true;
 	}
 	return false;
 }
 
 bool Player::istTrumpf(Card* card)
 {
-	return m_game->istTrumpf(card);
+	return m_game->gameInfo()->istTrumpf(card);
 }
 
 CardList* Player::PlayerCards()
