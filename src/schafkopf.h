@@ -65,6 +65,8 @@ class SchafKopf : public KMainWindow
         /** takes care of enabling and disabling actions
           */
         void enableControls();
+		
+		void realNewGame();
         
     private:
         void setupActions();

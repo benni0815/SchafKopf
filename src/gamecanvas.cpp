@@ -106,7 +106,7 @@ void GameCanvas::setGame( Game* game )
 		{
 			disconnect( m_game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         	disconnect( m_game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-        	disconnect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
+        	//disconnect( m_game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		}
 		clearObjects();
 		m_game=NULL;
@@ -116,7 +116,7 @@ void GameCanvas::setGame( Game* game )
         game->setCanvas( this );
         connect( game, SIGNAL(playerPlayedCard(unsigned int,Card*)), this,SLOT(slotPlayerPlayedCard(unsigned int,Card*)));       
         connect( game, SIGNAL(playerMadeStich(unsigned int)), this,SLOT(slotPlayerMadeStich(unsigned int)));
-        connect( game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
+       // connect( game, SIGNAL(clearStich()),this,SLOT(slotClearStich()));
 		m_game = game;
 		createObjects();
     }
@@ -124,8 +124,11 @@ void GameCanvas::setGame( Game* game )
 
 void GameCanvas::cardForbidden(Card* card)
 {
-    for(unsigned int z=0;z<PLAYERS;z++)
-        for(unsigned int i=0;i<m_items[z]->count();i++)
+	for(unsigned int z=0;z<PLAYERS;z++)
+	{
+		if(!m_items[z])
+			continue;
+		for(unsigned int i=0;i<m_items[z]->count();i++)
         {
             CanvasCard* c = static_cast<CanvasCard*>((*m_items[z])[i]);
             if(c->card() == card)
@@ -134,6 +137,7 @@ void GameCanvas::cardForbidden(Card* card)
                 break;
             }
         }
+	}
 }
 
 void GameCanvas::createObjects()
@@ -303,7 +307,8 @@ void GameCanvas::cardClicked( QCanvasItem* item )
 
 void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 {
-    if( !m_items[player] || !m_game || !m_stich )
+    QPoint point;
+	if( !m_items[player] || !m_game || !m_stich )
         return;    
     
     player = id2index( player );
@@ -318,9 +323,9 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
             
             card->setRotation( 0 );
             card->setZ( player );
-            
-            card->moveTo( getStichPosition(player) );
-            
+         
+			point = getStichPosition(player);   
+            card->move( point.x(), point.y() );
             
             break;
         }
@@ -328,42 +333,6 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, Card *c )
 }
 
 void GameCanvas::slotPlayerMadeStich(unsigned int player)
-{
-    player = id2index( player );
-    
-    int x = 0, y = 0;
-    int w = canvas()->width()-DIST;
-    int h = canvas()->height()-DIST;
-    int cardw = Card::backgroundPixmap()->width();
-    int cardh = Card::backgroundPixmap()->height();
-    switch( player ) {
-        case 0:
-            x=(w-cardw)/2;
-            y=h-cardh; 
-            break;
-        case 1:
-            x=w-cardw;
-            y=(h-cardh)/2; 
-            break;
-        case 2: 
-            x=(w-cardw)/2;
-            y=DIST;
-            break;
-        case 3:
-        default:
-            x=DIST; 
-            y=(h-cardh)/2; 
-            break;
-    }                
- 
-    for( unsigned int i=0; i < m_stich->count();i++) {
-        QCanvasItem* item = (*m_stich)[i];
-        CanvasCard* card = static_cast<CanvasCard*>(item);
-        card->moveTo( QPoint(x, y) );
-    }
-}
-
-void GameCanvas::slotClearStich()
 {
     while( !m_stich->isEmpty() ) {
         QCanvasItem* item = m_stich->first();
@@ -374,8 +343,7 @@ void GameCanvas::slotClearStich()
 
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
-// TODO: remove this constants...
-    canvas()->resize( this->width() -20, this->height()-20 );
+    canvas()->resize( this->width() -2, this->height()-2 );
     QCanvasView::resizeEvent( r );
     
     positionObjects();

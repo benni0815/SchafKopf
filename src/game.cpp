@@ -79,6 +79,7 @@ Game::~Game()
 {
     int i;
     
+	m_currstich.clear();
 	for(i=0;i<PLAYERS;i++)
 	{
         delete m_players[i];
@@ -96,8 +97,7 @@ void Game::gameLoop()
     for(i=0;i<TURNS;i++)
     {
         m_currstich.clear();
-        emit clearStich();
-        
+           
         for(a=0;a<PLAYERS;a++) 
         {
             if(m_players[a])
@@ -132,10 +132,6 @@ void Game::gameLoop()
     
     if( !terminated )
         gameResults();
-    
-    m_currstich.clear();
-    emit clearStich();
-    
 }
 
 const CardList *Game::currStich() const

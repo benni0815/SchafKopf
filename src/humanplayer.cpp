@@ -45,27 +45,30 @@ void HumanPlayer::klopfen()
 
 Card *HumanPlayer::play()
 {
-    m_allowed = allowedCards();
+   	m_allowed = allowedCards();
 	m_card=NULL;
     connect( m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
     ENTER_LOOP();
-	if(m_card)
-		qDebug("Human Clicked on Card: %i, %i", m_card->card(), m_card->color());
 	delete m_allowed;
-    m_allowed = 0;
+    m_allowed = NULL;
     disconnect(m_game->canvas(), SIGNAL(playCard(Card*)), this, SLOT(getCard(Card*)));
     return m_card;
 }
 
 void HumanPlayer::getCard(Card* card)
 {
-    if( m_allowed->containsRef( card ) )
+    if(!m_game)
+		return;
+	if( m_allowed->containsRef( card ) )
     {
         m_card = card;
         EXIT_LOOP();
     } 
 	else
-        m_game->canvas()->cardForbidden(card);
+	{
+        qDebug("m_game=%x, canvas=%x", m_game, m_game->canvas());
+		m_game->canvas()->cardForbidden(card);
+	}
 }
 
 void HumanPlayer::setCards( CardList *cards)

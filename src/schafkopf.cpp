@@ -29,6 +29,7 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qvbox.h>
+#include <qtimer.h>
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -67,14 +68,15 @@ SchafKopf::~SchafKopf()
 
 void SchafKopf::setupActions()
 {
-    KPopupMenu* mnuGame = new KPopupMenu( this );
+    KAction* m_actNew;
+	KPopupMenu* mnuGame = new KPopupMenu( this );
     KPopupMenu* mnuSettings = new KPopupMenu( this );
     
     menuBar()->insertItem( i18n("&Game"), mnuGame );
     menuBar()->insertItem( i18n("&Settings"), mnuSettings );
     menuBar()->insertItem( i18n("&Help"), helpMenu() );
 
-    KAction* m_actNew = KStdGameAction::gameNew( this, SLOT( newGame() ) );
+    m_actNew = KStdGameAction::gameNew( this, SLOT( newGame() ) );
     m_actEnd = KStdGameAction::end( this, SLOT( endGame() ) );
     // TODO: DOM: translate me correctly!!!    
     m_actStich = new KAction( i18n( "&Last Stich" ), 0, 0, this, SLOT( showStich() ), actionCollection() );
@@ -101,24 +103,28 @@ void SchafKopf::carddecks()
 
 void SchafKopf::newGame()
 {
-    if( m_game )
-        endGame();
-        
-    m_game = new Game();
+    endGame();
+	QTimer::singleShot(1, this, SLOT(realNewGame()));
+}
+
+void SchafKopf::realNewGame()
+{
+	m_game = new Game();
     m_game->setCanvas( m_canvasview );
     m_canvasview->setGame( m_game );    
-    
     enableControls();
    
     // entering the game loop is the last thing
     // we want to do!
     m_game->gameLoop();
+	endGame();
 }
 
 void SchafKopf::endGame()
 {
-	m_game->endGame();
 	m_canvasview->setGame( NULL );
+	if(m_game)
+		m_game->endGame();
 	delete m_game;
     m_game = NULL;
     

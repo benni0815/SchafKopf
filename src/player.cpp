@@ -138,11 +138,12 @@ bool Player::hasTrumpf(CardList* liste)
 CardList* Player::allowedCards()
 {
 	CardList* allowed= m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
+	
 	if(m_game->gameInfo()->mode==Game::RUFSPIEL)
 	{
-	CardList* Sau=			m_cards->FindCards(m_game->gameInfo()->color, Card::SAU);
-	CardList* Spielfarbe=	m_cards->FindCards(m_game->gameInfo()->color, Card::NOSTICH);
-	removeTrumpf(Spielfarbe);
+		CardList* Sau=			m_cards->FindCards(m_game->gameInfo()->color, Card::SAU);
+		CardList* Spielfarbe=	m_cards->FindCards(m_game->gameInfo()->color, Card::NOSTICH);
+		removeTrumpf(Spielfarbe);
 		if(m_game->currStich()->isEmpty()==true)
 		{
 			if(Sau->isEmpty())
@@ -220,8 +221,8 @@ CardList* Player::allowedCards()
 				}
 				else
 				{
-				CardList *Farbe=m_cards->FindCards(const_cast<CardList *>(m_game->currStich())->first()->color(), Card::NOSTICH);
-				removeTrumpf(Farbe);
+					CardList *Farbe=m_cards->FindCards(const_cast<CardList *>(m_game->currStich())->first()->color(), Card::NOSTICH);
+					removeTrumpf(Farbe);
 					if(!Farbe->isEmpty())
 					{
 						delete Sau;

@@ -71,16 +71,6 @@ void CanvasCard::setRotation( int d )
 }
 
 
-void CanvasCard::moveTo( QPoint p )
-{
-    m_point = p;
-        
-    double my = p.y() - y();
-    double mx = p.x() - x();
-    setXVelocity( mx );
-    setYVelocity( my );
-}
-
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
@@ -94,15 +84,5 @@ void CanvasCard::disableForbidden()
 	QCanvasRectangle::update();
 }
 
-void CanvasCard::advance( int phase )
-{
-    if( fabs(x()-m_point.x()) <=2  )
-        setXVelocity( 0 );
-    
-    if( fabs(y()-m_point.y()) <=2  )
-        setYVelocity( 0 );
-    
-    QCanvasItem::advance( phase );
-}
 
 

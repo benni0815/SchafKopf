@@ -41,15 +41,10 @@ class CanvasCard : public QObject, public QCanvasRectangle
         
         int rtti() const { return CANVASCARD; }
         
-        void moveTo( QPoint p );
-        
         /** mark this card as forbidden to play
           * in the UI
           */
         void forbidden();
-    protected:
-        void advance( int phase );
-        
     private:
         void draw( QPainter & p );
         

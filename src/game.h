@@ -61,7 +61,6 @@ class Game : public QObject
 		bool isTerminated() const { return terminated; }
 		
     signals:
-        void clearStich();
         void gameStateChanged();
         void signalKlopfen();
         void playerPlayedCard( unsigned int player, Card* );
