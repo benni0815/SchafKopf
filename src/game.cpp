@@ -97,9 +97,7 @@ void Game::gameLoop()
 	int gamecnt=0;
     
 	terminated = false;
-    // cards should be given to the player now
-    // it's time to ask wether he wants to double
-    // or not
+    
 	while(!terminated)
 	{
 		start();
@@ -164,6 +162,7 @@ void Game::gameLoop()
         	for(a=0;a<PLAYERS;a++)
 				tmp[a]=m_players[(a+realindex)%PLAYERS];
     	}
+		
 		if(!terminated)
 			gameResults();
 		gamecnt++;
@@ -264,14 +263,7 @@ void Game::gameResults()
     r->setGameInfo( &m_gameinfo );
     for( unsigned int i=0;i<PLAYERS;i++)
         emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
-    
-    m_canvas->information( r->result() );
-    // TODO:
-    // BIG TODO:
-    // IT CRASHES WITH THIS LINE UNCOMMENTED
-    // BUT, WE HAVE TO DELETE r, OTHERWISE WE HAVE A MEMORY LEAK!
-	// FIXED!!!!
-	// You have to tell delete what type r is
+	m_canvas->information( r->result() );
 	if(dynamic_cast<MoneyResults *>(r))
 		delete dynamic_cast<MoneyResults *>(r);
 	else if(dynamic_cast<PointResults *>(r))

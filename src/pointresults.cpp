@@ -42,7 +42,9 @@ double PointResults::points( Player* player )
     m += m_schneider ? 1 : 0;
     m += m_schwarz ? 1 : 0;
     m += m_laufende * 1;
-    
+//	if(player->geklopft())
+//		m*=2;
+	
     if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
         return double(m_points > 60 ? m : m * -1.0);
     else
