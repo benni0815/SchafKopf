@@ -22,7 +22,7 @@
 
 
 
-#include <qwizard.h>
+#include <kwizard.h>
 
 class QWidget;
 class QHBox;
@@ -33,7 +33,7 @@ class QRadioButton;
 /**
 @author Christian Kern
 */
-class newgamewizard : public QWizard
+class newgamewizard : public KWizard
 {
     Q_OBJECT
 

@@ -30,9 +30,10 @@
 #include <qradiobutton.h>
 #include <qbuttongroup.h>
 #include <klocale.h>
+#include <kwizard.h>
 
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
-        : QWizard( parent, name, TRUE )
+        : KWizard( parent, name, TRUE )
 {
     setup_page_selectgame();
 }
