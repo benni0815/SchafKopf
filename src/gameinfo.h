@@ -30,7 +30,7 @@ Keeps all information on the current game (e.g. wenz or rufspiel)
 
 class GameInfo{
     public:
-        enum __mode { RUFSPIEL, STICHT, WENZ, GEIER, RAMSCH };
+        enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH };
         
         int color;
         __mode mode;

@@ -317,6 +317,8 @@ void Game::setupGameInfo()
                 }
         }
     }
+    
+    qDebug("Game=%i, Color=%i", m_gameinfo.mode, m_gameinfo.color );
 }
 
 #include "game.moc"

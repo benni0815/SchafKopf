@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "gameinfo.h"
+#include "card.h"
 
 GameInfo::GameInfo()
 {
@@ -31,5 +32,16 @@ GameInfo::~GameInfo()
 
 bool GameInfo::operator>( GameInfo info )
 {
-    return true;
+/*
+  2.2.3. Hat ein Teilnehmer einen Wenz oder ein Solo und vorher schon ein Spiel angesagt worden, so muß der Einzelspieler erklären "Ich spiele auch". Wenn der Erstmeldende "Gut" sagt, kann der Einzelspieler sein Spiel bekanntgeben. Will der Voransitzende aber selber alleine spielen, so nennt er sein Einzelspiel. Der nachfolgende Teilnehmer kann nun nur noch mit einem höherrangigen Einzelspiel ans Spiel kommen. Denn: Bei gleichrangigen Spielen entscheidet die Sitzreihenfolge, wer zum Zuge kommt. Farbsoli sind untereinander alle gleichberechtigt. Herzsoli geht nicht vor.
+*/  
+    if( this->mode == info.mode )
+    {
+        // according to the above paragraph,
+        // we have only to care about NOCOLOR
+        // e.g. Farblos Wenz > Herz Wenz 
+        // but Eichel Wenz == Gras Wenz
+        return ( this->color == Card::NOCOLOR );
+    } else
+        return this->mode < info.mode;
 }
