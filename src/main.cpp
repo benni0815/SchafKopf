@@ -26,9 +26,10 @@
 #include <klocale.h>
 
 static const char description[] =
-    I18N_NOOP("Schafkopf is a popular card game in Bavaria.");
+    I18N_NOOP("<qt>Schafkopf is a popular card game in Bavaria. "
+              "SchafKopf ist the KDE version of this game.</qt>");
 
-static const char version[] = "0.4";
+static const char version[] = "0.5";
 
 static KCmdLineOptions options[] =
 {
@@ -37,12 +38,13 @@ static KCmdLineOptions options[] =
 
 int main(int argc, char **argv)
 {
+    // if you want copyright, then add you to the list:
     KAboutData about("schafkopf", I18N_NOOP("SchafKopf"), version, description,
-                     KAboutData::License_GPL, "(C) 2004 Dominik Seichter", 0, 0, "domseichter@web.de");
+                     KAboutData::License_GPL, "(C) 2004-2005 Dominik Seichter (and others)", 0, 0, "domseichter@web.de");
     about.addAuthor( "Christian Kern", 0, "kernch@in.tum.de" );	
     about.addAuthor( "Lorenz Moesenlechner", 0, "moesenle@in.tum.de" );
-    about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de", "http://www.krename.net" );
     about.addAuthor( "Benjamin Loewe", 0, "benjamin.loewe@freenet.de" );
+    about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de", "http://www.krename.net" );
 
     KCmdLineArgs::init(argc, argv, &about);
     KCmdLineArgs::addCmdLineOptions( options );
