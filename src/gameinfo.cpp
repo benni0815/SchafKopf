@@ -224,6 +224,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 			col=gameinfo->color();
 			break;
 		case GameInfo::WENZ:
+			//qDebug("Wenz, color: "+ QString::number(gameinfo->color()));
 			trumpf_cnt=1;
         	l_trumpf=&l_trumpf_wenz;
 			l_cards=l_cards_wenz;
@@ -270,6 +271,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 			break;
 		}
 	}
+	//qDebug("Trumpf-Index: " + QString::number(trumpf_index));
 	if(trumpf_index!=-1)
 		return 32-(trumpf_index*4+card->color());
 	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);

@@ -73,9 +73,9 @@ void Game::start()
     unsigned int i = 0;
     CardList *playercards[PLAYERS];
 
-    m_allcards.randomize();
+	m_allcards.randomize();
     for( i=0; i<PLAYERS; i++)
-        playercards[i]=new CardList();
+		playercards[i]=new CardList();
     for( i=0; i<CARD_CNT; i++)
         playercards[i%PLAYERS]->append(m_allcards.at(i));
 
@@ -84,9 +84,7 @@ void Game::start()
         m_players[i]->setCards( playercards[i] );
         m_players[i]->stiche()->clear();
     }
-	//for(i=0;i<PLAYERS;i++)
-	//	delete playercards[i];
-    emit gameStarted();
+	emit gameStarted();
 }
 
 // Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitter sofort erschießen :)
@@ -179,7 +177,6 @@ const CardList *Game::currStich() const
 
 void Game::endGame(void)
 {
-	qDebug("LoopLevel: " + QString::number(kapp->eventLoop()->loopLevel())+", terminated: " + QString::number(terminated));
 	terminated=true;
 	emit gameEnded();
 	EXIT_LOOP();
