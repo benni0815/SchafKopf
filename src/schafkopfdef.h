@@ -88,6 +88,15 @@ typedef struct t_PlayerData {
     #warning "CHEATING ENABLED!!!"
 #endif
 
+/** 
+ * Enable the simulation mode, might be useful for training 
+ * the neuro-net we will surely get soon.
+ */
+//#define SIMULATION_MODE
+/**
+ * How many games should be simulated in SIMULATION_MODE?
+ */
+#define SIMULATION_MODE_MAX 10000
 
 // DISTANCE from the border used in CanvasPlayer
 #define DIST 20

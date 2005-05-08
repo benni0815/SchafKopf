@@ -55,7 +55,8 @@ StichDlg::~StichDlg()
 void StichDlg::changed( const QString & name, int* list, QStringList* playerlist )
 {
     CardList stich( list );
-    
+    stich.setAutoDelete( true );
+
     if( stich.count() )
         trick->setText( i18n("Trick was made by: <b>") + name + "</b>" );
     else

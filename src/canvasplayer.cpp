@@ -37,7 +37,14 @@ CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas )
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
+
+#ifndef SIMULATION_MODE
+    // TODO: This should be passed as flag depending on Player::isHuman();
     m_is_human = (m_id == 0);
+#else
+    m_is_human = false;
+#endif // SIMULATION_MODE
+
 }
 
 CanvasPlayer::~CanvasPlayer()
@@ -243,7 +250,9 @@ void CanvasPlayer::setCards( CardList* cards )
 {
     int i;
     for( i = 0; i < NUMCARDS; i++ ) 
+    {
         m_items[i]->setCard( NULL );
+    }
 
     m_cards->clear();
     m_cards->appendList( cards );

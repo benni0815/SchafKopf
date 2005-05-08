@@ -44,6 +44,7 @@ class Card {
         QPixmap* pixmap();
         
         /** return a pixmap for the background of a card.
+          * Do not delete the returned pixmap!
           */
         static QPixmap* backgroundPixmap();
         

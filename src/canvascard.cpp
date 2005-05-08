@@ -20,6 +20,7 @@
 #include "canvascard.h"
 #include "card.h"
 #include "settings.h"
+#include "schafkopfdef.h"
 
 #include <qpainter.h>
 #include <qtimer.h>
@@ -52,6 +53,10 @@ void CanvasCard::setCard( Card* card )
 
 void CanvasCard::draw( QPainter & p )
 {
+#ifdef SIMULATION_MODE
+    return;
+#endif // SIMULATION_MODE    
+
     if( m_card )
     {
         QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();

@@ -97,7 +97,6 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     m_focus_list.append( m_ok );
     for( i=0;i<NUMCARDS;i++ )
         m_focus_list.append( m_players[0]->canvasCard( i ) );
-    
 }    
 
 GameCanvas::~GameCanvas()
@@ -223,7 +222,7 @@ int GameCanvas::getCard()
     connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
     m_result = -1;
 
-    if( hasFocus() )
+    if( hasFocus() && human )
         for( i=0;i<NUMCARDS;i++)
         {
             c = human->canvasCard( i );
@@ -346,7 +345,7 @@ void GameCanvas::redrawPlayers()
 	
     for(i=0;i<PLAYERS;i++)
     {
-		m_players[i]->init();
+        m_players[i]->init();
         m_stich[i]->hide();
     }
 }

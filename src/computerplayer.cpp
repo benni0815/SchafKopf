@@ -98,23 +98,24 @@ void ComputerPlayer::klopfen()
 
 void ComputerPlayer::init()
 {
-	int i;
+    int i;
 	
-	for(i=0;i<PLAYERS;i++)
-		m_playedCards[i]->clear();
-	m_angespielt->clear();
-	if(m_game->gameInfo()->mitspieler()==this)
-	{
-		for(mitspieler=0;mitspieler<PLAYERS;mitspieler++)
-			if(m_game->findIndex(mitspieler)==m_game->gameInfo()->spieler())
-				break;
-	}
-	else if(m_game->gameInfo()->mode()!=GameInfo::RUFSPIEL && 
+    for(i=0;i<PLAYERS;i++)
+	m_playedCards[i]->clear();
+
+    m_angespielt->clear();
+    if(m_game->gameInfo()->mitspieler()==this)
+    {
+	for(mitspieler=0;mitspieler<PLAYERS;mitspieler++)
+	    if(m_game->findIndex(mitspieler)==m_game->gameInfo()->spieler())
+		break;
+    }
+    else if(m_game->gameInfo()->mode()!=GameInfo::RUFSPIEL && 
             m_game->gameInfo()->mode()!=GameInfo::RAMSCH &&
             m_game->gameInfo()->spieler()!=this)
-		mitspieler=m_game->gameInfo()->spieler()->id();
-	else
-		mitspieler=-1;
+	mitspieler=m_game->gameInfo()->spieler()->id();
+    else
+	mitspieler=-1;
 }
 
 Card *ComputerPlayer::play()
@@ -245,8 +246,8 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
 {
 	if(ownStich())
 	{
-		qDebug("schmiere");
-		return findSchmiere(cards);
+	    qDebug("%s: schmiere", name().latin1());
+	    return findSchmiere(cards);
 	}
 	else if(canMakeStich(cards))
 	{
@@ -359,21 +360,34 @@ bool ComputerPlayer::canMakeStich(CardList *cards)
 
 bool ComputerPlayer::ownStich()
 {
-	Card *highestCard=m_game->currStich()->at(m_game->highestCard());
-	
-	if(mitspieler==-1)
-		return false;
-	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL)
-	{
-		if(m_playedCards[mitspieler]->containsRef(highestCard))
-			return true;
-	}
-	else
-	{
-		if(!m_playedCards[mitspieler]->containsRef(highestCard))	
-			return true;
-	}
+    Card* highestCard= m_game->currStich()->at(m_game->highestCard());
+    CardList spielercards;
+    bool spieler = ( m_game->gameInfo()->spieler() == this || m_game->gameInfo()->mitspieler() == this );
+
+    /* The stich cannot belong to us if we are to play
+     * the first card! 
+     */
+    if( !m_game->currStich()->count() )
 	return false;
+
+    qDebug("%s is spieler ? %i Highest Card=%p", name().latin1(), (int)spieler, highestCard );
+
+    if( m_game->gameInfo()->spieler() )
+	spielercards.appendList( m_game->gameInfo()->spieler()->cards() );
+
+    if( m_game->gameInfo()->mitspieler() )
+	spielercards.appendList( m_game->gameInfo()->mitspieler()->cards() );
+
+    if( spielercards.containsRef( highestCard ) )
+    {
+	qDebug("Spieler hat die hoechste Karte: %i",  (spieler ? true : true));
+	return (spieler ? true : false);
+    }
+    else
+    {
+	qDebug("Gegenspieler hat die hoechste Karte: %i", (spieler ? false : true) );
+	return (spieler ? false : true);
+    }
 }
 
 bool ComputerPlayer::istTrumpfFrei(int playerId)

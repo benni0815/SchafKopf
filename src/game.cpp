@@ -45,13 +45,18 @@ Game::Game(sem_t* sem, QObject *parent )
     m_parent = parent;
     m_laufende = 0;
     m_timesThrownTogether = 0;
-    
+
+#ifndef SIMULATION_MODE
     // Create our player objects
     // delete these only in the destructor    
     m_players[0] = new HumanPlayer( def_id++, this );
     for( i=1;i<PLAYERS;i++)
         m_players[i] = new ComputerPlayer( def_id++, this );
-    
+#else
+    for( i=0;i<PLAYERS;i++)
+        m_players[i] = new ComputerPlayer( def_id++, this );
+#endif // SIMULATION_MODE    
+
     updatePlayerNames();
     
     // make sure that results get cleaned up, when the results type is changed
@@ -181,8 +186,11 @@ void Game::gameLoop()
                 cards[1] = 0;
                 postEvent( CardPlayed, tmp[a]->id(), cards, QString::null, true );
             	//emit playerPlayedCard(tmp[a]->id(),c);
-                
+
+#ifndef SIMULATION_MODE
             	sleep( 1 );
+#endif // SIMULATION_MODE
+
 		if( terminated )
 		    return;
 	    }
@@ -208,6 +216,14 @@ void Game::gameLoop()
 	if(!terminated)
 	    gameResults();
 	gamecnt++;
+
+#ifdef SIMULATION_MODE
+        if( gamecnt >= SIMULATION_MODE_MAX )
+        {
+            terminated = true;
+            qDebug("Terminating Simulation after %i games.", SIMULATION_MODE_MAX );
+        }
+#endif // SIMULATION_MODE
     }
 }
 
@@ -499,7 +515,24 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
 {
     t_EventData* data = new t_EventData;
     void* ret = NULL;
-    
+
+#ifdef SIMULATION_MODE
+    // ignore all actions that require user 
+    // interaction in simulation mode
+    if( action == InfoMessage ||
+        action == PlayerDoubled )
+    {
+        if( cardids )
+            delete [] cardids;
+
+        if( names )
+            delete names;
+
+        delete data;
+        return NULL;
+    }
+#endif // SIMULATION_MODE
+
     data->type = action;
     data->playerid = playerid;
     data->cardids = cardids;
