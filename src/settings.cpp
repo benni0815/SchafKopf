@@ -24,7 +24,9 @@
 #include <kapplication.h>
 #include <kcarddialog.h>
 #include <kconfig.h>
+#if KDE_VERSION >= 0x30200
 #include <kuser.h>
+#endif
 #include <kstandarddirs.h>
 
 #include <qmutex.h>
@@ -35,7 +37,7 @@ Settings* Settings::instance()
 {
     if( !m_instance )
         m_instance = new Settings();
-        
+
     return m_instance;
 }
 
@@ -113,11 +115,17 @@ const QStringList Settings::playerNames() const
 {
     QMutexLocker locker( m_mutex );
     
+    QString username;
     QStringList list;
+    #if KDE_VERSION >= 0x30200
     KUser user;
+    username=user.loginName();
+    #else
+    username="Player 1";
+    #endif
     KConfig* config = kapp->config();
     config->setGroup("PlayerNames");
-    list.append( config->readEntry( "Player1", user.loginName() ) );
+    list.append( config->readEntry( "Player1", username ) );
     list.append( config->readEntry( "Player2", "Dom" ) );
     list.append( config->readEntry( "Player3", "Lenz" ) );
     list.append( config->readEntry( "Player4", "G.J." ) );
