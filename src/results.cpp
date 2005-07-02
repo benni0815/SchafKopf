@@ -35,13 +35,13 @@ Results::Results()
 {
     m_gameinfo = NULL;
     m_game = NULL;
+    m_laufende = 0;
     
     init();
 }
 
 void Results::init()
 {
-    //m_laufende = 0;
     m_schneider = false;
     m_schwarz = false;
     
