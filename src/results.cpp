@@ -41,7 +41,7 @@ Results::Results()
 
 void Results::init()
 {
-    m_laufende = 0;
+    //m_laufende = 0;
     m_schneider = false;
     m_schwarz = false;
     
@@ -148,6 +148,7 @@ void Results::parse()
                     m_winners.append( m_game->findIndex( i ) );
         }
                 
+	qDebug("Laufende: "+QString::number(m_laufende));
         // ab 2 laufende bei wenz und geier
         if( m_gameinfo->mode() == GameInfo::GEIER || m_gameinfo->mode() == GameInfo::WENZ )
             m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
@@ -155,7 +156,7 @@ void Results::parse()
         else if( m_gameinfo->mode() == GameInfo::STICHT || m_gameinfo->mode() == GameInfo::RAMSCH 
                 || m_gameinfo->mode() == GameInfo::DACHS || m_gameinfo->mode() == GameInfo::RUFSPIEL )
             m_laufende = ( m_laufende >= 3 || m_laufende <= -3 ) ? m_laufende : 0;
-        
+
         m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
     }
 }
