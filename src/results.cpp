@@ -51,9 +51,9 @@ void Results::init()
 
 QString Results::result()
 {
-    bool positive = m_laufende > 0;
     parse();
-    
+    bool positive = m_laufende > 0;
+   
     QString s;
     QString schneider = m_schneider ? i18n(" schneider" ) : QString::null;
     QString schwarz = m_schwarz ? i18n(" no-trick") : QString::null;
