@@ -76,7 +76,15 @@ class ComputerPlayer : public Player
         bool istFarbFrei(int playerId, int c);
         float gehtDurch(Card *card);
         float gegnerSticht(Card *card);
+
+        /** returns the highest trump that is still 
+         *  in the game not counting the own cards
+         *  of the player. 
+         *  NULL is returned if there is no trump in
+         *  the game anymore.
+         */
         Card *highestTrumpfInGame();
+
         int myTrumpfs();
         int trumpfsInGame();
         

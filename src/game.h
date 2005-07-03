@@ -40,13 +40,21 @@ class Game : public QThread
         Game(sem_t* sem, QObject *parent);
         ~Game();
         void gameLoop();
-		CardList *currStich();
-		inline CardList *allCards() { return &m_allcards; }
+        CardList *currStich();
+        inline CardList *allCards() { return &m_allcards; }
         inline CardList *playedCards() { return &m_playedcards; }
-		GameInfo *gameInfo();
+        GameInfo *gameInfo();
         
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
+
+        /** @returns the player who is the next to play 
+         *  a card in this turn or NULL if there is no player left.
+         * 
+         *  This should only be called from Player::play()
+         */
+        inline Player* nextPlayer() const { return m_nextPlayer; };
+
 		bool isTerminated() const { return terminated; }
 		int highestCard( CardList* list = 0 );
 		bool isHigher( Card* card, Card* high );
@@ -109,7 +117,10 @@ class Game : public QThread
         
         sem_t* m_sem;
         bool terminated;
+
         Player *m_players[PLAYERS];
+        Player *m_nextPlayer; // player who is the next to play a card (for nextPlayer() )
+
         CardList m_allcards;
         CardList m_playedcards;
         CardList m_currstich;

@@ -166,8 +166,15 @@ void Game::gameLoop()
            
 	    for(a=0;a<PLAYERS;a++) 
 	    {
+                // TODO: if this check fails we have
+                //       a problem anyways so we should
+                //       maybe remove it
             	if(tmp[a])
+                {
+                    m_nextPlayer = ( a+1 < PLAYERS ? tmp[a+1] : NULL );
 		    c = tmp[a]->play();
+                }
+
 		if(terminated || c==NULL)
 		    return;
 			

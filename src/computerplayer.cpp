@@ -30,22 +30,22 @@
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
 	: Player(id,game)
 {
-	int i;
+    int i;
 	
-	book = new OpenBook( this, game );
-	for(i=0;i<PLAYERS;i++)
-		m_playedCards[i]=new CardList();
-	m_angespielt=new CardList();
+    book = new OpenBook( this, game );
+    for(i=0;i<PLAYERS;i++)
+        m_playedCards[i]=new CardList();
+    m_angespielt=new CardList();
 }
 
 ComputerPlayer::~ComputerPlayer()
 {
-	int i;
-	
-	for(i=0;i<PLAYERS;i++)
-		delete m_playedCards[i];
-	delete m_angespielt;
-	delete book;
+    int i;
+    
+    for(i=0;i<PLAYERS;i++)
+        delete m_playedCards[i];
+    delete m_angespielt;
+    delete book;
 }
 
 void ComputerPlayer::klopfen()
@@ -120,37 +120,37 @@ void ComputerPlayer::init()
 
 Card *ComputerPlayer::play()
 {
-	CardList* allowed=NULL;
-	Card* ToPlay;
-	int i;
+    CardList* allowed=NULL;
+    Card* ToPlay;
+    int i;
 			
     if( m_game->currStich()->isEmpty() )
-	{
+    {
         allowed=book->possibleCards();
-		if(!allowed)	        
-			allowed=allowedCards();
-		i=0;
-		for(;;)
-		{
-			if(!(i<allowed->count() && allowed->count()>1))
-				break;
-			if(allowed->at(i)->points()==10)
-				allowed->remove(i);
-			else
-				i++;
-		}
-		i=0;
-		for(;;)
-		{
-			if(!(i<allowed->count() && allowed->count()>1))
-				break;
-			if(allowed->at(i)->points()==4)
-				allowed->remove(i);
-			else
-				i++;
-		}
-		qDebug("%s: allowed->count() : %i", name().latin1(), allowed->count() );
-	}
+        if(!allowed)	        
+            allowed=allowedCards();
+        i=0;
+        for(;;)
+        {
+            if(!(i<allowed->count() && allowed->count()>1))
+                break;
+            if(allowed->at(i)->points()==10)
+                allowed->remove(i);
+            else
+                i++;
+        }
+        i=0;
+        for(;;)
+        {
+            if(!(i<allowed->count() && allowed->count()>1))
+                break;
+            if(allowed->at(i)->points()==4)
+                allowed->remove(i);
+            else
+                i++;
+        }
+        qDebug("%s: allowed->count() : %i", name().latin1(), allowed->count() );
+    }
     else if( m_game->currStich()->count() == 3 )
     {
         // last one to play a card
@@ -160,19 +160,21 @@ Card *ComputerPlayer::play()
         // So it takes some work away from the real KI.
         StrategyBook strategy( this, m_game );
         allowed = strategy.possibleCards();
-        
-        
     }
-	if(!allowed)
-		allowed=allowedCards();
-        
-	ToPlay=findCardToPlay(allowed);
-	if(m_game->currStich()->isEmpty())
-		m_angespielt->append(ToPlay);
-	else
-		m_angespielt->append(m_game->currStich()->first());
-	delete allowed;
-	return ToPlay;
+
+    if(!allowed)
+        allowed=allowedCards();
+    
+//    if( allowed->count() == 1 )
+//        return allowed->first();
+
+    ToPlay=findCardToPlay(allowed);
+    if(m_game->currStich()->isEmpty())
+        m_angespielt->append(ToPlay);
+    else
+        m_angespielt->append(m_game->currStich()->first());
+    delete allowed;
+    return ToPlay;
 }
 
 GameInfo* ComputerPlayer::gameInfo( bool force )
@@ -244,12 +246,45 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
 
 Card *ComputerPlayer::findCardToPlay(CardList *cards)
 {
+        Card* highestTrump = highestTrumpfInGame();
+
 	if(ownStich())
 	{
-	    qDebug("%s: schmiere", name().latin1());
-	    return findSchmiere(cards);
+            // nur schmieren wenn :
+            // -man letzter ist,
+            // -der partner mit dem hoechsten trumpf im spiel 
+            //  abzueglich der eigenen truempfe gestochen hat 
+            // -oder wenn der darauf folgende spieler der selben
+            //  partei angehoert wie man selbst (wichtig fuer solos)
+            if( m_game->currStich()->count() == PLAYERS - 1 ||
+                ( highestTrump && 
+                  findHighestCard( m_game->currStich() )->id() == highestTrump->id() ) ||
+                ( m_game->currStich()->count() == PLAYERS - 2 && 
+                  m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
+            {
+                qDebug("%s: schmiere!", name().latin1() );
+                return findSchmiere(cards);
+            }
 	}
-	else if(canMakeStich(cards))
+        else
+        {
+            // Bei Solos wird geschmiert wenn:
+            // -man nicht spieler und nicht letzter oder erster ist
+            // -wenn jemand anders den stich noch machen kann
+            if( m_game->gameInfo()->mitspieler() == NULL &&      // Solo ?
+                m_game->currStich()->count() < PLAYERS - 1 &&    // letzter ?
+                m_game->currStich()->count() &&                  // erster ?
+                !this->isPlayer() &&                             // selber spieler ?
+                ( highestTrump && 
+                  findHighestCard( m_game->currStich() )->id() != highestTrump->id()) && // Kann der Stich ueberhaupt gestochen werden
+                !canMakeStich(cards) )                           // kann ihn jemand ausser mir machen?
+            {
+                qDebug("%s: schmiere!", name().latin1() );
+                return findSchmiere(cards);
+            }
+        }
+	
+        if(canMakeStich(cards))
 	{
         CardList* stich = m_game->currStich();
         bool gestochen = false;
@@ -312,18 +347,19 @@ Card *ComputerPlayer::findLowestPossibleCard(Card* highest, CardList *cards)
 
 Card *ComputerPlayer::findSchmiere(CardList *cards)
 {
-	Card *schmiere=cards->first();
-	Card *card=cards->first();
+    Card *schmiere=cards->first();
+    Card *card=cards->first();
 	
-	while( (card = cards->next() ) )
-	{
-		if( card->points() > schmiere->points() )
-		{
-			schmiere = card;
-			continue;
-		}
-	}
-	return schmiere;
+    while( (card = cards->next() ) )
+    {
+        if( card->points() > schmiere->points() )
+        {
+            schmiere = card;
+            continue;
+        }
+    }
+    
+    return schmiere;
 }
 
 Card *ComputerPlayer::findCheapestCard(CardList *cards)
@@ -361,8 +397,6 @@ bool ComputerPlayer::canMakeStich(CardList *cards)
 bool ComputerPlayer::ownStich()
 {
     Card* highestCard= m_game->currStich()->at(m_game->highestCard());
-    bool spieler = ( m_game->gameInfo()->spieler() == this || m_game->gameInfo()->mitspieler() == this );
-    qDebug("%s ist %s Spieler.", name().latin1(), (spieler ? "":"nicht") );
 
     /* The stich cannot belong to us if we are to play
      * the first card! 
@@ -374,10 +408,10 @@ bool ComputerPlayer::ownStich()
      * We can only check if the card belongs to the player party, so we check afterwars
      * if we are part of the player part!! Think about it... it does really work :)
      */
-    if( highestCard->owner() == m_game->gameInfo()->spieler() || highestCard->owner() == m_game->gameInfo()->mitspieler() )
-        return ( spieler ? true : false );
+    if( highestCard->owner()->isPlayer() )
+        return ( this->isPlayer() ? true : false );
     else
-        return ( spieler ? false : true );
+        return ( this->isPlayer() ? false : true );
 }
 
 bool ComputerPlayer::istTrumpfFrei(int playerId)
@@ -413,26 +447,28 @@ float ComputerPlayer::gegnerSticht(Card *card)
 
 Card *ComputerPlayer::highestTrumpfInGame()
 {
-	CardList *trumpfs=new CardList();
-	Card *c;
-	int i;
+    CardList *trumpfs=new CardList();
+    Card *c;
+    int i;
 	
-	//trumpfs.setAutoDelete(false);
-	for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
-		if(m_game->gameInfo()->istTrumpf(c))
-			trumpfs->append(c);
-	for(i=0;i<PLAYERS;i++)
-	{
-		for(c=trumpfs->first();c;c=trumpfs->next())
-			if(m_playedCards[i]->containsRef(c))
-				trumpfs->removeRef(c);
-	}
-	for(c=m_cards->first();c;c=m_cards->next())
-		trumpfs->removeRef(c);
-	trumpfs->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-	c=trumpfs->at(trumpfs->count()-1);
-	delete trumpfs;
-	return c;
+    for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
+        if(m_game->gameInfo()->istTrumpf(c))
+            trumpfs->append(c);
+
+    for(i=0;i<PLAYERS;i++)
+    {
+        for(c=trumpfs->first();c;c=trumpfs->next())
+            if(m_playedCards[i]->containsRef(c))
+                trumpfs->removeRef(c);
+    }
+
+    for(c=m_cards->first();c;c=m_cards->next())
+        trumpfs->removeRef(c);
+
+    trumpfs->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
+    c=trumpfs->at(trumpfs->count()-1);
+    delete trumpfs;
+    return c;
 }
 
 int ComputerPlayer::myTrumpfs()

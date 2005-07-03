@@ -14,17 +14,18 @@ class Player
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
 		
-		Player(unsigned int id, Game* game);
+        Player(unsigned int id, Game* game);
+        
         // this destructor should be virtual
         // but setting it to virtual makes everything
         // crash. Seems to be a good lenz-job ;) ...
-		virtual ~Player();
+        virtual ~Player();
 
-		virtual void init() {};
+        virtual void init() {};
         /** set m_geklopft to true in this function if the player wants to double
           * and to false if not. 
           */
-		virtual void klopfen();
+        virtual void klopfen();
         virtual Card *play() = 0;
         /** if @p force is true the player has to play wether he wants or not
           * a valid GameInfo object has to be returned in this case!
@@ -54,6 +55,10 @@ class Player
           * count twice or not
           */
         bool geklopft() const { return m_geklopft; }
+
+        /** returns wether this player is part of the player party or not
+          */
+        bool isPlayer() const;
 
         CardList *allowedCards();
         void removeTrumpf(CardList* liste);

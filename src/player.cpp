@@ -69,6 +69,14 @@ void Player::klopfen()
     m_game->postEvent( PlayerHasDoubled, id() );
 }
 
+bool Player::isPlayer() const
+{
+    if( m_game && m_game->gameInfo() ) 
+        return ( m_game->gameInfo()->spieler() == this || m_game->gameInfo()->mitspieler() == this );
+    else
+        return false;
+}
+
 void Player::DebugCardOutput(Card* card)
 {
 // DS: disabled to fix compiler warnings

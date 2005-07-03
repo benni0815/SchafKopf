@@ -106,7 +106,7 @@ RuleBook::RuleBook( ComputerPlayer* player, Game* game )
     m_self = player;
     m_game = game;
     
-    m_player = ((Player*)m_self == m_game->gameInfo()->spieler() || (Player*)m_self == m_game->gameInfo()->mitspieler() );
+    m_player = (Player*)m_self->isPlayer();
 }
 
 RuleBook::~RuleBook()
@@ -129,7 +129,7 @@ CardList* OpenBook::possibleCards()
     CardList* list = new CardList();
     unsigned int i = 0;
 
-    m_player = ((Player*)m_self == m_game->gameInfo()->spieler() || (Player*)m_self == m_game->gameInfo()->mitspieler() );
+    m_player = (Player*)m_self->isPlayer();
     for( i=0;i<sizeof(rules)/sizeof(s_rule);i++)
     {
         s_rule r = rules[i];
@@ -191,8 +191,7 @@ CardList* StrategyBook::possibleCards()
      *    - abspatzen
      */
     highest = stiche->at( m_game->highestCard() );
-    if( highest->owner() == m_game->gameInfo()->spieler() || 
-        highest->owner() == m_game->gameInfo()->mitspieler() )
+    if( highest->owner()->isPlayer() )
     {
         // der stich gehört der spieler partei
         unser_stich = m_player;
