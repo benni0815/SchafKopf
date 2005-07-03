@@ -363,31 +363,17 @@ bool ComputerPlayer::ownStich()
     Card* highestCard= m_game->currStich()->at(m_game->highestCard());
     CardList spielercards;
     bool spieler = ( m_game->gameInfo()->spieler() == this || m_game->gameInfo()->mitspieler() == this );
-
+    qDebug("%s ist %s Spieler.", name().latin1(), (spieler ? "":"nicht") );
     /* The stich cannot belong to us if we are to play
      * the first card! 
      */
     if( !m_game->currStich()->count() )
 	return false;
 
-    qDebug("%s is spieler ? %i Highest Card=%p", name().latin1(), (int)spieler, highestCard );
-
-    if( m_game->gameInfo()->spieler() )
-	spielercards.appendList( m_game->gameInfo()->spieler()->cards() );
-
-    if( m_game->gameInfo()->mitspieler() )
-	spielercards.appendList( m_game->gameInfo()->mitspieler()->cards() );
-
-    if( spielercards.containsRef( highestCard ) )
-    {
-	qDebug("Spieler hat die hoechste Karte: %i",  (spieler ? true : true));
-	return (spieler ? true : false);
-    }
+    if( highestCard->owner() == m_game->gameInfo()->spieler() || highestCard->owner() == m_game->gameInfo()->mitspieler() )
+        return ( spieler ? true : false );
     else
-    {
-	qDebug("Gegenspieler hat die hoechste Karte: %i", (spieler ? false : true) );
-	return (spieler ? false : true);
-    }
+        return ( spieler ? false : true );
 }
 
 bool ComputerPlayer::istTrumpfFrei(int playerId)

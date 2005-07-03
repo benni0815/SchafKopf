@@ -82,7 +82,7 @@ typedef struct t_PlayerData {
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */
-//#define CHEAT
+#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"
