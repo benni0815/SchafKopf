@@ -4,7 +4,6 @@ Fixen:
 - Rufsau nach davonlaufen in allowedCards hinzufuegen
 
 AI:
-- Solo: Mitspieler schmieren dem Spieler
 - Computer schmiert auch Ober wenn er nix hoeheres hat
 - Oefters Rufspiele spielen
 - "Wird eine Farbe das zweite Mal gespielt, so sollte ein AI-Spieler mindestens mit einem Unter stechen, sofern hinter ihm noch ein Gegner kommt." (auf keinen Fall schmieren!!)
@@ -13,8 +12,8 @@ AI:
 
 neue Features:
 - "Momentan ist es so, dass ich sofort bei der Spielansage angeben muss, welches Spiel ich zu spielen gedenke. In der Realitaet kann ich es davon abhaengig machen, ob hinter mir noch jemand ein Spiel angemeldet hat. Die exakte Spielauswahl sollte also erst zu dem Zeitpunkt erfolgen, an dem sie auch in der Ralitaet stattfindet." Und dann nur Spiele auswaehlbar machen die hoeher sind als die vorher angesagten.
-- richtige Schafkopfkarten hinzufgen
-- netzwerktransparente Kommunikation (fuer neuronales Netzwerk und Netzwerkspiel)
+- richtige Schafkopfkarten
+- netzwerktransparente Kommunikation (fuer neuronales Netz und Netzwerkspiel)
 - speichern und laden von Spielen
 - Trainingsmodus mit "Rueckgaengig"-Funktion (auch mehrere Stiche)
 - "Letzter Stich"-Dialog: Karten so anordnen wie auf dem Spielfeld
