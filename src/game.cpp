@@ -399,7 +399,6 @@ bool Game::setupGameInfo(Player *players[])
     }
     
     m_laufende = m_gameinfo.laufende();
-    qDebug(QString::number(m_laufende));
     postEvent( InfoMessage, 0, 0, m_gameinfo.toString(), true );
     //m_canvas->information( m_gameinfo.toString() );
 

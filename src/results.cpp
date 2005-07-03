@@ -148,7 +148,6 @@ void Results::parse()
                     m_winners.append( m_game->findIndex( i ) );
         }
                 
-	qDebug("Laufende: "+QString::number(m_laufende));
         // ab 2 laufende bei wenz und geier
         if( m_gameinfo->mode() == GameInfo::GEIER || m_gameinfo->mode() == GameInfo::WENZ )
             m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
