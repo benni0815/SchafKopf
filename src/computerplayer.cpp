@@ -361,15 +361,19 @@ bool ComputerPlayer::canMakeStich(CardList *cards)
 bool ComputerPlayer::ownStich()
 {
     Card* highestCard= m_game->currStich()->at(m_game->highestCard());
-    CardList spielercards;
     bool spieler = ( m_game->gameInfo()->spieler() == this || m_game->gameInfo()->mitspieler() == this );
     qDebug("%s ist %s Spieler.", name().latin1(), (spieler ? "":"nicht") );
+
     /* The stich cannot belong to us if we are to play
      * the first card! 
      */
     if( !m_game->currStich()->count() )
 	return false;
 
+    /* This looks butt ugly but it works!
+     * We can only check if the card belongs to the player party, so we check afterwars
+     * if we are part of the player part!! Think about it... it does really work :)
+     */
     if( highestCard->owner() == m_game->gameInfo()->spieler() || highestCard->owner() == m_game->gameInfo()->mitspieler() )
         return ( spieler ? true : false );
     else
