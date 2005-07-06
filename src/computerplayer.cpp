@@ -151,6 +151,8 @@ Card *ComputerPlayer::play()
         }
         qDebug("%s: allowed->count() : %i", name().latin1(), allowed->count() );
     }
+    /*
+      // The AI is more intelligent, let the AI decide
     else if( m_game->currStich()->count() == 3 )
     {
         // last one to play a card
@@ -161,7 +163,7 @@ Card *ComputerPlayer::play()
         StrategyBook strategy( this, m_game );
         allowed = strategy.possibleCards();
     }
-
+    */
     if(!allowed)
         allowed=allowedCards();
     
