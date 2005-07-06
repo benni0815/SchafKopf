@@ -228,7 +228,7 @@ CardList* Player::allowedCards()
             if( istTrumpf( Spielfarbe->at(i) ) )
             {
                 Spielfarbe->removeRef( Spielfarbe->at(i) );
-                qDebug("Entferne trumpf aus Spielfarbe");
+                qDebug("%s: Entferne trumpf aus Spielfarbe", name().latin1());
             }
         }
                 

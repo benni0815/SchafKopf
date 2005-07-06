@@ -59,7 +59,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     for(;i<PLAYERS;i++)
     {
         m_stich[i]=new CanvasCard( c );
-        m_players[i]=new CanvasPlayer( i, c );
+        m_players[i]=new CanvasPlayer( i, c, this );
     }
     
     m_item = NULL;
@@ -529,6 +529,11 @@ void GameCanvas::information( const QString & message )
     canvas()->update();
         
     return;
+}
+
+void GameCanvas::Bubble( const QString & message, unsigned int playerid )
+{
+    m_players[playerid]->say(message, playerid);
 }
 
 void GameCanvas::playerHasDoubled( unsigned int id, bool value )

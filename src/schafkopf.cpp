@@ -194,6 +194,10 @@ void SchafKopf::customEvent( QCustomEvent* e )
                 m_canvasview->information( data->data );
                 break;
                 
+            case Bubble:
+                m_canvasview->Bubble( data->data, data->playerid );
+                break;
+                
             case QuestionYesNo:
                 a = new int;
                 *a = m_canvasview->questionYesNo( data->data ) ? YES : NO;

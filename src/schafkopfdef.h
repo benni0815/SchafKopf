@@ -42,7 +42,7 @@ enum { YES, NO };
 typedef enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled, 
                        PlayerHasDoubled, PlayerIsLast, PlayerNameChanged, PlayerGotCards,
                        CardPlayed, PlayerMadeStich, PlayerResults, GameInfoSetup,
-                       RedrawPlayers, InfoMessage, QuestionYesNo, 
+                       RedrawPlayers, InfoMessage, Bubble, QuestionYesNo, 
                        HumanPlayerGetCard, ForbiddenCard, SelectGame,
                        ForcedSelectGame };
 
@@ -82,7 +82,7 @@ typedef struct t_PlayerData {
   * and improving the AI.
   * But it might cause problems in network mode for cheaters!!
   */
-//#define CHEAT
+#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"

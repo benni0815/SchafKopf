@@ -60,6 +60,10 @@ class GameCanvas : public QCanvasView
           */
         void information( const QString & message );
 
+        /** displays a bubble with the text the computerplayers says
+          */
+        void Bubble( const QString & message, unsigned int playerid );
+        
         /** set the canvas player with the @p id to have doubled in this game
           */
         void playerHasDoubled( unsigned int id, bool value );

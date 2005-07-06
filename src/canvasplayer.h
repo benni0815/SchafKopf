@@ -23,12 +23,14 @@
 #include "schafkopfdef.h"
 
 #include <qstring.h>
+#include <kpassivepopup.h>
 
 class Card;
 class CardList;
 class CanvasCard;
 class Player;
 class QCanvas;
+class QCanvasView;
 class QCanvasText;
 
 /**
@@ -38,7 +40,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( int i, QCanvas* canvas );
+        CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view );
         ~CanvasPlayer();
         
         void position();
@@ -51,6 +53,7 @@ class CanvasPlayer{
         void setLast( bool l );
         void setName( const QString & name );
         void setCards( CardList* cards );
+        void say( const QString & message, unsigned int playerid );
         
         CanvasCard* canvasCard( int index );
         void cardPlayed( Card* c );
@@ -67,9 +70,17 @@ class CanvasPlayer{
         QString m_player_name;
         
         QCanvas* m_canvas;
+        QCanvasView* m_view;
         QCanvasText* m_name;
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
 };
+
+class MyKPassivePopup : public KPassivePopup
+    {
+    public:
+	MyKPassivePopup( QWidget *parent=0, const char *name=0, WFlags f=0 );
+	void myShow();
+    };
 
 #endif

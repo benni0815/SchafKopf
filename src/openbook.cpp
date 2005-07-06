@@ -55,7 +55,7 @@ namespace OpeningRules
         bool player;
     };
     
-    RULE( player1, "davon-laufen - h�gt von allowedCards ab und l�ft nicht mit dem zehner davon", 
+    RULE( player1, "davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", 
         ( info->mode() == GameInfo::RUFSPIEL && 
           !allowed->contains( info->color(), Card::SAU ) ),
         ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )

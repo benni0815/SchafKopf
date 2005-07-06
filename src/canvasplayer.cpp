@@ -28,12 +28,18 @@
 
 #include <qcanvas.h>
 #include <qfont.h>
+#include <qtimer.h>
+#include <qsignal.h>
+#include <kpassivepopup.h>
+#include <kapplication.h>
+#include <qlabel.h>
+#include <qwidget.h>
 
-CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas )
+CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view )
     : m_canvas( canvas )
 {
     create();
-    
+    m_view = view;
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
@@ -258,6 +264,38 @@ void CanvasPlayer::setCards( CardList* cards )
     m_cards->appendList( cards );
 }
 
+void CanvasPlayer::say( const QString & message, unsigned int playerid )
+{
+    int x, y;
+    MyKPassivePopup *pop = new MyKPassivePopup( KApplication::kApplication()->mainWidget() );
+    QLabel *Text = new QLabel( message, pop );
+    pop->setView( Text );
+    x=KApplication::kApplication()->mainWidget()->x();
+    y=KApplication::kApplication()->mainWidget()->y();
+    pop->show();
+    switch(playerid)
+    {
+    case 1:
+    		x+=5+m_name->x()+70;
+    		y+=m_canvas->height()/2;
+    		break;
+
+    case 2:
+    		x+=m_canvas->width()/2-pop->width()/2;
+    		//y+=this->mapToGlobal(QPoint(m_name->x(), 0 )).x();
+    		y+=m_view->mapToGlobal(QPoint(0, m_name->y() )).y();
+    		break;
+    case 3:
+    default:
+    		x+=5+m_name->x()-70;
+    		y+=m_canvas->height()/2;
+    		break;
+    }
+
+    pop->setGeometry ( QRect ( QPoint ( x, y ), QPoint( 0,0 ) ) );
+    //(m_name->x()+m_name->boundingRect().width()/2+20,m_name->y());
+}
+
 void CanvasPlayer::setHasDoubled( bool h )
 {
     m_has_doubled = h;
@@ -281,5 +319,15 @@ bool CanvasPlayer::isHuman() const
 unsigned int CanvasPlayer::id() const
 {
     return m_id;
+}
+
+MyKPassivePopup::MyKPassivePopup( QWidget *parent, const char *name, WFlags f ) : KPassivePopup(parent, name, f)
+{
+}
+
+void MyKPassivePopup::myShow()
+{
+	show();
+	moveNear( QRect(QPoint(300,300), QPoint(50,50)) );
 }
 
