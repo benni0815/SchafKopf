@@ -266,34 +266,32 @@ void CanvasPlayer::setCards( CardList* cards )
 
 void CanvasPlayer::say( const QString & message, unsigned int playerid )
 {
-    int x, y;
-    MyKPassivePopup *pop = new MyKPassivePopup( KApplication::kApplication()->mainWidget() );
+    QPoint p;
+    pop = new KPassivePopup( KApplication::kApplication()->mainWidget() );
     QLabel *Text = new QLabel( message, pop );
     pop->setView( Text );
-    x=KApplication::kApplication()->mainWidget()->x();
-    y=KApplication::kApplication()->mainWidget()->y();
+    pop->setTimeout( 0 );
     pop->show();
     switch(playerid)
     {
     case 1:
-    		x+=5+m_name->x()+70;
-    		y+=m_canvas->height()/2;
+		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y() ));
     		break;
-
     case 2:
-    		x+=m_canvas->width()/2-pop->width()/2;
-    		//y+=this->mapToGlobal(QPoint(m_name->x(), 0 )).x();
-    		y+=m_view->mapToGlobal(QPoint(0, m_name->y() )).y();
+    		p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+30 ));
     		break;
     case 3:
     default:
-    		x+=5+m_name->x()-70;
-    		y+=m_canvas->height()/2;
+		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y() ));
     		break;
     }
+    pop->setGeometry ( QRect ( p, QPoint( 0,0 ) ) );
+}
 
-    pop->setGeometry ( QRect ( QPoint ( x, y ), QPoint( 0,0 ) ) );
-    //(m_name->x()+m_name->boundingRect().width()/2+20,m_name->y());
+void CanvasPlayer::hideBubble()
+{
+	if(pop)
+		pop->hide();
 }
 
 void CanvasPlayer::setHasDoubled( bool h )

@@ -506,6 +506,10 @@ void GameCanvas::yesNoClicked( QCanvasItem* item )
         {
             m_result = NO;
             EXIT_LOOP();
+            for(int i=0;i<PLAYERS;i++)
+            {
+            	m_players[i]->hideBubble();
+            }
         }
     }
 }

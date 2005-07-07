@@ -54,6 +54,7 @@ class CanvasPlayer{
         void setName( const QString & name );
         void setCards( CardList* cards );
         void say( const QString & message, unsigned int playerid );
+        void hideBubble();
         
         CanvasCard* canvasCard( int index );
         void cardPlayed( Card* c );
@@ -72,6 +73,7 @@ class CanvasPlayer{
         QCanvas* m_canvas;
         QCanvasView* m_view;
         QCanvasText* m_name;
+        KPassivePopup* pop;
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
 };
