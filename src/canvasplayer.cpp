@@ -272,7 +272,7 @@ void CanvasPlayer::say( const QString & message, unsigned int playerid )
     pop->setView( Text );
     pop->setTimeout( 0 );
     pop->show();
-    switch(playerid)
+    switch(m_position)
     {
     case 1:
 		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y() ));

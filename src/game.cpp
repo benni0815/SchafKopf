@@ -349,9 +349,18 @@ bool Game::setupGameInfo(Player *players[])
     QPtrList<GameInfo> games;
     games.setAutoDelete( true );
     unsigned int i = 0;
+    int humanPlayer, playerInstance;
+    for( i=0;i<PLAYERS;i++)
+    {
+        if( players[i]->rtti() == Player::HUMAN )
+    	    humanPlayer=i;
+    }
 	
     for( i=0;i<PLAYERS;i++)
     {
+        playerInstance=4-humanPlayer+i;
+        if(playerInstance>3)
+             playerInstance=playerInstance-4;
         GameInfo* info = players[i]->gameInfo();
 	if(terminated)
 	    return false;
@@ -360,13 +369,13 @@ bool Game::setupGameInfo(Player *players[])
 	    info->setSpieler( players[i] );
             games.append( info );
             if( players[i]->rtti() != Player::HUMAN )
-                postEvent( Bubble, i, 0, i18n("%1: \"I want to play.\"").arg( players[i]->name() ), true );
+                postEvent( Bubble, playerInstance, 0, i18n("%1: \"I want to play.\"").arg( players[i]->name() ), true );
 	    //m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
         }
         else
         {
             if( players[i]->rtti() != Player::HUMAN )
-                postEvent( Bubble, i, 0, i18n("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
+                postEvent( Bubble, playerInstance, 0, i18n("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
 	    //m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
         }
     }
