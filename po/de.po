@@ -20,7 +20,7 @@ msgstr ""
 msgid ""
 "_: NAME OF TRANSLATORS\n"
 "Your names"
-msgstr "Dominik Seichter\nBenjamin LÃ¶we"
+msgstr "Dominik Seichter\nBenjamin Löwe"
 
 #: _translatorinfo.cpp:3
 msgid ""
@@ -149,7 +149,7 @@ msgstr "Starte ein Netzwerkspiel als &Client"
 
 #: newgamewizard.cpp:65
 msgid "Select Game Type"
-msgstr "Spielmodus auswÃ¤hlen"
+msgstr "Spielmodus auswählen"
 
 #: newgamewizard.cpp:103
 msgid ""
@@ -241,12 +241,8 @@ msgid "Play Ramsch"
 msgstr "Einen Ramsch spielen"
 
 #: preferencesdlg.cpp:121
-msgid ""
-"The aim when playing a Ramsch is to make no tricks. The player who made the "
-"most points is the sole loser."
-msgstr ""
-"Das Ziel beim Ramsch ist es mÃ¶glichst keinen Stich zu machen. Der Spieler mit "
-"den meisten Punkten ist der alleinige Verlierer."
+msgid "The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too."
+msgstr "Das Ziel beim Ramsch ist es möglichst keinen Stich zu machen. Der Spieler mit den meisten Punkten ist der alleinige Verlierer. Macht ein Spieler jedoch alle Stiche, hat er gewonnen."
 
 #: preferencesdlg.cpp:123
 msgid "The &last player who has doubled has to play."
@@ -262,7 +258,7 @@ msgstr ""
 
 #: preferencesdlg.cpp:125
 msgid "&Double next game when cards were thrown together."
-msgstr "Das nÃ¤chste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
+msgstr "Das nächste Spiel &doppeln wenn die Karten zusammengeworfen wurden."
 
 #: preferencesdlg.cpp:139
 msgid "Results"
@@ -288,7 +284,7 @@ msgstr ""
 
 #: preferencesdlg.cpp:160
 msgid "Configure Money Values"
-msgstr "GeldbetrÃ¤ge festlegen"
+msgstr "Geldbeträge festlegen"
 
 #: preferencesdlg.cpp:168 preferencesdlg.cpp:205
 msgid "Callgame:"
@@ -349,7 +345,7 @@ msgstr "&Dachs"
 
 msgid "<qt>You can configure which games are allowed to play."
                                         "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"
-msgstr "<qt>Hier kannst du einstellen welche Spiele gespielt werden dÃ¼rfen. Bestimmte Spiele, wie Rufspiel und Solo, kÃ¶nnen nicht deaktiviert werden.</qt>"
+msgstr "<qt>Hier kannst du einstellen welche Spiele gespielt werden dürfen. Bestimmte Spiele, wie Rufspiel und Solo, können nicht deaktiviert werden.</qt>"
 
 msgid "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>"
 msgstr "<qt>Der Dachs ist kein offizielles Spiel, und wird daher bei Turnieren nicht gespielt.</qt>"
@@ -406,7 +402,7 @@ msgid "<qt>Times thrown together: <b>%1</b></qt>"
 msgstr "<qt>Zusammen geworfen: <b>%1 Mal</b></qt>"
 
 msgid "<qt>Game counts <b>%1-fold</b>.</qt>"
-msgstr "<qt>Spiel zÃ¤hlt <b>%1-fach</b>.</qt>"
+msgstr "<qt>Spiel zählt <b>%1-fach</b>.</qt>"
 
 #: selectgamecolorbox.cpp:53 selectgamedlg.cpp:50
 msgid "Color:"
@@ -435,11 +431,11 @@ msgstr "&Farblos"
 #: selectgamecolorbox.moc.cpp:34 selectgamecolorbox.moc.cpp:42
 #, fuzzy
 msgid "SelectGameColorBox"
-msgstr "Spiel auswÃ¤hlen"
+msgstr "Spiel auswählen"
 
 #: selectgamedlg.cpp:38
 msgid "Select Game"
-msgstr "Spiel auswÃ¤hlen"
+msgstr "Spiel auswählen"
 
 #: selectgamedlg.cpp:43
 msgid "Game:"
@@ -471,8 +467,8 @@ msgid ""
 "are all \"Ober\", \"Unter\" and the color you chose. You will play alone "
 "against the other three players."
 msgstr ""
-"Wenn Du ein Solo spielen willst, musst Du zusÃ¤tzlich noch eine Farbe "
-"auswÃ¤hlen. Trumpf sind alle Ober, Unter und die Farbe die du gewÃ¤hlt hast."
+"Wenn Du ein Solo spielen willst, musst Du zusätzlich noch eine Farbe "
+"auswählen. Trumpf sind alle Ober, Unter und die Farbe die du gewählt hast."
 "<br>Du spielst alleine gegen die drei anderen Spieler."
 
 #: selectgametypebox.cpp:45
@@ -481,7 +477,7 @@ msgid ""
 "play alone against the other three players."
 msgstr ""
 "Wenn du einen Dachs spielst, sind die Asse und die Zehner die einzigen "
-"TrÃ¼mpfe.<br>Du spielst alleine gegen die drei anderen Spieler."
+"Trümpfe.<br>Du spielst alleine gegen die drei anderen Spieler."
 
 #: selectgametypebox.cpp:46
 msgid ""
@@ -489,8 +485,8 @@ msgid ""
 "play in team with the player which has the ace of the color you chose. "
 "Hearts are trumps."
 msgstr ""
-"Wenn Du ein Rufspiel spielen willst, musst Du zusÃ¤tzlich noch eine Farbe "
-"auswÃ¤hlen. Du spielst dann mit dem Spieler zusammen der das Ass dieser Farbe "
+"Wenn Du ein Rufspiel spielen willst, musst Du zusätzlich noch eine Farbe "
+"auswählen. Du spielst dann mit dem Spieler zusammen der das Ass dieser Farbe "
 "hat. Herz ist Trumpf."
 
 #: selectgametypebox.cpp:47
@@ -500,8 +496,8 @@ msgid ""
 "color will also be trumps. You will play alone against the other three "
 "players."
 msgstr ""
-"Wenn du einen Wenz spielen willst, kannst du zusÃ¤tzlich noch eine Farbe "
-"auswÃ¤hlen. Es sind dann alle Unter sowie die gewÃ¤hlte Farbe Trumpf. WÃ¤hlst du "
+"Wenn du einen Wenz spielen willst, kannst du zusätzlich noch eine Farbe "
+"auswählen. Es sind dann alle Unter sowie die gewählte Farbe Trumpf. Wählst du "
 "\"farblos\" sind nur die Unter Trumpf.<br>Du spielst alleine gegen die drei "
 "anderen Spieler."
 
@@ -512,8 +508,8 @@ msgid ""
 "color will also be trumps. You will play alone against the other three "
 "players."
 msgstr ""
-"Wenn du einen Geier spielen willst, kannst du zusÃ¤tzlich noch eine Farbe "
-"auswÃ¤hlen. Es sind dann alle Ober sowie die gewÃ¤hlte Farbe Trumpf. WÃ¤hlst du "
+"Wenn du einen Geier spielen willst, kannst du zusätzlich noch eine Farbe "
+"auswählen. Es sind dann alle Ober sowie die gewählte Farbe Trumpf. Wählst du "
 "\"farblos\" sind nur die Ober Trumpf.<br>Du spielst alleine gegen die drei "
 "anderen Spieler."
 
@@ -527,16 +523,16 @@ msgstr "&Rufspiel"
 
 #: selectgamewizard.cpp:47
 msgid "Step 1/2: Select Game"
-msgstr "Schritt 1/2: Spiel auswÃ¤hlen"
+msgstr "Schritt 1/2: Spiel auswählen"
 
 #: selectgamewizard.cpp:48
 msgid "Step 2/2: Select Color"
-msgstr "Schritt 2/2: Farbe auswÃ¤hlen"
+msgstr "Schritt 2/2: Farbe auswählen"
 
 #: selectgamewizard.moc.cpp:34 selectgamewizard.moc.cpp:42
 #, fuzzy
 msgid "SelectGameWizard"
-msgstr "Spiel auswÃ¤hlen"
+msgstr "Spiel auswählen"
 
 #: stichdlg.cpp:32
 msgid "Last Trick"
@@ -544,7 +540,7 @@ msgstr "Letzter Stich"
 
 #: stichdlg.cpp:65
 msgid "Trick was made by: <b>"
-msgstr "Stich gehÃ¶rt: <b>"
+msgstr "Stich gehört: <b>"
 
 #: stichdlg.cpp:67
 msgid "No trick was made."
