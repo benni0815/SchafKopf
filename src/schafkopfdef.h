@@ -20,11 +20,22 @@
 
 #ifndef SCHAFKOPF_DEF_H
 #define SCHAFKOPF_DEF_H
- 
+
 #define PLAYERS   4
+
+// If you do want to play with only 6 cards
+// like it is done in Franken, please comment this line:
+#define SCHAFKOPF_LANG
+ 
+#ifdef SCHAFKOPF_LANG
 #define NUMCARDS  8
 #define TURNS     8
 #define CARD_CNT  32
+#else
+#define NUMCARDS  6
+#define TURNS     6
+#define CARD_CNT  24
+#endif // SCHAFKOPF_LANG
 
 /** Identify events from schafkopf in the Qt event loop
   * using this ID.
