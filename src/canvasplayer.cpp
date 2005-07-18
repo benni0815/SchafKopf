@@ -276,14 +276,14 @@ void CanvasPlayer::say( const QString & message, unsigned int playerid )
     switch(m_position)
     {
     case 1:
-		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y() ));
+		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
     		break;
     case 2:
-    		p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+30 ));
+    		p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
     		break;
     case 3:
     default:
-		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y() ));
+		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
     		break;
     }
     pop->setGeometry ( QRect ( p, QPoint( 0,0 ) ) );
