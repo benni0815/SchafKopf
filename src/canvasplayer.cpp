@@ -201,9 +201,9 @@ void CanvasPlayer::init()
                 else
                 {
                     if( m_is_last )
-                        c->setFrontVisible( z >= 4 );
+                        c->setFrontVisible( z >= NUMCARDS/2 );
                     else
-                        c->setFrontVisible( z < 4 );
+                        c->setFrontVisible( z < NUMCARDS/2 );
                 }
             }
             else
