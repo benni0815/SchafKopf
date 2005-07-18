@@ -22,6 +22,7 @@
 #include "cardlist.h"
 #include "player.h"
 #include "settings.h"
+#include "schafkopfdef.h"
 
 #include <klocale.h>
 #include <qstring.h>
@@ -308,8 +309,8 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 		}
 	}
 	if(trumpf_index!=-1)
-		return 32-(trumpf_index*4+card->color());
-	return 32-(trumpf_cnt*4+colors_index*(8-trumpf_cnt)+cards_index);
+		return CARD_CNT-(trumpf_index*PLAYERS+card->color());
+	return CARD_CNT-(trumpf_cnt*PLAYERS+colors_index*(TURNS-trumpf_cnt)+cards_index);
 }
 
 int GameInfo::laufende()
