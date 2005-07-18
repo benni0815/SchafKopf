@@ -43,6 +43,7 @@ CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view )
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
+    pop = NULL;
 
 #ifndef SIMULATION_MODE
     // TODO: This should be passed as flag depending on Player::isHuman();
