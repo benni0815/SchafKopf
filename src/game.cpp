@@ -305,14 +305,14 @@ bool Game::isHigher( Card* card, Card* high )
 	{
 	    case GameInfo::GEIER:
 	    case GameInfo::WENZ:
-		colcnt=7;
+		colcnt=NUMCARDS-1;
 		break;
 	    case GameInfo::RAMSCH:
 	    case GameInfo::RUFSPIEL:
 	    case GameInfo::STICHT:
 	    case GameInfo::DACHS:
 	    default:
-		colcnt=6;
+		colcnt=NUMCARDS-2;
 		break;
 	}
 	if((highVal-1)/colcnt==(cardVal-1)/colcnt)

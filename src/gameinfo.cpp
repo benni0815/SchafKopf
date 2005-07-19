@@ -309,8 +309,8 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 		}
 	}
 	if(trumpf_index!=-1)
-		return CARD_CNT-(trumpf_index*PLAYERS+card->color());
-	return CARD_CNT-(trumpf_cnt*PLAYERS+colors_index*(TURNS-trumpf_cnt)+cards_index);
+		return CARD_CNT-(trumpf_index*NUMTRUMPF+card->color());
+	return CARD_CNT-(trumpf_cnt*NUMTRUMPF+colors_index*(NUMCARDS-trumpf_cnt)+cards_index);
 }
 
 int GameInfo::laufende()

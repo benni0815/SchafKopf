@@ -29,10 +29,12 @@
  
 #ifdef SCHAFKOPF_LANG
 #define NUMCARDS  8
+#define NUMTRUMPF 4
 #define TURNS     8
 #define CARD_CNT  32
 #else
 #define NUMCARDS  6
+#define NUMTRUMPF 4
 #define TURNS     6
 #define CARD_CNT  24
 #endif // SCHAFKOPF_LANG
