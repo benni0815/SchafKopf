@@ -108,12 +108,12 @@ class GameCanvas : public QCanvasView
         void keyPressEvent(QKeyEvent*);
         void focusInEvent(QFocusEvent*);
         void focusOutEvent(QFocusEvent*);
-        
-    private:        
-        int m_result;
         QPoint getStichPosition( int player );
         int getStichRotation( int player );
         CanvasPlayer* humanPlayer() const;
+        
+    private:        
+        int m_result;
         
         QCanvasItemList m_focus_list;
         CanvasPlayer* m_players[PLAYERS];

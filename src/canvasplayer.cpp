@@ -43,8 +43,7 @@ CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view )
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
-    pop = NULL;
-
+    pop = new KPassivePopup( KApplication::kApplication()->mainWidget() );
 #ifndef SIMULATION_MODE
     // TODO: This should be passed as flag depending on Player::isHuman();
     m_is_human = (m_id == 0);
@@ -60,6 +59,7 @@ CanvasPlayer::~CanvasPlayer()
     // delete m_items before m_cards
     // as m_items has references to cards in
     // m_cards.
+    delete pop;
     for(i=0;i<NUMCARDS;i++)
         delete m_items[i];
     
@@ -268,7 +268,7 @@ void CanvasPlayer::setCards( CardList* cards )
 void CanvasPlayer::say( const QString & message, unsigned int playerid )
 {
     QPoint p;
-    pop = new KPassivePopup( KApplication::kApplication()->mainWidget() );
+    
     QLabel *Text = new QLabel( message, pop );
     pop->setView( Text );
     pop->setTimeout( 0 );
