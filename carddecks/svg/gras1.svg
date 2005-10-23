@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="3.0000000cm"
+   height="3.0000000cm"
+   id="svg3126"
+   sodipodi:version="0.32"
+   inkscape:version="0.42.2"
+   sodipodi:docbase="/home/benjamin/c++/schafkopf/carddecks/svg"
+   sodipodi:docname="gras1.svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     inkscape:document-units="cm"
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.0141483"
+     inkscape:cx="53.149605"
+     inkscape:cy="45.172178"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1016"
+     inkscape:window-height="698"
+     inkscape:window-x="0"
+     inkscape:window-y="0">
+    <sodipodi:guide
+       orientation="vertical"
+       position="53.120512"
+       id="guide3860" />
+    <sodipodi:guide
+       orientation="horizontal"
+       position="9.3078696"
+       id="guide3862" />
+    <sodipodi:guide
+       orientation="horizontal"
+       position="-3.6824125"
+       id="guide3864" />
+    <sodipodi:guide
+       orientation="horizontal"
+       position="43.995139"
+       id="guide3866" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#278630;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.25000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;display:inline"
+       d="M 48.802534,95.205924 C 48.245925,101.46057 42.797269,106.91333 42.797269,106.91333 L 50.579713,107.07371 C 50.579713,107.07371 55.437425,100.49831 56.019431,95.205924 L 48.802534,95.205924 z "
+       id="path3094"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="fill:#278630;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.25000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000;display:inline"
+       d="M 34.505585,114.31679 C 34.505585,114.31679 43.944146,113.30437 48.391425,109.87583 C 52.852905,106.43578 51.551126,102.39585 45.202913,105.01725 C 39.091042,107.54104 34.418862,114.18187 34.505585,114.31679 z "
+       id="path3100"
+       sodipodi:nodetypes="ccsc" />
+    <path
+       style="fill:#15861d;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.91963881;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000"
+       d="M 53.143854,3.4603020 C 64.901798,32.794940 127.56294,62.113289 95.758396,96.757317 C 81.437442,110.07737 53.137598,96.867036 53.137598,96.867036 C 53.137598,96.867036 29.332101,109.94723 13.977208,97.070497 C -21.933210,62.517146 40.180536,32.179038 53.143854,3.4603020 z "
+       id="path3132"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+</svg>
