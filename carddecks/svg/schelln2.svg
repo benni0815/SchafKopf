@@ -19,6 +19,27 @@
   <defs
      id="defs3">
     <linearGradient
+       id="linearGradient16364">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.73056996;"
+         offset="0.0000000"
+         id="stop16366" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.0000000;"
+         offset="1.0000000"
+         id="stop16368" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient16364"
+       id="radialGradient16370"
+       cx="24.027887"
+       cy="24.520084"
+       fx="24.027887"
+       fy="24.520084"
+       r="7.7985249"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
        id="linearGradient2090">
       <stop
          style="stop-color:#000000;stop-opacity:0.72020727;"
@@ -47,6 +68,16 @@
        x2="51.854931"
        y2="96.925735"
        gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient16364"
+       id="radialGradient2080"
+       gradientUnits="userSpaceOnUse"
+       cx="24.027887"
+       cy="24.520084"
+       fx="24.027887"
+       fy="24.520084"
+       r="7.7985249" />
   </defs>
   <sodipodi:namedview
      inkscape:document-units="mm"
@@ -56,9 +87,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.7935951"
-     inkscape:cx="85.527238"
-     inkscape:cy="45.529811"
+     inkscape:zoom="5.3463230"
+     inkscape:cx="77.571119"
+     inkscape:cy="62.856900"
      inkscape:current-layer="layer1"
      inkscape:window-width="1016"
      inkscape:window-height="698"
@@ -186,5 +217,15 @@
        sodipodi:ry="27.422403"
        d="M 82.366930 52.551296 A 27.422403 27.422403 0 1 1  27.522123,52.551296 A 27.422403 27.422403 0 1 1  82.366930 52.551296 z"
        transform="matrix(1.595633,0.000000,0.000000,1.595633,-34.52544,-30.69923)" />
+    <path
+       sodipodi:type="arc"
+       style="opacity:1.0000000;fill:url(#radialGradient2080);fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:0.27937976;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+       id="path16362"
+       sodipodi:cx="24.027887"
+       sodipodi:cy="24.520084"
+       sodipodi:rx="7.7985249"
+       sodipodi:ry="7.7985249"
+       d="M 31.826412 24.520084 A 7.7985249 7.7985249 0 1 1  16.229362,24.520084 A 7.7985249 7.7985249 0 1 1  31.826412 24.520084 z"
+       transform="matrix(-2.667884,2.428410,-1.183888,-1.347244,123.9770,1.708077)" />
   </g>
 </svg>
