@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.42.2"
    sodipodi:docbase="/home/benjamin/c++/schafkopf/carddecks/svg"
-   sodipodi:docname="schelln8er.svg">
+   sodipodi:docname="schelln7er.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -1890,7 +1890,7 @@
          sodipodi:role="line"
          id="tspan4101"
          x="9.3309422"
-         y="39.223064">8</tspan></text>
+         y="39.223064">7</tspan></text>
     <use
        x="0.0000000"
        y="0.0000000"
@@ -2086,7 +2086,7 @@
     <g
        id="g6706"
        inkscape:label="Layer 1"
-       transform="matrix(0.517459,0.000000,0.000000,0.517459,-90.22331,16.83758)"
+       transform="matrix(0.517459,0.000000,0.000000,0.517459,-94.87233,20.15831)"
        inkscape:tile-w="46.063023"
        inkscape:tile-h="51.587913"
        inkscape:tile-cx="57.367052"
@@ -2208,66 +2208,89 @@
          sodipodi:type="arc" />
     </g>
     <g
-       id="g1643"
-       transform="translate(-1.407955,0.704009)">
+       id="g2643"
+       transform="translate(0.000000,-0.678341)">
       <g
-         transform="translate(0.703968,5.631743)"
-         id="g1633">
-        <g
-           id="g6762"
-           transform="translate(-3.548740,0.874557)">
-          <use
-             height="354.33072"
-             width="201.96849"
-             id="use6752"
-             transform="translate(128.8262,88.59073)"
-             xlink:href="#g6706"
-             inkscape:tiled-clone-of="#g6706"
-             y="0.0000000"
-             x="0.0000000" />
-          <use
-             height="354.33072"
-             width="201.96849"
-             id="use6750"
-             transform="translate(128.8262,63.04964)"
-             xlink:href="#g6706"
-             inkscape:tiled-clone-of="#g6706"
-             y="0.0000000"
-             x="0.0000000" />
-          <use
-             height="354.33072"
-             width="201.96849"
-             id="use6748"
-             transform="translate(128.8262,37.50854)"
-             xlink:href="#g6706"
-             inkscape:tiled-clone-of="#g6706"
-             y="0.0000000"
-             x="0.0000000" />
-          <use
-             height="354.33072"
-             width="201.96849"
-             transform="translate(128.8262,11.96744)"
-             id="use6746"
-             xlink:href="#g6706"
-             inkscape:tiled-clone-of="#g6706"
-             y="0.0000000"
-             x="0.0000000" />
-        </g>
+         transform="translate(-2.226022,0.000000)"
+         id="g2630">
         <use
            x="0.0000000"
            y="0.0000000"
-           xlink:href="#g6762"
-           id="use6768"
-           transform="translate(78.84439,2.103110e-14)"
+           inkscape:tiled-clone-of="#g6706"
+           xlink:href="#g6706"
+           id="use6746"
+           transform="translate(170.8770,23.39181)"
            width="201.96849"
            height="354.33072" />
+        <g
+           transform="translate(-11.03448,22.45211)"
+           id="use1919">
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             transform="translate(129.2225,66.93922)"
+             id="use2619"
+             width="201.96849"
+             height="354.33072" />
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             transform="translate(129.2225,41.39812)"
+             id="use2621"
+             width="201.96849"
+             height="354.33072" />
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             id="use2623"
+             transform="translate(129.2225,15.85702)"
+             width="201.96849"
+             height="354.33072" />
+        </g>
+        <g
+           transform="translate(94.33095,22.43441)"
+           id="use1921">
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             transform="translate(129.2225,66.93922)"
+             id="use2611"
+             width="201.96849"
+             height="354.33072" />
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             transform="translate(129.2225,41.39812)"
+             id="use2613"
+             width="201.96849"
+             height="354.33072" />
+          <use
+             x="0.0000000"
+             y="0.0000000"
+             inkscape:tiled-clone-of="#g6706"
+             xlink:href="#g6706"
+             id="use2615"
+             transform="translate(129.2225,15.85702)"
+             width="201.96849"
+             height="354.33072" />
+        </g>
       </g>
       <use
          height="354.33072"
          width="201.96849"
-         transform="matrix(-1.000000,1.569925e-16,-1.569925e-16,-1.000000,204.7844,352.9227)"
-         id="use1641"
-         xlink:href="#g1633"
+         transform="matrix(-1.000000,2.434576e-16,-2.434576e-16,-1.000000,201.9685,355.6874)"
+         id="use2641"
+         xlink:href="#g2630"
          y="0.0000000"
          x="0.0000000" />
     </g>
