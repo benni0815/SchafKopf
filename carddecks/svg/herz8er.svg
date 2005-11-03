@@ -15,7 +15,7 @@
    sodipodi:version="0.32"
    inkscape:version="0.42.2"
    sodipodi:docbase="/home/benjamin/c++/schafkopf/carddecks/svg"
-   sodipodi:docname="herz10er.svg">
+   sodipodi:docname="herz8er.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -1867,16 +1867,16 @@
        y="21.259853" />
     <text
        xml:space="preserve"
-       style="font-size:27.668631px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
-       x="2.9316726"
-       y="39.223194"
+       style="font-size:27.668634px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
+       x="9.3309288"
+       y="39.223202"
        id="text4099"
        sodipodi:linespacing="125.00000%"
        transform="scale(0.894110,1.118431)"><tspan
          sodipodi:role="line"
          id="tspan4101"
-         x="2.9316726"
-         y="39.223194">10</tspan></text>
+         x="9.3309288"
+         y="39.223202">8</tspan></text>
     <use
        x="0.0000000"
        y="0.0000000"
@@ -1890,7 +1890,7 @@
        y="0.0000000"
        xlink:href="#text4099"
        id="use4105"
-       transform="translate(170.7875,7.296372e-6)"
+       transform="translate(172.5591,7.296372e-6)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -1914,7 +1914,7 @@
        y="0.0000000"
        xlink:href="#text4099"
        id="use4111"
-       transform="matrix(-1.000000,-1.534146e-17,1.534146e-17,-1.000000,201.4935,353.9010)"
+       transform="matrix(-1.000000,-1.534146e-17,1.534146e-17,-1.000000,201.6142,353.9010)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -1922,7 +1922,7 @@
        y="0.0000000"
        xlink:href="#use4111"
        id="use4113"
-       transform="translate(-170.7875,2.668138e-7)"
+       transform="translate(-172.5590,2.668138e-7)"
        width="201.96849"
        height="354.33072" />
     <g
@@ -1981,14 +1981,14 @@
        width="201.96849"
        height="354.33072" />
     <g
-       id="g3158"
-       transform="translate(0.000000,-0.799841)">
+       id="g8720"
+       transform="translate(0.000000,-0.594441)">
       <g
-         transform="translate(0.412561,0.000000)"
-         id="g3146">
+         transform="translate(-2.880866e-6,0.000000)"
+         id="g8709">
         <g
            id="g3139"
-           transform="translate(1.032794e-6,1.992439)">
+           transform="translate(-37.62845,2.680039)">
           <use
              height="354.33072"
              width="201.96849"
@@ -2028,47 +2028,20 @@
         <use
            x="0.0000000"
            y="0.0000000"
-           xlink:href="#g3130"
-           id="use3135"
-           transform="translate(-53.13169,16.05020)"
-           width="201.96849"
-           height="354.33072" />
-        <use
-           x="0.0000000"
-           y="0.0000000"
-           xlink:href="#g3130"
-           id="use3137"
-           transform="translate(53.13169,16.05020)"
+           xlink:href="#g3139"
+           id="use8675"
+           transform="matrix(1.000164,0.000000,0.000000,1.000000,76.06809,-3.498884e-6)"
            width="201.96849"
            height="354.33072" />
       </g>
       <use
          height="354.33072"
          width="201.96849"
-         transform="matrix(-1.000000,2.413163e-16,-2.413163e-16,-1.000000,201.9685,355.9304)"
-         id="use3156"
-         xlink:href="#g3146"
+         transform="matrix(-1.000000,0.000000,0.000000,-1.000000,201.9685,355.5196)"
+         id="use8718"
+         xlink:href="#g8709"
          y="0.0000000"
          x="0.0000000" />
     </g>
-    <text
-       xml:space="preserve"
-       style="font-size:37.460804px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
-       x="87.540062"
-       y="42.519695"
-       id="text3925"
-       sodipodi:linespacing="125.00000%"><tspan
-         sodipodi:role="line"
-         id="tspan3927"
-         x="87.540062"
-         y="42.519695">X</tspan></text>
-    <use
-       x="0.0000000"
-       y="0.0000000"
-       xlink:href="#text3925"
-       id="use7712"
-       transform="matrix(-1.000000,0.000000,0.000000,-1.000000,201.9685,354.3307)"
-       width="201.96849"
-       height="354.33072" />
   </g>
 </svg>
