@@ -1857,6 +1857,13 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="opacity:1.0000000;fill:#ffffff;fill-opacity:1.0000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.70866144;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+       id="rect1600"
+       width="180.91974"
+       height="332.97681"
+       x="11.263486"
+       y="11.498372" />
     <path
        style="fill:none;fill-opacity:0.75000000;fill-rule:evenodd;stroke:#000000;stroke-width:1.0343140;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-opacity:1.0000000"
        d="M 14.676428,177.16536 L 187.29206,177.16536"
@@ -1935,7 +1942,7 @@
     <g
        id="g6579"
        inkscape:label="Layer 1"
-       transform="matrix(0.142166,0.000000,0.000000,0.142166,7.140148,43.59395)">
+       transform="matrix(0.142166,0.000000,0.000000,0.142166,7.140148,45.70585)">
       <path
          transform="translate(-0.498589,-1.417324)"
          d="M 63.021669 96.925735 A 9.3734760 9.3734760 0 1 1  44.274717,96.925735 A 9.3734760 9.3734760 0 1 1  63.021669 96.925735 z"
@@ -2057,7 +2064,7 @@
        y="0.0000000"
        xlink:href="#g6579"
        id="use6598"
-       transform="translate(172.4721,1.407936)"
+       transform="translate(172.4721,-0.703968)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -2065,7 +2072,7 @@
        y="0.0000000"
        xlink:href="#g6579"
        id="use6600"
-       transform="matrix(-1.000000,0.000000,0.000000,-1.000000,29.26991,354.9442)"
+       transform="matrix(-1.000000,0.000000,0.000000,-1.000000,29.26991,355.6482)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -2073,7 +2080,7 @@
        y="0.0000000"
        xlink:href="#g6579"
        id="use6602"
-       transform="matrix(-1.000000,-8.863353e-18,8.863353e-18,-1.000000,199.6301,352.8322)"
+       transform="matrix(-1.000000,-8.863353e-18,8.863353e-18,-1.000000,200.9953,354.2401)"
        width="201.96849"
        height="354.33072" />
     <g
@@ -2201,14 +2208,14 @@
          sodipodi:type="arc" />
     </g>
     <g
-       id="g6780"
-       transform="translate(0.000000,1.930509)">
+       id="g1643"
+       transform="translate(-1.407955,0.704009)">
       <g
-         transform="translate(2.083003,0.000000)"
-         id="g6770">
+         transform="translate(0.703968,5.631743)"
+         id="g1633">
         <g
            id="g6762"
-           transform="translate(0.000000,-0.351984)">
+           transform="translate(-3.548740,0.874557)">
           <use
              height="354.33072"
              width="201.96849"
@@ -2251,16 +2258,16 @@
            y="0.0000000"
            xlink:href="#g6762"
            id="use6768"
-           transform="translate(66.17298,0.000000)"
+           transform="translate(78.84439,2.103110e-14)"
            width="201.96849"
            height="354.33072" />
       </g>
       <use
          height="354.33072"
          width="201.96849"
-         transform="matrix(-1.000000,7.312944e-17,-7.312944e-17,-1.000000,201.9685,350.4697)"
-         id="use6778"
-         xlink:href="#g6770"
+         transform="matrix(-1.000000,1.569925e-16,-1.569925e-16,-1.000000,204.7844,352.9227)"
+         id="use1641"
+         xlink:href="#g1633"
          y="0.0000000"
          x="0.0000000" />
     </g>
