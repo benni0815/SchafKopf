@@ -1861,7 +1861,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.5056926"
      inkscape:cx="84.655678"
-     inkscape:cy="177.16924"
+     inkscape:cy="283.43263"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showguides="true"
@@ -1909,16 +1909,16 @@
        y="21.259853" />
     <text
        xml:space="preserve"
-       style="font-size:27.668631px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
-       x="2.9316726"
-       y="39.223194"
+       style="font-size:27.668646px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
+       x="8.4302626"
+       y="39.223225"
        id="text4099"
        sodipodi:linespacing="125.00000%"
        transform="scale(0.894110,1.118431)"><tspan
          sodipodi:role="line"
          id="tspan4101"
-         x="2.9316726"
-         y="39.223194">10</tspan></text>
+         x="8.4302626"
+         y="39.223225">O</tspan></text>
     <use
        x="0.0000000"
        y="0.0000000"
@@ -1932,7 +1932,7 @@
        y="0.0000000"
        xlink:href="#text4099"
        id="use4105"
-       transform="translate(170.7875,7.296372e-6)"
+       transform="translate(167.2442,7.296372e-6)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -1956,7 +1956,7 @@
        y="0.0000000"
        xlink:href="#text4099"
        id="use4111"
-       transform="matrix(-1.000000,-1.534146e-17,1.534146e-17,-1.000000,201.4935,354.3307)"
+       transform="matrix(-1.000000,-1.534146e-17,1.534146e-17,-1.000000,203.9298,354.3307)"
        width="201.96849"
        height="354.33072" />
     <use
@@ -1964,7 +1964,7 @@
        y="0.0000000"
        xlink:href="#use4111"
        id="use4113"
-       transform="translate(-170.7875,-2.068279e-7)"
+       transform="translate(-168.8187,-0.429729)"
        width="201.96849"
        height="354.33072" />
   </g>

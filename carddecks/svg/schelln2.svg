@@ -29,16 +29,6 @@
          offset="1.0000000"
          id="stop16368" />
     </linearGradient>
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient16364"
-       id="radialGradient16370"
-       cx="24.027887"
-       cy="24.520084"
-       fx="24.027887"
-       fy="24.520084"
-       r="7.7985249"
-       gradientUnits="userSpaceOnUse" />
     <linearGradient
        id="linearGradient2090">
       <stop
@@ -88,8 +78,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.3463230"
-     inkscape:cx="77.571119"
-     inkscape:cy="62.856900"
+     inkscape:cx="52.587475"
+     inkscape:cy="51.087500"
      inkscape:current-layer="layer1"
      inkscape:window-width="1016"
      inkscape:window-height="698"
