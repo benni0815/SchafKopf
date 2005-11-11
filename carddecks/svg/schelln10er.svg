@@ -553,21 +553,21 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-size:37.460804px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
-       x="87.540062"
-       y="42.53635"
+       style="font-size:26.757717px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Times New Roman"
+       x="91.381256"
+       y="35.433083"
        id="text3925"
        sodipodi:linespacing="125.00000%"><tspan
          sodipodi:role="line"
          id="tspan3927"
-         x="87.540062"
-         y="42.536350">X</tspan></text>
+         x="91.381256"
+         y="35.433083">X</tspan></text>
     <use
        x="0.0000000"
        y="0.0000000"
        xlink:href="#text3925"
        id="use3929"
-       transform="matrix(-1.000000,0.000000,0.000000,-1.000000,201.8593,354.3474)"
+       transform="matrix(-1.000000,0.000000,0.000000,-1.000000,201.9685,354.3307)"
        width="201.96849"
        height="354.33072" />
   </g>
