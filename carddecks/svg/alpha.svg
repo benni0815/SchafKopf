@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="5.6999996cm"
+   height="10.000000cm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.42.2"
+   sodipodi:docbase="/home/benjamin/c++/schafkopf/carddecks/svg"
+   sodipodi:docname="alpha.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient16364">
+      <stop
+         id="stop16366"
+         offset="0.0000000"
+         style="stop-color:#ffffff;stop-opacity:0.62176168;" />
+      <stop
+         id="stop16368"
+         offset="1.0000000"
+         style="stop-color:#ffffff;stop-opacity:0.0000000;" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2090">
+      <stop
+         id="stop2092"
+         offset="0.0000000"
+         style="stop-color:#000000;stop-opacity:0.72020727;" />
+      <stop
+         id="stop2094"
+         offset="1.0000000"
+         style="stop-color:#000000;stop-opacity:0.0000000;" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0000000"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.5056926"
+     inkscape:cx="57.873125"
+     inkscape:cy="177.16924"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1016"
+     inkscape:window-height="698"
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:1.0000000;fill:#ffffff;fill-opacity:1.0000000;fill-rule:evenodd;stroke:none;stroke-width:0.70862389;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4.0000000;stroke-dasharray:none;stroke-dashoffset:0.0000000;stroke-opacity:1.0000000"
+       d="M 20.319142,1.0334141e-05 C 9.0702168,1.0424141e-05 0.0000000,9.0327511 0.0000000,20.259110 L 0.0000000,334.04031 C 0.0000000,345.26668 9.0702267,354.33072 20.319142,354.33072 L 181.64937,354.33072 C 192.89828,354.33071 201.96852,345.26670 201.96851,334.04031 L 201.96851,20.259110 C 201.96850,9.0327413 192.89827,1.0334141e-05 181.64937,1.0334141e-05 L 20.319142,1.0334141e-05 z "
+       id="rect1600" />
+  </g>
+</svg>
