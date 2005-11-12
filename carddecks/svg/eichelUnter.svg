@@ -397,22 +397,22 @@
        height="354.33072" />
     <text
        xml:space="preserve"
-       style="font-size:29.533852px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Amazone BT"
-       x="69.754852"
-       y="31.397243"
+       style="font-size:29.533857px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125.00000%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1.0000000;stroke:none;stroke-width:1.0000000px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1.0000000;font-family:Amazone BT"
+       x="67.268791"
+       y="33.328209"
        id="text9839"
        sodipodi:linespacing="125.00000%"
        transform="matrix(0.789761,0.613415,-0.613415,0.789761,0.000000,0.000000)"><tspan
          sodipodi:role="line"
          id="tspan9841"
-         x="69.754852"
-         y="31.397243">Eichel Unter</tspan></text>
+         x="67.268791"
+         y="33.328209">Eichel-Unter</tspan></text>
     <use
        x="0.0000000"
        y="0.0000000"
        xlink:href="#text9839"
        id="use9843"
-       transform="matrix(-1.000000,-4.724411e-17,2.382534e-17,-1.000000,201.9685,354.3307)"
+       transform="matrix(-1.000000,-5.171644e-17,1.395910e-17,-1.000000,201.9685,354.3307)"
        width="201.96849"
        height="354.33072" />
   </g>
