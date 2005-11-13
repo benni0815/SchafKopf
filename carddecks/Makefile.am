@@ -1,1 +1,1 @@
-SUBDIRS = cards-bavarian-old decks
+SUBDIRS = cards-bavarian-old decks cards-OpenTarock

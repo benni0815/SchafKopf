@@ -59,7 +59,7 @@ const QString Settings::cardDeck() const
 {
     QMutexLocker locker( m_mutex );
     
-    QString cardDir = getCardDir()+"cards-bavarian-old/";
+    QString cardDir = getCardDir()+"cards-OpenTarock/";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
     if(!KStandardDirs::exists ( cardDir ))
@@ -71,7 +71,7 @@ const QString Settings::cardBackground() const
 {
     QMutexLocker locker( m_mutex );
 
-    QString deckCard = getCardDir()+"decks/bavaria_tux.png";
+    QString deckCard = getCardDir()+"decks/bavaria_tux2.png";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
     if(!KStandardDirs::exists ( deckCard ))
