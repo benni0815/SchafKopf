@@ -268,12 +268,13 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
     unsigned int i=0;
     CanvasCard* card = 0;
            
-    for(i=0;i<PLAYERS;i++)
+    for(i=0;i<PLAYERS;i++) {
         if( m_players[i]->id() == player )
         {
             card = m_players[i]->hasCard( cardid );
             break;
         }
+    }
     
     if( card )
     {

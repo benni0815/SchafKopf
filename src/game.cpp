@@ -100,6 +100,8 @@ void Game::startGame()
         m_players[i]->stiche()->clear();
     }
 
+    m_playedcards.clear();
+
     postEvent( GameStarted );
     //emit gameStarted();
 }
@@ -191,6 +193,7 @@ void Game::gameLoop()
                 int* cards = new int[2];
                 cards[0] = c->id();
                 cards[1] = 0;
+                m_playedcards.append(c);
                 postEvent( CardPlayed, tmp[a]->id(), cards, QString::null, true );
             	//emit playerPlayedCard(tmp[a]->id(),c);
 
@@ -243,6 +246,7 @@ void Game::endGame(void)
 {
     terminated=true;
     postEvent( GameEnded );
+
     //emit gameEnded();
     //EXIT_LOOP();
 }

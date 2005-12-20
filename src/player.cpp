@@ -77,59 +77,6 @@ bool Player::isPlayer() const
         return false;
 }
 
-void Player::DebugCardOutput(Card* card)
-{
-// DS: disabled to fix compiler warnings
-/*
-	char* c;
-	char* s;
-
-	switch (card->color())
-	{
-		case Card::SCHELLEN:
-			c="Schellen";
-			break;
-		case Card::HERZ:
-			c="Herz";
-			break;
-		case Card::EICHEL:
-			c="Eichel";
-			break;
-		case Card::GRAS:
-			c="Gras";
-			break;
-	}
-	switch (card->card())
-	{
-		case Card::SAU:
-			s="SAU";
-			break;
-		case Card::ZEHN:
-			s="ZEHN";
-			break;
-		case Card::KOENIG:
-			s="KOENIG";
-			break;
-		case Card::OBER:
-			s="OBER";
-			break;
-		case Card::UNTER:
-			s="UNTER";
-			break;
-		case Card::NEUN:
-			s="NEUN";
-			break;
-		case Card::ACHT:
-			s="ACHT";
-			break;
-		case Card::SIEBEN:
-			s="SIEBEN";
-			break;
-	}
-	 qDebug("Entferne: %s, %s", c, s);     
-*/
-}
-
 CardList* Player::stiche() const
 {
     return m_stiche;

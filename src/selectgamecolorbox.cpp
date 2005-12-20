@@ -91,7 +91,7 @@ int SelectGameColorBox::getColor()
 	else if(checkGras->isChecked()) return (Card::GRAS);
 	else if(checkHerz->isChecked()) return (Card::HERZ);
 	else if(checkSchellen->isChecked()) return (Card::SCHELLEN);
-	else if(checkFarblos->isChecked()) return (Card::NOCOLOR);
+	return (Card::NOCOLOR);
 }
 
 

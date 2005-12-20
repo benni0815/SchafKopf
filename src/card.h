@@ -22,6 +22,7 @@
 
 class QPixmap;
 class Player;
+class QString;
 
 /**
 This class represents one card.
@@ -95,6 +96,11 @@ class Card {
           */
         void cardDeckChanged();
         
+        /** Returns a non-localized textual representation of the card,
+         *  for example "Herz Ass"
+         */
+        QString toString() const;
+
     private:
         void init( const enum EType t, const enum EColor c  );
         

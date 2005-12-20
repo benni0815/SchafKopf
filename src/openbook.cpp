@@ -91,7 +91,7 @@ namespace OpeningRules
     s_rule rules[] =
     {
         { player1, true },
-        { player1, true },
+        { player2, true },
         { rule1, false },
         { rule2, false },
         { rule3, false }

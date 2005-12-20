@@ -63,7 +63,6 @@ class Player
         CardList *allowedCards();
         void removeTrumpf(CardList* liste);
         bool hasTrumpf(CardList* liste);
-        void DebugCardOutput(Card* card);
 
     protected:
         CardList *m_cards;

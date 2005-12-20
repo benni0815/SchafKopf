@@ -147,3 +147,33 @@ int Card::id() const
 {
     return m_card + m_color;
 }
+
+
+QString Card::toString() const
+{
+    QString res;
+
+    switch (m_color) {
+    case EICHEL: res += "Eichel"; break;
+    case GRAS: res += "Gras"; break;
+    case HERZ: res += "Herz"; break;
+    case SCHELLEN: res += "Schellen"; break;
+    default: res += "Nocolor"; break;
+    }
+
+    res += ' ';
+
+    switch (m_card) {
+    case SAU: res += "Sau"; break;
+    case ZEHN: res += "Zehn"; break;
+    case KOENIG: res += "Koenig"; break;
+    case OBER: res += "Ober"; break;
+    case UNTER: res += "Unter"; break;
+    case NEUN: res += "Neun"; break;
+    case ACHT: res += "Acht"; break;
+    case SIEBEN: res += "Sieben"; break;
+    default: res += "Unknown"; break;
+    }
+
+    return res;
+}

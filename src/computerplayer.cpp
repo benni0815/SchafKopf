@@ -25,6 +25,7 @@
 #include "gameinfo.h"
 #include "openbook.h"
 
+#include <qstring.h>
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
@@ -455,14 +456,13 @@ Card *ComputerPlayer::highestTrumpfInGame()
     int i;
 	
     for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
-        if(m_game->gameInfo()->istTrumpf(c))
+        if(m_game->gameInfo()->istTrumpf(c)) {
             trumpfs->append(c);
+        }
 
-    for(i=0;i<PLAYERS;i++)
-    {
-        for(c=trumpfs->first();c;c=trumpfs->next())
-            if(m_playedCards[i]->containsRef(c))
-                trumpfs->removeRef(c);
+    for (Card *playedCard = m_game->playedCards()->first(); playedCard;
+            playedCard = m_game->playedCards()->next()) {
+        trumpfs->removeRef(playedCard);
     }
 
     for(c=m_cards->first();c;c=m_cards->next())
@@ -505,6 +505,8 @@ int ComputerPlayer::trumpfsInGame()
 
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 {
+    qDebug("********* cardPlayed (%s)", c->toString().ascii());
+
     // TODO: was called by signal before the thread change
     // has to be implemented in another way
 	m_playedCards[player]->append(c);
