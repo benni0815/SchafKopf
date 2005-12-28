@@ -90,12 +90,13 @@ void CanvasPlayer::position()
 {
     int x = 0, y = 0;
     int num = 0;
-    int w = m_canvas->width();//-DIST;
-    int h = m_canvas->height();//-DIST;
-    int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fr z.B. ein Bild des Spielers (fr Netzwerkmodus).
+    int w = m_canvas->width();
+    int h = m_canvas->height();
+    int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fuer z.B. ein Bild des Spielers (Netzwerkmodus).
     int availw = m_canvas->width() - 2*DIST - offsetl;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
+    float cardoverlap = 1./8.; //Ueberlapp der Karten im Verhaeltnis zur Kartenbreite
     
     for( unsigned int z = 0; z < NUMCARDS; z++ )
     {
@@ -123,12 +124,12 @@ void CanvasPlayer::position()
             break;
         case 1:
             x=DIST; 
-            y=(h-((cardh/4)*(num-1)+cardh))/2; 
+            y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
         
             m_name->move(x,y-m_name->boundingRect().height());
             break;
-        case 2: 
-            x=(w-((cardw/4)*(num-1)+cardw))/2;
+        case 2:
+            x=( w-( (cardw*cardoverlap)*(num-1)+cardw ) )/2; //berechnet die Position der linken Seite des Kartenstapels
             y=DIST;
         
             m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
@@ -136,7 +137,7 @@ void CanvasPlayer::position()
         case 3:
         default:
             x=w-cardw-DIST;
-            y=(h-((cardh/4)*(num-1)+cardh))/2; 
+            y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
         
             m_name->move(x, y-m_name->boundingRect().height());
             break;
@@ -163,9 +164,9 @@ void CanvasPlayer::position()
 	    	x += (availw-cardw)/(num-1);
 	}
         else if(m_position==2)
-            x += (cardw/6);
+            x += (cardw*cardoverlap);
         else
-            y += (cardh/6);
+            y += (cardh*cardoverlap);
 	}
     }
         
