@@ -60,7 +60,7 @@ class GameCanvas : public QCanvasView
           */
         void information( const QString & message );
 
-        /** displays a bubble with the text the computerplayers says
+        /** displays a bubble with the text the computerplayers say
           */
         void Bubble( const QString & message, unsigned int playerid );
         
@@ -84,6 +84,7 @@ class GameCanvas : public QCanvasView
           
     public slots:
         void redrawPlayers();
+        void drawContents ( QPainter * p, int cx, int cy, int cw, int ch );
         void slotPlayerPlayedCard( unsigned int player, int cardid );
         void slotPlayerMadeStich(unsigned int);
                 
