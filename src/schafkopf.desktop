@@ -6,4 +6,4 @@ Icon=schafkopf
 Type=Application
 Comment=Schafkopf - A popular Bavarian Cardgame
 Comment[de]=Schafkopfen
-Categories=Qt;KDE;CardGame;
+Categories=Qt;KDE;Game;CardGame;
