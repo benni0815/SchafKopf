@@ -373,20 +373,20 @@ bool Game::setupGameInfo(Player *players[])
 	    info->setSpieler( players[i] );
             games.append( info );
             if( players[i]->rtti() != Player::HUMAN )
-            {
+            /*{
                 postEvent( Bubble, playerInstance, 0, i18n("%1: \"I want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
-            }
-	    //m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
+            }*/
+	    m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
         }
         else
         {
             if( players[i]->rtti() != Player::HUMAN )
-            {
+            /*{
                 postEvent( Bubble, playerInstance, 0, i18n("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
-            }
-	    //m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
+            }*/
+	    m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
         }
     }
     

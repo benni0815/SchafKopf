@@ -62,11 +62,10 @@ Settings::Settings(QObject *parent, const char *name)
     cardDeckFile=getCardDir()+"decks/"+ourDeck;
     if( !KStandardDirs::exists ( cardDeckFile ) )
     {
-    	cardDeckFile="/usr/share/apps/carddecks/decks"+ourBackside;
+    	cardDeckFile="/usr/share/apps/carddecks/decks/"+ourDeck;
     	if(!KStandardDirs::exists ( cardDeckFile ))
     		cardDeckFile = KCardDialog::getDefaultDeck();
     }
-
 }
 
 
@@ -74,34 +73,6 @@ Settings::~Settings()
 {
     delete m_mutex;
     delete m_instance;
-}
-
-const QString Settings::cardDeck() const
-{
-    QMutexLocker locker( m_mutex );
-    
-    //QString cardDir = getCardDir()+"cards-OpenTarock/";
-    KConfig* config = kapp->config();
-    config->setGroup("CardDeck");
-    /*if(!KStandardDirs::exists ( cardDir ))
-    	{
-    	cardDir="/usr/share/apps/carddecks/cards-OpenTarock/";
-    	if(!KStandardDirs::exists ( cardDir ))
-    		cardDir = KCardDialog::getDefaultCardDir();
-        }*/
-    return config->readEntry("Cards", cardFrontsideDir );    
-}
-
-const QString Settings::cardBackground() const
-{
-    QMutexLocker locker( m_mutex );
-
-    //QString deckCard = getCardDir()+"decks/bavaria_tux2.png";
-    KConfig* config = kapp->config();
-    config->setGroup("CardDeck");
-    /*if(!KStandardDirs::exists ( deckCard ))
-        deckCard = KCardDialog::getDefaultDeck();*/
-    return config->readEntry("Deck", cardDeckFile );    
 }
 
 QString Settings::getCardDir() const
@@ -113,8 +84,24 @@ QString Settings::getCardDir() const
     dir = dir.remove( dir.length()-1, 1 );
     k = dir.findRev( '/', -1 );
     dir = dir.remove( k+1, dir.length()-k );
-    qDebug(dir);
     return dir;
+}
+
+const QString Settings::cardDeck() const
+{
+    QMutexLocker locker( m_mutex );
+    
+    KConfig* config = kapp->config();
+    config->setGroup("CardDeck");
+    return config->readEntry("Cards", cardFrontsideDir );    
+}
+
+const QString Settings::cardBackground() const
+{
+    QMutexLocker locker( m_mutex );
+    KConfig* config = kapp->config();
+    config->setGroup("CardDeck");
+    return config->readEntry("Deck", cardDeckFile );    
 }
 
 void Settings::configureCardDecks( QWidget* parent )
