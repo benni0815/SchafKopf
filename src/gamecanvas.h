@@ -84,7 +84,7 @@ class GameCanvas : public QCanvasView
           
     public slots:
         void redrawPlayers();
-        void drawContents ( QPainter * p, int cx, int cy, int cw, int ch );
+        //void drawContents ( QPainter * p, int cx, int cy, int cw, int ch );
         void slotPlayerPlayedCard( unsigned int player, int cardid );
         void slotPlayerMadeStich(unsigned int);
                 

@@ -541,10 +541,10 @@ void GameCanvas::Bubble( const QString & message, unsigned int playerid )
     m_players[playerid]->say(message, playerid);
 }
 
-void GameCanvas::drawContents ( QPainter * p, int cx, int cy, int cw, int ch )
+/*void GameCanvas::drawContents ( QPainter * p, int cx, int cy, int cw, int ch )
 {
 
-}
+}*/
 
 void GameCanvas::playerHasDoubled( unsigned int id, bool value )
 {
