@@ -122,16 +122,19 @@ class Settings : public QObject
         void cardChanged();
         void resultsTypeChanged();
         void playerNamesChanged();
-        
+
     private:
-        
+
         Settings(QObject *parent = 0, const char *name = 0);
         ~Settings();
-        
+
         static Settings* m_instance;
         QString getCardDir() const;
-        
+
         QMutex* m_mutex;
+
+	QString cardFrontsideDir;
+	QString cardDeckFile;
 };
 
 #endif

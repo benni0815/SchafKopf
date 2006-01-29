@@ -125,7 +125,7 @@
       <envvars/>
     </run>
     <general>
-      <useconfiguration>default</useconfiguration>
+      <useconfiguration>release</useconfiguration>
       <activetarget>src/schafkopf</activetarget>
     </general>
     <configurations>

@@ -46,6 +46,27 @@ Settings::Settings(QObject *parent, const char *name)
 {
     // the mutex causes more problems right now than be useful...
     m_mutex = NULL; // new QMutex();
+    
+    //find the directory for the card frontsides
+    QString ourCards="cards-OpenTarock";
+    cardFrontsideDir=getCardDir()+ourCards+"/";
+    if( !KStandardDirs::exists ( cardFrontsideDir ) )
+    {
+    	cardFrontsideDir="/usr/share/apps/carddecks/"+ourCards+"/";
+    	if(!KStandardDirs::exists ( cardFrontsideDir ))
+    		cardFrontsideDir = KCardDialog::getDefaultCardDir();
+    }
+
+    //find the card deck
+    QString ourDeck="bavaria_tux2.png";
+    cardDeckFile=getCardDir()+"decks/"+ourDeck;
+    if( !KStandardDirs::exists ( cardDeckFile ) )
+    {
+    	cardDeckFile="/usr/share/apps/carddecks/decks"+ourBackside;
+    	if(!KStandardDirs::exists ( cardDeckFile ))
+    		cardDeckFile = KCardDialog::getDefaultDeck();
+    }
+
 }
 
 
@@ -59,24 +80,28 @@ const QString Settings::cardDeck() const
 {
     QMutexLocker locker( m_mutex );
     
-    QString cardDir = getCardDir()+"cards-OpenTarock/";
+    //QString cardDir = getCardDir()+"cards-OpenTarock/";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    if(!KStandardDirs::exists ( cardDir ))
-        cardDir = KCardDialog::getDefaultCardDir();
-    return config->readEntry("Cards", cardDir );    
+    /*if(!KStandardDirs::exists ( cardDir ))
+    	{
+    	cardDir="/usr/share/apps/carddecks/cards-OpenTarock/";
+    	if(!KStandardDirs::exists ( cardDir ))
+    		cardDir = KCardDialog::getDefaultCardDir();
+        }*/
+    return config->readEntry("Cards", cardFrontsideDir );    
 }
 
 const QString Settings::cardBackground() const
 {
     QMutexLocker locker( m_mutex );
 
-    QString deckCard = getCardDir()+"decks/bavaria_tux2.png";
+    //QString deckCard = getCardDir()+"decks/bavaria_tux2.png";
     KConfig* config = kapp->config();
     config->setGroup("CardDeck");
-    if(!KStandardDirs::exists ( deckCard ))
-        deckCard = KCardDialog::getDefaultDeck();
-    return config->readEntry("Deck", deckCard );    
+    /*if(!KStandardDirs::exists ( deckCard ))
+        deckCard = KCardDialog::getDefaultDeck();*/
+    return config->readEntry("Deck", cardDeckFile );    
 }
 
 QString Settings::getCardDir() const
@@ -88,6 +113,7 @@ QString Settings::getCardDir() const
     dir = dir.remove( dir.length()-1, 1 );
     k = dir.findRev( '/', -1 );
     dir = dir.remove( k+1, dir.length()-k );
+    qDebug(dir);
     return dir;
 }
 
