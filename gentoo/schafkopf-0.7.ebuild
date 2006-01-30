@@ -5,7 +5,7 @@ inherit kde
 
 DESCRIPTION="The KDE version of a popular Bavarian card game."
 HOMEPAGE="http://schafkopf.berlios.de"
-SRC_URI="http://download.berlios.de/schafkopf/${P}.tar.gz"
+SRC_URI="http://download.berlios.de/schafkopf/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT=0
