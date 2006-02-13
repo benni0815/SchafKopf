@@ -269,7 +269,9 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                 return findSchmiere(cards);
             }
 	}
-        else
+	
+	// Schade mehr als es hilft
+	/*  else
         {
             // Bei Solos wird geschmiert wenn:
             // -man nicht spieler und nicht letzter oder erster ist
@@ -285,7 +287,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                 qDebug("%s: schmiere!", name().latin1() );
                 return findSchmiere(cards);
             }
-        }
+	    }*/
 	
         if(canMakeStich(cards))
 	{
@@ -311,7 +313,14 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
         else
         {
 		  qDebug("%s: versuche zu stechen", name().latin1());
+		  // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
+		  if (m_game->currStich()->count() == PLAYERS - 1)
+		    {
+		  return findLowestPossibleCard(findHighestCard(stich),cards);
+
+		    } else {
 		  return findHighestCard(cards);
+		    }
         }
 	}
 	qDebug("%s: spiele billigste karte", name().latin1());
