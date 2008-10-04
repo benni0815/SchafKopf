@@ -41,7 +41,7 @@ class CanvasCard : public QObject, public QCanvasRectangle
         void setRotation( int d );
         
         void animatedMove();
-        void setDestination( int x, int x );
+        void setDestination( int x, int y );
 
         
         int rtti() const { return CANVASCARD; }
