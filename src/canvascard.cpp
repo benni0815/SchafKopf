@@ -24,14 +24,14 @@
 
 #include <qpainter.h>
 #include <qtimer.h>
-#include <qwmatrix.h>
+#include <qmatrix.h>
 #include <qpixmap.h>
 
 #include <kpixmap.h>
-#include <kpixmapeffect.h> 
+ 
 
-CanvasCard::CanvasCard(QCanvas*c)
- : QCanvasRectangle(c), m_rotation(0)
+CanvasCard::CanvasCard(Q3Canvas*c)
+ : Q3CanvasRectangle(c), m_rotation(0)
 {
     m_card = NULL;
     m_forbidden = false;
@@ -62,13 +62,13 @@ void CanvasCard::draw( QPainter & p )
         QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
     
         // this code handles already matrix transformations
-        QWMatrix wm = p.worldMatrix();    
+        QMatrix wm = p.worldMatrix();    
         QPoint point( (int)x(), (int)y() );
         point = wm * point;
     
         wm.rotate( (double)m_rotation );
     
-        KPixmap pix = pixmap->xForm( wm );
+        KPixmap pix = pixmap->transformed( wm );
         if( m_forbidden )
             pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
         else if( isActive() )
@@ -88,8 +88,8 @@ void CanvasCard::draw( QPainter & p )
 
 void CanvasCard::setActive( bool b )
 {
-    QCanvasItem::update();
-    QCanvasItem::setActive( b );
+    Q3CanvasItem::update();
+    Q3CanvasItem::setActive( b );
 }
 
 void CanvasCard::setFrontVisible( bool b )
@@ -105,14 +105,14 @@ void CanvasCard::setRotation( int d )
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    QCanvasRectangle::update();
+    Q3CanvasRectangle::update();
     QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
 }
 
 void CanvasCard::disableForbidden()
 {
 	m_forbidden =false;
-	QCanvasRectangle::update();
+	Q3CanvasRectangle::update();
 }
 
 void CanvasCard::setDestination( int x, int y )
@@ -159,6 +159,6 @@ void CanvasCard::cardDeckChanged()
     {
         m_card->cardDeckChanged();
         loadAlpha();
-        QCanvasItem::update();
+        Q3CanvasItem::update();
     }
 }

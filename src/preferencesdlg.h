@@ -30,7 +30,7 @@ class QLabel;
 class QSpinBox;
 class QCheckBox;
 class QPushButton;
-class KURLRequester;
+class KUrlRequester;
 class QWidgetStack;
 
 /**
@@ -85,7 +85,7 @@ class PreferencesDlg : public KDialogBase
         KLineEdit* m_p3_name;
         KLineEdit* m_p4_name;
 
-        KURLRequester* m_linePathBackground;
+        KUrlRequester* m_linePathBackground;
 
         QPushButton* m_pushURLClear;
         

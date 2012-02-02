@@ -31,11 +31,16 @@
 #include <klocale.h>
 #include <qtimer.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QFocusEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
-class CanvasText : public QCanvasText {
+class CanvasText : public Q3CanvasText {
     public:
-        CanvasText( const QString & t, const QFont & f, QCanvas* c )
-            : QCanvasText( t, f, c )
+        CanvasText( const QString & t, const QFont & f, Q3Canvas* c )
+            : Q3CanvasText( t, f, c )
         {
             setActive( false );
             setColor( Qt::yellow );
@@ -47,13 +52,13 @@ class CanvasText : public QCanvasText {
             QFont f = font();
             f.setUnderline( b );
             setFont( f );
-            QCanvasText::setActive( b );
+            Q3CanvasText::setActive( b );
         }
 
 };
 
-GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
- : QCanvasView(c,parent, name)
+GameCanvas::GameCanvas(Q3Canvas* c, QWidget *parent, const char *name)
+ : Q3CanvasView(c,parent, name)
 {
     unsigned int i = 0;
     for(;i<PLAYERS;i++)
@@ -81,7 +86,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     */
     
     m_result = 0;
-    setFocusPolicy( QWidget::StrongFocus );
+    setFocusPolicy( Qt::StrongFocus );
     
     canvas()->setBackgroundColor( Qt::darkGreen );
     
@@ -90,7 +95,7 @@ GameCanvas::GameCanvas(QCanvas* c, QWidget *parent, const char *name)
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
-    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(yesNoClicked(QCanvasItem*)));
+    connect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(yesNoClicked(Q3CanvasItem*)));
     
     m_focus_list.append( m_yes );
     m_focus_list.append( m_no );
@@ -219,7 +224,7 @@ int GameCanvas::getCard()
     CanvasCard* c = NULL;
     unsigned int i;
     
-    connect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
+    connect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
     m_result = -1;
 
     if( hasFocus() && human )
@@ -238,7 +243,7 @@ int GameCanvas::getCard()
     return m_result;
 }
 
-void GameCanvas::cardClicked( QCanvasItem* item )
+void GameCanvas::cardClicked( Q3CanvasItem* item )
 {
     if( item )
         item->setActive( false );
@@ -252,7 +257,7 @@ void GameCanvas::cardClicked( QCanvasItem* item )
             if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
                 m_result = card->card()->id();
-                disconnect( this, SIGNAL(clicked( QCanvasItem* )), this, SLOT(cardClicked(QCanvasItem*)));
+                disconnect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
                 
                 // be sure that focusOutEvent does not use its parameter
                 focusOutEvent( NULL );
@@ -315,7 +320,7 @@ void GameCanvas::slotPlayerMadeStich(unsigned int)
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
     canvas()->resize( this->width() -2, this->height()-2 );
-    QCanvasView::resizeEvent( r );
+    Q3CanvasView::resizeEvent( r );
     
     positionObjects();
     resizeBackground();
@@ -357,7 +362,7 @@ void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
     double z;
     bool first=true;
     if( e->button() == Qt::LeftButton ) {
-        QCanvasItemList list = canvas()->allItems();
+        Q3CanvasItemList list = canvas()->allItems();
 	for( unsigned int i = 0; i < list.count(); i++ )
             if( list[i]->boundingRect().contains( e->pos() ) && list[i]->isVisible() )
             {
@@ -395,7 +400,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
         for( i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isActive() )
             {
-                if( m_focus_list[i]->rtti() == QCanvasItem::Rtti_Text )                
+                if( m_focus_list[i]->rtti() == Q3CanvasItem::Rtti_Text )                
                     yesNoClicked( m_focus_list[i] );
                 else if( m_focus_list[i]->rtti() == CANVASCARD )
                     cardClicked( m_focus_list[i] );
@@ -486,7 +491,7 @@ bool GameCanvas::questionYesNo( const QString & message )
     return ( m_result == YES );
 }
 
-void GameCanvas::yesNoClicked( QCanvasItem* item )
+void GameCanvas::yesNoClicked( Q3CanvasItem* item )
 {
     if( item )
         item->setActive( false );

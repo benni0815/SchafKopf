@@ -24,12 +24,14 @@
 #include "game.h"
 #include "gameinfo.h"
 
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
 
 #include <klocale.h>
 
@@ -38,16 +40,16 @@ SelectGameDlg::SelectGameDlg(bool force, CardList* list,QWidget *parent, const c
     : KDialogBase( KDialogBase::Plain, i18n("Select Game"),
       KDialogBase::Ok, KDialogBase::Ok, parent,name, true), m_list( list )
 {
-    QHBoxLayout* layout = new QHBoxLayout( plainPage() );    
+    Q3HBoxLayout* layout = new Q3HBoxLayout( plainPage() );    
     
-    QButtonGroup* group1 = new QButtonGroup( 1, Qt::Horizontal, i18n("Game:"), plainPage() );
+    Q3ButtonGroup* group1 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game:"), plainPage() );
     checkRufspiel = new QRadioButton( i18n("&Rufspiel"), group1 );
     checkSolo = new QRadioButton( i18n("&Solo"), group1 );
     checkGeier = new QRadioButton( i18n("&Geier"), group1 );
     checkWenz = new QRadioButton( i18n("&Wenz"), group1 );
     checkDachs = new QRadioButton( i18n("&Dachs"), group1 );
 
-    QButtonGroup* group2 = new QButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plainPage() );
+    Q3ButtonGroup* group2 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plainPage() );
     checkEichel = new QRadioButton( i18n("&Eichel"), group2 );
     checkGras = new QRadioButton( i18n("&Gras"), group2 );
     checkHerz = new QRadioButton( i18n("&Herz"), group2 );
@@ -141,9 +143,9 @@ void SelectGameDlg::enableControls()
     if ( checkEichel->isChecked() || checkGras->isChecked() ||
          checkHerz->isChecked() || checkSchellen->isChecked() ||
          checkFarblos->isChecked() )
-       KDialogBase::enableButtonOK ( true );
+       KDialogBase::enableButtonOk ( true );
     else
-       KDialogBase::enableButtonOK ( false );
+       KDialogBase::enableButtonOk ( false );
     
     updatePreview();
 }

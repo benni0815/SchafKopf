@@ -35,7 +35,7 @@ bool CommQSocketClient::receiveMsg(Message *msg)
         return false;
     if(!clientSocket.connected())
         throw EConnectionClosed();
-    n=clientSocket.readBlock(msg->data, MESSAGE_LENGTH);
+    n=clientSocket.read(msg->data, MESSAGE_LENGTH);
     if(n!=MESSAGE_LENGTH)
         return false;
     return true;
@@ -54,7 +54,7 @@ bool CommQSocketClient::sendMsg(const Message *msg, bool waitAck)
         m.msg |= CommBase::msg_ack; 
     if(!clientSocket.connected())
         throw EConnectionClosed();
-    n=writeBlock(m.data, MESSAGE_LENGTH);
+    n=write(m.data, MESSAGE_LENGTH);
     if(n!=MESSAGE_LENGTH)
         return false;
     if(waitAck)

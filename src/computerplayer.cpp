@@ -26,6 +26,8 @@
 #include "openbook.h"
 
 #include <qstring.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
@@ -150,7 +152,7 @@ Card *ComputerPlayer::play()
             else
                 i++;
         }
-        qDebug("%s: allowed->count() : %i", name().latin1(), allowed->count() );
+        qDebug("%s: allowed->count() : %i", name().toLatin1(), allowed->count() );
     }
     /*
       // The AI is more intelligent, let the AI decide
@@ -182,7 +184,7 @@ Card *ComputerPlayer::play()
 
 GameInfo* ComputerPlayer::gameInfo( bool force )
 {
-    QValueList<game_data> lst;
+    Q3ValueList<game_data> lst;
     
     for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
     {
@@ -265,7 +267,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                 ( m_game->currStich()->count() == PLAYERS - 2 && 
                   m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
             {
-                qDebug("%s: schmiere!", name().latin1() );
+                qDebug("%s: schmiere!", name().toLatin1() );
                 return findSchmiere(cards);
             }
 	}
@@ -284,7 +286,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                   findHighestCard( m_game->currStich() )->id() != highestTrump->id()) && // Kann der Stich ueberhaupt gestochen werden
                 !canMakeStich(cards) )                           // kann ihn jemand ausser mir machen?
             {
-                qDebug("%s: schmiere!", name().latin1() );
+                qDebug("%s: schmiere!", name().toLatin1() );
                 return findSchmiere(cards);
             }
 	    }*/
@@ -307,12 +309,12 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
         {
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
-            qDebug("%s: versuche so niedrig wie möglich zu stechen", name().latin1());
+            qDebug("%s: versuche so niedrig wie möglich zu stechen", name().toLatin1());
             return findLowestPossibleCard(findHighestCard(stich),cards);
         }
         else
         {
-		  qDebug("%s: versuche zu stechen", name().latin1());
+		  qDebug("%s: versuche zu stechen", name().toLatin1());
 		  // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
 		  if (m_game->currStich()->count() == PLAYERS - 1)
 		    {
@@ -323,7 +325,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
 		    }
         }
 	}
-	qDebug("%s: spiele billigste karte", name().latin1());
+	qDebug("%s: spiele billigste karte", name().toLatin1());
 	return findCheapestCard(cards);
 }
 
@@ -420,7 +422,7 @@ bool ComputerPlayer::ownStich()
      * We can only check if the card belongs to the player party, so we check afterwars
      * if we are part of the player part!! Think about it... it does really work :)
      */
-    qDebug("%s ist %s Spieler.", name().latin1(), ( this->isPlayer() ? "":"nicht") );
+    qDebug("%s ist %s Spieler.", name().toLatin1(), ( this->isPlayer() ? "":"nicht") );
     if( highestCard->owner()->isPlayer() )
         return ( this->isPlayer() ? true : false );
     else
@@ -527,7 +529,7 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 			mitspieler=player;
 		else
 			mitspieler=0+1+2+3-(id()+m_game->gameInfo()->spieler()->id()+player);
-		qDebug("%s: Mitspieler gefunden: %s", name().latin1(), m_game->findIndex(mitspieler)->name().latin1());
+		qDebug("%s: Mitspieler gefunden: %s", name().toLatin1(), m_game->findIndex(mitspieler)->name().toLatin1());
 	}
 }
 

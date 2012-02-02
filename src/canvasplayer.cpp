@@ -26,16 +26,16 @@
 #include "game.h"
 #include "settings.h"
 
-#include <qcanvas.h>
+#include <q3canvas.h>
 #include <qfont.h>
 #include <qtimer.h>
-#include <qsignal.h>
+#include <q3signal.h>
 #include <kpassivepopup.h>
 #include <kapplication.h>
 #include <qlabel.h>
 #include <qwidget.h>
 
-CanvasPlayer::CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view )
+CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )
     : m_canvas( canvas )
 {
     create();
@@ -76,7 +76,7 @@ void CanvasPlayer::create()
     m_cards = new CardList;
     m_cards->setAutoDelete( true );
     
-    m_name = new QCanvasText( m_canvas );
+    m_name = new Q3CanvasText( m_canvas );
     m_name->setColor( Qt::white );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
@@ -321,7 +321,7 @@ unsigned int CanvasPlayer::id() const
     return m_id;
 }
 
-MyKPassivePopup::MyKPassivePopup( QWidget *parent, const char *name, WFlags f ) : KPassivePopup(parent, name, f)
+MyKPassivePopup::MyKPassivePopup( QWidget *parent, const char *name, Qt::WFlags f ) : KPassivePopup(parent, name, f)
 {
 }
 

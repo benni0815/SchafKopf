@@ -26,8 +26,8 @@
 #include "settings.h"
 
 #include <qwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
@@ -35,7 +35,7 @@
 #include <qapplication.h>
 #include <qradiobutton.h>
 #include <qlayout.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <klocale.h>
 #include <kwizard.h>
 #include <qpainter.h>
@@ -48,23 +48,23 @@
 #define HELP_GAMETYPE_WENZ i18n("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 #define HELP_GAMETYPE_GEIER i18n("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 
-SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):QHBox(parent, name, 0)
+SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):Q3HBox(parent, name, 0)
 {
     m_allowed = Settings::instance()->allowedGames();
     
 	setSpacing(8);
-	page = new QHBox( this );
-	row1 = new QVBox( page );
+	page = new Q3HBox( this );
+	row1 = new Q3VBox( page );
 
 	preview = new QLabel( row1);
 	infoLabel = new QLabel( row1);
 	//infoLabel=QLabel(row1);
 	infoLabel->setMargin( 11 );
-	infoLabel->setAlignment( AlignBottom | AlignLeft | Qt::WordBreak);
+	infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap);
 
 
 	infoLabel->setMinimumHeight(100);
-	group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
+	group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
 
 
 	checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );

@@ -24,6 +24,7 @@
 #include <kapplication.h>
 
 #include <iostream>
+#include <krandom.h>
 
 CardList::CardList()
 {
@@ -75,7 +76,7 @@ void CardList::randomize()
     init();
     for(i=0;i<CARD_CNT;i++)
     {
-   		rval=KApplication::random()%CARD_CNT;
+   		rval=KRandom::random()%CARD_CNT;
 		rnd[i]=rval;
         for(a=0;a<i;a++)
         {

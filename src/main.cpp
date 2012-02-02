@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
 
     // get KDE games translations
-    KGlobal::locale()->insertCatalogue("libkdegames");
+    KGlobal::locale()->insertCatalog("libkdegames");
 
     SchafKopf* mainWin = new SchafKopf();
     app.setMainWidget( mainWin );

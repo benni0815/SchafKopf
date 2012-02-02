@@ -20,15 +20,15 @@
 #include "newgamewizard.h"
 
 #include <qwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <klocale.h>
 #include <kwizard.h>
 
@@ -44,12 +44,12 @@ newgamewizard::newgamewizard( QWidget *parent, const char *name )
 
 void newgamewizard::setup_page_selectgame()
 {
-	page_selectgame = new QHBox( this );
+	page_selectgame = new Q3HBox( this );
 	page_selectgame->setSpacing(8);
-	QVBox *page = new QVBox( page_selectgame );
-	QHBox *row1 = new QHBox( page );
+	Q3VBox *page = new Q3VBox( page_selectgame );
+	Q3HBox *row1 = new Q3HBox( page );
 
-	QButtonGroup* group_TypeSelect  = new QButtonGroup( 1, Qt::Horizontal, "", row1 );
+	Q3ButtonGroup* group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, "", row1 );
 	info = new QLabel( page_selectgame);
 	info->setMargin( 11 );
 	info->setMinimumWidth( 220);
@@ -72,7 +72,7 @@ void newgamewizard::setup_page_selectgame()
 
 void newgamewizard::showPage( QWidget* page )
 {
-	QWizard::showPage(page);
+	Q3Wizard::showPage(page);
 }
 
 int newgamewizard::getGame()

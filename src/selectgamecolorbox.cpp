@@ -26,8 +26,8 @@
 #include "settings.h"
 
 #include <qwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
@@ -35,7 +35,7 @@
 #include <qapplication.h>
 #include <qradiobutton.h>
 #include <qlayout.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <klocale.h>
 #include <kwizard.h>
 #include <qpainter.h>
@@ -43,17 +43,17 @@
 #include "card.h"
 #include "selectgamewizard.h"
 
-SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):QHBox(parent, name, 0)
+SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):Q3HBox(parent, name, 0)
 {
     m_allowed = Settings::instance()->allowedGames();
     
 	m_gameinfo=0;
 	setSpacing(8);
-	page = new QVBox( this );
+	page = new Q3VBox( this );
 	//row1 = new QVBox( page );
 
 	this->parent=(SelectGameWizard*)parent;
-	color_group = new QButtonGroup( 1, Qt::Vertical, i18n("Color:"), page );
+	color_group = new Q3ButtonGroup( 1, Qt::Vertical, i18n("Color:"), page );
 	checkEichel = new QRadioButton( i18n("&Eichel"), color_group );
 	checkGras = new QRadioButton( i18n("&Gras"), color_group );
 	checkHerz = new QRadioButton( i18n("&Herz"), color_group );

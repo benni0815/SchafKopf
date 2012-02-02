@@ -20,15 +20,15 @@
 #include "selectgamewizard.h"
 
 #include <qwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <klocale.h>
 #include <kwizard.h>
 #include "selectgametypebox.h"

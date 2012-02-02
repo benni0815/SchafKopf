@@ -25,6 +25,8 @@
 
 #include <qlabel.h>
 #include <qlayout.h>
+//Added by qt3to4:
+#include <Q3GridLayout>
 
 #include <klocale.h>
 
@@ -32,7 +34,7 @@ StichDlg::StichDlg(QWidget *parent, const char *name)
     : KDialogBase( KDialogBase::Plain, i18n("Last Trick"),
       KDialogBase::Close, KDialogBase::Close, parent,name, false)
 {
-    QGridLayout* layout = new QGridLayout( plainPage(), 4, 2 );
+    Q3GridLayout* layout = new Q3GridLayout( plainPage(), 4, 2 );
     trick = new QLabel( plainPage() );
     layout->addMultiCellWidget( trick, 0, 0, 0, 3);
     

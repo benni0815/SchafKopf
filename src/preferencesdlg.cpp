@@ -26,18 +26,21 @@
 #include <klineedit.h>
 #include <kurlrequester.h>
 
-#include <qframe.h>
+#include <q3frame.h>
 #include <qlayout.h>
 #include <qradiobutton.h>
-#include <qvbox.h>
-#include <qvbuttongroup.h>
+#include <q3vbox.h>
+#include <q3buttongroup.h>
 #include <qhbuttongroup.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qtooltip.h>
-#include <qwidgetstack.h>
-#include <qgrid.h>
+#include <q3widgetstack.h>
+#include <q3grid.h>
+//Added by qt3to4:
+#include <Q3HBoxLayout>
+#include <Q3VBoxLayout>
 
 PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
     : KDialogBase( IconList, i18n("Preferences"), KDialogBase::Ok|KDialogBase::Cancel,
@@ -116,29 +119,33 @@ void PreferencesDlg::accept()
 
 void PreferencesDlg::addPagePlayer()
 {
-    QGrid* box = addGridPage( 2, Qt::Horizontal, i18n("Player Settings"), QString::null, BarIcon("identity") );
+    Q3Grid* box = addGridPage( 2, Qt::Horizontal, i18n("Player Settings"), QString::null, BarIcon("identity") );
     QStringList names = Settings::instance()->playerNames();
     
     new QLabel( i18n("Human Player:"), box );
-    m_p1_name = new KLineEdit( names[0], box, "m_p1_name" );
+    m_p1_name = new KLineEdit( names[0], box );
+    m_p1_name->setObjectName( "m_p1_name" );
     
     new QLabel( i18n("Computer Player 1:"), box );
-    m_p2_name = new KLineEdit( names[1], box, "m_p2_name" );
+    m_p2_name = new KLineEdit( names[1], box );
+    m_p2_name->setObjectName( "m_p2_name" );
 
     new QLabel( i18n("Computer Player 2:"), box );
-    m_p3_name = new KLineEdit( names[2], box, "m_p3_name" );
+    m_p3_name = new KLineEdit( names[2], box );
+    m_p3_name->setObjectName( "m_p3_name" );
 
     new QLabel( i18n("Computer Player 3:"), box );
-    m_p4_name = new KLineEdit( names[3], box, "m_p4_name" );
+    m_p4_name = new KLineEdit( names[3], box );
+    m_p4_name->setObjectName( "m_p4_name" );
 }
 
 void PreferencesDlg::addPageRules()
 {
     QFrame* box = addPage( i18n("Rules"), QString::null, BarIcon("schafkopf") );
-    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     
-    QVButtonGroup* group = new QVButtonGroup( i18n("No one wants to play:"), box, "group" );
+    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("No one wants to play:"), box, "group" );
     m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
     m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
     m_radioRamsch = new QRadioButton( i18n("Play Ramsch"), group );
@@ -172,20 +179,20 @@ void PreferencesDlg::addPageRules()
 void PreferencesDlg::addPageResults()
 {    
     QFrame* box = addPage( i18n("Results"), QString::null, BarIcon("edit") );
-    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
 
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
     KLocale* locale = KGlobal::locale();
     
-    QVButtonGroup* group = new QVButtonGroup( i18n("Results:"), box, "group" );
+    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("Results:"), box, "group" );
     m_radioMoney = new QRadioButton( i18n("count &money"), group );
     m_radioPoints = new QRadioButton( i18n("count &points"), group );
 
-    stack = new QWidgetStack( box );
+    stack = new Q3WidgetStack( box );
 
-    stackMoney = new QVBox( stack );
-    stackPoints = new QVBox( stack );
+    stackMoney = new Q3VBox( stack );
+    stackPoints = new Q3VBox( stack );
 
     m_money_call = new KDoubleNumInput( 0.0, 100.00, rm->rufspiel, 0.10, 2, stackMoney, "m_money_call" );
     m_money_call->setLabel( i18n("Callgame:"), AlignLeft | AlignVCenter );
@@ -263,16 +270,16 @@ void PreferencesDlg::addPageResults()
 void PreferencesDlg::addPageView()
 {
     QFrame* box = addPage( i18n("View"), QString::null, BarIcon("background") );
-    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
+    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     
-    QVButtonGroup* group2 = new QVButtonGroup( i18n("Game Canvas:"), box, "group2" );
+    Q3VButtonGroup* group2 = new Q3VButtonGroup( i18n("Game Canvas:"), box, "group2" );
     QLabel* label3 = new QLabel( i18n("&Background image:"), group2, "label3" );
-    m_linePathBackground = new KURLRequester( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
+    m_linePathBackground = new KUrlRequester( Settings::instance()->backgroundImage(), group2, "m_linePathBackground" );
     m_pushURLClear = new QPushButton( i18n("&Clear background image"), group2, "m_pushURLClear" );
     label3->setBuddy( m_linePathBackground );
 
-    QVButtonGroup* group = new QVButtonGroup( i18n("Card Arrangement:"), box, "group" );
+    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("Card Arrangement:"), box, "group" );
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
     QToolTip::add( m_checkRearrangeCards, i18n("Cards will be rearranged after each trick.") );
  
@@ -292,9 +299,9 @@ void PreferencesDlg::addPageGames()
 {
     QFrame* box = addPage( i18n("Games"), QString::null, BarIcon("joystick") );
     
-    QVBoxLayout* layout = new QVBoxLayout( box, 6, 6  );
-    QHBoxLayout* farbWenzLayout = new QHBoxLayout( NULL, 6, 6 );
-    QHBoxLayout* farbGeierLayout = new QHBoxLayout( NULL, 6, 6 );
+    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
+    Q3HBoxLayout* farbWenzLayout = new Q3HBoxLayout( NULL, 6, 6 );
+    Q3HBoxLayout* farbGeierLayout = new Q3HBoxLayout( NULL, 6, 6 );
     
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     QSpacerItem* smallSpace = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );

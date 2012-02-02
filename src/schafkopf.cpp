@@ -32,16 +32,19 @@
 #include <math.h>
 
 #include <qfontmetrics.h>
-#include <qheader.h>
+#include <q3header.h>
 #include <qlabel.h>
 #include <qpixmap.h>
-#include <qsemaphore.h>
+#include <q3semaphore.h>
 #include <qsplitter.h>
-#include <qtable.h>
+#include <q3table.h>
 #include <qtimer.h>
 #include <qtooltip.h>
-#include <qvbox.h>
-#include <qvgroupbox.h>
+#include <q3vbox.h>
+#include <q3vgroupbox.h>
+//Added by qt3to4:
+#include <QCustomEvent>
+#include <Q3MemArray>
 
 #include <kaction.h>
 #include <kapplication.h>
@@ -51,7 +54,7 @@
 #include <kmenubar.h>
 #include <ktoolbar.h>
 #include <kpushbutton.h>
-#include <kpopupmenu.h>
+#include <kmenu.h>
 #include <kstdgameaction.h>
 
 SchafKopf::SchafKopf()
@@ -59,7 +62,7 @@ SchafKopf::SchafKopf()
 {
     sem_init( &m_sem, 0, 0 );
     
-    split = new QSplitter( QSplitter::Horizontal, this );
+    split = new QSplitter( Qt::Horizontal, this );
 #if QT_VERSION >= 0x030200
     split->setChildrenCollapsible( true );
 #endif // QT_VERSION
@@ -70,17 +73,17 @@ SchafKopf::SchafKopf()
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
 
-    m_canvas = new QCanvas( this, "canvas" );
+    m_canvas = new Q3Canvas( this, "canvas" );
     m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
 
     m_game = new Game( &m_sem, this );
-    m_canvasview->setHScrollBarMode(QScrollView::AlwaysOff);
-    m_canvasview->setVScrollBarMode(QScrollView::AlwaysOff);
+    m_canvasview->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+    m_canvasview->setVScrollBarMode(Q3ScrollView::AlwaysOff);
     
-    QVBox * leftBox = new QVBox( split );
+    Q3VBox * leftBox = new Q3VBox( split );
     new QLabel( i18n("Results:"), leftBox );
 
-    m_table = new QTable( leftBox );
+    m_table = new Q3Table( leftBox );
     m_table->setReadOnly( true );
     m_table->setNumCols( PLAYERS );
     m_table->setLeftMargin( 0 );
@@ -94,7 +97,7 @@ SchafKopf::SchafKopf()
         m_table->setColumnStretchable( i, true );
     }
     
-    QVGroupBox* groupInfo = new QVGroupBox( i18n("Game Information:"), leftBox );
+    Q3VGroupBox* groupInfo = new Q3VGroupBox( i18n("Game Information:"), leftBox );
     lblCurGame = new QLabel( groupInfo );
     lblDoubled = new QLabel( groupInfo );
 
@@ -267,8 +270,8 @@ void SchafKopf::saveConfig()
 void SchafKopf::setupActions()
 {
     KAction *m_actNew, *m_actQuit;
-    KPopupMenu* mnuGame = new KPopupMenu( this );
-    KPopupMenu* mnuSettings = new KPopupMenu( this );
+    KMenu* mnuGame = new KMenu( this );
+    KMenu* mnuSettings = new KMenu( this );
 
     menuBar()->insertItem( i18n("&Game"), mnuGame );
     menuBar()->insertItem( i18n("&Settings"), mnuSettings );
@@ -292,7 +295,7 @@ void SchafKopf::setupActions()
     //connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
 
     KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
-    KStdAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
+    KStandardAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
 
     enableControls();
 }
@@ -414,7 +417,7 @@ void SchafKopf::updateInfo()
 
 void SchafKopf::clearTable()
 {
-    QMemArray<int> cols(m_table->numRows());
+    Q3MemArray<int> cols(m_table->numRows());
     int i;
     
     for(i=0;i<m_table->numRows();i++)
