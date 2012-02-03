@@ -25,29 +25,26 @@
 #include <kglobal.h>
 #include <klocale.h>
 
-static const char description[] =
-    I18N_NOOP("<qt>Schafkopf is a popular card game in Bavaria. "
-              "SchafKopf ist the KDE version of this game.</qt>");
-
 static const char version[] = "0.7";
 
-static KCmdLineOptions options[] =
+/*static KCmdLineOptions options[] =
 {
     KCmdLineLastOption
-};
+};*/
 
 int main(int argc, char **argv)
 {
     // if you want copyright, then add you to the list:
-    KAboutData about("schafkopf", I18N_NOOP("SchafKopf"), version, description,
-                     KAboutData::License_GPL, "(C) 2004-2005 Dominik Seichter (and others)", 0, 0, "domseichter@web.de");
-    about.addAuthor( "Christian Kern", 0, "kernch@in.tum.de" );	
-    about.addAuthor( "Lorenz Moesenlechner", 0, "moesenle@in.tum.de" );
-    about.addAuthor( "Benjamin Loewe", 0, "benjamin.loewe@freenet.de" );
-    about.addAuthor( "Dominik Seichter", 0, "domseichter@web.de", "http://www.krename.net" );
+    KLocalizedString description = ki18n("<qt>Schafkopf is a popular card game in Bavaria. SchafKopf ist the KDE version of this game.</qt>");
+    KAboutData about("schafkopf", "SchafKopf", ki18n("SchafKopf"), version, description,
+                     KAboutData::License_GPL, ki18n("(C) 2004-2005 Dominik Seichter (and others)"), ki18n(""), "http://schafkopf.berlios.de", "domseichter@web.de");
+    about.addAuthor( ki18n("Christian Kern"), ki18n(""), "kernch@in.tum.de" );
+    about.addAuthor( ki18n("Lorenz Moesenlechner"), ki18n(""), "moesenle@in.tum.de" );
+    about.addAuthor( ki18n("Benjamin Loewe"), ki18n(""), "benjamin.loewe@freenet.de" );
+    about.addAuthor( ki18n("Dominik Seichter"), ki18n(""), "domseichter@web.de", "http://www.krename.net" );
 
     KCmdLineArgs::init(argc, argv, &about);
-    KCmdLineArgs::addCmdLineOptions( options );
+//    KCmdLineArgs::addCmdLineOptions( options );
     KApplication app;
     
     KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
@@ -56,7 +53,7 @@ int main(int argc, char **argv)
     KGlobal::locale()->insertCatalog("libkdegames");
 
     SchafKopf* mainWin = new SchafKopf();
-    app.setMainWidget( mainWin );
+//    app.setMainWidget( mainWin );
     mainWin->show();
 
     // free some memory
