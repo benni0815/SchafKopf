@@ -1,5 +1,5 @@
 # ########## Project setup ##########
-PROJECT(src)
+PROJECT(schafkopf)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4.5)
 
 # ######### General setup ##########
@@ -15,10 +15,11 @@ include(MacroLibrary)
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
+add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 # ########## src executable ##########
 # Sources:
-SET(src_executable_SRCS
+SET(schafkopf_SRCS
     card.cpp
     selectgamewizard.cpp
     player.cpp
@@ -26,7 +27,6 @@ SET(src_executable_SRCS
     schafkopf.cpp
     selectgametypebox.cpp
     results.cpp
-    commsocketclient.cpp
     main.cpp
     newgamewizard.cpp
     game.cpp
@@ -45,7 +45,7 @@ SET(src_executable_SRCS
 )
 
 # Headers:
-SET(src_executable_HDRS
+SET(schafkopf_HDRS
     commbase.h
     schafkopf.h
     gameinfo.h
@@ -53,7 +53,6 @@ SET(src_executable_HDRS
     selectgamewizard.h
     schafkopfdef.h
     game.h
-    commsocketclient.h
     preferencesdlg.h
     canvasplayer.h
     gamecanvas.h
@@ -72,10 +71,10 @@ SET(src_executable_HDRS
     newgamewizard.h
 )
 
-
+qt4_automoc(${schafkopf_SRCS})
 
 # actual target:
-ADD_EXECUTABLE(src ${src_executable_SRCS})
+ADD_EXECUTABLE(src ${schafkopf_SRCS})
 
 # add install target:
 INSTALL(TARGETS src DESTINATION bin)
