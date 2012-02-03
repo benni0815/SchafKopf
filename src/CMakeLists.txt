@@ -19,8 +19,6 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 # ########## src executable ##########
 # Sources:
 SET(src_executable_SRCS
-    timer.cpp
-    commsocketserver.cpp
     card.cpp
     selectgamewizard.cpp
     player.cpp
@@ -43,7 +41,6 @@ SET(src_executable_SRCS
     preferencesdlg.cpp
     canvasplayer.cpp
     openbook.cpp
-    commqsocketclient.cpp
     canvascard.cpp
 )
 
@@ -54,14 +51,12 @@ SET(src_executable_HDRS
     gameinfo.h
     card.h
     selectgamewizard.h
-    commqsocketclient.h
     schafkopfdef.h
     game.h
     commsocketclient.h
     preferencesdlg.h
     canvasplayer.h
     gamecanvas.h
-    commsocketserver.h
     openbook.h
     player.h
     results.h
@@ -74,7 +69,6 @@ SET(src_executable_HDRS
     selectgametypebox.h
     selectgamecolorbox.h
     selectgamedlg.h
-    timer.h
     newgamewizard.h
 )
 
