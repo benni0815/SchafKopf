@@ -320,7 +320,7 @@ unsigned int CanvasPlayer::id() const
 {
     return m_id;
 }
-
+/*
 MyKPassivePopup::MyKPassivePopup( QWidget *parent, const char *name, Qt::WFlags f ) : KPassivePopup(parent, name, f)
 {
 }
@@ -330,4 +330,4 @@ void MyKPassivePopup::myShow()
 	show();
 	moveNear( QRect(QPoint(300,300), QPoint(50,50)) );
 }
-
+*/
