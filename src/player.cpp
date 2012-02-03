@@ -3,6 +3,8 @@
 #include "game.h"
 #include "cardlist.h"
 
+#include <QDebug>
+
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -175,7 +177,7 @@ CardList* Player::allowedCards()
             if( istTrumpf( Spielfarbe->at(i) ) )
             {
                 Spielfarbe->removeRef( Spielfarbe->at(i) );
-                //qDebug("%s: Entferne trumpf aus Spielfarbe", name().toLatin1());
+                qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
             }
         }
                 
