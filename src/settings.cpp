@@ -409,5 +409,3 @@ void Settings::setAllowedGames( const t_AllowedGames* allowed )
     config->writeEntry( "AllowDachs", allowed->dachs );
     config->sync();
 }
-
-#include "settings.moc"
