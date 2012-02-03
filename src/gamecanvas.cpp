@@ -25,7 +25,6 @@
 #include "game.h"
 #include "player.h"
 #include "settings.h"
-#include "timer.h"
 
 #include <kapplication.h>
 #include <klocale.h>

@@ -26,7 +26,6 @@
 #include "newgamewizard.h"
 #include "preferencesdlg.h"
 #include "selectgamewizard.h"
-#include "timer.h"
 
 // for pow()
 #include <math.h>
