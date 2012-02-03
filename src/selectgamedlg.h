@@ -20,7 +20,7 @@
 #ifndef SELECTGAMEDLG_H
 #define SELECTGAMEDLG_H
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 //Added by qt3to4:
 #include <QLabel>
 
@@ -34,7 +34,7 @@ Allows the user to select a game he wants to play.
 @author Dominik Seichter
 */
 
-class SelectGameDlg : public KDialogBase
+class SelectGameDlg : public KDialog
 {
     Q_OBJECT
     public:

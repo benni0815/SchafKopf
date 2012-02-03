@@ -37,26 +37,30 @@
 
 
 SelectGameDlg::SelectGameDlg(bool force, CardList* list,QWidget *parent, const char *name)
-    : KDialogBase( KDialogBase::Plain, i18n("Select Game"),
-      KDialogBase::Ok, KDialogBase::Ok, parent,name, true), m_list( list )
+    : KDialog( parent ), m_list( list )
 {
-    Q3HBoxLayout* layout = new Q3HBoxLayout( plainPage() );    
-    
-    Q3ButtonGroup* group1 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game:"), plainPage() );
+    setCaption( i18n("Select Game") );
+    setButtons( KDialog::Ok );
+
+    QWidget *plain = new QWidget( this );
+    setMainWidget( plain );
+    Q3HBoxLayout* layout = new Q3HBoxLayout( plain );
+
+    Q3ButtonGroup* group1 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game:"), plain );
     checkRufspiel = new QRadioButton( i18n("&Rufspiel"), group1 );
     checkSolo = new QRadioButton( i18n("&Solo"), group1 );
     checkGeier = new QRadioButton( i18n("&Geier"), group1 );
     checkWenz = new QRadioButton( i18n("&Wenz"), group1 );
     checkDachs = new QRadioButton( i18n("&Dachs"), group1 );
 
-    Q3ButtonGroup* group2 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plainPage() );
+    Q3ButtonGroup* group2 = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Color:"), plain );
     checkEichel = new QRadioButton( i18n("&Eichel"), group2 );
     checkGras = new QRadioButton( i18n("&Gras"), group2 );
     checkHerz = new QRadioButton( i18n("&Herz"), group2 );
     checkSchellen = new QRadioButton( i18n("&Schellen"), group2 );
     checkFarblos = new QRadioButton( i18n("&Farblos"), group2 );
     
-    preview = new QLabel( plainPage() );
+    preview = new QLabel( plain );
     
     connect( group1, SIGNAL(clicked(int)), this, SLOT(enableControls()));
     connect( group2, SIGNAL(clicked(int)), this, SLOT(enableControls()));
@@ -143,9 +147,9 @@ void SelectGameDlg::enableControls()
     if ( checkEichel->isChecked() || checkGras->isChecked() ||
          checkHerz->isChecked() || checkSchellen->isChecked() ||
          checkFarblos->isChecked() )
-       KDialogBase::enableButtonOk ( true );
+       KDialog::enableButtonOk ( true );
     else
-       KDialogBase::enableButtonOk ( false );
+       KDialog::enableButtonOk ( false );
     
     updatePreview();
 }
