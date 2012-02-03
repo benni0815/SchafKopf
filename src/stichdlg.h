@@ -22,7 +22,7 @@
 
 #include "schafkopfdef.h"
 
-#include <kdialogbase.h>
+#include <kdialog.h>
 //Added by qt3to4:
 #include <QLabel>
 
@@ -35,7 +35,7 @@ Show the last trick which was made
 
 #include "game.h"
 
-class StichDlg : public KDialogBase
+class StichDlg : public KDialog
 {
     Q_OBJECT
     public:

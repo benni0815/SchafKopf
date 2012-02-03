@@ -31,18 +31,20 @@
 #include <klocale.h>
 
 StichDlg::StichDlg(QWidget *parent, const char *name)
-    : KDialogBase( KDialogBase::Plain, i18n("Last Trick"),
-      KDialogBase::Close, KDialogBase::Close, parent,name, false)
+    : KDialog( parent )
 {
-    Q3GridLayout* layout = new Q3GridLayout( plainPage(), 4, 2 );
-    trick = new QLabel( plainPage() );
+    setCaption( i18n("Last Trick") );
+    setButtons( KDialog::Close );
+    QWidget *trick = new QWidget( this );
+    setMainWidget( trick );
+    Q3GridLayout* layout = new Q3GridLayout( trick, 4, 2 );
     layout->addMultiCellWidget( trick, 0, 0, 0, 3);
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
-        cards[i] = new QLabel( plainPage() );
+        cards[i] = new QLabel( trick );
         layout->addWidget( cards[i], 1, i );
         
-        players[i] = new QLabel( plainPage() );
+        players[i] = new QLabel( trick );
         layout->addWidget( players[i], 2, i );
     }
     
