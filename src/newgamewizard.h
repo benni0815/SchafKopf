@@ -22,7 +22,7 @@
 
 
 
-#include <kwizard.h>
+#include <k3wizard.h>
 //Added by qt3to4:
 #include <QLabel>
 
@@ -35,7 +35,7 @@ class QRadioButton;
 /**
 @author Christian Kern
 */
-class newgamewizard : public KWizard
+class newgamewizard : public K3Wizard
 {
 	Q_OBJECT
 

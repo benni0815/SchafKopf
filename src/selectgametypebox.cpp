@@ -37,7 +37,7 @@
 #include <qlayout.h>
 #include <q3buttongroup.h>
 #include <klocale.h>
-#include <kwizard.h>
+#include <k3wizard.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 
@@ -181,6 +181,5 @@ GameInfo* SelectGameTypeBox::gameInfo() const
 
 	return info;
 }
-
 
 #include "selectgametypebox.moc"

@@ -37,7 +37,6 @@
 #include <qlayout.h>
 #include <q3buttongroup.h>
 #include <klocale.h>
-#include <kwizard.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 #include "card.h"

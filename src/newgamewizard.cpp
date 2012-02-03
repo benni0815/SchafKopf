@@ -30,10 +30,9 @@
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
 #include <klocale.h>
-#include <kwizard.h>
 
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
-		: KWizard( parent, name, TRUE )
+        : K3Wizard( parent, name, TRUE )
 {
 
 	setup_page_selectgame();
@@ -98,6 +97,7 @@ QString newgamewizard::getGameInfoString(int gameType)
 {
     switch(gameType)
     {
+      default:
       case GAME_LOCAL:
           return
               i18n("Start a local Game:\nYou will play against\n3 Computer Players");

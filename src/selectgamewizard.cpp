@@ -30,14 +30,13 @@
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
 #include <klocale.h>
-#include <kwizard.h>
 #include "selectgametypebox.h"
 #include "selectgamecolorbox.h"
 #include "cardlist.h"
 #include "card.h"
 
 SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, const char *name )
-		: KWizard( parent, name, TRUE )
+        : K3Wizard( parent, name, TRUE )
 {
     m_force = force;
 	m_list=list;
@@ -76,7 +75,7 @@ void SelectGameWizard::showPage( QWidget* page )
 		box2->setGameInfo(box1->gameInfo());
 		setFinishEnabled(box2, box2->getFinish());
 	}
-	KWizard::showPage(page);
+    K3Wizard::showPage(page);
 	
 }
 
@@ -94,5 +93,5 @@ void SelectGameWizard::reject()
 {
     // only allow reject if player is not forced to play something
     if( !m_force )
-        KWizard::reject();
+        K3Wizard::reject();
 }

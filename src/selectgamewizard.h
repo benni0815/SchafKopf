@@ -20,7 +20,7 @@
 #ifndef SELECTGAMEWIZARD_H
 #define SELECTGAMEWIZARD_H
 
-#include <kwizard.h>
+#include <k3wizard.h>
 //Added by qt3to4:
 #include <QLabel>
 class QWidget;
@@ -36,7 +36,7 @@ class GameInfo;
 /**
 @author Christian Kern
 */
-class SelectGameWizard : public KWizard
+class SelectGameWizard : public K3Wizard
 {
 	Q_OBJECT
 
