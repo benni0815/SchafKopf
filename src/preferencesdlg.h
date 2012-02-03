@@ -20,9 +20,10 @@
 #ifndef PREFERENCESDLG_H
 #define PREFERENCESDLG_H
 
-#include <kdialogbase.h>
+#include <kpagedialog.h>
 //Added by qt3to4:
 #include <QLabel>
+#include <q3vbox.h>
 
 class KIntNumInput;
 class KDoubleNumInput;
@@ -40,7 +41,7 @@ Preferences dialog for schafkopf
 
 @author Dominik Seichter
 */
-class PreferencesDlg : public KDialogBase
+class PreferencesDlg : public KPageDialog
 {
     Q_OBJECT
     public:
