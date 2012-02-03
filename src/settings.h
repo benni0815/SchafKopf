@@ -21,6 +21,8 @@
 #define SETTINGS_H
 
 #include <qobject.h>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 /** a small datatype which contains configureable 
   * values to calculate how much a game was.
@@ -80,8 +82,8 @@ class Settings : public QObject
         
         void configureCardDecks( QWidget* parent = 0 );
         
-        QValueList<int> splitterSizes( int width );
-        void setSplitterSizes( QValueList<int> list );
+        Q3ValueList<int> splitterSizes( int width );
+        void setSplitterSizes( Q3ValueList<int> list );
         
         void setResultsType( int r );
         int resultsType() const;

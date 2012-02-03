@@ -1,3 +1,5 @@
+//Added by qt3to4:
+#include <QPixmap>
 /***************************************************************************
  *   Copyright (C) 2004 by Dominik Seichter                                *
  *   domseichter@web.de                                                    *

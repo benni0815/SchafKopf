@@ -21,15 +21,17 @@
 #define SELECTGAMECOLORBOX_H
 
 
-#include <qhbox.h>
+#include <q3hbox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class QWidget;
-class QHBox;
-class QVBox;
+class Q3HBox;
+class Q3VBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
-class QButtonGroup;
+class Q3ButtonGroup;
 class GameInfo;
 class Card;
 class SelectGameWizard;
@@ -40,7 +42,7 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameColorBox : public QHBox
+class SelectGameColorBox : public Q3HBox
 {
 	Q_OBJECT
 public:
@@ -57,14 +59,14 @@ private:
     
 protected:
 	GameInfo* m_gameinfo;
-	QButtonGroup* color_group;
+	Q3ButtonGroup* color_group;
 	QRadioButton* checkFarblos;
         QRadioButton* checkEichel;
         QRadioButton* checkGras;
         QRadioButton* checkHerz;
         QRadioButton* checkSchellen;
-	QVBox* page;
-	QVBox* row1;
+	Q3VBox* page;
+	Q3VBox* row1;
 	Card* m_Herz;
 	Card* m_Schelle;
 	Card* m_Eichel;

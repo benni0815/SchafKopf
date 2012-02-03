@@ -20,7 +20,7 @@
 #ifndef RESULTS_H
 #define RESULTS_H
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include <qstring.h>
 
 class Game;
@@ -58,8 +58,8 @@ class Results{
     
     private:        
 
-        QPtrList<Player> m_winners;
-        QPtrList<Player> m_losers;
+        Q3PtrList<Player> m_winners;
+        Q3PtrList<Player> m_losers;
         
         GameInfo* m_gameinfo;
         Game* m_game;

@@ -20,18 +20,20 @@
 #ifndef CANVASCARD_H
 #define CANVASCARD_H
 
-#include <qcanvas.h>
+#include <q3canvas.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #define CANVASCARD 1000
 
 class Card;
 class QPainter;
 
-class CanvasCard : public QObject, public QCanvasRectangle
+class CanvasCard : public QObject, public Q3CanvasRectangle
 {
 	Q_OBJECT
     public:
-        CanvasCard(QCanvas*c);
+        CanvasCard(Q3Canvas*c);
         ~CanvasCard();
 
         void setCard(Card* card);

@@ -21,6 +21,8 @@
 #define PREFERENCESDLG_H
 
 #include <kdialogbase.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class KIntNumInput;
 class KDoubleNumInput;
@@ -31,7 +33,7 @@ class QSpinBox;
 class QCheckBox;
 class QPushButton;
 class KUrlRequester;
-class QWidgetStack;
+class Q3WidgetStack;
 
 /**
 Preferences dialog for schafkopf
@@ -60,9 +62,9 @@ class PreferencesDlg : public KDialogBase
         void addPageGames();
         
     private:
-	QVBox* stackMoney;
-	QVBox* stackPoints;
-	QWidgetStack* stack;
+	Q3VBox* stackMoney;
+	Q3VBox* stackPoints;
+	Q3WidgetStack* stack;
 
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;

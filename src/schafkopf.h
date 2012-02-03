@@ -26,7 +26,10 @@
 #endif
 
 #include <kmainwindow.h>
-#include <qguardedptr.h> 
+#include <qpointer.h> 
+//Added by qt3to4:
+#include <QCustomEvent>
+#include <QLabel>
 
 #include <semaphore.h>
 
@@ -36,10 +39,10 @@ class Game;
 class GameInfo;
 class KAction;
 class KPushButton;
-class QCanvas;
+class Q3Canvas;
 class QLabel;
 class QSplitter;
-class QTable;
+class Q3Table;
 class StichDlg;
 
 /**
@@ -110,8 +113,8 @@ class SchafKopf : public KMainWindow
         
         Game* m_game;
         GameCanvas* m_canvasview;
-        QCanvas* m_canvas;    
-        QTable* m_table;
+        Q3Canvas* m_canvas;    
+        Q3Table* m_table;
         QSplitter* split;
 
         QLabel* lblCurGame;
@@ -121,7 +124,7 @@ class SchafKopf : public KMainWindow
         KAction* m_actStich;
         KAction* m_actEnd;
         
-        QGuardedPtr<StichDlg> m_stichdlg;
+        QPointer<StichDlg> m_stichdlg;
 };
 
 #endif // _SCHAFKOPF_H_

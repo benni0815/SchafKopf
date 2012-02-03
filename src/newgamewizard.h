@@ -23,9 +23,11 @@
 
 
 #include <kwizard.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class QWidget;
-class QHBox;
+class Q3HBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
@@ -45,7 +47,7 @@ public:
 
 protected:
 	void setup_page_selectgame();
-	QHBox *page_selectgame;
+	Q3HBox *page_selectgame;
 	QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
 	QString getGameInfoString(int gameType);
 	QLabel *info;

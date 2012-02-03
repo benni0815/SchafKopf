@@ -21,7 +21,7 @@
 #ifndef CARDLIST_H
 #define CARDLIST_H
 
-#include <qptrlist.h>
+#include <q3ptrlist.h>
 #include "card.h"
 
 typedef int (*eval_func)(Card *card, void *param);
@@ -32,7 +32,7 @@ typedef int (*eval_func)(Card *card, void *param);
  * @author Dominik Seichter
  */
 
-class CardList : public QPtrList<Card>
+class CardList : public Q3PtrList<Card>
 {
     public:
         CardList();

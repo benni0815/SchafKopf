@@ -22,7 +22,7 @@
 #define COMMQSOCKETCLIENT_H 
 
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
 #include "commbase.h"
 
@@ -39,7 +39,7 @@ class CommQSocketClient
         bool sendMsg(Message *msg, bool waitAck=false);
         
     protected:
-        QSocket clientSocket;
+        Q3Socket clientSocket;
         
         virtual void msgReceived() = 0;
 

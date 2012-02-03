@@ -22,25 +22,30 @@
 
 #include "schafkopfdef.h"
 
-#include <qcanvas.h>
+#include <q3canvas.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QFocusEvent>
 
 class CanvasCard;
 class Card;
 class Game;
 class CanvasPlayer;
-class QCanvasItem;
-class QCanvasItemList;
-class QCanvasText;
+class Q3CanvasItem;
+class Q3CanvasItemList;
+class Q3CanvasText;
 class QMouseEvent;
 class QResizeEvent;
 
-class GameCanvas : public QCanvasView
+class GameCanvas : public Q3CanvasView
 {
     Q_OBJECT
     
     public:
-        GameCanvas(QCanvas* c,QWidget *parent = 0, const char *name = 0);
+        GameCanvas(Q3Canvas* c,QWidget *parent = 0, const char *name = 0);
         ~GameCanvas();
         
         /** the user has to click a card to play
@@ -89,7 +94,7 @@ class GameCanvas : public QCanvasView
         void slotPlayerMadeStich(unsigned int);
                 
     signals:
-        void clicked( QCanvasItem* item );
+        void clicked( Q3CanvasItem* item );
         void playCard( Card* card );
         
     private slots:
@@ -97,8 +102,8 @@ class GameCanvas : public QCanvasView
           */
         void positionObjects(bool redraw=true);
         
-        void cardClicked( QCanvasItem* item );
-        void yesNoClicked( QCanvasItem* item );
+        void cardClicked( Q3CanvasItem* item );
+        void yesNoClicked( Q3CanvasItem* item );
         
     protected:
         void resizeEvent( QResizeEvent *r );
@@ -116,16 +121,16 @@ class GameCanvas : public QCanvasView
     private:        
         int m_result;
         
-        QCanvasItemList m_focus_list;
+        Q3CanvasItemList m_focus_list;
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
         
-        QCanvasItem* m_item; // currently clicked item
+        Q3CanvasItem* m_item; // currently clicked item
 
-        QCanvasText* m_message;
-        QCanvasText* m_yes;
-        QCanvasText* m_no;
-        QCanvasText* m_ok;
+        Q3CanvasText* m_message;
+        Q3CanvasText* m_yes;
+        Q3CanvasText* m_no;
+        Q3CanvasText* m_ok;
 
         QImage ImgBack;
         bool loadOK;

@@ -21,6 +21,8 @@
 #define SELECTGAMEDLG_H
 
 #include <kdialogbase.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class CardList;
 class GameInfo;

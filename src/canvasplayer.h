@@ -29,9 +29,9 @@ class Card;
 class CardList;
 class CanvasCard;
 class Player;
-class QCanvas;
-class QCanvasView;
-class QCanvasText;
+class Q3Canvas;
+class Q3CanvasView;
+class Q3CanvasText;
 
 /**
 Represents a player on the canvas
@@ -40,7 +40,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( int i, QCanvas* canvas, QCanvasView* view );
+        CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view );
         ~CanvasPlayer();
         
         void position();
@@ -70,9 +70,9 @@ class CanvasPlayer{
         bool m_is_human;
         QString m_player_name;
         
-        QCanvas* m_canvas;
-        QCanvasView* m_view;
-        QCanvasText* m_name;
+        Q3Canvas* m_canvas;
+        Q3CanvasView* m_view;
+        Q3CanvasText* m_name;
         KPassivePopup* pop;
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
@@ -81,7 +81,7 @@ class CanvasPlayer{
 class MyKPassivePopup : public KPassivePopup
     {
     public:
-	MyKPassivePopup( QWidget *parent=0, const char *name=0, WFlags f=0 );
+	MyKPassivePopup( QWidget *parent=0, const char *name=0, Qt::WFlags f=0 );
 	void myShow();
     };
 

@@ -20,15 +20,17 @@
 #ifndef SELECTGAMETYPEBOX_H
 #define SELECTGAMETYPEBOX_H
 
-#include <qhbox.h>
+#include <q3hbox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 class QWidget;
-class QHBox;
-class QVBox;
+class Q3HBox;
+class Q3VBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
-class QButtonGroup;
+class Q3ButtonGroup;
 class GameInfo;
 
 struct t_AllowedGames;
@@ -36,7 +38,7 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameTypeBox : public QHBox
+class SelectGameTypeBox : public Q3HBox
 {
 	Q_OBJECT
 public:
@@ -54,9 +56,9 @@ protected:
 	QRadioButton* checkGeier;
 	QRadioButton* checkWenz;
 	QRadioButton* checkDachs;
-	QHBox *page;
-	QVBox *row1;
-	QButtonGroup* group_TypeSelect;
+	Q3HBox *page;
+	Q3VBox *row1;
+	Q3ButtonGroup* group_TypeSelect;
 	QLabel* preview;
 	QLabel* infoLabel;
 	
