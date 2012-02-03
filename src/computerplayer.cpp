@@ -25,6 +25,8 @@
 #include "gameinfo.h"
 #include "openbook.h"
 
+#include <QDebug>
+
 #include <qstring.h>
 //Added by qt3to4:
 #include <Q3ValueList>
@@ -152,7 +154,7 @@ Card *ComputerPlayer::play()
             else
                 i++;
         }
-        qDebug("%s: allowed->count() : %i", name().toLatin1(), allowed->count() );
+        qDebug() << name() << ": allowed->count() :" << allowed->count();
     }
     /*
       // The AI is more intelligent, let the AI decide
@@ -267,7 +269,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                 ( m_game->currStich()->count() == PLAYERS - 2 && 
                   m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
             {
-                qDebug("%s: schmiere!", name().toLatin1() );
+                qDebug() << name() << ": schmiere!";
                 return findSchmiere(cards);
             }
 	}
@@ -309,12 +311,12 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
         {
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
-            qDebug("%s: versuche so niedrig wie möglich zu stechen", name().toLatin1());
+            qDebug() << name() << ": versuche so niedrig wie möglich zu stechen";
             return findLowestPossibleCard(findHighestCard(stich),cards);
         }
         else
         {
-		  qDebug("%s: versuche zu stechen", name().toLatin1());
+          qDebug() << name() << ": versuche zu stechen";
 		  // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
 		  if (m_game->currStich()->count() == PLAYERS - 1)
 		    {
@@ -325,7 +327,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
 		    }
         }
 	}
-	qDebug("%s: spiele billigste karte", name().toLatin1());
+    qDebug() << name() << ": spiele billigste karte";
 	return findCheapestCard(cards);
 }
 
@@ -422,7 +424,7 @@ bool ComputerPlayer::ownStich()
      * We can only check if the card belongs to the player party, so we check afterwars
      * if we are part of the player part!! Think about it... it does really work :)
      */
-    qDebug("%s ist %s Spieler.", name().toLatin1(), ( this->isPlayer() ? "":"nicht") );
+    qDebug() << name() << "ist" << ( this->isPlayer() ? "":"nicht") << "Spieler.";
     if( highestCard->owner()->isPlayer() )
         return ( this->isPlayer() ? true : false );
     else
@@ -454,10 +456,12 @@ bool ComputerPlayer::istFarbFrei(int playerId, int c)
 
 float ComputerPlayer::gehtDurch(Card *card)
 {
+    return 0;
 }
 
 float ComputerPlayer::gegnerSticht(Card *card)
 {
+    return 0;
 }
 
 Card *ComputerPlayer::highestTrumpfInGame()
@@ -520,17 +524,17 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 
     // TODO: was called by signal before the thread change
     // has to be implemented in another way
-	m_playedCards[player]->append(c);
-	if(mitspieler!=-1)
-		return;
-	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL && c->card()==Card::SAU && c->color()==m_game->gameInfo()->color())
-	{
-		if(m_game->gameInfo()->spieler()==this)
-			mitspieler=player;
-		else
-			mitspieler=0+1+2+3-(id()+m_game->gameInfo()->spieler()->id()+player);
-		qDebug("%s: Mitspieler gefunden: %s", name().toLatin1(), m_game->findIndex(mitspieler)->name().toLatin1());
-	}
+    m_playedCards[player]->append(c);
+    if(mitspieler!=-1)
+        return;
+    if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL && c->card()==Card::SAU && c->color()==m_game->gameInfo()->color())
+    {
+        if(m_game->gameInfo()->spieler()==this)
+            mitspieler=player;
+        else
+            mitspieler=0+1+2+3-(id()+m_game->gameInfo()->spieler()->id()+player);
+        qDebug() << name() << ": Mitspieler gefunden:" << m_game->findIndex(mitspieler)->name();
+    }
 }
 
 int ComputerPlayer::cardsStillInGame( int c )
