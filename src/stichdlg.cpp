@@ -87,5 +87,3 @@ void StichDlg::reset()
 {
     changed( 0, NULL, NULL );
 }
-
-#include "stichdlg.moc"

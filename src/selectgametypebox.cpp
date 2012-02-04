@@ -181,5 +181,3 @@ GameInfo* SelectGameTypeBox::gameInfo() const
 
 	return info;
 }
-
-#include "selectgametypebox.moc"

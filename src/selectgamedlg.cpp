@@ -198,5 +198,3 @@ void SelectGameDlg::updatePreview()
     preview->setPixmap( pix );
     
 }
-
-#include "selectgamedlg.moc"

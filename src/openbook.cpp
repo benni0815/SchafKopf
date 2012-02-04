@@ -241,4 +241,3 @@ CardList* StrategyBook::possibleCards()
         return NULL;
     }
 }
-

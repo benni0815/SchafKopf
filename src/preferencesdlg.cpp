@@ -380,5 +380,3 @@ void PreferencesDlg::disableClearButton(const QString & url)
     else
         m_pushURLClear->setEnabled( true );
 }
-
-#include "preferencesdlg.moc"

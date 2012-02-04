@@ -221,5 +221,3 @@ void SelectGameColorBox::cleanGameInfo()
 
 
 }
-
-
