@@ -78,11 +78,4 @@ class CanvasPlayer{
         CardList* m_cards;
 };
 
-class MyKPassivePopup : public KPassivePopup
-    {
-    public:
-	MyKPassivePopup( QWidget *parent=0, const char *name=0, Qt::WFlags f=0 );
-	void myShow();
-    };
-
 #endif
