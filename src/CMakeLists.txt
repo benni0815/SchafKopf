@@ -5,9 +5,12 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.5)
 # ######### General setup ##########
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
-find_package(KDE4 REQUIRED)
+FIND_PACKAGE(KDE4 REQUIRED)
+FIND_PACKAGE(LibKDEGames REQUIRED)
+FIND_PACKAGE(Qt4 REQUIRED)
 
 add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
+add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 include(KDE4Defaults)
 
@@ -15,7 +18,6 @@ include(MacroLibrary)
 
 include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} )
 
-add_definitions(-DQT3_SUPPORT -DQT3_SUPPORT_WARNINGS)
 
 # ########## src executable ##########
 # Sources:
@@ -46,35 +48,27 @@ SET(schafkopf_SRCS
 
 # Headers:
 SET(schafkopf_HDRS
-    commbase.h
     schafkopf.h
-    gameinfo.h
-    card.h
     selectgamewizard.h
-    schafkopfdef.h
-    game.h
     preferencesdlg.h
-    canvasplayer.h
     gamecanvas.h
     openbook.h
-    player.h
-    results.h
-    cardlist.h
     canvascard.h
     stichdlg.h
-    humanplayer.h
     settings.h
-    computerplayer.h
     selectgametypebox.h
     selectgamecolorbox.h
     selectgamedlg.h
     newgamewizard.h
 )
 
-qt4_automoc(${schafkopf_SRCS})
+QT4_WRAP_CPP(schafkopf_HDRS_MOC ${schafkopf_HDRS})
+
+INCLUDE(${QT_USE_FILE})
 
 # actual target:
-ADD_EXECUTABLE(src ${schafkopf_SRCS})
+ADD_EXECUTABLE(schafkopf ${schafkopf_SRCS} ${schafkopf_HDRS_MOC})
+TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${QT_QT3SUPPORT_LIBRARY} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${KDE4_KDE3SUPPORT_LIBRARY})
 
 # add install target:
-INSTALL(TARGETS src DESTINATION bin)
+INSTALL(TARGETS schafkopf DESTINATION bin)
