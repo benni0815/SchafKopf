@@ -52,14 +52,14 @@ class QStringList;
 
 enum { YES, NO };
     
-typedef enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled, 
+enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled,
                        PlayerHasDoubled, PlayerIsLast, PlayerNameChanged, PlayerGotCards,
                        CardPlayed, PlayerMadeStich, PlayerResults, GameInfoSetup,
                        RedrawPlayers, InfoMessage, Bubble, QuestionYesNo, 
                        HumanPlayerGetCard, ForbiddenCard, SelectGame,
                        ForcedSelectGame };
 
-typedef struct t_EventData {
+struct t_EventData {
     EAction type;
     
     unsigned int playerid;
@@ -74,7 +74,7 @@ typedef struct t_EventData {
     QString data;
 };
 
-typedef struct t_PlayerData {
+struct t_PlayerData {
     unsigned int id1;
     int* cards1;
     
