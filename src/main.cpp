@@ -44,20 +44,22 @@ int main(int argc, char **argv)
     about.addAuthor( ki18n("Dominik Seichter"), ki18n(""), "domseichter@web.de", "http://www.krename.net" );
 
     KCmdLineArgs::init(argc, argv, &about);
+#warning "AUSKOMMENTIERT"
 //    KCmdLineArgs::addCmdLineOptions( options );
     KApplication app;
-    
+
     KCmdLineArgs* args = KCmdLineArgs::parsedArgs();
 
     // get KDE games translations
     KGlobal::locale()->insertCatalog("libkdegames");
 
     SchafKopf* mainWin = new SchafKopf();
+#warning "AUSKOMMENTIERT"
 //    app.setMainWidget( mainWin );
     mainWin->show();
 
     // free some memory
-    args->clear(); 
+    args->clear();
     
     return app.exec();
 }
