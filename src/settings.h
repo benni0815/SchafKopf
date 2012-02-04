@@ -82,8 +82,8 @@ class Settings : public QObject
         
         void configureCardDecks( QWidget* parent = 0 );
         
-        Q3ValueList<int> splitterSizes( int width );
-        void setSplitterSizes( Q3ValueList<int> list );
+        QList<int> splitterSizes( int width );
+        void setSplitterSizes( QList<int> list );
         
         void setResultsType( int r );
         int resultsType() const;

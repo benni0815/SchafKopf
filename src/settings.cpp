@@ -24,9 +24,7 @@
 #include <kapplication.h>
 #include <kcarddialog.h>
 #include <kconfig.h>
-#if KDE_VERSION >= 0x30200
 #include <kuser.h>
-#endif
 #include <kstandarddirs.h>
 
 #include <qmutex.h>
@@ -49,15 +47,16 @@ Settings::Settings(QObject *parent, const char *name)
 {
     // the mutex causes more problems right now than be useful...
     m_mutex = NULL; // new QMutex();
-    
+
     //find the directory for the card frontsides
     QString ourCards="cards-OpenTarock";
     cardFrontsideDir=getCardDir()+ourCards+"/";
     if( !KStandardDirs::exists ( cardFrontsideDir ) )
     {
-    	cardFrontsideDir="/usr/share/apps/carddecks/"+ourCards+"/";
-    	if(!KStandardDirs::exists ( cardFrontsideDir ))
-    		cardFrontsideDir = KCardDialog::getDefaultCardDir();
+        cardFrontsideDir="/usr/share/apps/carddecks/"+ourCards+"/";
+#warning "AUSKOMMENTIERT"
+        //if(!KStandardDirs::exists ( cardFrontsideDir ))
+            //cardFrontsideDir = KCardDialog::getDefaultCardDir();
     }
 
     //find the card deck
@@ -65,9 +64,10 @@ Settings::Settings(QObject *parent, const char *name)
     cardDeckFile=getCardDir()+"decks/"+ourDeck;
     if( !KStandardDirs::exists ( cardDeckFile ) )
     {
-    	cardDeckFile="/usr/share/apps/carddecks/decks/"+ourDeck;
-    	if(!KStandardDirs::exists ( cardDeckFile ))
-    		cardDeckFile = KCardDialog::getDefaultDeck();
+        cardDeckFile="/usr/share/apps/carddecks/decks/"+ourDeck;
+#warning "AUSKOMMENTIERT"
+        //if(!KStandardDirs::exists ( cardDeckFile ))
+            //cardDeckFile = KCardDialog::getDefaultDeck();
     }
 }
 
@@ -81,8 +81,8 @@ Settings::~Settings()
 QString Settings::getCardDir() const
 {
     // do not lock private members
-    
-    QString dir = KCardDialog::getDefaultCardDir();
+#warning "AUSKOMMENTIERT"
+    QString dir;// = KCardDialog::getDefaultCardDir();
     int k;
     dir = dir.remove( dir.length()-1, 1 );
     k = dir.findRev( '/', -1 );
@@ -93,18 +93,17 @@ QString Settings::getCardDir() const
 const QString Settings::cardDeck() const
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("CardDeck");
-    return config->readEntry("Cards", cardFrontsideDir );    
+
+    KConfigGroup config = KGlobal::config()->group("CardDeck");
+    return config.readEntry("Cards", cardFrontsideDir );
 }
 
 const QString Settings::cardBackground() const
 {
     QMutexLocker locker( m_mutex );
-    KConfig* config = KGlobal::config();
-    config->setGroup("CardDeck");
-    return config->readEntry("Deck", cardDeckFile );    
+
+    KConfigGroup config = KGlobal::config()->group("CardDeck");
+    return config.readEntry("Deck", cardDeckFile );
 }
 
 void Settings::configureCardDecks( QWidget* parent )
@@ -113,15 +112,14 @@ void Settings::configureCardDecks( QWidget* parent )
     
     QString dir = cardDeck();
     QString deck = cardBackground();
-        
-    if (KCardDialog::getCardDeck(deck, dir, parent, KCardDialog::Both ) == QDialog::Accepted)
+#warning "AUSKOMMENTIERT"
+   // if (KCardDialog::getCardDeck(deck, dir, parent, KCardDialog::Both ) == QDialog::Accepted)
     {
         //m_mutex->lock();
-        KConfig* config = KGlobal::config();
-        config->setGroup("CardDeck");
-        config->writeEntry( "Cards", dir );
-        config->writeEntry( "Deck", deck );
-        KGlobal::config()->sync();
+        KConfigGroup config = KGlobal::config()->group("CardDeck");
+        config.writeEntry( "Cards", dir );
+        config.writeEntry( "Deck", deck );
+        config.sync();
         //m_mutex->unlock();
         emit cardChanged();
     }
@@ -139,12 +137,11 @@ const QStringList Settings::playerNames() const
     #else
     username="Player 1";
     #endif
-    KConfig* config = KGlobal::config();
-    config->setGroup("PlayerNames");
-    list.append( config->readEntry( "Player1", username ) );
-    list.append( config->readEntry( "Player2", "Dom" ) );
-    list.append( config->readEntry( "Player3", "Lenz" ) );
-    list.append( config->readEntry( "Player4", "G.J." ) );
+    KConfigGroup config = KGlobal::config()->group("PlayerNames");
+    list.append( config.readEntry( "Player1", username ) );
+    list.append( config.readEntry( "Player2", "Dom" ) );
+    list.append( config.readEntry( "Player3", "Lenz" ) );
+    list.append( config.readEntry( "Player4", "G.J." ) );
     return list;
 }
 
@@ -153,52 +150,49 @@ void Settings::setPlayerNames( const QStringList & names )
     QMutexLocker locker( m_mutex );
 
     int i;
-    KConfig* config = KGlobal::config();
+    KConfigGroup config = KGlobal::config()->group("PlayerNames");
     QStringList old = this->playerNames();
-    config->setGroup("PlayerNames");
     for( i=0;i<PLAYERS;i++ )
-        config->writeEntry( QString("Player%1").arg(i+1), names[i] );
-    config->sync();
+        config.writeEntry( QString("Player%1").arg(i+1), names[i] );
+    config.sync();
     
     if( old != names )
         emit playerNamesChanged();
 }
 
-Q3ValueList<int> Settings::splitterSizes( int width )
+QList<int> Settings::splitterSizes( int width )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    Q3ValueList<int> list;
-    
-    config->setGroup("SchafKopf");
-    list = config->readIntListEntry( "Splitter" );
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    QList<int> list;
+
+    config.readEntry( "Splitter", list );
     if( list.isEmpty() )
     {
         list.append( int((width/4)*3) );
         list.append( int(width/4) );
     }
-    
+
     return list;
 }
 
-void Settings::setSplitterSizes( Q3ValueList<int> list )
+void Settings::setSplitterSizes( QList<int> list )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->writeEntry( "Splitter", list );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("");
+    config.writeEntry( "Splitter", list );
+    config.sync();
 }
 
 void Settings::setResultsType( int r )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup( "SchafKopf" );
-    config->writeEntry("ResultMode", r );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry("ResultMode", r );
+    config.sync();
     
     emit resultsTypeChanged();
 }
@@ -206,56 +200,52 @@ void Settings::setResultsType( int r )
 int Settings::resultsType() const
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup( "SchafKopf" );
-    return config->readNumEntry("ResultMode", MONEY );
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    return config.readEntry("ResultMode", 0 );
 }
 
 void Settings::setMoneyResults( const t_ResultValues* r )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup( "MoneyValues" );
-    config->writeEntry( "Solo", r->solo );
-    config->writeEntry( "Rufspiel", r->rufspiel );
-    config->writeEntry( "Laufende", r->laufende );
-    config->writeEntry( "Schneider", r->schneider );
-    config->writeEntry( "Schwarz", r->schwarz );
-    config->writeEntry( "Ramsch", r->ramsch );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("MoneyValues");
+    config.writeEntry( "Solo", r->solo );
+    config.writeEntry( "Rufspiel", r->rufspiel );
+    config.writeEntry( "Laufende", r->laufende );
+    config.writeEntry( "Schneider", r->schneider );
+    config.writeEntry( "Schwarz", r->schwarz );
+    config.writeEntry( "Ramsch", r->ramsch );
+    config.sync();
 }
 
 void Settings::setPointResults( const t_ResultValues* r )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup( "PointValues" );
-    config->writeEntry( "Solo", (int)r->solo );
-    config->writeEntry( "Rufspiel", (int)r->rufspiel );
-    config->writeEntry( "Laufende", (int)r->laufende );
-    config->writeEntry( "Schneider", (int)r->schneider );
-    config->writeEntry( "Schwarz", (int)r->schwarz );
-    config->writeEntry( "Ramsch", (int)r->ramsch );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("PointValues");
+    config.writeEntry( "Solo", (int)r->solo );
+    config.writeEntry( "Rufspiel", (int)r->rufspiel );
+    config.writeEntry( "Laufende", (int)r->laufende );
+    config.writeEntry( "Schneider", (int)r->schneider );
+    config.writeEntry( "Schwarz", (int)r->schwarz );
+    config.writeEntry( "Ramsch", (int)r->ramsch );
+    config.sync();
 }
 
 t_ResultValues* Settings::moneyResults() const
 {
     QMutexLocker locker( m_mutex );
-    
+
     t_ResultValues* r = new t_ResultValues;
-    KConfig* config = KGlobal::config();
-    config->setGroup( "MoneyValues" );
-    r->solo = config->readDoubleNumEntry( "Solo", 0.2 );
-    r->rufspiel = config->readDoubleNumEntry( "Rufspiel", 0.1 );
-    r->laufende = config->readDoubleNumEntry( "Laufende", 0.1 );
-    r->schneider = config->readDoubleNumEntry( "Schneider", 0.1 );
-    r->schwarz = config->readDoubleNumEntry( "Schwarz", 0.1 );
-    r->ramsch = config->readDoubleNumEntry( "Ramsch", 0.2 );
-    return r;    
+    KConfigGroup config = KGlobal::config()->group("MoneyValues");
+    r->solo = config.readEntry( "Solo", 0.2 );
+    r->rufspiel = config.readEntry( "Rufspiel", 0.1 );
+    r->laufende = config.readEntry( "Laufende", 0.1 );
+    r->schneider = config.readEntry( "Schneider", 0.1 );
+    r->schwarz = config.readEntry( "Schwarz", 0.1 );
+    r->ramsch = config.readEntry( "Ramsch", 0.2 );
+    return r;
 }
 
 t_ResultValues* Settings::pointResults() const
@@ -263,25 +253,23 @@ t_ResultValues* Settings::pointResults() const
     QMutexLocker locker( m_mutex );
 
     t_ResultValues* r = new t_ResultValues;
-    KConfig* config = KGlobal::config();
-    config->setGroup( "PointValues" );
-    r->solo = config->readNumEntry( "Solo", 2 );
-    r->rufspiel = config->readNumEntry( "Rufspiel", 1 );
-    r->laufende = config->readNumEntry( "Laufende", 1 );
-    r->schneider = config->readNumEntry( "Schneider", 1 );
-    r->schwarz = config->readNumEntry( "Schwarz", 1 );
-    r->ramsch = config->readNumEntry( "Ramsch", 1 );
+    KConfigGroup config = KGlobal::config()->group("PointValues");
+    r->solo = config.readEntry( "Solo", 2 );
+    r->rufspiel = config.readEntry( "Rufspiel", 1 );
+    r->laufende = config.readEntry( "Laufende", 1 );
+    r->schneider = config.readEntry( "Schneider", 1 );
+    r->schwarz = config.readEntry( "Schwarz", 1 );
+    r->ramsch = config.readEntry( "Ramsch", 1 );
     return r;    
 }
 
 void Settings::setNoGame( int e )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    config->writeEntry( "KeinSpiel", e );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "KeinSpiel", e );
+    config.sync();
 }
 
 int Settings::noGame() const
@@ -289,9 +277,8 @@ int Settings::noGame() const
     QMutexLocker locker( m_mutex );
     
     int e = NOGAME_NEUGEBEN;
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    e = config->readNumEntry( "KeinSpiel", e );
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    e = config.readEntry( "KeinSpiel", e );
     
     return e;
 }
@@ -299,84 +286,76 @@ int Settings::noGame() const
 void Settings::setDoublerHasToPlay( bool b )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    config->writeEntry( "DoublerHasToPlay", b );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "DoublerHasToPlay", b );
+    config.sync();
 }
 
 bool Settings::doublerHasToPlay() const
 {
     QMutexLocker locker( m_mutex );
-    
+
     bool b = true;
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    b = config->readBoolEntry( "DoublerHasToPlay", b );
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "DoublerHasToPlay", b );
     return b;
 }
 
 void Settings::setDoubleNextGame( bool b )
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    config->writeEntry( "DoubleNextGame", b );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "DoubleNextGame", b );
+    config.sync();
 }
 
 bool Settings::doubleNextGame() const
 {
     QMutexLocker locker( m_mutex );
-    
+
     bool b = true;
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    b = config->readBoolEntry( "DoubleNextGame", b );
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "DoubleNextGame", b );
     return b;
 }
 
 void Settings::setRearrangeCards( bool b)
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    config->writeEntry( "RearrangeCards", b );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "RearrangeCards", b );
+    config.sync();
 }
 
 bool Settings::rearrangeCards() const
 {
     QMutexLocker locker( m_mutex );
-    
+
     bool b = true;
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    b = config->readBoolEntry( "RearrangeCards", b );
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "RearrangeCards", b );
     return b;
 }
 
 void Settings::setBackgroundImage( QString b)
 {
     QMutexLocker locker( m_mutex );
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    config->writeEntry( "backgroundImage", b );
-    config->sync();
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "backgroundImage", b );
+    config.sync();
 }
 
 
 QString Settings::backgroundImage() const
 {
     QMutexLocker locker( m_mutex );
-    QString b = locate("appdata", "data/background01.jpg");
-    KConfig* config = KGlobal::config();
-    config->setGroup("SchafKopf");
-    b = config->readEntry( "backgroundImage", b );
+    QString b = KStandardDirs::locate("appdata", "data/background01.jpg");
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "backgroundImage", b );
     return b;
 }
 
@@ -385,29 +364,25 @@ t_AllowedGames* Settings::allowedGames() const
 {
     QMutexLocker locker( m_mutex );
     t_AllowedGames* a = new t_AllowedGames;
-    
-    KConfig* config = KGlobal::config();
-    config->setGroup( "Games" );
-    a->wenz = config->readBoolEntry( "AllowWenz", true );
-    a->farb_wenz = config->readBoolEntry( "AllowFarbWenz", true );
-    a->geier = config->readBoolEntry( "AllowGeier", true );
-    a->farb_geier = config->readBoolEntry( "AllowFarbGeier", false );
-    a->dachs = config->readBoolEntry( "AllowDachs", false );
-    
+
+    KConfigGroup config = KGlobal::config()->group("Games");
+    a->wenz = config.readEntry( "AllowWenz", true );
+    a->farb_wenz = config.readEntry( "AllowFarbWenz", true );
+    a->geier = config.readEntry( "AllowGeier", true );
+    a->farb_geier = config.readEntry( "AllowFarbGeier", false );
+    a->dachs = config.readEntry( "AllowDachs", false );
+
     return a;
 }
 
 void Settings::setAllowedGames( const t_AllowedGames* allowed )
 {
     QMutexLocker locker( m_mutex );
-    KConfig* config = KGlobal::config();
-    config->setGroup( "Games" );
-    config->writeEntry( "AllowWenz", allowed->wenz );
-    config->writeEntry( "AllowFarbWenz", allowed->farb_wenz );
-    config->writeEntry( "AllowGeier", allowed->geier );
-    config->writeEntry( "AllowFarbGeier", allowed->farb_geier );
-    config->writeEntry( "AllowDachs", allowed->dachs );
-    config->sync();
+    KConfigGroup config = KGlobal::config()->group("Games");
+    config.writeEntry( "AllowWenz", allowed->wenz );
+    config.writeEntry( "AllowFarbWenz", allowed->farb_wenz );
+    config.writeEntry( "AllowGeier", allowed->geier );
+    config.writeEntry( "AllowFarbGeier", allowed->farb_geier );
+    config.writeEntry( "AllowDachs", allowed->dachs );
+    config.sync();
 }
-
-#include "settings.moc"
