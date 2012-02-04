@@ -92,7 +92,7 @@ class ComputerPlayer : public Player
         void cardPlayed(unsigned int player, Card *c);
                 
     private:
-        typedef struct game_data {
+        struct game_data {
             int trumpf;
             int fehlfarbe;
             int weight;

@@ -49,7 +49,7 @@
 // Do not polute the global namespace
 namespace OpeningRules
 {
-    typedef struct s_rule 
+    struct s_rule
     {
         CardList* (*rule)( CardList*, Game* );
         bool player;
