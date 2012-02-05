@@ -115,7 +115,7 @@ void PreferencesDlg::accept()
     allowed.dachs = m_games_dachs->isChecked();
     s->setAllowedGames( &allowed );
 
-    accept();
+    KPageDialog::accept();
 }
 
 void PreferencesDlg::addPagePlayer()
