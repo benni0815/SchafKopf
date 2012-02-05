@@ -44,8 +44,11 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <Q3MemArray>
+#include <QDebug>
 
-#include <kaction.h>
+#include <KAction>
+#include <KActionCollection>
+#include <KStandardAction>
 #include <kapplication.h>
 #include <kgame/kgame.h>
 #include <klocale.h>
@@ -54,17 +57,14 @@
 #include <ktoolbar.h>
 #include <kpushbutton.h>
 #include <kmenu.h>
-#include <kstdgameaction.h>
+#include <kstandardgameaction.h>
 
-SchafKopf::SchafKopf()
-        : KMainWindow( 0, "SchafKopf" )
+SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {
     sem_init( &m_sem, 0, 0 );
     
     split = new QSplitter( Qt::Horizontal, this );
-#if QT_VERSION >= 0x030200
     split->setChildrenCollapsible( true );
-#endif // QT_VERSION
 
     setCentralWidget( split );
     // do not start with a too tiny window at the first start
@@ -102,7 +102,6 @@ SchafKopf::SchafKopf()
 
     btnLastTrick = new KPushButton( groupInfo );
     btnLastTrick->setFlat( true );
-
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
 
@@ -115,11 +114,10 @@ SchafKopf::SchafKopf()
     connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( updateInfo() ) );
     
-    QToolTip::add
-        ( btnLastTrick, i18n("Show the last trick that was made.") );
+    QToolTip::add( btnLastTrick, i18n("Show the last trick that was made.") );
 
-    m_stichdlg = new StichDlg( this );            
-    
+    m_stichdlg = new StichDlg( this );
+
     m_terminated = true;
 
     updateInfo();
@@ -276,25 +274,29 @@ void SchafKopf::setupActions()
     menuBar()->insertItem( i18n("&Settings"), mnuSettings );
     menuBar()->insertItem( i18n("&Help"), helpMenu() );
 
-    m_actNew = KStdGameAction::gameNew( this, SLOT( newGame() ) );
-    m_actEnd = KStdGameAction::end( this, SLOT( endGame() ) );
-    m_actStich = new KAction( i18n( "&Last Trick" ), 0, 0, this, SLOT( showStich() ), actionCollection() );
+    m_actNew = KStandardGameAction::gameNew( this, SLOT( newGame() ), this );
+    m_actEnd = KStandardGameAction::end( this, SLOT( endGame() ), this );
 
-    m_actNew->plug( mnuGame );
-    m_actEnd->plug( mnuGame );
-    m_actStich->plug( mnuGame );
+    m_actStich = new KAction( this );
+    m_actStich->setText( i18n( "&Last Trick" ) );
+    actionCollection()->addAction( "Last Trick", m_actStich );
+    connect( m_actStich, SIGNAL( triggered( bool ) ), this, SLOT( showStich() ) );
 
-    m_actNew->plug( toolBar() );
-    m_actEnd->plug( toolBar() );
 
-    m_actQuit = KStdGameAction::quit( this, SLOT( endGame() ) );
-    connect(m_actQuit, SIGNAL( activated() ), kapp, SLOT( quit() ));
-    m_actQuit->plug(mnuGame);
+    m_actQuit = KStandardAction::quit( kapp, SLOT( endGame() ), actionCollection() );
+    connect( m_actQuit, SIGNAL( triggered() ), kapp, SLOT( quit() ));
+    connect( kapp, SIGNAL( lastWindowClosed() ), this, SLOT( endGame() ) );
 
-    //connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+    mnuGame->addAction( m_actStich);
+    mnuGame->addAction( m_actNew );
+    mnuGame->addAction( m_actEnd );
+    mnuGame->addAction( m_actQuit );
 
-    KStdGameAction::carddecks( this, SLOT( carddecks() ) )->plug( mnuSettings );
-    KStandardAction::preferences( this, SLOT( configure() ), actionCollection() )->plug( mnuSettings );
+    mnuSettings->addAction( KStandardGameAction::carddecks( this, SLOT( carddecks() ), this ) );
+    mnuSettings->addAction( KStandardAction::preferences( this, SLOT( configure() ), this ) );
+
+    toolBar()->addAction( m_actNew );
+    toolBar()->addAction( m_actEnd );
 
     enableControls();
 }
@@ -344,7 +346,8 @@ void SchafKopf::endGame()
     if( !m_terminated )
     {
         m_terminated = true;
-        EXIT_LOOP();
+#warning "AUSKOMMENTIERT"
+        //EXIT_LOOP();
         //KApplication::postEvent( m_game, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT_QUIT ) );
     }
     
@@ -449,5 +452,3 @@ GameInfo* SchafKopf::selectGame( bool force, int* cardids )
     else
         return NULL;
 }
-
-#include "schafkopf.moc"

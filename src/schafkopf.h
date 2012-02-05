@@ -25,7 +25,7 @@
 #include <config.h>
 #endif
 
-#include <kmainwindow.h>
+#include <KXmlGuiWindow>
 #include <qpointer.h> 
 //Added by qt3to4:
 #include <QCustomEvent>
@@ -50,11 +50,11 @@ class StichDlg;
  * @author Dominik Seichter <domseichter@web.de>
  * @version 0.1
  */
-class SchafKopf : public KMainWindow
+class SchafKopf : public KXmlGuiWindow
 {
     Q_OBJECT
     public:
-        SchafKopf();
+        SchafKopf(QWidget *parent=0);
         ~SchafKopf();
         
     private slots:
