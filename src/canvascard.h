@@ -63,20 +63,18 @@ class CanvasCard : public QObject, public Q3CanvasRectangle
         bool m_visible;
         bool m_forbidden;
         int m_rotation;
-	
-	int tox;
-	int toy;
-	QTimer *timer;
-        
+
+        int tox;
+        int toy;
+        QTimer *timer;
+
         Card* m_card;
-        QPixmap Shadow, Shadow2;
-	bool loadOK1, loadOK2;
 
 	private slots:
 		void disableForbidden();
 		void moveLoop();
         void cardDeckChanged();
-        void loadAlpha();
+        //void loadAlpha();
 };
 
 #endif

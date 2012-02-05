@@ -27,8 +27,8 @@
 #include <qmatrix.h>
 #include <qpixmap.h>
 
-#include <kpixmap.h>
- 
+#include <qimageblitz.h>
+
 
 CanvasCard::CanvasCard(Q3Canvas*c)
  : Q3CanvasRectangle(c), m_rotation(0)
@@ -37,8 +37,7 @@ CanvasCard::CanvasCard(Q3Canvas*c)
     m_forbidden = false;
     show();
     timer = new QTimer( this );
-    loadAlpha();
-        
+
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
 
@@ -64,25 +63,25 @@ void CanvasCard::draw( QPainter & p )
         // this code handles already matrix transformations
         QMatrix wm = p.worldMatrix();    
         QPoint point( (int)x(), (int)y() );
-        point = wm * point;
+        point = wm.map(point);
     
         wm.rotate( (double)m_rotation );
     
-        KPixmap pix = pixmap->transformed( wm );
+        QPixmap pix = pixmap->transformed( wm );
+        QImage img = pix.toImage();
         if( m_forbidden )
+            Blitz::fade( img, 0.5, Qt::gray );
+        else if( isActive() )
+            Blitz::fade( img, 0.25, Qt::yellow );
+        pix.convertFromImage( img );
+
+        /*if( m_forbidden )
             pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
         else if( isActive() )
-            pix = KPixmapEffect::fade( pix, 0.25, Qt::yellow );
-            
+            pix = KPixmapEffect::fade( pix, 0.25, Qt::yellow );*/
+
         setSize( pix.width()+3, pix.height()+3 );
-        bitBlt( p.device(), point.x(), point.y(), &pix );
-        if(loadOK1 && loadOK2)
-        {
-            if( m_rotation==0 || m_rotation==180)
-                bitBlt( p.device(), point.x(), point.y(), &Shadow );
-            else
-                bitBlt( p.device(), point.x(), point.y(), &Shadow2 );
-        }
+        p.drawPixmap( point, pix );
     }
 }
 
@@ -147,18 +146,11 @@ void CanvasCard::moveLoop()
 	}
 }
 
-void CanvasCard::loadAlpha()
-{
-    loadOK1 = Shadow.load( Settings::instance()->cardDeck() + "alpha1.png" );
-    loadOK2 = Shadow2.load( Settings::instance()->cardDeck() + "alpha2.png" );
-}
-
 void CanvasCard::cardDeckChanged()
 {
     if( m_card )
     {
         m_card->cardDeckChanged();
-        loadAlpha();
         Q3CanvasItem::update();
     }
 }
