@@ -26,33 +26,18 @@
   */
 #include <kapplication.h>
 #include <setjmp.h> 
-#if QT_VERSION >= 0x030100
-    #include <qeventloop.h>
-#else
-    #include <qapplication.h>
-#endif
+#include <qeventloop.h>
 
 /** macro to start our eventloop hacks 
   */
-#if QT_VERSION >= 0x030100 
-    #define ENTER_LOOP() \
-        kapp->eventLoop()->enterLoop(); 
-#else 
-    #define ENTER_LOOP() \
-        kapp->enter_loop(); 
-#endif 
+#define ENTER_LOOP() \
+    kapp->eventLoop()->enterLoop();
 
 /** macro to end our eventloop hacks 
   */
-#if QT_VERSION >= 0x030100 
-    #define EXIT_LOOP() \
-		if( kapp->eventLoop()->loopLevel() > 1 )\
-        	kapp->eventLoop()->exitLoop(); 
-#else 
-    #define EXIT_LOOP() \
-		if( kapp->loopLevel() > 1 ) \
-        	kapp->exit_loop();
-#endif 
+#define EXIT_LOOP() \
+    if( kapp->eventLoop()->loopLevel() > 1 )\
+    kapp->eventLoop()->exitLoop();
 
 class Game;
 

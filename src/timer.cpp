@@ -40,8 +40,5 @@ void Timer::block( int seconds )
 
 void Timer::returnLoop()
 {
-	EXIT_LOOP();
+    EXIT_LOOP();
 }
-
-#include "timer.moc"
-
