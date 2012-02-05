@@ -131,12 +131,8 @@ const QStringList Settings::playerNames() const
     
     QString username;
     QStringList list;
-    #if KDE_VERSION >= 0x30200
     KUser user;
     username=user.loginName();
-    #else
-    username="Player 1";
-    #endif
     KConfigGroup config = KGlobal::config()->group("PlayerNames");
     list.append( config.readEntry( "Player1", username ) );
     list.append( config.readEntry( "Player2", "Dom" ) );
