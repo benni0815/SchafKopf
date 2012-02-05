@@ -25,7 +25,7 @@
 #include <kglobal.h>
 #include <klocale.h>
 
-static const char version[] = "0.7";
+static const char version[] = "0.8-devel";
 
 /*static KCmdLineOptions options[] =
 {
@@ -54,13 +54,12 @@ int main(int argc, char **argv)
     KGlobal::locale()->insertCatalog("libkdegames");
 
     SchafKopf* mainWin = new SchafKopf();
-#warning "AUSKOMMENTIERT"
-//    app.setMainWidget( mainWin );
+    app.setMainWidget( mainWin );
     mainWin->show();
 
     // free some memory
-    args->clear();
+#warning "AUSKOMMENTIERT"
+    //args->clear();
     
     return app.exec();
 }
-
