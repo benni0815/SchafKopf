@@ -26,7 +26,7 @@
 #endif
 
 #include <KXmlGuiWindow>
-#include <qpointer.h> 
+#include <qpointer.h>
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <QLabel>
@@ -102,7 +102,7 @@ class SchafKopf : public KXmlGuiWindow
     protected:
         /** Event handler to receive thread events
           */
-        void customEvent( QCustomEvent* e );
+        void customEvent( QEvent* e );
         
     private:
         void setupActions();

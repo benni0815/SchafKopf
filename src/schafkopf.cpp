@@ -95,7 +95,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
         m_table->setColumnWidth( i, w );*/
         m_table->setColumnStretchable( i, true );
     }
-    
+
     Q3VGroupBox* groupInfo = new Q3VGroupBox( i18n("Game Information:"), leftBox );
     lblCurGame = new QLabel( groupInfo );
     lblDoubled = new QLabel( groupInfo );
@@ -134,14 +134,15 @@ SchafKopf::~SchafKopf()
     delete m_stichdlg;
 }
 
-void SchafKopf::customEvent( QCustomEvent* e )
+void SchafKopf::customEvent( QEvent* e )
 {
+    qDebug() << "event";
     if( e->type() == SCHAFKOPF_EVENT )
     {
         int* a;
         bool force_select = false;
-        
-        t_EventData* data = (t_EventData*)e->data();
+
+        t_EventData* data = (t_EventData*)((QCustomEvent*) e)->data();
         switch( data->type )
         {
             case GameEnded:
@@ -346,8 +347,7 @@ void SchafKopf::endGame()
     if( !m_terminated )
     {
         m_terminated = true;
-#warning "AUSKOMMENTIERT"
-        //EXIT_LOOP();
+        m_canvasview->exitLoop();
         //KApplication::postEvent( m_game, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT_QUIT ) );
     }
     
