@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QFocusEvent>
+#include <QEventLoop>
 
 class CanvasCard;
 class Card;
@@ -80,13 +81,15 @@ class GameCanvas : public Q3CanvasView
           * so that they are going to hide themselves
           */
         void resetPlayerCards();
-        
+
         void playerIsLast( unsigned int id );
         void setPlayerName( unsigned int id, const QString & name );
         void setPlayerCards( unsigned int id, int* cards );
         
         void updateBackground();
-          
+
+        void exitLoop();
+
     public slots:
         void redrawPlayers();
         //void drawContents ( QPainter * p, int cx, int cy, int cw, int ch );
@@ -134,6 +137,8 @@ class GameCanvas : public Q3CanvasView
 
         QImage ImgBack;
         bool loadOK;
+
+        QEventLoop m_loop;
 };
 
 #endif

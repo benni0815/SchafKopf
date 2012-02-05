@@ -35,6 +35,7 @@
 #include <QFocusEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QDebug>
 
 class CanvasText : public Q3CanvasText {
     public:
@@ -236,9 +237,9 @@ int GameCanvas::getCard()
                 break;
             }
         }
-    
-    ENTER_LOOP();
-    
+
+    m_loop.exec();
+
     return m_result;
 }
 
@@ -260,7 +261,7 @@ void GameCanvas::cardClicked( Q3CanvasItem* item )
                 
                 // be sure that focusOutEvent does not use its parameter
                 focusOutEvent( NULL );
-                EXIT_LOOP();
+                m_loop.exit();
             }
         }
     }
@@ -327,11 +328,11 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
 
 void GameCanvas::resizeBackground()
 {
-    QImage ImgBack2;
+    QPixmap ImgBack2;
     if(loadOK)
     {
-         ImgBack2=ImgBack.smoothScale( canvas()->width(), canvas()->height() );
-         canvas()->setBackgroundPixmap( ImgBack2 );
+        ImgBack2.convertFromImage(ImgBack.smoothScale( canvas()->width(), canvas()->height() ));
+        canvas()->setBackgroundPixmap( ImgBack2 );
     }
 
 }
@@ -468,7 +469,7 @@ void GameCanvas::focusOutEvent(QFocusEvent*)
 bool GameCanvas::questionYesNo( const QString & message )
 {
     m_result = NO;
-    
+
     m_message->setText( message );
     m_message->show();
     m_yes->show();
@@ -479,8 +480,8 @@ bool GameCanvas::questionYesNo( const QString & message )
     canvas()->update();
     if( hasFocus() )
         m_yes->setActive( true );
-    ENTER_LOOP();
-    
+    m_loop.exec();
+
     m_message->hide();
     m_yes->hide();
     m_no->hide();
@@ -500,17 +501,17 @@ void GameCanvas::yesNoClicked( Q3CanvasItem* item )
         if( item == m_yes )
         {
             m_result = YES;
-            EXIT_LOOP();
+            m_loop.exit();
         }
         else if( item == m_no )
         {
             m_result = NO;
-            EXIT_LOOP();
+            m_loop.exit();
         }
         else if( item == m_ok )
         {
             m_result = NO;
-            EXIT_LOOP();
+            m_loop.exit();
             for(int i=0;i<PLAYERS;i++)
             {
             	m_players[i]->hideBubble();
@@ -530,7 +531,7 @@ void GameCanvas::information( const QString & message )
     canvas()->update();
     if( hasFocus() )
         m_ok->setActive( true );
-    ENTER_LOOP();
+    m_loop.exec();
 
     m_message->hide();
     m_ok->hide();
@@ -621,4 +622,7 @@ CanvasPlayer* GameCanvas::humanPlayer() const
     return NULL;
 }
 
-#include "gamecanvas.moc"
+void GameCanvas::exitLoop()
+{
+    m_loop.exit();
+}
