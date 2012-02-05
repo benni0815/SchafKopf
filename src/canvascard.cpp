@@ -54,34 +54,28 @@ void CanvasCard::draw( QPainter & p )
 {
 #ifdef SIMULATION_MODE
     return;
-#endif // SIMULATION_MODE    
+#endif // SIMULATION_MODE
 
     if( m_card )
     {
         QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
-    
+
         // this code handles already matrix transformations
         QMatrix wm = p.worldMatrix();    
         QPoint point( (int)x(), (int)y() );
-        point = wm.map(point);
-    
+        point =  point * wm;
+
         wm.rotate( (double)m_rotation );
-    
+
         QPixmap pix = pixmap->transformed( wm );
         QImage img = pix.toImage();
         if( m_forbidden )
             Blitz::fade( img, 0.5, Qt::gray );
         else if( isActive() )
             Blitz::fade( img, 0.25, Qt::yellow );
-        pix.convertFromImage( img );
 
-        /*if( m_forbidden )
-            pix = KPixmapEffect::fade( pix, 0.5, Qt::gray );
-        else if( isActive() )
-            pix = KPixmapEffect::fade( pix, 0.25, Qt::yellow );*/
-
-        setSize( pix.width()+3, pix.height()+3 );
-        p.drawPixmap( point, pix );
+        setSize( pix2.width()+3, pix2.height()+3 );
+        p.drawImage( point, img );
     }
 }
 
