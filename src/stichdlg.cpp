@@ -35,19 +35,20 @@ StichDlg::StichDlg(QWidget *parent, const char *name)
 {
     setCaption( i18n("Last Trick") );
     setButtons( KDialog::Close );
-    QWidget *trick = new QWidget( this );
-    setMainWidget( trick );
-    Q3GridLayout* layout = new Q3GridLayout( trick, 4, 2 );
+    QWidget *plainPage = new QWidget( this );
+    setMainWidget( plainPage );
+    Q3GridLayout* layout = new Q3GridLayout( plainPage, 4, 2 );
+    trick = new QLabel( plainPage );
     layout->addMultiCellWidget( trick, 0, 0, 0, 3);
-    
+
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
-        cards[i] = new QLabel( trick );
+        cards[i] = new QLabel( plainPage );
         layout->addWidget( cards[i], 1, i );
         
-        players[i] = new QLabel( trick );
+        players[i] = new QLabel( plainPage );
         layout->addWidget( players[i], 2, i );
     }
-    
+
     reset();
 }
 
