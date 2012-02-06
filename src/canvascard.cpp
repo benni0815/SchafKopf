@@ -74,7 +74,7 @@ void CanvasCard::draw( QPainter & p )
         else if( isActive() )
             Blitz::fade( img, 0.25, Qt::yellow );
 
-        setSize( pix2.width()+3, pix2.height()+3 );
+        setSize( img.width()+3, img.height()+3 );
         p.drawImage( point, img );
     }
 }
