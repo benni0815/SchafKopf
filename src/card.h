@@ -45,37 +45,37 @@ class Card {
         /** return a pixmap of the card 
           */
         QPixmap* pixmap();
-        
+
         /** return a pixmap for the background of a card.
           * Do not delete the returned pixmap!
           */
         static QPixmap* backgroundPixmap();
-        
+
         /** return how much points the card has.
           * e.g. king = 4 points
           */
         int points() const { return m_points; }
-        
+
         /** return the color of the card.
           * e.g. heart.
           */
         int color() const { return m_color; }
-        
+
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
 
-	/** set the owner of the card.
-	  * only do this when the cards are given,
-	  * not after a trick was made!
-	  */
-        const Player* owner() const { return m_owner; }
-      	
+        /** set the owner of the card.
+        * only do this when the cards are given,
+        * not after a trick was made!
+        */
+        void setOwner( Player* owner ) { m_owner = owner; }
+
         /** return the owner of this card.
           * we need this to be able to know who
           * played this card of the trick was made.
           */
-        void setOwner( Player* owner ) { m_owner = owner; }
+        const Player* owner() const { return m_owner; }
 
         /** this operator< is not quite correct,
           * it just tells wether ass is bigger than 10 or 10 
@@ -97,7 +97,7 @@ class Card {
           * the internal pixmap should be reloaded.
           */
         void cardDeckChanged();
-        
+
         /** Returns a non-localized textual representation of the card,
          *  for example "Herz Ass"
          */
@@ -105,10 +105,10 @@ class Card {
 
     private:
         void init( const enum EType t, const enum EColor c  );
-        
+
     private:
         Player* m_owner;
-        
+
         int m_points;
         int m_color;
         int m_card;
