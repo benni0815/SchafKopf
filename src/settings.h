@@ -24,6 +24,8 @@
 //Added by qt3to4:
 #include <Q3ValueList>
 
+#include <cardcache.h>
+
 /** a small datatype which contains configureable 
   * values to calculate how much a game was.
   */
@@ -74,6 +76,8 @@ class Settings : public QObject
         
         static Settings* instance();
         
+        KCardCache* cardCache();
+
         const QString cardDeck() const;
         const QString cardBackground() const;
         
@@ -126,17 +130,14 @@ class Settings : public QObject
         void playerNamesChanged();
 
     private:
-
         Settings(QObject *parent = 0, const char *name = 0);
         ~Settings();
 
         static Settings* m_instance;
-        QString getCardDir() const;
 
         QMutex* m_mutex;
 
-	QString cardFrontsideDir;
-	QString cardDeckFile;
+        KCardCache* m_cardCache;
 };
 
 #endif

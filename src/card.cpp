@@ -86,23 +86,45 @@ void Card::init( const enum EType t, const enum EColor c  )
 
 QPixmap* Card::pixmap()
 {
-    if( !m_pixmap ) {
-        QString dir = Settings::instance()->cardDeck();
-        m_pixmap = new QPixmap( KCardDialog::getCardPath( dir, m_card + m_color ) );
-    }
-    
+    if( !m_pixmap ) m_pixmap = new QPixmap( Settings::instance()->cardCache()->frontside( kdeCardInfo() ) );
+
     return m_pixmap;
 }
-        
+
 QPixmap* Card::backgroundPixmap()
 {
-    if( !m_background ) {
-        QString deck = Settings::instance()->cardBackground();
-        m_background = new QPixmap( deck );
-    }
-    
+    if( !m_background ) m_background = new QPixmap( Settings::instance()->cardCache()->backside() );
+
     return m_background;
 }
+
+KCardInfo Card::kdeCardInfo()
+{
+    KCardInfo::Suit suit;
+    KCardInfo::Card card;
+
+    switch( m_color )
+    {
+    case EICHEL: suit = KCardInfo::Club; break;
+    case GRAS: suit = KCardInfo::Spade; break;
+    case HERZ: suit = KCardInfo::Heart; break;
+    case SCHELLEN: suit = KCardInfo::Diamond; break;
+    default: suit = KCardInfo::None;
+    }
+
+    switch( m_card )
+    {
+    case SAU: card = KCardInfo::Ace; break;
+    case KOENIG: card = KCardInfo::King; break;
+    case OBER: card = KCardInfo::Queen; break;
+    case UNTER: card = KCardInfo::Jack; break;
+    default: card = KCardInfo::Card( ( m_card/4 ) + 1 );
+    }
+
+    KCardInfo cardInfo = KCardInfo( suit, card );
+    return cardInfo;
+}
+
 
 bool Card::isEqual(Card *othercard)
 {

@@ -1,5 +1,3 @@
-//Added by qt3to4:
-#include <QPixmap>
 /***************************************************************************
  *   Copyright (C) 2004 by Dominik Seichter                                *
  *   domseichter@web.de                                                    *
@@ -21,6 +19,10 @@
  ***************************************************************************/
 #ifndef CARD_H
 #define CARD_H
+
+#include <QPixmap>
+
+#include <cardcache.h>
 
 class QPixmap;
 class Player;
@@ -64,6 +66,8 @@ class Card {
         /** return the type of the card, e.g. ASS
           */
         int card() const { return m_card; }
+
+        KCardInfo kdeCardInfo();
 
         /** set the owner of the card.
         * only do this when the cards are given,

@@ -26,6 +26,7 @@
 #include <kconfig.h>
 #include <kuser.h>
 #include <kstandarddirs.h>
+#include <KCardDialog>
 
 #include <qmutex.h>
 //Added by qt3to4:
@@ -48,27 +49,12 @@ Settings::Settings(QObject *parent, const char *name)
     // the mutex causes more problems right now than be useful...
     m_mutex = NULL; // new QMutex();
 
-    //find the directory for the card frontsides
-    QString ourCards="cards-OpenTarock";
-    cardFrontsideDir=getCardDir()+ourCards+"/";
-    if( !KStandardDirs::exists ( cardFrontsideDir ) )
-    {
-        cardFrontsideDir="/usr/share/apps/carddecks/"+ourCards+"/";
-#warning "AUSKOMMENTIERT"
-        //if(!KStandardDirs::exists ( cardFrontsideDir ))
-            //cardFrontsideDir = KCardDialog::getDefaultCardDir();
-    }
+    m_cardCache = new KCardCache();
 
-    //find the card deck
-    QString ourDeck="bavaria_tux2.png";
-    cardDeckFile=getCardDir()+"decks/"+ourDeck;
-    if( !KStandardDirs::exists ( cardDeckFile ) )
-    {
-        cardDeckFile="/usr/share/apps/carddecks/decks/"+ourDeck;
-#warning "AUSKOMMENTIERT"
-        //if(!KStandardDirs::exists ( cardDeckFile ))
-            //cardDeckFile = KCardDialog::getDefaultDeck();
-    }
+    m_cardCache->setFrontTheme( cardDeck() );
+    m_cardCache->setBackTheme( cardBackground() );
+    KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
+    m_cardCache->setSize( m_cardCache->defaultFrontSize( card ).toSize() );
 }
 
 
@@ -78,16 +64,9 @@ Settings::~Settings()
     delete m_instance;
 }
 
-QString Settings::getCardDir() const
+KCardCache* Settings::cardCache()
 {
-    // do not lock private members
-#warning "AUSKOMMENTIERT"
-    QString dir;// = KCardDialog::getDefaultCardDir();
-    int k;
-    dir = dir.remove( dir.length()-1, 1 );
-    k = dir.findRev( '/', -1 );
-    dir = dir.remove( k+1, dir.length()-k );
-    return dir;
+    return m_cardCache;
 }
 
 const QString Settings::cardDeck() const
@@ -95,7 +74,7 @@ const QString Settings::cardDeck() const
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = KGlobal::config()->group("CardDeck");
-    return config.readEntry("Cards", cardFrontsideDir );
+    return config.readEntry("Cardname", "XSkat German" );
 }
 
 const QString Settings::cardBackground() const
@@ -103,24 +82,21 @@ const QString Settings::cardBackground() const
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = KGlobal::config()->group("CardDeck");
-    return config.readEntry("Deck", cardDeckFile );
+    return config.readEntry("Deckname", "Oxygen White" );
 }
 
 void Settings::configureCardDecks( QWidget* parent )
 {
     // no mutex locker here as we would lock cardDeck and cardBackground
     
-    QString dir = cardDeck();
-    QString deck = cardBackground();
-#warning "AUSKOMMENTIERT"
-   // if (KCardDialog::getCardDeck(deck, dir, parent, KCardDialog::Both ) == QDialog::Accepted)
+    KConfigGroup configGroup = KGlobal::config()->group("CardDeck");
+    KCardWidget* cardwidget = new KCardWidget();
+    cardwidget->readSettings(configGroup);
+    KCardDialog dlg(cardwidget);
+    if(dlg.exec() == QDialog::Accepted)
     {
-        //m_mutex->lock();
-        KConfigGroup config = KGlobal::config()->group("CardDeck");
-        config.writeEntry( "Cards", dir );
-        config.writeEntry( "Deck", deck );
-        config.sync();
-        //m_mutex->unlock();
+        cardwidget->saveSettings(configGroup);
+        configGroup.sync();
         emit cardChanged();
     }
 }
