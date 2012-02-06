@@ -54,7 +54,9 @@ Settings::Settings(QObject *parent, const char *name)
     m_cardCache->setFrontTheme( cardDeck() );
     m_cardCache->setBackTheme( cardBackground() );
     KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
-    m_cardCache->setSize( m_cardCache->defaultFrontSize( card ).toSize() );
+    QSize size = m_cardCache->defaultFrontSize( card ).toSize();
+    double scale = 140. / size.height();
+    m_cardCache->setSize( scale * size );
 }
 
 
