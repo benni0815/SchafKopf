@@ -272,7 +272,6 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
     QPoint point;
     unsigned int i=0;
     CanvasCard* card = 0;
-           
     for(i=0;i<PLAYERS;i++) {
         if( m_players[i]->id() == player )
         {
@@ -280,18 +279,18 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
             break;
         }
     }
-    
+
     if( card )
     {
         m_players[player]->cardPlayed( card->card() );
         if(Settings::instance()->rearrangeCards())
             m_players[player]->position();
-  
+
         CanvasCard* stich = m_stich[player];
         if( stich->card() )
             delete stich->card();
         stich->setCard( new Card( card->card()->id() ) );
-        
+
         int r = getStichRotation(player);
         stich->setRotation( r );
 
@@ -303,7 +302,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
             if( m_stich[i]->isVisible() )        
                 z++;
         }
-        
+
         stich->setZ( z );
         stich->setFrontVisible( true );
         stich->show();

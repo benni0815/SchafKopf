@@ -73,7 +73,7 @@ Game::Game(sem_t* sem, QObject *parent )
 Game::~Game()
 {
     unsigned int i;
-    
+
     m_currstich.clear();
     for(i=0;i<PLAYERS;i++)
     {
@@ -572,7 +572,7 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
     data->returncode = NULL;
     data->quitgame = false;
         
-    KApplication::postEvent( m_parent, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT, (void*)data) );
+    QCoreApplication::postEvent( m_parent, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT, (void*)data ) );
     if( wait )
     {
         sem_wait( m_sem );

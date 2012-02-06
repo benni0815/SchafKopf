@@ -136,7 +136,6 @@ SchafKopf::~SchafKopf()
 
 void SchafKopf::customEvent( QEvent* e )
 {
-    qDebug() << "event";
     if( e->type() == SCHAFKOPF_EVENT )
     {
         int* a;
@@ -412,7 +411,7 @@ void SchafKopf::updateInfo()
     valuation=(int)pow(2, timesDoubled);
     if( Settings::instance()->doubleNextGame() )
         valuation = valuation * (int)pow(2, timesThrownTogether );
-    sDoubled.append( i18n("<qt>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
+    sDoubled.append( i18n("<qt><br>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
     
     lblDoubled->setText( sDoubled );
 }
