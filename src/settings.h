@@ -73,36 +73,37 @@ class Settings : public QObject
     public:
         enum { MONEY, POINTS };
         enum { NOGAME_NEUGEBEN, NOGAME_ALTERSPIELT, NOGAME_RAMSCH };
-        
+
         static Settings* instance();
-        
+
         KCardCache* cardCache();
 
         const QString cardDeck() const;
         const QString cardBackground() const;
-        
+
         const QStringList playerNames() const;
         void setPlayerNames( const QStringList & names );
-        
+
+        void loadCardDeck();
         void configureCardDecks( QWidget* parent = 0 );
-        
+
         QList<int> splitterSizes( int width );
         void setSplitterSizes( QList<int> list );
-        
+
         void setResultsType( int r );
         int resultsType() const;
-        
+
         void setNoGame( int e );
         /** returns what has to happen when no player wants to play
           */
         int noGame() const;
-        
+
         void setDoublerHasToPlay( bool b );
         bool doublerHasToPlay() const;
-        
+
         void setDoubleNextGame( bool b );
         bool doubleNextGame() const;
-        
+
         void setMoneyResults( const t_ResultValues* r );
         void setPointResults( const t_ResultValues* r );
 
@@ -123,7 +124,7 @@ class Settings : public QObject
           */
         t_AllowedGames* allowedGames() const;
         void setAllowedGames( const t_AllowedGames* allowed );
-        
+
     signals:
         void cardChanged();
         void resultsTypeChanged();

@@ -50,20 +50,14 @@ Settings::Settings(QObject *parent, const char *name)
     m_mutex = NULL; // new QMutex();
 
     m_cardCache = new KCardCache();
-
-    m_cardCache->setFrontTheme( cardDeck() );
-    m_cardCache->setBackTheme( cardBackground() );
-    KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
-    QSize size = m_cardCache->defaultFrontSize( card ).toSize();
-    double scale = 140. / size.height();
-    m_cardCache->setSize( scale * size );
+    loadCardDeck();
 }
-
 
 Settings::~Settings()
 {
     delete m_mutex;
     delete m_instance;
+    delete m_cardCache;
 }
 
 KCardCache* Settings::cardCache()
@@ -87,6 +81,16 @@ const QString Settings::cardBackground() const
     return config.readEntry("Deckname", "Oxygen White" );
 }
 
+void Settings::loadCardDeck()
+{
+    m_cardCache->setFrontTheme( cardDeck() );
+    m_cardCache->setBackTheme( cardBackground() );
+    KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
+    QSize size = m_cardCache->defaultFrontSize( card ).toSize();
+    double scale = 140. / size.height();
+    m_cardCache->setSize( scale * size );
+}
+
 void Settings::configureCardDecks( QWidget* parent )
 {
     // no mutex locker here as we would lock cardDeck and cardBackground
@@ -99,6 +103,7 @@ void Settings::configureCardDecks( QWidget* parent )
     {
         cardwidget->saveSettings(configGroup);
         configGroup.sync();
+        loadCardDeck();
         emit cardChanged();
     }
 }
