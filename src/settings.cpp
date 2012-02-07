@@ -22,11 +22,11 @@
 #include "schafkopfdef.h"
 
 #include <kapplication.h>
-#include <kcarddialog.h>
 #include <kconfig.h>
 #include <kuser.h>
 #include <kstandarddirs.h>
 #include <KCardDialog>
+#include <carddeckinfo.h>
 
 #include <qmutex.h>
 //Added by qt3to4:
@@ -83,8 +83,10 @@ const QString Settings::cardBackground() const
 
 void Settings::loadCardDeck()
 {
-    m_cardCache->setFrontTheme( cardDeck() );
-    m_cardCache->setBackTheme( cardBackground() );
+    if( CardDeckInfo::frontNames().contains( cardDeck() ) ) m_cardCache->setFrontTheme( cardDeck() );
+    else m_cardCache->setFrontTheme( CardDeckInfo::defaultFrontName() );
+    if( CardDeckInfo::backNames().contains( cardBackground() ) ) m_cardCache->setBackTheme( cardBackground() );
+    else m_cardCache->setBackTheme( CardDeckInfo::defaultBackName() );
     KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
     QSize size = m_cardCache->defaultFrontSize( card ).toSize();
     double scale = 140. / size.height();
@@ -95,13 +97,13 @@ void Settings::configureCardDecks( QWidget* parent )
 {
     // no mutex locker here as we would lock cardDeck and cardBackground
     
-    KConfigGroup configGroup = KGlobal::config()->group("CardDeck");
+    KConfigGroup configGroup = KGlobal::config()->group( "CardDeck" );
     KCardWidget* cardwidget = new KCardWidget();
-    cardwidget->readSettings(configGroup);
-    KCardDialog dlg(cardwidget);
-    if(dlg.exec() == QDialog::Accepted)
+    cardwidget->readSettings( configGroup );
+    KCardDialog dlg( cardwidget );
+    if( dlg.exec() == QDialog::Accepted )
     {
-        cardwidget->saveSettings(configGroup);
+        cardwidget->saveSettings( configGroup );
         configGroup.sync();
         loadCardDeck();
         emit cardChanged();
