@@ -23,44 +23,44 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGE
 # ########## src executable ##########
 # Sources:
 SET(schafkopf_SRCS
-    card.cpp
-    selectgamewizard.cpp
-    player.cpp
-    gameinfo.cpp
-    schafkopf.cpp
-    selectgametypebox.cpp
-    results.cpp
-    main.cpp
-    newgamewizard.cpp
-    game.cpp
-    humanplayer.cpp
-    cardlist.cpp
-    computerplayer.cpp
-    stichdlg.cpp
-    gamecanvas.cpp
-    selectgamedlg.cpp
-    selectgamecolorbox.cpp
-    settings.cpp
-    preferencesdlg.cpp
-    canvasplayer.cpp
-    openbook.cpp
-    canvascard.cpp
+    src/card.cpp
+    src/selectgamewizard.cpp
+    src/player.cpp
+    src/gameinfo.cpp
+    src/schafkopf.cpp
+    src/selectgametypebox.cpp
+    src/results.cpp
+    src/main.cpp
+    src/newgamewizard.cpp
+    src/game.cpp
+    src/humanplayer.cpp
+    src/cardlist.cpp
+    src/computerplayer.cpp
+    src/stichdlg.cpp
+    src/gamecanvas.cpp
+    src/selectgamedlg.cpp
+    src/selectgamecolorbox.cpp
+    src/settings.cpp
+    src/preferencesdlg.cpp
+    src/canvasplayer.cpp
+    src/openbook.cpp
+    src/canvascard.cpp
 )
 
 # Headers:
 SET(schafkopf_HDRS
-    schafkopf.h
-    selectgamewizard.h
-    preferencesdlg.h
-    gamecanvas.h
-    openbook.h
-    canvascard.h
-    stichdlg.h
-    settings.h
-    selectgametypebox.h
-    selectgamecolorbox.h
-    selectgamedlg.h
-    newgamewizard.h
+    src/schafkopf.h
+    src/selectgamewizard.h
+    src/preferencesdlg.h
+    src/gamecanvas.h
+    src/openbook.h
+    src/canvascard.h
+    src/stichdlg.h
+    src/settings.h
+    src/selectgametypebox.h
+    src/selectgamecolorbox.h
+    src/selectgamedlg.h
+    src/newgamewizard.h
 )
 
 QT4_WRAP_CPP(schafkopf_HDRS_MOC ${schafkopf_HDRS})
