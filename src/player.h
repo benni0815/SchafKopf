@@ -48,7 +48,7 @@ class Player
         void setPoints( double p ) { m_points = p; }
         
         virtual int rtti() const = 0;
-        const unsigned int id() const { return m_id; }
+        unsigned int id() const { return m_id; }
 
         /** returns wether this player want this game to
           * count twice or not
