@@ -59,7 +59,7 @@ const QString GameInfo::toString() const
             c = QString::null;
             break;
     }
-    
+
     switch( m_mode )
     {
         case GameInfo::STICHT:
@@ -76,7 +76,7 @@ const QString GameInfo::toString() const
         default:            
             g = QString::null;
     }
-    
+
     if( m_mode == GameInfo::RUFSPIEL )
         s = i18n("%1 plays on the %2 Ace.").arg( m_spieler ? m_spieler->name() : QString::null ).arg(c);
     else if( m_mode == GameInfo::RAMSCH )
@@ -148,16 +148,16 @@ bool GameInfo::istTrumpf(Card *card) const
 bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
     t_AllowedGames* allowed = NULL;
-    
+
     // it is never allowed to decide to play Ramsch
     if( mode == GameInfo::RAMSCH )
         return false;
-        
+
     if( mode==GameInfo::RUFSPIEL ) 
     {
         if( cards->contains( color, Card::SAU ) || color == Card::HERZ )
             return false;
-    
+
         // ok now we have to test if we have a card in this color with is no trumpf_index
         for( unsigned int i=0;i<cards->count();i++)
         {
@@ -167,11 +167,11 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
                 return true;
             }
         }
-        
+
         return false;
     } else if( mode==GameInfo::STICHT && color==Card::NOCOLOR )
         return false;
-    
+
     // check for the users preferences now
     allowed = Settings::instance()->allowedGames();
     if( mode == GameInfo::DACHS && !allowed->dachs )
@@ -186,14 +186,14 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
         delete allowed;
         return false;
     }
-    
+
     if( (mode == GameInfo::GEIER && !allowed->geier) ||
         (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed->farb_geier) )
     {
         delete allowed;
         return false;
     }
-   
+
     delete allowed;
     return true;
 }
@@ -216,101 +216,100 @@ bool GameInfo::operator>( GameInfo info )
 
 int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 {
-	/* Not very nice. Try to find a better way */
-	
-	int *l_trumpf;
-	int *l_cards;
-	int l_trumpf_std[]={ Card::OBER, Card::UNTER };
-	int l_trumpf_geier=Card::OBER;
-	int l_trumpf_wenz=Card::UNTER;
+    /* Not very nice. Try to find a better way */
+
+    int *l_trumpf;
+    int *l_cards;
+    int l_trumpf_std[]={ Card::OBER, Card::UNTER };
+    int l_trumpf_geier=Card::OBER;
+    int l_trumpf_wenz=Card::UNTER;
     int l_trumpf_dachs[]={ Card::SAU, Card::ZEHN };
-	int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
-	int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
-	int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+    int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
+    int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
+    int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
     int l_cards_dachs[]={ Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
-	int l_colors[4];
-	int trumpf_index=-1;
-	int cards_index=-1;
-	int colors_index=-1;
-	int trumpf_cnt;
-	int col;
-	int i, a;
-	
-	switch( gameinfo->mode() )
+    int l_colors[4];
+    int trumpf_index=-1;
+    int cards_index=-1;
+    int colors_index=-1;
+    int trumpf_cnt;
+    int col;
+    int i, a;
+
+    switch( gameinfo->mode() )
     {
-		case GameInfo::RAMSCH:
+        case GameInfo::RAMSCH:
         case GameInfo::RUFSPIEL:
-			trumpf_cnt=2;
-			l_trumpf=l_trumpf_std;
-			l_cards=l_cards_std;
-			col=Card::HERZ;
-			
-			break;
-        case GameInfo::STICHT:
-			trumpf_cnt=2;
-			l_trumpf=l_trumpf_std;
-			l_cards=l_cards_std;
-			col=gameinfo->color();
-			break;
-		case GameInfo::GEIER:
-			trumpf_cnt=1;
-        	l_trumpf=&l_trumpf_geier;
-			l_cards=l_cards_geier;
-			col=gameinfo->color();
-			break;
-		case GameInfo::WENZ:
-			//qDebug("Wenz, color: "+ QString::number(gameinfo->color()));
-			trumpf_cnt=1;
-        	l_trumpf=&l_trumpf_wenz;
-			l_cards=l_cards_wenz;
-			col=gameinfo->color();
+            trumpf_cnt=2;
+            l_trumpf=l_trumpf_std;
+            l_cards=l_cards_std;
+            col=Card::HERZ;
             break;
-		case GameInfo::DACHS:
+        case GameInfo::STICHT:
+            trumpf_cnt=2;
+            l_trumpf=l_trumpf_std;
+            l_cards=l_cards_std;
+            col=gameinfo->color();
+            break;
+        case GameInfo::GEIER:
+            trumpf_cnt=1;
+            l_trumpf=&l_trumpf_geier;
+            l_cards=l_cards_geier;
+            col=gameinfo->color();
+            break;
+        case GameInfo::WENZ:
+            //qDebug("Wenz, color: "+ QString::number(gameinfo->color()));
+            trumpf_cnt=1;
+            l_trumpf=&l_trumpf_wenz;
+            l_cards=l_cards_wenz;
+            col=gameinfo->color();
+            break;
+        case GameInfo::DACHS:
             trumpf_cnt=2;
             l_trumpf=l_trumpf_dachs;
             l_cards=l_cards_dachs;
             col=Card::NOCOLOR;
             break;
         default:
-        	break;
-	}
-	if(col==Card::NOCOLOR)
-		col=Card::EICHEL;
-	l_colors[0]=col;
-	for(i=0, a=1;i<4;i++)
-	{
-		if(col==i)
-			continue;
-		else
-			l_colors[a++]=i;
-	}
-	for(i=0;i<trumpf_cnt;i++)
-	{
-		if(card->card()==l_trumpf[i])
-		{
-			trumpf_index=i;
-			break;
-		}
-	}
-	for(i=0;i<7;i++)
-	{
-		if(card->card()==l_cards[i])
-		{
-			cards_index=i;
-			break;
-		}
-	}
-	for(i=0;i<4;i++)
-	{
-		if(card->color()==l_colors[i])
-		{
-			colors_index=i;
-			break;
-		}
-	}
-	if(trumpf_index!=-1)
-		return CARD_CNT-(trumpf_index*NUMTRUMPF+card->color());
-	return CARD_CNT-(trumpf_cnt*NUMTRUMPF+colors_index*(NUMCARDS-trumpf_cnt)+cards_index);
+                break;
+    }
+    if(col==Card::NOCOLOR)
+        col=Card::EICHEL;
+    l_colors[0]=col;
+    for(i=0, a=1;i<4;i++)
+    {
+        if(col==i)
+            continue;
+        else
+            l_colors[a++]=i;
+    }
+    for(i=0;i<trumpf_cnt;i++)
+    {
+        if(card->card()==l_trumpf[i])
+        {
+            trumpf_index=i;
+            break;
+        }
+    }
+    for(i=0;i<7;i++)
+    {
+        if(card->card()==l_cards[i])
+        {
+            cards_index=i;
+            break;
+        }
+    }
+    for(i=0;i<4;i++)
+    {
+        if(card->color()==l_colors[i])
+        {
+            colors_index=i;
+            break;
+        }
+    }
+    if(trumpf_index!=-1)
+        return CARD_CNT-(trumpf_index*NUMTRUMPF+card->color());
+    return CARD_CNT-(trumpf_cnt*NUMTRUMPF+colors_index*(NUMCARDS-trumpf_cnt)+cards_index);
 }
 
 int GameInfo::laufende()
@@ -318,12 +317,12 @@ int GameInfo::laufende()
 #warning "Im Ramsch werden keine Laufenden gezaehlt!"
     if( m_mode == RAMSCH )
         return 0;
-        
+
     /** TODO: jeder spieler sollte eine laufende property haben und
       * selst zählen wie viele laufende er hat.
       * danach können diese in results einfach addiert werden
       */
-        
+
     unsigned int i = 0;
     int l = 0;
     CardList* all = new CardList();
@@ -335,7 +334,7 @@ int GameInfo::laufende()
     all->setAutoDelete( false );
     all->sort( (eval_func)evalCard, (void *)this);
     all->setAutoDelete( true );
-        
+
     for( i=all->count()-1;i>=0;--i)
     {
         Card* c = all->at( i );
@@ -349,10 +348,10 @@ int GameInfo::laufende()
             delete list;
             break;
         }
-        
+
         delete list;
     }
 
     delete all;   
     return l;
-}       
+}
