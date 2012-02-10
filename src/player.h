@@ -1,4 +1,3 @@
-
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -13,7 +12,7 @@ class Player
 {
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
-		
+
         Player(unsigned int id, Game* game);
         
         // this destructor should be virtual
@@ -80,15 +79,15 @@ class Player
         // was called
         bool m_has_doubled;
         unsigned int m_id;
-    	
-		CardList* cardsOfSameType(Card* card);
-		Card* firstPlayedCard();
-		bool istTrumpf(Card* card);
-        
+
+        CardList* cardsOfSameType(Card* card);
+        Card* firstPlayedCard();
+        bool istTrumpf(Card* card);
+
     private:
         double m_points;
-		
-		CardList* PlayerCards();
+
+        CardList* PlayerCards();
 };
 
 #endif /* PLAYER_H */
