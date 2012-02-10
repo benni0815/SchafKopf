@@ -42,7 +42,7 @@
 #include <Q3HBoxLayout>
 #include <Q3VBoxLayout>
 
-PreferencesDlg::PreferencesDlg(QWidget *parent, const char *name)
+PreferencesDlg::PreferencesDlg( QWidget *parent )
     : KPageDialog( parent )
 {
     setCaption( i18n("Preferences") );

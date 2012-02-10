@@ -266,7 +266,7 @@ void CanvasPlayer::setCards( CardList* cards )
     m_cards->appendList( cards );
 }
 
-void CanvasPlayer::say( const QString & message, unsigned int playerid )
+void CanvasPlayer::say( const QString & message, unsigned int )
 {
     QPoint p;
     

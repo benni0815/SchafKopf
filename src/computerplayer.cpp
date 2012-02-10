@@ -454,12 +454,12 @@ bool ComputerPlayer::istFarbFrei(int playerId, int c)
 	return false;
 }
 
-float ComputerPlayer::gehtDurch(Card *card)
+float ComputerPlayer::gehtDurch(Card *)
 {
     return 0;
 }
 
-float ComputerPlayer::gegnerSticht(Card *card)
+float ComputerPlayer::gegnerSticht(Card *)
 {
     return 0;
 }

@@ -98,7 +98,7 @@ void Settings::configureCardDecks( QWidget* parent )
     // no mutex locker here as we would lock cardDeck and cardBackground
     
     KConfigGroup configGroup = KGlobal::config()->group( "CardDeck" );
-    KCardWidget* cardwidget = new KCardWidget();
+    KCardWidget* cardwidget = new KCardWidget( parent );
     cardwidget->readSettings( configGroup );
     KCardDialog dlg( cardwidget );
     if( dlg.exec() == QDialog::Accepted )

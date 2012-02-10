@@ -428,7 +428,7 @@ void SchafKopf::clearTable()
 
 void SchafKopf::configure()
 {
-    PreferencesDlg prefs( this, "prefs");
+    PreferencesDlg prefs( this );
     if( prefs.exec() == QDialog::Accepted )
     {
         m_canvasview->updateBackground();

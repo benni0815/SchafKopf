@@ -30,7 +30,7 @@
 
 #include <klocale.h>
 
-StichDlg::StichDlg(QWidget *parent, const char *name)
+StichDlg::StichDlg(QWidget *parent )
     : KDialog( parent )
 {
     setCaption( i18n("Last Trick") );

@@ -45,7 +45,7 @@ class PreferencesDlg : public KPageDialog
 {
     Q_OBJECT
     public:
-        PreferencesDlg(QWidget *parent = 0, const char *name = 0);
+        PreferencesDlg(QWidget *parent = 0 );
         ~PreferencesDlg();
        
     protected:
