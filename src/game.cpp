@@ -357,7 +357,7 @@ bool Game::setupGameInfo(Player *players[])
     Q3PtrList<GameInfo> games;
     games.setAutoDelete( true );
     unsigned int i = 0;
-    int humanPlayer, playerInstance;
+    int humanPlayer = 0, playerInstance;
     for( i=0;i<PLAYERS;i++)
     {
         if( players[i]->rtti() == Player::HUMAN )

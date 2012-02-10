@@ -358,7 +358,7 @@ void GameCanvas::redrawPlayers()
 void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
 {
     m_item = NULL;
-    double z;
+    double z = 0;
     bool first=true;
     if( e->button() == Qt::LeftButton )
     {

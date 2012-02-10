@@ -233,7 +233,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
     int cards_index=-1;
     int colors_index=-1;
     int trumpf_cnt;
-    int col;
+    int col = Card::NOCOLOR;
     int i, a;
 
     switch( gameinfo->mode() )

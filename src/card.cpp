@@ -30,8 +30,8 @@ QPixmap* Card::m_background = 0;
 
 Card::Card( const int id )
 {
-    enum EType t;
-    enum EColor c;
+    enum EType t = NOSTICH;
+    enum EColor c = NOCOLOR;
     int i;
     
     // try to calculate the type and color from the id
