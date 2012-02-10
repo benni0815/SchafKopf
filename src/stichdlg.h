@@ -39,7 +39,7 @@ class StichDlg : public KDialog
 {
     Q_OBJECT
     public:
-        StichDlg(QWidget *parent = 0, const char *name = 0);
+        StichDlg(QWidget *parent = 0 );
         ~StichDlg();
         
         void changed( const QString & name, int* list, QStringList* players );
