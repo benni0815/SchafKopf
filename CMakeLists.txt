@@ -38,7 +38,6 @@ SET(schafkopf_SRCS
     src/computerplayer.cpp
     src/stichdlg.cpp
     src/gamecanvas.cpp
-    src/selectgamedlg.cpp
     src/selectgamecolorbox.cpp
     src/settings.cpp
     src/preferencesdlg.cpp
@@ -59,7 +58,6 @@ SET(schafkopf_HDRS
     src/settings.h
     src/selectgametypebox.h
     src/selectgamecolorbox.h
-    src/selectgamedlg.h
     src/newgamewizard.h
 )
 
