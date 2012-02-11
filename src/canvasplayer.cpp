@@ -150,6 +150,7 @@ void CanvasPlayer::position()
         if(card->isVisible() || !Settings::instance()->rearrangeCards())
         {
             if( x != card->x() || y != card->y() )
+            {
                 if(num==NUMCARDS)
                     card->move( x, y );
                 else
@@ -157,6 +158,7 @@ void CanvasPlayer::position()
                     card->setDestination( x, y );
                     card->animatedMove();
                 }
+            }
             if(m_position==0)
             {
                 if(availw>num*cardw+(num-1))
@@ -165,10 +167,12 @@ void CanvasPlayer::position()
                     x += (availw-cardw)/(num-1);
             }
             else
+            {
                 if(m_position==2)
                     x += (cardw*cardoverlap);
                 else
                     y += (cardh*cardoverlap);
+            }
         }
     }
 
