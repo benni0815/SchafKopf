@@ -143,33 +143,35 @@ void CanvasPlayer::position()
             break;
     }
         
-    for( unsigned int z = 0; z < NUMCARDS; z++ ) {
+    for( unsigned int z = 0; z < NUMCARDS; z++ )
+    {
         CanvasCard* card = m_items[z];
         // only move if necessary!
         if(card->isVisible() || !Settings::instance()->rearrangeCards())
-	{
-	if( x != card->x() || y != card->y() )
-	if(num==NUMCARDS)
-            card->move( x, y );
-	else
-	{
-	    card->setDestination( x, y );
-	    card->animatedMove();
-	} 
-        if(m_position==0)
-	{
-	    if(availw>num*cardw+(num-1))
-            	x += cardw+1;
-	    else
-	    	x += (availw-cardw)/(num-1);
-	}
-        else if(m_position==2)
-            x += (cardw*cardoverlap);
-        else
-            y += (cardh*cardoverlap);
-	}
+        {
+            if( x != card->x() || y != card->y() )
+                if(num==NUMCARDS)
+                    card->move( x, y );
+                else
+                {
+                    card->setDestination( x, y );
+                    card->animatedMove();
+                }
+            if(m_position==0)
+            {
+                if(availw>num*cardw+(num-1))
+                    x += cardw+1;
+                else
+                    x += (availw-cardw)/(num-1);
+            }
+            else
+                if(m_position==2)
+                    x += (cardw*cardoverlap);
+                else
+                    y += (cardh*cardoverlap);
+        }
     }
-        
+
     // swap them back
     if(m_position==1||m_position==3)
         qSwap( cardw, cardh );
