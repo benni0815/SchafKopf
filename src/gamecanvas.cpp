@@ -363,7 +363,7 @@ void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
     if( e->button() == Qt::LeftButton )
     {
         Q3CanvasItemList list = canvas()->allItems();
-        for( unsigned int i = 0; i < list.count(); i++ )
+        for( int i = 0; i < list.count(); i++ )
             if( list[i]->boundingRect().contains( e->pos() ) && list[i]->isVisible() )
             {
                 if(first)
@@ -392,12 +392,11 @@ void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
 
 void GameCanvas::keyPressEvent(QKeyEvent* e)
 {
-    unsigned int i = 0;
     int z = 0;
 
     if( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
     {
-        for( i=0;i<m_focus_list.count();i++ )
+        for( int i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isActive() )
             {
                 if( m_focus_list[i]->rtti() == Q3CanvasItem::Rtti_Text )                
@@ -408,7 +407,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
     }
     else if( e->key() == Qt::Key_Right )
     {
-        for( i=0;i<m_focus_list.count();i++ )
+        for( int i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isActive() )
             {
                 for( z=i+1;z<m_focus_list.count();z++ )
@@ -426,7 +425,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
     }
     else if( e->key() == Qt::Key_Left )
     {
-        for( i=0;i<m_focus_list.count();i++ )
+        for( int i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isActive() )
             {
                 for( z=i-1;z>=0;z-- )
