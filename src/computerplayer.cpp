@@ -127,7 +127,7 @@ Card *ComputerPlayer::play()
 {
     CardList* allowed=NULL;
     Card* ToPlay;
-    int i;
+    uint i;
 
     if( m_game->currStich()->isEmpty() )
     {
@@ -227,7 +227,7 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
     if( !lst.isEmpty() )
     {
         int best = 0;
-        for( unsigned int i=0;i<lst.count();i++)
+        for( int i=0; i<lst.count(); i++ )
             if( lst[i].weight > lst[best].weight || (lst[i].trumpf > lst[best].trumpf && lst[i].fehlfarbe < lst[i].fehlfarbe) )
             {
                 best = i;
@@ -297,10 +297,9 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
     {
         CardList* stich = m_game->currStich();
         bool gestochen = false;
-        int i;
-        
+
         // sicher stellen das noch niemand gestochen hat
-        for( i=0;i<stich->count();i++)
+        for( uint i=0; i<stich->count(); i++ )
             if( m_game->gameInfo()->istTrumpf( stich->at(i) ) )
             {
                 gestochen = true;
@@ -433,9 +432,7 @@ bool ComputerPlayer::ownStich()
 
 bool ComputerPlayer::istTrumpfFrei(int playerId)
 {
-    int i;
-
-    for(i=0;i<m_angespielt->count();i++)
+    for( uint i=0; i<m_angespielt->count(); i++ )
     {
         if(m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && !m_game->gameInfo()->istTrumpf(m_playedCards[playerId]->at(i)))
             return true;
@@ -444,9 +441,7 @@ bool ComputerPlayer::istTrumpfFrei(int playerId)
 }
 bool ComputerPlayer::istFarbFrei(int playerId, int c)
 {
-    int i;
-
-    for(i=0;i<m_angespielt->count();i++)
+    for( uint i=0; i<m_angespielt->count(); i++ )
     {
         if(!m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && m_angespielt->at(i)->color()==c && !m_playedCards[playerId]->at(i)->color()==c)
             return true;
@@ -468,7 +463,6 @@ Card *ComputerPlayer::highestTrumpfInGame()
 {
     CardList *trumpfs=new CardList();
     Card *c;
-    int i;
 
     for(c=m_game->allCards()->first();c;c=m_game->allCards()->next())
         if(m_game->gameInfo()->istTrumpf(c)) {
@@ -540,13 +534,12 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 int ComputerPlayer::cardsStillInGame( int c )
 {
     int n = 0, n2 = 0;
-    int i;
     CardList list;
     CardList* all = m_game->allCards();
     
     list.appendList( m_game->playedCards() );
     list.appendList( m_game->currStich() );
-    for( i=0; i<list.count();i++ )
+    for( uint i=0; i<list.count();i++ )
     {
         if( m_game->gameInfo()->istTrumpf( list.at( i ) ) )
         {
@@ -560,7 +553,7 @@ int ComputerPlayer::cardsStillInGame( int c )
         }
     }
     
-    for( i=0; i<all->count();i++ )
+    for( uint i=0; i<all->count();i++ )
     {
         if( m_game->gameInfo()->istTrumpf( all->at( i ) ) )
         {
