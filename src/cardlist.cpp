@@ -172,12 +172,12 @@ void CardList::sort(eval_func eval, void *param)
 int* CardList::toIntList()
 {
     int* list = new int[count()+1];
-    int i;
-    
-    for(i=0;i<count();i++)
+    uint i;
+
+    for( i=0; i<count(); i++ )
         list[i] = at(i)->id();
     list[i] = 0;
-    
+
     return list;
 }
 
