@@ -149,8 +149,8 @@ bool Card::operator< ( Card* c )
 {
     // TODO: anyone a better idea?
     int a[] = {Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN};
-    int i = 0;
-    int pos = 0;
+    uint i = 0;
+    uint pos = 0;
     for( ;i<(sizeof(a)/sizeof(int));i++)
         if( a[i] == this->card() )
         {
