@@ -30,9 +30,7 @@
 #include <qfont.h>
 #include <qtimer.h>
 #include <q3signal.h>
-#include <kpassivepopup.h>
 #include <kapplication.h>
-#include <qlabel.h>
 #include <qwidget.h>
 
 CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )
@@ -44,6 +42,10 @@ CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )
     // TODO: get a correct id! especially important for networking!
     m_id = i;
     pop = new KPassivePopup( KApplication::kApplication()->mainWidget() );
+    pop_text = new QLabel( "" );
+    pop->setView( pop_text );
+    pop->setTimeout( 1000 );
+
 #ifndef SIMULATION_MODE
     // TODO: This should be passed as flag depending on Player::isHuman();
     m_is_human = (m_id == 0);
@@ -62,7 +64,7 @@ CanvasPlayer::~CanvasPlayer()
     delete pop;
     for(i=0;i<NUMCARDS;i++)
         delete m_items[i];
-    
+
     delete m_cards;
     delete m_name;
 }
@@ -75,12 +77,12 @@ void CanvasPlayer::create()
 
     m_cards = new CardList;
     m_cards->setAutoDelete( true );
-    
+
     m_name = new Q3CanvasText( m_canvas );
     m_name->setColor( Qt::white );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
-    
+
     m_is_last = false;
     m_has_doubled = false;
     m_player_name = QString::null;
@@ -97,52 +99,52 @@ void CanvasPlayer::position()
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
     float cardoverlap = 1./8.; //Ueberlapp der Karten im Verhaeltnis zur Kartenbreite
-    
+
     for( unsigned int z = 0; z < NUMCARDS; z++ )
     {
         CanvasCard* card = m_items[z];
         if(card->isVisible())
             num++;
     }
-    
+
     if(!Settings::instance()->rearrangeCards())
-    	num=NUMCARDS;
-    
+        num=NUMCARDS;
+
     if(m_position==1||m_position==3)
         qSwap( cardw, cardh );
-        
+
     switch( m_position ) 
     {
         case 0:
             if(availw>num*cardw+(num-1))
-	    	x=(w-cardw*num)/2-(num-1)/2-offsetl;
-	    else
-	    	x=DIST+offsetl;
-            y=h-cardh-DIST; 
-        
+                x=(w-cardw*num)/2-(num-1)/2-offsetl;
+            else
+                x=DIST+offsetl;
+            y=h-cardh-DIST;
+
             m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
             break;
         case 1:
             x=DIST; 
             y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
-        
+
             m_name->move(x,y-m_name->boundingRect().height());
             break;
         case 2:
             x=( w-( (cardw*cardoverlap)*(num-1)+cardw ) )/2; //berechnet die Position der linken Seite des Kartenstapels
             y=DIST;
-        
+
             m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
             break;
         case 3:
         default:
             x=w-cardw-DIST;
             y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
-        
+
             m_name->move(x, y-m_name->boundingRect().height());
             break;
     }
-        
+
     for( unsigned int z = 0; z < NUMCARDS; z++ )
     {
         CanvasCard* card = m_items[z];
@@ -193,7 +195,7 @@ void CanvasPlayer::init()
             c->setCard( m_cards->at( z ) );
             c->setZ( double(-1 - z) );
             c->show();
-            
+
             if(m_position==1)
                 c->setRotation(270);
             else if(m_position==3)
@@ -223,7 +225,7 @@ void CanvasPlayer::init()
     {
         for( unsigned int z = 0;z<NUMCARDS;z++)
             m_items[z]->hide();
-            
+
         m_name->hide();
     }
 }
@@ -232,7 +234,7 @@ CanvasCard* CanvasPlayer::canvasCard( int index )
 {
     if( index < 0 || index >= NUMCARDS )
         return NULL;
-        
+
     CanvasCard* card = m_items[index];
     if( card->isVisible() )
         return card;
@@ -274,32 +276,29 @@ void CanvasPlayer::setCards( CardList* cards )
 
 void CanvasPlayer::say( const QString & message, unsigned int )
 {
+    pop_text->setText( message );
     QPoint p;
-    
-    QLabel *Text = new QLabel( message, pop );
-    pop->setView( Text );
-    pop->setTimeout( 0 );
-    pop->show();
     switch(m_position)
     {
     case 1:
-		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
-    		break;
+        p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
+        break;
     case 2:
-    		p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
-    		break;
+        pop->show(); // this sucks, but we don't get the correct width of the pop-up if it is not shown
+        p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
+        break;
     case 3:
     default:
-		p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
-    		break;
+        p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
+        break;
     }
-    pop->setGeometry ( QRect ( p, QPoint( 0,0 ) ) );
+    pop->show( p );
 }
 
 void CanvasPlayer::hideBubble()
 {
-	if(pop)
-		pop->hide();
+    if(pop)
+        pop->hide();
 }
 
 void CanvasPlayer::setHasDoubled( bool h )

@@ -24,6 +24,7 @@
 
 #include <qstring.h>
 #include <kpassivepopup.h>
+#include <qlabel.h>
 
 class Card;
 class CardList;
@@ -74,6 +75,7 @@ class CanvasPlayer{
         Q3CanvasView* m_view;
         Q3CanvasText* m_name;
         KPassivePopup* pop;
+        QLabel *pop_text;
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
 };
