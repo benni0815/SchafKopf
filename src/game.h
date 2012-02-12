@@ -44,31 +44,31 @@ class Game : public QThread
         inline CardList *allCards() { return &m_allcards; }
         inline CardList *playedCards() { return &m_playedcards; }
         GameInfo *gameInfo();
-        
+
         Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 
-        /** @returns the player who is the next to play 
+        /** @returns the player who is the next to play
          *  a card in this turn or NULL if there is no player left.
-         * 
+         *
          *  This should only be called from Player::play()
          */
         inline Player* nextPlayer() const { return m_nextPlayer; };
 
-		bool isTerminated() const { return terminated; }
-		int highestCard( CardList* list = 0 );
-		bool isHigher( Card* card, Card* high );
+        bool isTerminated() const { return terminated; }
+        int highestCard( CardList* list = 0 );
+        bool isHigher( Card* card, Card* high );
 
         /** returns how many players have doubled
           */
         int timesDoubled();
         int timesThrownTogether();
-        
+
         /** post a event to the parent object
           */
-        void* postEvent( EAction action, unsigned int playerid = 0, int* cardids = NULL, 
+        void* postEvent( EAction action, unsigned int playerid = 0, int* cardids = NULL,
                         QString data = QString::null, bool wait = false, QStringList* names = NULL );
-        
+
         void endGame(void);
 
     private:
@@ -78,35 +78,35 @@ class Game : public QThread
           */
         void resetGameResults();
 
-        /** Called on initialization and when the user changed the names 
+        /** Called on initialization and when the user changed the names
           * of the players to represent the changes in the UI
           */
         void updatePlayerNames();
 
     private:
-		/** give cards to the player and begin a new gameinfo
-		 */
-		void startGame();
+        /** give cards to the player and begin a new gameinfo
+         */
+        void startGame();
         /** Display the results of the game (winner/loser)
           * to the user. Called after each game.
           */
         void gameResults();
-		
-        /** find a player who wants to playerPlayedCard 
+
+        /** find a player who wants to playerPlayedCard
           * and setup m_gameinfo according to this
           * returns true on succes
           * and false when no one wants to playerPlayedCard
           * and a new game should be started
           */
        bool setupGameInfo(Player *players[]);
-       
+
        /** internal helper function for setupGameInfo().
          * handles all cases when no player wants to play.
          * It forces players in certain cases to play according
          * to the users settings.
          */
        bool setupGameInfoForced(Player *players[]);
-     
+
     protected:
         /** inherited from QThread, calls gameLoop();
           */
@@ -114,7 +114,7 @@ class Game : public QThread
 
     private:
         static unsigned int def_id;
-        
+
         sem_t* m_sem;
         bool terminated;
 
@@ -127,7 +127,7 @@ class Game : public QThread
         GameInfo m_gameinfo;
         int m_laufende;
         int m_timesThrownTogether;
-        
+
         QObject* m_parent;
 };
 

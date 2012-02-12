@@ -17,7 +17,7 @@ Player::Player(unsigned int id, Game* game)
     m_points = 0.0;
     m_id=id;
     m_cards = NULL;
-    
+
     m_has_doubled = false;
     m_geklopft = false;
     m_last = false;
@@ -47,16 +47,16 @@ CardList *Player::cards() const
 void Player::setCards( CardList *cards )
 {
     unsigned int i = 0;
-    
+
     delete m_cards;
-    
+
     m_geklopft = false;
-    
+
     m_cards=cards;
     // tell the card WHO owns them and WHOM they should serve! ;-)
     for(i=0;i<m_cards->count();i++)
         m_cards->at(i)->setOwner( this );
-    
+
     m_game->postEvent( PlayerGotCards, id(), m_cards->toIntList() );
 }
 
@@ -92,86 +92,86 @@ void Player::addStich( CardList stich )
 
 void Player::removeTrumpf(CardList* liste)
 {
-	Card *card;
-	CardList* entfernen=new CardList;
-	for ( card = liste->first(); card; card = liste->next() )
-    	{
-			if(m_game->gameInfo()->istTrumpf(card))	entfernen->append(card);
-	}
-	liste->RemoveCards(entfernen);
-	delete entfernen;
+    Card *card;
+    CardList* entfernen=new CardList;
+    for ( card = liste->first(); card; card = liste->next() )
+    {
+        if(m_game->gameInfo()->istTrumpf(card)) entfernen->append(card);
+    }
+    liste->RemoveCards(entfernen);
+    delete entfernen;
 }
 
 bool Player::hasTrumpf(CardList* liste)
 {
-	Card* card;
-	for ( card = liste->first(); card; card = liste->next() )
-    	{
-			if(m_game->gameInfo()->istTrumpf(card))	return true;
-	}
-	return false;
+    Card* card;
+    for ( card = liste->first(); card; card = liste->next() )
+    {
+        if(m_game->gameInfo()->istTrumpf(card)) return true;
+    }
+    return false;
 }
 
 bool Player::istTrumpf(Card* card)
 {
-	return m_game->gameInfo()->istTrumpf(card);
+    return m_game->gameInfo()->istTrumpf(card);
 }
 
 CardList* Player::PlayerCards()
 {
-	return  m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
+    return  m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
 }
 
 Card* Player::firstPlayedCard()
 {
-	if(m_game->currStich()->isEmpty()==true) 
-		return NULL;
-	else 
-		return (const_cast<CardList *>(m_game->currStich())->first());
+    if(m_game->currStich()->isEmpty()==true)
+        return NULL;
+    else
+        return (const_cast<CardList *>(m_game->currStich())->first());
 }
 
 CardList* Player::cardsOfSameType(Card* card)
 {
-	CardList* SpielerKarten=PlayerCards();
-	CardList* SpielerFarbe;
-	CardList* AntiMaske;
-	
-	if(card==NULL) 
-		return SpielerKarten; //mssen alle Karten zurckgegeben werden
-	else
-	{
-		if(istTrumpf(card)) //mssen alle trmpfe zurckgegeben werden
-		{
-			AntiMaske=PlayerCards();
-			removeTrumpf(AntiMaske);
-			SpielerKarten->RemoveCards(AntiMaske);
-			delete AntiMaske;
-			return SpielerKarten;
-		}
-		else	//muss die gleiche Farbe ohne Trmpfe zurckgegeben werden
-		{
-			removeTrumpf(SpielerKarten);
-			SpielerFarbe=SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
-			delete SpielerKarten;
-			return SpielerFarbe;
-		}
-	}
+    CardList* SpielerKarten=PlayerCards();
+    CardList* SpielerFarbe;
+    CardList* AntiMaske;
+
+    if(card==NULL)
+        return SpielerKarten; //mssen alle Karten zurckgegeben werden
+    else
+    {
+        if(istTrumpf(card)) //mssen alle trmpfe zurckgegeben werden
+        {
+            AntiMaske=PlayerCards();
+            removeTrumpf(AntiMaske);
+            SpielerKarten->RemoveCards(AntiMaske);
+            delete AntiMaske;
+            return SpielerKarten;
+        }
+        else //muss die gleiche Farbe ohne Trmpfe zurckgegeben werden
+        {
+            removeTrumpf(SpielerKarten);
+            SpielerFarbe=SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
+            delete SpielerKarten;
+            return SpielerFarbe;
+        }
+    }
 }
 
 CardList* Player::allowedCards()
 {
-	CardList* allowed=cardsOfSameType(firstPlayedCard());
-	if(allowed->isEmpty())
-	{
-		delete allowed;
-		allowed=PlayerCards();
-	}
+    CardList* allowed=cardsOfSameType(firstPlayedCard());
+    if(allowed->isEmpty())
+    {
+        delete allowed;
+        allowed=PlayerCards();
+    }
 
-	if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL) 
-	{
-		CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
-		CardList* Spielfarbe=	allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
-		// entferne alle trumpfe aus Spielfarbe
+    if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL)
+    {
+        CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
+        CardList* Spielfarbe= allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
+        // entferne alle trumpfe aus Spielfarbe
         for(unsigned int i=0;i<Spielfarbe->count();i++)
         {
             if( istTrumpf( Spielfarbe->at(i) ) )
@@ -180,14 +180,14 @@ CardList* Player::allowedCards()
                 qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
             }
         }
-                
-        if(!Sau->isEmpty())	//muss nur was machen wenn ich die Sau habe
-		{
-			if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
-			{
-				delete allowed;
-				allowed=Sau;
-			}
+
+        if(!Sau->isEmpty()) //muss nur was machen wenn ich die Sau habe
+        {
+            if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
+            {
+                delete allowed;
+                allowed=Sau;
+            }
             else if(m_game->currStich()->count()==0)
             {
                 if(Spielfarbe->count()<4)
@@ -202,10 +202,9 @@ CardList* Player::allowedCards()
                 allowed->RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
                 delete Sau;
             }
-		}
-		//delete Sau;
-		delete Spielfarbe;
-	}
-	return allowed;
+        }
+        //delete Sau;
+        delete Spielfarbe;
+    }
+    return allowed;
 }
-

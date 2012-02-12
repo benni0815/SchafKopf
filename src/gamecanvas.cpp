@@ -119,14 +119,14 @@ GameCanvas::~GameCanvas()
 void GameCanvas::cardForbidden( int cardid )
 {
     for(unsigned int z=0;z<PLAYERS;z++)
-	{
+    {
         CanvasCard* c = m_players[z]->hasCard( cardid );
         if( c )            
         {
             c->forbidden();
             break;
         }
-    }      
+    }
 }
 
 void GameCanvas::positionObjects(bool redraw)
@@ -170,33 +170,33 @@ QPoint GameCanvas::getStichPosition( int player )
     
     switch( player ) 
     {
-        case 0:
-            if(stichcanvash>(2*cardh-20))
-	    	p = QPoint(cx-(cardw/2)-5, cy-10 );
-	    else
-	    	p = QPoint(cx-(cardw/2)-5, cy+(stichcanvash/2)-cardh);
-	    break;
-        case 1:
-	    if(stichcanvasw>(2*cardh-20))
-            	p = QPoint(cx-cardh+10, cy-(cardw/2)-5);
-	    else
-	    	p = QPoint(cx-(stichcanvasw/2), cy-(cardw/2)-5);
-	    break;
-        case 2:
-            if(stichcanvash>(2*cardh-20))
-            	p = QPoint(cx-(cardw/2)+5, cy-cardh+10 );
-	    else
-	    	p = QPoint(cx-(cardw/2)+5, cy-(stichcanvash/2));
-	    break;
-        case 3:
-        default:
-	    if(stichcanvasw>(2*cardh-20))
-            	p = QPoint(cx-10, cy-(cardw/2)+5);
-	    else
-	    	p = QPoint(cx+(stichcanvasw/2)-cardh, cy-(cardw/2)+5);
-	    break;
+    case 0:
+        if(stichcanvash>(2*cardh-20))
+            p = QPoint(cx-(cardw/2)-5, cy-10 );
+        else
+            p = QPoint(cx-(cardw/2)-5, cy+(stichcanvash/2)-cardh);
+        break;
+    case 1:
+        if(stichcanvasw>(2*cardh-20))
+            p = QPoint(cx-cardh+10, cy-(cardw/2)-5);
+        else
+            p = QPoint(cx-(stichcanvasw/2), cy-(cardw/2)-5);
+        break;
+    case 2:
+        if(stichcanvash>(2*cardh-20))
+            p = QPoint(cx-(cardw/2)+5, cy-cardh+10 );
+        else
+            p = QPoint(cx-(cardw/2)+5, cy-(stichcanvash/2));
+        break;
+    case 3:
+    default:
+        if(stichcanvasw>(2*cardh-20))
+            p = QPoint(cx-10, cy-(cardw/2)+5);
+        else
+            p = QPoint(cx+(stichcanvasw/2)-cardh, cy-(cardw/2)+5);
+        break;
     };
-        
+
     return p;
 }
 
@@ -205,15 +205,15 @@ int GameCanvas::getStichRotation( int player )
     int r;
     switch( player ) 
     {
-	case 0:
-		r=0; break;
-	case 1:
-		r=90; break;
-	case 2:
-		r=180; break;
-	case 3:
-	default:
-		r=270; break;
+    case 0:
+        r=0; break;
+    case 1:
+        r=90; break;
+    case 2:
+        r=180; break;
+    case 3:
+    default:
+        r=270; break;
     };
     return r;
 }
@@ -223,7 +223,7 @@ int GameCanvas::getCard()
     CanvasPlayer* human = humanPlayer();
     CanvasCard* c = NULL;
     unsigned int i;
-    
+
     connect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
     m_result = -1;
 
@@ -247,18 +247,18 @@ void GameCanvas::cardClicked( Q3CanvasItem* item )
 {
     if( item )
         item->setActive( false );
-        
+
     if( item->rtti() == CANVASCARD ) 
     {
         CanvasCard* card = static_cast<CanvasCard*>(item);
-        
+
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
             if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
                 m_result = card->card()->id();
                 disconnect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
-                
+
                 // be sure that focusOutEvent does not use its parameter
                 focusOutEvent( NULL );
                 m_loop.exit();
@@ -346,8 +346,8 @@ void GameCanvas::updateBackground()
 
 void GameCanvas::redrawPlayers()
 {
-	unsigned int i = 0;
-	
+    unsigned int i = 0;
+
     for(i=0;i<PLAYERS;i++)
     {
         m_players[i]->init();
@@ -394,7 +394,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
 {
     unsigned int i = 0;
     int z = 0;
-    
+
     if( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
     {
         for( i=0;i<m_focus_list.count();i++ )
@@ -514,7 +514,7 @@ void GameCanvas::yesNoClicked( Q3CanvasItem* item )
             m_loop.exit();
             for(int i=0;i<PLAYERS;i++)
             {
-            	m_players[i]->hideBubble();
+                m_players[i]->hideBubble();
             }
         }
     }

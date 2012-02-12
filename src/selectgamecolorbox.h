@@ -44,43 +44,43 @@ struct t_AllowedGames;
 */
 class SelectGameColorBox : public Q3HBox
 {
-	Q_OBJECT
+    Q_OBJECT
+
 public:
-	SelectGameColorBox(QWidget *parent = 0, const char *name = 0);
-	void cleanGameInfo();
-	
-	~SelectGameColorBox();
-	void setGameInfo(GameInfo* info);
-	GameInfo* getGameInfo();
-	bool getFinish();
-    
+    SelectGameColorBox(QWidget *parent = 0, const char *name = 0);
+    void cleanGameInfo();
+
+    ~SelectGameColorBox();
+    void setGameInfo(GameInfo* info);
+    GameInfo* getGameInfo();
+    bool getFinish();
+
 private:
     t_AllowedGames* m_allowed;
-    
+
 protected:
-	GameInfo* m_gameinfo;
-	Q3ButtonGroup* color_group;
-	QRadioButton* checkFarblos;
-        QRadioButton* checkEichel;
-        QRadioButton* checkGras;
-        QRadioButton* checkHerz;
-        QRadioButton* checkSchellen;
-	Q3VBox* page;
-	Q3VBox* row1;
-	Card* m_Herz;
-	Card* m_Schelle;
-	Card* m_Eichel;
-	Card* m_Gras;
-	SelectGameWizard* parent;
-	void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
-	void checkFirstVisible();
-	bool m_finish;
-	void statusChanged();
-	int getColor();
+    GameInfo* m_gameinfo;
+    Q3ButtonGroup* color_group;
+    QRadioButton* checkFarblos;
+    QRadioButton* checkEichel;
+    QRadioButton* checkGras;
+    QRadioButton* checkHerz;
+    QRadioButton* checkSchellen;
+    Q3VBox* page;
+    Q3VBox* row1;
+    Card* m_Herz;
+    Card* m_Schelle;
+    Card* m_Eichel;
+    Card* m_Gras;
+    SelectGameWizard* parent;
+    void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
+    void checkFirstVisible();
+    bool m_finish;
+    void statusChanged();
+    int getColor();
+
 protected slots:
-	void colorChanged();
-
-
+    void colorChanged();
 };
 
 #endif

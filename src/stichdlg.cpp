@@ -44,7 +44,7 @@ StichDlg::StichDlg(QWidget *parent )
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         cards[i] = new QLabel( plainPage );
         layout->addWidget( cards[i], 1, i );
-        
+
         players[i] = new QLabel( plainPage );
         layout->addWidget( players[i], 2, i );
     }
@@ -66,16 +66,16 @@ void StichDlg::changed( const QString & name, int* list, QStringList* playerlist
         trick->setText( i18n("Trick was made by: <b>") + name + "</b>" );
     else
         trick->setText( i18n("No trick was made.") );
-        
+
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
         if( stich.count() > i ) 
         {
-	    Card* c = stich.at( stich.count() - PLAYERS + i );
-	    if( c )
-		cards[i]->setPixmap( *(c->pixmap()) );
+        Card* c = stich.at( stich.count() - PLAYERS + i );
+        if( c )
+        cards[i]->setPixmap( *(c->pixmap()) );
             players[i]->setText( "<qt><b>"+(*playerlist)[i]+"</b></qt>" );
-        }   
+        }
         else
         {
             cards[i]->setPixmap( *Card::backgroundPixmap() );

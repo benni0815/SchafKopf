@@ -51,38 +51,37 @@
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):Q3HBox(parent, name, 0)
 {
     m_allowed = Settings::instance()->allowedGames();
-    
-	setSpacing(8);
-	page = new Q3HBox( this );
-	row1 = new Q3VBox( page );
 
-	preview = new QLabel( row1);
-	infoLabel = new QLabel( row1);
-	//infoLabel=QLabel(row1);
-	infoLabel->setMargin( 11 );
-	infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap);
+    setSpacing(8);
+    page = new Q3HBox( this );
+    row1 = new Q3VBox( page );
 
-
-	infoLabel->setMinimumHeight(100);
-	group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
+    preview = new QLabel( row1);
+    infoLabel = new QLabel( row1);
+    //infoLabel=QLabel(row1);
+    infoLabel->setMargin( 11 );
+    infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap);
 
 
-	checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );
-	checkSolo = new QRadioButton( i18n("&Solo"), group_TypeSelect );
-	checkGeier = new QRadioButton( i18n("&Geier"), group_TypeSelect );
-	checkWenz = new QRadioButton( i18n("&Wenz"), group_TypeSelect );
-	checkDachs = new QRadioButton( i18n("&Dachs"), group_TypeSelect );
-	connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(typeChanged()));
+    infoLabel->setMinimumHeight(100);
+    group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
 
-	checkRufspiel->setChecked(TRUE);
+
+    checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );
+    checkSolo = new QRadioButton( i18n("&Solo"), group_TypeSelect );
+    checkGeier = new QRadioButton( i18n("&Geier"), group_TypeSelect );
+    checkWenz = new QRadioButton( i18n("&Wenz"), group_TypeSelect );
+    checkDachs = new QRadioButton( i18n("&Dachs"), group_TypeSelect );
+    connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(typeChanged()));
+
+    checkRufspiel->setChecked(TRUE);
 
     checkGeier->setEnabled( m_allowed->geier );
     checkWenz->setEnabled( m_allowed->wenz );
     checkDachs->setEnabled( m_allowed->dachs );
-    
-	typeChanged();
-	infoLabel->setMaximumWidth(preview->size().width());
 
+    typeChanged();
+    infoLabel->setMaximumWidth(preview->size().width());
 }
 
 SelectGameTypeBox::~SelectGameTypeBox()
@@ -92,92 +91,92 @@ SelectGameTypeBox::~SelectGameTypeBox()
 
 void SelectGameTypeBox::typeChanged()
 {
-	GameInfo *info=gameInfo();
-	updatePreview();
-	switch(info->mode())
-	{
-			case (GameInfo::RUFSPIEL):
-						setInfoText(HELP_GAMETYPE_RUFSPIEL);
-			break;
-			case (GameInfo::WENZ):
-						setInfoText(HELP_GAMETYPE_WENZ);
-			break;
-			case (GameInfo::STICHT):
-						setInfoText(HELP_GAMETYPE_SOLO);
-			break;
-			case (GameInfo::GEIER):
-						setInfoText(HELP_GAMETYPE_GEIER);
-			break;
-			case (GameInfo::DACHS):
-						setInfoText(HELP_GAMETYPE_DACHS);
-			break;
-            // DS: Fix a compiler warning
-            default:
-            break;
-	}
-	delete info;
+    GameInfo *info=gameInfo();
+    updatePreview();
+    switch(info->mode())
+    {
+    case (GameInfo::RUFSPIEL):
+        setInfoText(HELP_GAMETYPE_RUFSPIEL);
+    break;
+    case (GameInfo::WENZ):
+        setInfoText(HELP_GAMETYPE_WENZ);
+    break;
+    case (GameInfo::STICHT):
+        setInfoText(HELP_GAMETYPE_SOLO);
+    break;
+    case (GameInfo::GEIER):
+        setInfoText(HELP_GAMETYPE_GEIER);
+    break;
+    case (GameInfo::DACHS):
+        setInfoText(HELP_GAMETYPE_DACHS);
+    break;
+    // DS: Fix a compiler warning
+    default:
+    break;
+    }
+    delete info;
 }
 
 void SelectGameTypeBox::setInfoText(QString Text)
 {
-	infoLabel->setText(Text);
+    infoLabel->setText(Text);
 }
 
 void SelectGameTypeBox::updatePreview()
 {
-	int i = 0;
-	int x=0, y = 0;
-	CardList list;
-	CardList trumpf;
-	GameInfo* info = gameInfo();
+    int i = 0;
+    int x=0, y = 0;
+    CardList list;
+    CardList trumpf;
+    GameInfo* info = gameInfo();
 
-	list.init();
-	for(i=0;i<(int)list.count();i++)
-		if( info->istTrumpf( list.at(i) ) )
-			trumpf.append( list.at(i) );
-	delete info;
-	trumpf.sort((eval_func)info->evalCard, (void *)info);
+    list.init();
+    for(i=0;i<(int)list.count();i++)
+        if( info->istTrumpf( list.at(i) ) )
+            trumpf.append( list.at(i) );
+    delete info;
+    trumpf.sort((eval_func)info->evalCard, (void *)info);
 
-	Card c( Card::SAU, Card::EICHEL );
-	QPixmap pix(c.pixmap()->width()+(c.pixmap()->width()/2)*7,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
-	x=c.pixmap()->width()/2*(trumpf.count()-1);
-	pix.fill( Qt::darkGreen );
-	QPainter p( &pix );
-	for(i=0;i<=(int)trumpf.count()-1;i++)
-	{
-		QPixmap* pixmap = trumpf.at(i)->pixmap();
-		p.drawPixmap( x, y, *pixmap );
-		x -= pixmap->width()/2;
+    Card c( Card::SAU, Card::EICHEL );
+    QPixmap pix(c.pixmap()->width()+(c.pixmap()->width()/2)*7,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
+    x=c.pixmap()->width()/2*(trumpf.count()-1);
+    pix.fill( Qt::darkGreen );
+    QPainter p( &pix );
+    for(i=0;i<=(int)trumpf.count()-1;i++)
+    {
+        QPixmap* pixmap = trumpf.at(i)->pixmap();
+        p.drawPixmap( x, y, *pixmap );
+        x -= pixmap->width()/2;
 
-		int pos = trumpf.count() + i;
-		if(!(pos+1)%4)
-		{
-			x = 0;
-			y += pixmap->height();
-		}
-	}
+        int pos = trumpf.count() + i;
+        if(!(pos+1)%4)
+        {
+            x = 0;
+            y += pixmap->height();
+        }
+    }
 
-	p.end();
-	pix.resize( pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
-	preview->setPixmap( pix );
-	preview->setMinimumWidth(pix.width()+10);
+    p.end();
+    pix.resize( pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
+    preview->setPixmap( pix );
+    preview->setMinimumWidth(pix.width()+10);
 }
 
 
 GameInfo* SelectGameTypeBox::gameInfo() const
 {
-	GameInfo* info = new GameInfo();
+    GameInfo* info = new GameInfo();
 
-	if( checkRufspiel->isChecked() )
-		info->setMode(GameInfo::RUFSPIEL);
-	else if( checkSolo->isChecked() )
-		info->setMode(GameInfo::STICHT);
-	else if( checkGeier->isChecked() )
-		info->setMode(GameInfo::GEIER);
-	else if( checkWenz->isChecked() )
-		info->setMode(GameInfo::WENZ);
-	else if( checkDachs->isChecked() )
-		info->setMode(GameInfo::DACHS);
+    if( checkRufspiel->isChecked() )
+        info->setMode(GameInfo::RUFSPIEL);
+    else if( checkSolo->isChecked() )
+        info->setMode(GameInfo::STICHT);
+    else if( checkGeier->isChecked() )
+        info->setMode(GameInfo::GEIER);
+    else if( checkWenz->isChecked() )
+        info->setMode(GameInfo::WENZ);
+    else if( checkDachs->isChecked() )
+        info->setMode(GameInfo::DACHS);
 
-	return info;
+    return info;
 }

@@ -31,33 +31,33 @@ class QPainter;
 
 class CanvasCard : public QObject, public Q3CanvasRectangle
 {
-	Q_OBJECT
+    Q_OBJECT
     public:
         CanvasCard(Q3Canvas*c);
         ~CanvasCard();
 
         void setCard(Card* card);
         Card* card() const { return m_card; }
-        
+
         void setFrontVisible( bool b );
         void setRotation( int d );
-        
+
         void animatedMove();
         void setDestination( int x, int y );
 
-        
+
         int rtti() const { return CANVASCARD; }
-        
+
         /** mark this card as forbidden to play
           * in the UI
           */
         void forbidden();
-    
+
         void setActive( bool b );
-        
+
     private:
         void draw( QPainter & p );
-        
+
         QPoint m_point;
         
         bool m_visible;
@@ -70,9 +70,9 @@ class CanvasCard : public QObject, public Q3CanvasRectangle
 
         Card* m_card;
 
-	private slots:
-		void disableForbidden();
-		void moveLoop();
+    private slots:
+        void disableForbidden();
+        void moveLoop();
         void cardDeckChanged();
         //void loadAlpha();
 };

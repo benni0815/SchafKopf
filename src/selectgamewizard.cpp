@@ -39,19 +39,19 @@ SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, 
         : K3Wizard( parent, name, TRUE )
 {
     m_force = force;
-	m_list=list;
-	m_closing=false;
-	box1 = new SelectGameTypeBox(this, 0);
-	box2 = new SelectGameColorBox(this, 0);
-	addPage( box1, i18n("Step 1/2: Select Game") );
-	addPage( box2, i18n("Step 2/2: Select Color") );
+    m_list=list;
+    m_closing=false;
+    box1 = new SelectGameTypeBox(this, 0);
+    box2 = new SelectGameColorBox(this, 0);
+    addPage( box1, i18n("Step 1/2: Select Game") );
+    addPage( box2, i18n("Step 2/2: Select Color") );
 
-    
-    cancelButton()->setEnabled( !m_force );    
-	setNextEnabled( box1, TRUE );
-	setFinishEnabled(box2, TRUE);
-	setHelpEnabled( box1, FALSE );
-	setHelpEnabled(box2, FALSE);
+
+    cancelButton()->setEnabled( !m_force );
+    setNextEnabled( box1, TRUE );
+    setFinishEnabled(box2, TRUE);
+    setHelpEnabled( box1, FALSE );
+    setHelpEnabled(box2, FALSE);
 }
 
 CardList* SelectGameWizard::getCardList()
@@ -62,31 +62,29 @@ CardList* SelectGameWizard::getCardList()
 GameInfo* SelectGameWizard::gameInfo()
 {
     if(box2)
-	   return(box2->getGameInfo());
+       return(box2->getGameInfo());
     return NULL;
 }
 
 void SelectGameWizard::showPage( QWidget* page )
 {
-
-	if(page==box2&&!m_closing)
-	{
-		box2->cleanGameInfo();
-		box2->setGameInfo(box1->gameInfo());
-		setFinishEnabled(box2, box2->getFinish());
-	}
+    if(page==box2&&!m_closing)
+    {
+        box2->cleanGameInfo();
+        box2->setGameInfo(box1->gameInfo());
+        setFinishEnabled(box2, box2->getFinish());
+    }
     K3Wizard::showPage(page);
-	
 }
 
 void SelectGameWizard::canFinish(bool fin)
 {
-	if(box2) setFinishEnabled(box2,fin);
+    if(box2) setFinishEnabled(box2,fin);
 }
 
 SelectGameWizard::~SelectGameWizard()
 {
-	m_closing=true;
+    m_closing=true;
 }
 
 void SelectGameWizard::reject()

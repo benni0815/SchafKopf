@@ -40,32 +40,33 @@ struct t_AllowedGames;
 */
 class SelectGameTypeBox : public Q3HBox
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	SelectGameTypeBox(QWidget *parent = 0, const char *name = 0);
+    SelectGameTypeBox(QWidget *parent = 0, const char *name = 0);
 
-	~SelectGameTypeBox();
-	GameInfo* gameInfo() const;
-    
+    ~SelectGameTypeBox();
+    GameInfo* gameInfo() const;
+
 private:
     t_AllowedGames* m_allowed;
-    
+
 protected:
-	QRadioButton* checkRufspiel;
-	QRadioButton* checkSolo;
-	QRadioButton* checkGeier;
-	QRadioButton* checkWenz;
-	QRadioButton* checkDachs;
-	Q3HBox *page;
-	Q3VBox *row1;
-	Q3ButtonGroup* group_TypeSelect;
-	QLabel* preview;
-	QLabel* infoLabel;
-	
-	void setInfoText(QString Text);
+    QRadioButton* checkRufspiel;
+    QRadioButton* checkSolo;
+    QRadioButton* checkGeier;
+    QRadioButton* checkWenz;
+    QRadioButton* checkDachs;
+    Q3HBox *page;
+    Q3VBox *row1;
+    Q3ButtonGroup* group_TypeSelect;
+    QLabel* preview;
+    QLabel* infoLabel;
+
+    void setInfoText(QString Text);
+
 protected slots:
-	void updatePreview();
-	void typeChanged();
+    void updatePreview();
+    void typeChanged();
 
 };
 

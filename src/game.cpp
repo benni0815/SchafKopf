@@ -78,7 +78,7 @@ Game::~Game()
     for(i=0;i<PLAYERS;i++)
     {
         delete m_players[i];
-	m_players[i]=NULL;
+        m_players[i]=NULL;
     }
 }
 
@@ -122,7 +122,7 @@ void Game::gameLoop()
     terminated = false;
 
     resetGameResults();
-    
+
     while(!terminated)
     {
         startGame();
@@ -261,7 +261,7 @@ void Game::endGame(void)
 }
 
 Player* Game::findId( unsigned int id ) const
-{     
+{
     for( unsigned int i = 0; i < PLAYERS; i++)
         if( id == m_players[i]->id() )
             return m_players[i];
@@ -281,7 +281,7 @@ int Game::highestCard( CardList* list )
     Card* high = list->first();
     Card* card = list->first();
     int i = 0;
-	
+
     while( (card = list->next() ) )
     {
         if( isHigher( card, high ) )
@@ -302,29 +302,29 @@ bool Game::isHigher( Card* card, Card* high )
 {
     int cardVal, highVal;
     int colcnt;
-	
+
     cardVal=m_gameinfo.evalCard(card, &m_gameinfo);
     highVal=m_gameinfo.evalCard(high, &m_gameinfo);
     if(m_gameinfo.istTrumpf(card) || m_gameinfo.istTrumpf(high))
-	return highVal < cardVal;
+    return highVal < cardVal;
     else
     {
-	switch( m_gameinfo.mode() )
-	{
-	    case GameInfo::GEIER:
-	    case GameInfo::WENZ:
-		colcnt=NUMCARDS-1;
-		break;
-	    case GameInfo::RAMSCH:
-	    case GameInfo::RUFSPIEL:
-	    case GameInfo::STICHT:
-	    case GameInfo::DACHS:
-	    default:
-		colcnt=NUMCARDS-2;
-		break;
-	}
-	if((highVal-1)/colcnt==(cardVal-1)/colcnt)
-	    return highVal < cardVal;
+    switch( m_gameinfo.mode() )
+    {
+        case GameInfo::GEIER:
+        case GameInfo::WENZ:
+        colcnt=NUMCARDS-1;
+        break;
+        case GameInfo::RAMSCH:
+        case GameInfo::RUFSPIEL:
+        case GameInfo::STICHT:
+        case GameInfo::DACHS:
+        default:
+        colcnt=NUMCARDS-2;
+        break;
+    }
+    if((highVal-1)/colcnt==(cardVal-1)/colcnt)
+        return highVal < cardVal;
     }
     return false;
 }
@@ -334,17 +334,17 @@ void Game::gameResults()
     Results r;
     r.setLaufende( m_laufende );
     r.setGame( this );
-    
+
     for( unsigned int i=0;i<PLAYERS;i++)
     {
         postEvent( PlayerResults, m_players[i]->id(), 0, r.formatedPoints(m_players[i]), true );
         // emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     }
-      
+
     postEvent( InfoMessage, 0, 0, r.result(), true );
     //m_canvas->information( r->result() );
     m_timesThrownTogether = 0;
-    
+
     // the game is over, so the GameInfo structure is not
     // valid. Results in a cleared updateInfo() field in the UI
     gameInfo()->setValid( false );
@@ -442,7 +442,7 @@ bool Game::setupGameInfoForced(Player *players[])
 {
     int i;
     GameInfo* info;
-    
+
     if( Settings::instance()->doublerHasToPlay() )
     {
         // if someone has doubled he is forced to player
@@ -451,7 +451,7 @@ bool Game::setupGameInfoForced(Player *players[])
             if( players[i]->geklopft() )
             {
                 postEvent( InfoMessage, 0, 0, i18n("%1 has doubled last\nand has to play now.").arg( players[i]->name() ), true );
-    
+
                 info = players[i]->gameInfo( true );
                 info->setSpieler( players[i] );
                 m_gameinfo = *info;
@@ -459,7 +459,7 @@ bool Game::setupGameInfoForced(Player *players[])
                 return true;
             }
     }
-        
+
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
     {
         postEvent( InfoMessage, 0, 0, i18n("No one wants to play.\nCards will be thrown together."), true );
@@ -494,7 +494,7 @@ bool Game::setupGameInfoForced(Player *players[])
         m_gameinfo.setColor( Card::NOCOLOR );
         return true;
     }
-    
+
     return false;
 }
 
@@ -510,7 +510,7 @@ void Game::resetGameResults()
 int Game::timesDoubled()
 {
     int i, d = 0;
-    
+
     for( i=0;i<PLAYERS;i++)
         if( m_players[i]->geklopft() )
             d++;
@@ -530,13 +530,13 @@ void Game::updatePlayerNames()
     QStringList list = Settings::instance()->playerNames();
     m_players[0]->setName( list[0] );
     postEvent( PlayerNameChanged, m_players[0]->id(), 0, list[0] );
-    
+
     for( i=1;i<PLAYERS;i++)
     {
         m_players[i]->setName( list[i] );
         postEvent( PlayerNameChanged, m_players[i]->id(), 0, list[i] );
     }
-       
+
     postEvent( RedrawPlayers );
     //m_canvas->redrawPlayers();
 }
@@ -571,26 +571,25 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
     data->playernames = names;
     data->returncode = NULL;
     data->quitgame = false;
-        
+
     QCoreApplication::postEvent( m_parent, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT, (void*)data ) );
     if( wait )
     {
         sem_wait( m_sem );
-            
+
         if( data->quitgame )
             endGame();
 
         ret = data->returncode;
-    
+
         if( data->cardids )
             delete [] data->cardids;
-                
+
         if( data->playernames )
             delete data->playernames;
-            
+
         delete data;
     }
-    
+
     return ret;
 }
-

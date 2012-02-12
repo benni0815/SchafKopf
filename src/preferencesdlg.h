@@ -47,32 +47,32 @@ class PreferencesDlg : public KPageDialog
     public:
         PreferencesDlg(QWidget *parent = 0 );
         ~PreferencesDlg();
-       
+
     protected:
         void accept();
-    
+
     private slots:
         void enableControls();
         void disableClearButton(const QString & url);
-        
+
     private:
         void addPagePlayer();
         void addPageResults();
         void addPageRules();
         void addPageView();
         void addPageGames();
-        
+
     private:
-	Q3VBox* stackMoney;
-	Q3VBox* stackPoints;
-	Q3WidgetStack* stack;
+        Q3VBox* stackMoney;
+        Q3VBox* stackPoints;
+        Q3WidgetStack* stack;
 
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
         QRadioButton* m_radioThrowAway;
         QRadioButton* m_radioForcedGame;
         QRadioButton* m_radioRamsch;
-        
+
         QCheckBox* m_checkDoublerPlays;
         QCheckBox* m_checkDoubleNextGame;
         QCheckBox* m_checkRearrangeCards;
@@ -82,7 +82,7 @@ class PreferencesDlg : public KPageDialog
         QCheckBox* m_games_geier;
         QCheckBox* m_games_farbgeier;
         QCheckBox* m_games_dachs;
-        
+
         KLineEdit* m_p1_name;
         KLineEdit* m_p2_name;
         KLineEdit* m_p3_name;
@@ -91,14 +91,14 @@ class PreferencesDlg : public KPageDialog
         KUrlRequester* m_linePathBackground;
 
         QPushButton* m_pushURLClear;
-        
+
         KDoubleNumInput* m_money_solo;
         KDoubleNumInput* m_money_call;
         KDoubleNumInput* m_money_lauf;
         KDoubleNumInput* m_money_notrick;
         KDoubleNumInput* m_money_schneider;
         KDoubleNumInput* m_money_ramsch;
-        
+
         KIntNumInput* m_point_solo;
         KIntNumInput* m_point_call;
         KIntNumInput* m_point_lauf;

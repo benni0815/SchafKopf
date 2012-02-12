@@ -36,12 +36,12 @@ class CardList : public Q3PtrList<Card>
 {
     public:
         CardList();
-        
-        /** Creates a card list from a zero terminated list of integers 
+
+        /** Creates a card list from a zero terminated list of integers
           * as you can create it using toIntList()
           */
         CardList( int* cards );
-        
+
         /** initialize this card list with a default card
           * deck of 32 cards.
           * The CardList does now own all elements, i.e. they
@@ -49,14 +49,14 @@ class CardList : public Q3PtrList<Card>
           */
         void init();
 
-		/** generate a randomized list of 32 cards
-		*/
+        /** generate a randomized list of 32 cards
+        */
         void randomize();
 
-		/** Evaluate the all cards in this list
-		*/
+        /** Evaluate the all cards in this list
+        */
         int points();
-        
+
         /** append CardList @p list to this CardList
           */
         void appendList( CardList* list );
@@ -66,13 +66,13 @@ class CardList : public Q3PtrList<Card>
           */
         bool contains( int color, int type );
         bool contains( int cardid );
-        
-		CardList* FindCards(int color, int type);
-		void RemoveCards(CardList* itemsToRem);
-	
-		void sort(eval_func eval, void *param);
 
-        /** creates a zero terminated list of integers, every 
+        CardList* FindCards(int color, int type);
+        void RemoveCards(CardList* itemsToRem);
+
+        void sort(eval_func eval, void *param);
+
+        /** creates a zero terminated list of integers, every
           * int has the id of one card assigned.
           */
         int* toIntList();

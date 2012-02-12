@@ -34,63 +34,59 @@
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
         : K3Wizard( parent, name, TRUE )
 {
-
-	setup_page_selectgame();
-
-
-	//this->setSize(300,300,300,300);
+    setup_page_selectgame();
+    //this->setSize(300,300,300,300);
 }
 
 void newgamewizard::setup_page_selectgame()
 {
-	page_selectgame = new Q3HBox( this );
-	page_selectgame->setSpacing(8);
-	Q3VBox *page = new Q3VBox( page_selectgame );
-	Q3HBox *row1 = new Q3HBox( page );
+    page_selectgame = new Q3HBox( this );
+    page_selectgame->setSpacing(8);
+    Q3VBox *page = new Q3VBox( page_selectgame );
+    Q3HBox *row1 = new Q3HBox( page );
 
-	Q3ButtonGroup* group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, "", row1 );
-	info = new QLabel( page_selectgame);
-	info->setMargin( 11 );
-	info->setMinimumWidth( 220);
+    Q3ButtonGroup* group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, "", row1 );
+    info = new QLabel( page_selectgame);
+    info->setMargin( 11 );
+    info->setMinimumWidth( 220);
 
-	checkLocalGame = new QRadioButton( i18n("&Start local Game"), group_TypeSelect );
-	checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server"), group_TypeSelect );
-	checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client"), group_TypeSelect );
-	checkLocalGame->setChecked(TRUE);
+    checkLocalGame = new QRadioButton( i18n("&Start local Game"), group_TypeSelect );
+    checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server"), group_TypeSelect );
+    checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client"), group_TypeSelect );
+    checkLocalGame->setChecked(TRUE);
 
-	connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(dataChanged()));
+    connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(dataChanged()));
 
-	//page_selectgame->setMinimumSize(QSize(400,200)) ;
-	addPage( page_selectgame, i18n("Select Game Type") );
+    //page_selectgame->setMinimumSize(QSize(400,200)) ;
+    addPage( page_selectgame, i18n("Select Game Type") );
 
-	setNextEnabled( page_selectgame, FALSE );
-	setHelpEnabled( page_selectgame, FALSE );
-	dataChanged();
+    setNextEnabled( page_selectgame, FALSE );
+    setHelpEnabled( page_selectgame, FALSE );
+    dataChanged();
 }
 
 
 void newgamewizard::showPage( QWidget* page )
 {
-	Q3Wizard::showPage(page);
+    Q3Wizard::showPage(page);
 }
 
 int newgamewizard::getGame()
 {
-	if(checkLocalGame->isChecked())
-		return GAME_LOCAL;
-	else
-	{
-		if(checkNetworkServer->isChecked())
-			return GAME_NETWORK_SERVER;
-		else
-		{
-			if(checkNetworkClient->isChecked())
-				return GAME_NETWORK_CLIENT;
-			else
-				return -1;
-		}
-	}
-
+    if(checkLocalGame->isChecked())
+        return GAME_LOCAL;
+    else
+    {
+        if(checkNetworkServer->isChecked())
+            return GAME_NETWORK_SERVER;
+        else
+        {
+            if(checkNetworkClient->isChecked())
+                return GAME_NETWORK_CLIENT;
+            else
+                return -1;
+        }
+    }
 }
 
 QString newgamewizard::getGameInfoString(int gameType)
@@ -115,26 +111,25 @@ QString newgamewizard::getGameInfoString(int gameType)
 
 void newgamewizard::setInfoText(int gameType)
 {
-	info->setText(getGameInfoString(gameType));
-
+    info->setText(getGameInfoString(gameType));
 }
 
 void newgamewizard::dataChanged(  )
 {
-	int game=getGame();
-	setInfoText(game);
-	switch(game)
-	{
-			case GAME_LOCAL:
-			setFinishEnabled( page_selectgame, TRUE );
-			break;
-			case GAME_NETWORK_SERVER:
-			setFinishEnabled( page_selectgame, FALSE );
-			nextButton()->setEnabled(FALSE);
-			break;
-			case GAME_NETWORK_CLIENT:
-			setFinishEnabled( page_selectgame, FALSE );
-			nextButton()->setEnabled(FALSE);
-			break;
-	}
+    int game=getGame();
+    setInfoText(game);
+    switch(game)
+    {
+    case GAME_LOCAL:
+        setFinishEnabled( page_selectgame, TRUE );
+        break;
+    case GAME_NETWORK_SERVER:
+        setFinishEnabled( page_selectgame, FALSE );
+        nextButton()->setEnabled(FALSE);
+        break;
+    case GAME_NETWORK_CLIENT:
+        setFinishEnabled( page_selectgame, FALSE );
+        nextButton()->setEnabled(FALSE);
+        break;
+    }
 }

@@ -32,19 +32,19 @@ class ComputerPlayer : public Player
     public:
         ComputerPlayer(unsigned int id,Game* game);
         ~ComputerPlayer();
-        
+
         void init();
         void klopfen();
         Card *play();
         GameInfo* gameInfo( bool force = false );
-        
+
         int rtti() const { return COMPUTER; }
 
         Card *findHighestCard(CardList *cards);
-        Card *findSchmiere(CardList *cards);		// Nice name, isn't it? :)
-        
+        Card *findSchmiere(CardList *cards);        // Nice name, isn't it? :)
+
         Card *findCheapestCard(CardList *cards);
-        
+
         /** Finde die niedrigste Karte aus @p cards um @p highest zu stechen
           */
         Card *findLowestPossibleCard(Card* highest, CardList *cards);
@@ -53,16 +53,16 @@ class ComputerPlayer : public Player
           * spiel sind.
           * Dabei wird die farbe als farbe im Spiel betrachtet:
           * I.e. der EichelOber zaehlt als trumpf und nicht als eichel.
-          * 
+          *
           * Um truempfte zu zaehlen bitte NOCOLOR angeben
           */
         int cardsStillInGame( int c );
-        
+
     private:
         Card *findCardToPlay(CardList *cards);
-        bool canMakeStich(CardList *cards);		
-        
-        /** Prueft ob der aktuelle Stich der eigenen Spieler Partei 
+        bool canMakeStich(CardList *cards);
+
+        /** Prueft ob der aktuelle Stich der eigenen Spieler Partei
          *  gehoert oder nicht. Dabei werden nur die aktuell
          *  gespielten Karten gespielt bewertet und nicht evtl. hoehere
          *  Karten die die Gegenspielerpartei spaeter noch spielen koennte
@@ -77,9 +77,9 @@ class ComputerPlayer : public Player
         float gehtDurch(Card *card);
         float gegnerSticht(Card *card);
 
-        /** returns the highest trump that is still 
+        /** returns the highest trump that is still
          *  in the game not counting the own cards
-         *  of the player. 
+         *  of the player.
          *  NULL is returned if there is no trump in
          *  the game anymore.
          */
@@ -87,22 +87,22 @@ class ComputerPlayer : public Player
 
         int myTrumpfs();
         int trumpfsInGame();
-        
-	//private slots:
+
+    //private slots:
         void cardPlayed(unsigned int player, Card *c);
-                
+
     private:
         struct game_data {
             int trumpf;
             int fehlfarbe;
             int weight;
-            GameInfo info;        
+            GameInfo info;
         };
-        
+
         CardList *m_playedCards[4];
         CardList *m_angespielt;
         OpenBook* book;
-        int mitspieler;		
+        int mitspieler;
 };
 
 #endif

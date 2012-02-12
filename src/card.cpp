@@ -128,9 +128,9 @@ KCardInfo Card::kdeCardInfo()
 
 bool Card::isEqual(Card *othercard)
 {
-	if(othercard->card()==this->card()&&othercard->color()==this->color()) return true;
-	else 
-		return false;
+    if(othercard->card()==this->card()&&othercard->color()==this->color()) return true;
+    else
+        return false;
 }
 
 void Card::cardDeckChanged()

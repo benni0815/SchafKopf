@@ -37,26 +37,26 @@ class QRadioButton;
 */
 class newgamewizard : public K3Wizard
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum __gameType {GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER};
-	newgamewizard( QWidget *parent = 0, const char *name = 0 );
-	int getGame();
-	void showPage(QWidget* page);
+    enum __gameType {GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER};
+    newgamewizard( QWidget *parent = 0, const char *name = 0 );
+    int getGame();
+    void showPage(QWidget* page);
 
 protected:
-	void setup_page_selectgame();
-	Q3HBox *page_selectgame;
-	QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
-	QString getGameInfoString(int gameType);
-	QLabel *info;
-	void setInfoText(int gameType);
+    void setup_page_selectgame();
+    Q3HBox *page_selectgame;
+    QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
+    QString getGameInfoString(int gameType);
+    QLabel *info;
+    void setInfoText(int gameType);
 
 protected:
 
 protected slots:
-	void dataChanged(  );
+    void dataChanged(  );
 
 };
 

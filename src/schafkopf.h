@@ -56,74 +56,74 @@ class SchafKopf : public KXmlGuiWindow
     public:
         SchafKopf(QWidget *parent=0);
         ~SchafKopf();
-        
+
     private slots:
-        /** Configure the carddeck to be used 
+        /** Configure the carddeck to be used
           */
         void carddecks();
-        
-        /** Start a new game 
+
+        /** Start a new game
           */
         void newGame();
-        
+
         /** abort current game
           */
         void endGame();
-        
-        /** show the last stich 
+
+        /** show the last stich
           */
         void showStich();
-        
+
         /** takes care of enabling and disabling actions
           */
         void enableControls();
-        
+
         /** guess what? shows the preferences dialog to the user
           */
         void configure();
-        
-		void realNewGame();
-        
+
+        void realNewGame();
+
         void slotPlayerResult( unsigned int id, const QString & result );
-        
+
         void saveConfig();
-        
+
         void updateInfo();
 
         /** remove all items from the table displaying the results
           */
         void clearTable();
-        
+
         /** update table headings when the user changes the player names
           * in the preferences
           */
         void updateTableNames();
-        
+
     protected:
         /** Event handler to receive thread events
           */
         void customEvent( QEvent* e );
-        
+
     private:
         void setupActions();
         GameInfo* selectGame( bool force, int* cardids );
 
         bool m_terminated;
         sem_t m_sem;
-        
+
         Game* m_game;
         GameCanvas* m_canvasview;
-        Q3Canvas* m_canvas;    
+        Q3Canvas* m_canvas;
         Q3Table* m_table;
         QSplitter* split;
 
         QLabel* lblCurGame;
         QLabel* lblDoubled;
         KPushButton* btnLastTrick;
-                
+
         KAction* m_actStich;
         KAction* m_actEnd;
-        
+
         QPointer<StichDlg> m_stichdlg;
 };
 
