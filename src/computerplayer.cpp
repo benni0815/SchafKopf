@@ -514,7 +514,7 @@ int ComputerPlayer::trumpfsInGame()
 
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 {
-    qDebug("********* cardPlayed (%s)", c->toString().ascii());
+    qDebug() << "********* cardPlayed (" << c->toString() << ")";
 
     // TODO: was called by signal before the thread change
     // has to be implemented in another way
