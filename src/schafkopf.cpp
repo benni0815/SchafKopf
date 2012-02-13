@@ -113,8 +113,8 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     connect(Settings::instance(),SIGNAL(resultsTypeChanged()),this,SLOT(clearTable()));
     connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( updateInfo() ) );
-    
-    QToolTip::add( btnLastTrick, i18n("Show the last trick that was made.") );
+
+    btnLastTrick->setToolTip( i18n( "Show the last trick that was made." ) );
 
     m_stichdlg = new StichDlg( this );
 
