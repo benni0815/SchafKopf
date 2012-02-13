@@ -41,7 +41,7 @@ CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
-    pop = new KPassivePopup( KApplication::kApplication()->mainWidget() );
+    pop = new KPassivePopup( view );
     pop_text = new QLabel( "" );
     pop->setView( pop_text );
     pop->setTimeout( 1000 );
