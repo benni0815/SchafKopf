@@ -43,8 +43,8 @@ Settings* Settings::instance()
     return m_instance;
 }
 
-Settings::Settings(QObject *parent, const char *name)
- : QObject(parent, name)
+Settings::Settings( QObject *parent )
+ : QObject( parent )
 {
     // the mutex causes more problems right now than be useful...
     m_mutex = NULL; // new QMutex();

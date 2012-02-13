@@ -131,7 +131,7 @@ class Settings : public QObject
         void playerNamesChanged();
 
     private:
-        Settings(QObject *parent = 0, const char *name = 0);
+        Settings( QObject *parent = 0 );
         ~Settings();
 
         static Settings* m_instance;
