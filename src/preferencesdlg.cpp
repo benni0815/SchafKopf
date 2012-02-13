@@ -157,9 +157,9 @@ void PreferencesDlg::addPageRules()
     m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
     m_radioRamsch = new QRadioButton( i18n("Play Ramsch"), group );
 
-    QToolTip::add( m_radioRamsch, i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too.") );
+    m_radioRamsch->setToolTip( i18n( "The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too." ) );
     m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
-    QToolTip::add( m_checkDoublerPlays, i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect.") );
+    m_checkDoublerPlays->setToolTip( i18n( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
 
     layout->addWidget( group );
@@ -208,23 +208,23 @@ void PreferencesDlg::addPageResults()
     m_money_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_call->setSuffix( locale->currencySymbol() );
 
-    m_money_solo = new KDoubleNumInput( m_money_call, 0.0, 100.00, rm->solo, stackMoney, 0.10, 2);
+    m_money_solo = new KDoubleNumInput( 0.0, 100.00, rm->solo, stackMoney, 0.10, 2);
     m_money_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_solo->setSuffix( locale->currencySymbol() );
 
-    m_money_lauf = new KDoubleNumInput( m_money_solo, 0.0, 100.00, rm->laufende, stackMoney, 0.10, 2 );
+    m_money_lauf = new KDoubleNumInput( 0.0, 100.00, rm->laufende, stackMoney, 0.10, 2 );
     m_money_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_lauf->setSuffix( locale->currencySymbol() );
 
-    m_money_notrick = new KDoubleNumInput( m_money_lauf, 0.0, 100.00, rm->schwarz, stackMoney, 0.10, 2 );
+    m_money_notrick = new KDoubleNumInput( 0.0, 100.00, rm->schwarz, stackMoney, 0.10, 2 );
     m_money_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_notrick->setSuffix( locale->currencySymbol() );
 
-    m_money_schneider = new KDoubleNumInput( m_money_notrick, 0.0, 100.00, rm->schneider, stackMoney, 0.10, 2 );
+    m_money_schneider = new KDoubleNumInput( 0.0, 100.00, rm->schneider, stackMoney, 0.10, 2 );
     m_money_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_schneider->setSuffix( locale->currencySymbol() );
 
-    m_money_ramsch = new KDoubleNumInput( m_money_schneider, 0.0, 100.00, rm->ramsch, stackMoney, 0.10, 2 );
+    m_money_ramsch = new KDoubleNumInput( 0.0, 100.00, rm->ramsch, stackMoney, 0.10, 2 );
     m_money_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_ramsch->setSuffix( locale->currencySymbol() );
 
@@ -233,27 +233,27 @@ void PreferencesDlg::addPageResults()
     m_point_call->setMinimum( 0 );
     m_point_call->setMaximum( 100 );
 
-    m_point_solo = new KIntNumInput( m_point_call, (int)rp->solo, stackPoints, 10 );
+    m_point_solo = new KIntNumInput( (int)rp->solo, stackPoints, 10 );
     m_point_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_solo->setMinimum( 0 );
     m_point_solo->setMaximum( 100 );
 
-    m_point_lauf = new KIntNumInput( m_point_solo, (int)rp->laufende, stackPoints, 10 );
+    m_point_lauf = new KIntNumInput( (int)rp->laufende, stackPoints, 10 );
     m_point_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_lauf->setMinimum( 0 );
     m_point_lauf->setMaximum( 100 );
 
-    m_point_notrick = new KIntNumInput( m_point_lauf, (int)rp->schwarz, stackPoints, 10 );
+    m_point_notrick = new KIntNumInput( (int)rp->schwarz, stackPoints, 10 );
     m_point_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_notrick->setMinimum( 0 );
     m_point_notrick->setMaximum( 100 );
 
-    m_point_schneider = new KIntNumInput( m_point_notrick, (int)rp->schneider, stackPoints, 10 );
+    m_point_schneider = new KIntNumInput( (int)rp->schneider, stackPoints, 10 );
     m_point_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_schneider->setMinimum( 0 );
     m_point_schneider->setMaximum( 100 );
 
-    m_point_ramsch = new KIntNumInput( m_point_schneider, (int)rp->ramsch, stackPoints, 10 );
+    m_point_ramsch = new KIntNumInput( (int)rp->ramsch, stackPoints, 10 );
     m_point_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_ramsch->setMinimum( 0 );
     m_point_ramsch->setMaximum( 100 );
@@ -287,14 +287,14 @@ void PreferencesDlg::addPageView()
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
     Q3VButtonGroup* group2 = new Q3VButtonGroup( i18n("Game Canvas:"), box, "group2" );
-    QLabel* label3 = new QLabel( i18n("&Background image:"), group2, "label3" );
+    QLabel* label3 = new QLabel( i18n("&Background image:"), group2 );
     m_linePathBackground = new KUrlRequester( Settings::instance()->backgroundImage(), group2 );
-    m_pushURLClear = new QPushButton( i18n("&Clear background image"), group2, "m_pushURLClear" );
+    m_pushURLClear = new QPushButton( i18n("&Clear background image"), group2 );
     label3->setBuddy( m_linePathBackground );
 
     Q3VButtonGroup* group = new Q3VButtonGroup( i18n("Card Arrangement:"), box, "group" );
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
-    QToolTip::add( m_checkRearrangeCards, i18n("Cards will be rearranged after each trick.") );
+    m_checkRearrangeCards->setToolTip( i18n( "Cards will be rearranged after each trick." ) );
 
     layout->addWidget( group2 );
     layout->addWidget( group );
@@ -357,7 +357,7 @@ void PreferencesDlg::addPageGames()
     connect( m_games_geier, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
 
     // tool tips
-    QToolTip::add( m_games_dachs, i18n("<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>") );
+    m_games_dachs->setToolTip( i18n( "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>" ) );
 }
 
 void PreferencesDlg::enableControls()
