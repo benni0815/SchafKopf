@@ -330,7 +330,7 @@ void GameCanvas::resizeBackground()
     QPixmap ImgBack2;
     if(loadOK)
     {
-        ImgBack2.convertFromImage(ImgBack.smoothScale( canvas()->width(), canvas()->height() ));
+        ImgBack2.convertFromImage( ImgBack.scaled( canvas()->width(), canvas()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
         canvas()->setBackgroundPixmap( ImgBack2 );
     }
 
