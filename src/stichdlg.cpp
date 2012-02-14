@@ -23,12 +23,11 @@
 #include "cardlist.h"
 #include "player.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-//Added by qt3to4:
-#include <Q3GridLayout>
+#include <QLabel>
+#include <QLayout>
+#include <QGridLayout>
 
-#include <klocale.h>
+#include <KLocale>
 
 StichDlg::StichDlg(QWidget *parent )
     : KDialog( parent )
@@ -37,11 +36,12 @@ StichDlg::StichDlg(QWidget *parent )
     setButtons( KDialog::Close );
     QWidget *plainPage = new QWidget( this );
     setMainWidget( plainPage );
-    Q3GridLayout* layout = new Q3GridLayout( plainPage, 4, 2 );
+    QGridLayout* layout = new QGridLayout( plainPage );
     trick = new QLabel( plainPage );
-    layout->addWidget( trick, 0, 0, 0, 4);
+    layout->addWidget( trick, 0, 0, 1, 4);
 
-    for( unsigned int i = 0; i < PLAYERS; i++ ) {
+    for( unsigned int i = 0; i < PLAYERS; i++ )
+    {
         cards[i] = new QLabel( plainPage );
         layout->addWidget( cards[i], 1, i );
 
