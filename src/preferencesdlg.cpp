@@ -37,10 +37,7 @@
 #include <qcheckbox.h>
 #include <qtooltip.h>
 #include <q3widgetstack.h>
-#include <q3grid.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <Q3VBoxLayout>
+#include <QGridLayout>
 
 PreferencesDlg::PreferencesDlg( QWidget *parent )
     : KPageDialog( parent )
@@ -120,27 +117,32 @@ void PreferencesDlg::accept()
 
 void PreferencesDlg::addPagePlayer()
 {
-    Q3Grid* box = new Q3Grid( 2, Qt::Horizontal );
-    KPageWidgetItem *item = addPage( box, i18n( "Player Settings" ) );
+    QWidget *page = new QWidget( this );
+    QGridLayout* box = new QGridLayout( page );
+    KPageWidgetItem *item = addPage( page, i18n( "Player Settings" ) );
     item->setIcon( KIcon( "identity" ) );
 
     QStringList names = Settings::instance()->playerNames();
 
-    new QLabel( i18n("Human Player:"), box );
-    m_p1_name = new KLineEdit( names[0], box );
+    box->addWidget( new QLabel( i18n("Human Player:") ), 0, 0 );
+    m_p1_name = new KLineEdit( names[0] );
     m_p1_name->setObjectName( "m_p1_name" );
-    
-    new QLabel( i18n("Computer Player 1:"), box );
-    m_p2_name = new KLineEdit( names[1], box );
+    box->addWidget( m_p1_name, 0, 1 );
+
+    box->addWidget( new QLabel( i18n("Computer Player 1:") ), 1, 0 );
+    m_p2_name = new KLineEdit( names[1] );
     m_p2_name->setObjectName( "m_p2_name" );
+    box->addWidget( m_p2_name, 1, 1 );
 
-    new QLabel( i18n("Computer Player 2:"), box );
-    m_p3_name = new KLineEdit( names[2], box );
+    box->addWidget( new QLabel( i18n("Computer Player 2:") ), 2, 0 );
+    m_p3_name = new KLineEdit( names[2] );
     m_p3_name->setObjectName( "m_p3_name" );
+    box->addWidget( m_p3_name, 2, 1 );
 
-    new QLabel( i18n("Computer Player 3:"), box );
-    m_p4_name = new KLineEdit( names[3], box );
+    box->addWidget( new QLabel( i18n("Computer Player 3:") ), 3, 0 );
+    m_p4_name = new KLineEdit( names[3] );
     m_p4_name->setObjectName( "m_p4_name" );
+    box->addWidget( m_p4_name, 3, 1 );
 }
 
 void PreferencesDlg::addPageRules()
@@ -149,7 +151,9 @@ void PreferencesDlg::addPageRules()
     KPageWidgetItem *item = addPage( box, i18n( "Rules" ) );
     item->setIcon( KIcon( "schafkopf" ) );
 
-    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
     Q3VButtonGroup* group = new Q3VButtonGroup( i18n("No one wants to play:"), box, "group" );
@@ -162,8 +166,8 @@ void PreferencesDlg::addPageRules()
     m_checkDoublerPlays->setToolTip( i18n( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
 
-    layout->addWidget( group );
-    layout->addItem( spacer );
+    layout->addWidget( group, 0, 0 );
+    layout->addItem( spacer, 1, 0 );
 
     // load data from configuration
     if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
@@ -189,7 +193,9 @@ void PreferencesDlg::addPageResults()
     KPageWidgetItem *item = addPage( box, i18n( "Results" ) );
     item->setIcon( KIcon( "edit" ) );
 
-    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
 
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
@@ -264,8 +270,8 @@ void PreferencesDlg::addPageResults()
     delete rm;
     delete rp;
 
-    layout->addWidget( group );
-    layout->addWidget( stack );
+    layout->addWidget( group, 0, 0 );
+    layout->addWidget( stack, 1, 0 );
 
     // load data from configuration
     if( Settings::instance()->resultsType() == Settings::MONEY )
@@ -283,7 +289,9 @@ void PreferencesDlg::addPageView()
     KPageWidgetItem *item = addPage( box, i18n( "View" ) );
     item->setIcon( KIcon( "background" ) );
 
-    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
     Q3VButtonGroup* group2 = new Q3VButtonGroup( i18n("Game Canvas:"), box, "group2" );
@@ -296,9 +304,9 @@ void PreferencesDlg::addPageView()
     m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
     m_checkRearrangeCards->setToolTip( i18n( "Cards will be rearranged after each trick." ) );
 
-    layout->addWidget( group2 );
-    layout->addWidget( group );
-    layout->addItem( spacer );
+    layout->addWidget( group2, 0, 0 );
+    layout->addWidget( group, 1, 0 );
+    layout->addItem( spacer, 2, 0 );
     disableClearButton(m_linePathBackground->text());
 
     connect( m_pushURLClear, SIGNAL( clicked() ), m_linePathBackground, SLOT( clear() ) );
@@ -314,9 +322,17 @@ void PreferencesDlg::addPageGames()
     KPageWidgetItem *item = addPage( box, i18n( "Games" ) );
     item->setIcon( KIcon( "joystick" ) );
 
-    Q3VBoxLayout* layout = new Q3VBoxLayout( box, 6, 6  );
-    Q3HBoxLayout* farbWenzLayout = new Q3HBoxLayout( NULL, 6, 6 );
-    Q3HBoxLayout* farbGeierLayout = new Q3HBoxLayout( NULL, 6, 6 );
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
+
+    QGridLayout* farbWenzLayout = new QGridLayout( box );
+    farbWenzLayout->setMargin( 6 );
+    farbWenzLayout->setSpacing( 6 );
+
+    QGridLayout* farbGeierLayout = new QGridLayout( box );
+    farbGeierLayout->setMargin( 6 );
+    farbGeierLayout->setSpacing( 6 );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     QSpacerItem* smallSpace = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
@@ -329,19 +345,20 @@ void PreferencesDlg::addPageGames()
     m_games_dachs = new QCheckBox( i18n("&Badger"), box );
 
     layout->addWidget( new QLabel( i18n("<qt>You can configure which games are allowed to play."
-                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"), box ) );
+                                        " You cannot disable certain games, such as Callgames and Solos as they are always "
+                                        "enabled by default.</qt>"), box ), 0, 0 );
 
-    farbWenzLayout->addItem( smallSpace );
-    farbWenzLayout->addWidget( m_games_farbwenz );
-    farbGeierLayout->addItem( smallSpace2 );
-    farbGeierLayout->addWidget( m_games_farbgeier );
+    farbWenzLayout->addItem( smallSpace, 0, 0 );
+    farbWenzLayout->addWidget( m_games_farbwenz, 0, 1 );
+    farbGeierLayout->addItem( smallSpace2, 0, 0 );
+    farbGeierLayout->addWidget( m_games_farbgeier, 0, 1 );
 
-    layout->addWidget( m_games_wenz );
-    layout->addLayout( farbWenzLayout );
-    layout->addWidget( m_games_geier );
-    layout->addLayout( farbGeierLayout );
-    layout->addWidget( m_games_dachs );
-    layout->addItem( spacer );
+    layout->addWidget( m_games_wenz, 1, 0 );
+    layout->addLayout( farbWenzLayout, 2, 0 );
+    layout->addWidget( m_games_geier, 3, 0 );
+    layout->addLayout( farbGeierLayout, 4, 0 );
+    layout->addWidget( m_games_dachs, 5, 0 );
+    layout->addItem( spacer, 6, 0 );
 
     // load settings
     t_AllowedGames* allowed = Settings::instance()->allowedGames();
