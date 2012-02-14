@@ -30,6 +30,7 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <QLabel>
+#include <QPushButton>
 
 #include <semaphore.h>
 
@@ -119,7 +120,7 @@ class SchafKopf : public KXmlGuiWindow
 
         QLabel* lblCurGame;
         QLabel* lblDoubled;
-        KPushButton* btnLastTrick;
+        QPushButton* btnLastTrick;
 
         KAction* m_actStich;
         KAction* m_actEnd;
