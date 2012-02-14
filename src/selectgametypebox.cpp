@@ -56,11 +56,11 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):Q3HBox
     page = new Q3HBox( this );
     row1 = new Q3VBox( page );
 
-    preview = new QLabel( row1);
-    infoLabel = new QLabel( row1);
+    preview = new QLabel( row1 );
+    infoLabel = new QLabel( row1 );
     //infoLabel=QLabel(row1);
     infoLabel->setMargin( 11 );
-    infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap);
+    infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap );
 
 
     infoLabel->setMinimumHeight(100);
@@ -157,7 +157,7 @@ void SelectGameTypeBox::updatePreview()
     }
 
     p.end();
-    pix.resize( pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
+    pix = pix.copy( 0, 0, pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
     preview->setPixmap( pix );
     preview->setMinimumWidth(pix.width()+10);
 }
