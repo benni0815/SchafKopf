@@ -67,10 +67,14 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):Q3HB
 
     connect( color_group, SIGNAL(clicked(int)), this, SLOT(colorChanged()));
 
-    checkHerz->setPixmap(*m_Herz->pixmap());
-    checkGras->setPixmap(*m_Gras->pixmap());
-    checkEichel->setPixmap(*m_Eichel->pixmap());
-    checkSchellen->setPixmap(*m_Schelle->pixmap());
+    checkHerz->setIconSize( m_Herz->pixmap()->size() );
+    checkHerz->setIcon( QIcon( *m_Herz->pixmap() ) );
+    checkGras->setIconSize( m_Gras->pixmap()->size() );
+    checkGras->setIcon( QIcon( *m_Gras->pixmap() ) );
+    checkEichel->setIconSize( m_Eichel->pixmap()->size() );
+    checkEichel->setIcon( QIcon( *m_Eichel->pixmap() ) );
+    checkSchellen->setIconSize( m_Schelle->pixmap()->size() );
+    checkSchellen->setIcon( QIcon( *m_Schelle->pixmap() ) );
 }
 
 SelectGameColorBox::~SelectGameColorBox()

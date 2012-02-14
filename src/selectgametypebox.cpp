@@ -60,7 +60,8 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):Q3HBox
     infoLabel = new QLabel( row1 );
     //infoLabel=QLabel(row1);
     infoLabel->setMargin( 11 );
-    infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft | Qt::TextWordWrap );
+    infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft );
+    infoLabel->setWordWrap( true );
 
 
     infoLabel->setMinimumHeight(100);
