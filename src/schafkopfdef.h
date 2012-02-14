@@ -61,15 +61,14 @@ enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled,
 
 struct t_EventData {
     EAction type;
-    
+
     unsigned int playerid;
     void* returncode;
     int* cardids;
 
-    
     bool wait;
     bool quitgame;
-    
+
     QStringList* playernames;
     QString data;
 };

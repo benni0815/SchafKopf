@@ -17,7 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "schafkopf.h"
+
+#include "schafkopfevent.h"
 #include "settings.h"
 #include "gamecanvas.h"
 #include "game.h"
@@ -44,7 +47,6 @@
 //Added by qt3to4:
 #include <QCustomEvent>
 #include <Q3MemArray>
-#include <QDebug>
 
 #include <KAction>
 #include <KActionCollection>
@@ -136,12 +138,12 @@ SchafKopf::~SchafKopf()
 
 void SchafKopf::customEvent( QEvent* e )
 {
-    if( e->type() == SCHAFKOPF_EVENT )
+    if( e->type() == QEvent::Type( QEvent::User + SCHAFKOPF_EVENT ) )
     {
         int* a;
         bool force_select = false;
 
-        t_EventData* data = (t_EventData*)((QCustomEvent*) e)->data();
+        t_EventData* data = ((SchafKopfEvent*) e)->data();
         switch( data->type )
         {
             case GameEnded:

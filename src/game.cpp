@@ -17,15 +17,16 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "game.h"
 
+#include "schafkopfevent.h"
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "cardlist.h"
 #include "gamecanvas.h"
 #include "gameinfo.h"
 #include "results.h"
-
 #include "settings.h"
 
 #include <kapplication.h>
@@ -572,7 +573,7 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
     data->returncode = NULL;
     data->quitgame = false;
 
-    QCoreApplication::postEvent( m_parent, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT, (void*)data ) );
+    QCoreApplication::postEvent( m_parent, new SchafKopfEvent( data ) );
     if( wait )
     {
         sem_wait( m_sem );

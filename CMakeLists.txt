@@ -23,6 +23,7 @@ include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGE
 # ########## src executable ##########
 # Sources:
 SET(schafkopf_SRCS
+    src/schafkopfevent.cpp
     src/card.cpp
     src/selectgamewizard.cpp
     src/player.cpp
@@ -48,6 +49,7 @@ SET(schafkopf_SRCS
 
 # Headers:
 SET(schafkopf_HDRS
+    src/schafkopfevent.h
     src/schafkopf.h
     src/selectgamewizard.h
     src/preferencesdlg.h
