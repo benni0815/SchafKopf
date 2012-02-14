@@ -323,7 +323,7 @@ int GameInfo::laufende()
       * danach können diese in results einfach addiert werden
       */
 
-    unsigned int i = 0;
+    int i = 0;
     int l = 0;
     CardList* all = new CardList();
     CardList laufend = *(spieler()->cards());
@@ -335,13 +335,13 @@ int GameInfo::laufende()
     all->sort( (eval_func)evalCard, (void *)this);
     all->setAutoDelete( true );
 
-    for( i=all->count()-1;i>=0;--i)
+    for( i=all->count() - 1; i>=0; --i)
     {
         Card* c = all->at( i );
         CardList* list = laufend.FindCards( c->color(), c->card() );
-        if( list->count() && ( l>0 || i == all->count()-1 ) )
+        if( list->count() && ( l>0 || i == int(all->count()) - 1 ) )
             l++;
-        else if( ( !list->count() && l<0 ) || i == all->count() -1 )
+        else if( ( !list->count() && l<0 ) || i == int(all->count()) - 1 )
             l--;
         else
         {
