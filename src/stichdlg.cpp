@@ -39,7 +39,7 @@ StichDlg::StichDlg(QWidget *parent )
     setMainWidget( plainPage );
     Q3GridLayout* layout = new Q3GridLayout( plainPage, 4, 2 );
     trick = new QLabel( plainPage );
-    layout->addMultiCellWidget( trick, 0, 0, 0, 3);
+    layout->addWidget( trick, 0, 0, 0, 4);
 
     for( unsigned int i = 0; i < PLAYERS; i++ ) {
         cards[i] = new QLabel( plainPage );
