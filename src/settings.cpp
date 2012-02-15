@@ -29,8 +29,6 @@
 #include <carddeckinfo.h>
 
 #include <qmutex.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 #include <kglobal.h>
 
 Settings* Settings::m_instance = 0;
