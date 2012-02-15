@@ -315,6 +315,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 int GameInfo::laufende()
 {
 #warning "Im Ramsch werden keine Laufenden gezaehlt!"
+#warning "Benni: passt doch, oder?"
     if( m_mode == RAMSCH )
         return 0;
 
