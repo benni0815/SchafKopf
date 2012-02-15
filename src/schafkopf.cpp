@@ -247,9 +247,20 @@ void SchafKopf::customEvent( QEvent* e )
             // data->returncode should be NULL anyways...
             // so why is it there???
             // stupid comments...
+            // Benni: tried to fix this warning by casting the pointer back to what it was
             if( data->returncode )
-                delete data->returncode;
-                
+            {
+                switch( data->type )
+                {
+                case QuestionYesNo:
+                case HumanPlayerGetCard:
+                    delete (int*)data->returncode;
+                case SelectGame:
+                    delete (GameInfo*)data->returncode;
+                default:;
+                }
+            }
+
             if( data->cardids )
                 delete [] data->cardids;
 
