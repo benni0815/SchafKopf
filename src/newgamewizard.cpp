@@ -20,15 +20,15 @@
 #include "newgamewizard.h"
 
 #include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
+#include <QHBoxLayout>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
+#include <QGroupBox>
+#include <QButtonGroup>
 #include <klocale.h>
 
 newgamewizard::newgamewizard( QWidget *parent, const char *name )
@@ -40,24 +40,38 @@ newgamewizard::newgamewizard( QWidget *parent, const char *name )
 
 void newgamewizard::setup_page_selectgame()
 {
-    page_selectgame = new Q3HBox( this );
-    page_selectgame->setSpacing(8);
-    Q3VBox *page = new Q3VBox( page_selectgame );
-    Q3HBox *row1 = new Q3HBox( page );
+    page_selectgame = new QWidget;
 
-    Q3ButtonGroup* group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, "", row1 );
-    info = new QLabel( page_selectgame);
+    info = new QLabel;
     info->setMargin( 11 );
     info->setMinimumWidth( 220);
 
-    checkLocalGame = new QRadioButton( i18n("&Start local Game"), group_TypeSelect );
-    checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server"), group_TypeSelect );
-    checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client"), group_TypeSelect );
+    checkLocalGame = new QRadioButton( i18n("&Start local Game") );
+    checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server") );
+    checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client") );
+
     checkLocalGame->setChecked(TRUE);
 
-    connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(dataChanged()));
+    QGroupBox *group_TypeSelect = new QGroupBox;
+    QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->addWidget( checkLocalGame );
+    vbox->addWidget( checkNetworkServer );
+    vbox->addWidget( checkNetworkClient );
+    group_TypeSelect->setLayout( vbox );
+
+    QButtonGroup *myGroup = new QButtonGroup;
+    myGroup->addButton( checkLocalGame );
+    myGroup->addButton( checkNetworkServer );
+    myGroup->addButton( checkNetworkClient );
+    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(dataChanged()));
 
     //page_selectgame->setMinimumSize(QSize(400,200)) ;
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(8);
+    layout->addWidget( group_TypeSelect );
+    layout->addWidget( info );
+    page_selectgame->setLayout( layout );
     addPage( page_selectgame, i18n("Select Game Type") );
 
     setNextEnabled( page_selectgame, FALSE );

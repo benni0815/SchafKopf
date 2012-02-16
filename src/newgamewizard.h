@@ -47,7 +47,7 @@ public:
 
 protected:
     void setup_page_selectgame();
-    Q3HBox *page_selectgame;
+    QWidget *page_selectgame;
     QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
     QString getGameInfoString(int gameType);
     QLabel *info;
