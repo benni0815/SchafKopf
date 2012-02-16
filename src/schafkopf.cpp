@@ -283,9 +283,12 @@ void SchafKopf::setupActions()
     KMenu* mnuGame = new KMenu( this );
     KMenu* mnuSettings = new KMenu( this );
 
-    menuBar()->insertItem( i18n("&Game"), mnuGame );
-    menuBar()->insertItem( i18n("&Settings"), mnuSettings );
-    menuBar()->insertItem( i18n("&Help"), helpMenu() );
+    mnuGame->setTitle( i18n("&Game") );
+    mnuSettings->setTitle( i18n("&Settings") );
+
+    menuBar()->addMenu( mnuGame );
+    menuBar()->addMenu( mnuSettings );
+    menuBar()->addMenu( helpMenu() );
 
     m_actNew = KStandardGameAction::gameNew( this, SLOT( newGame() ), this );
     m_actEnd = KStandardGameAction::end( this, SLOT( endGame() ), this );

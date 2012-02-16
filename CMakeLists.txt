@@ -71,8 +71,5 @@ INCLUDE(${QT_USE_FILE})
 ADD_EXECUTABLE(schafkopf ${schafkopf_SRCS} ${schafkopf_HDRS_MOC})
 TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${QT_QT3SUPPORT_LIBRARY} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${KDE4_KDE3SUPPORT_LIBRARY} ${QIMAGEBLITZ_LIBRARIES})
 
-# uncomment next line to suppress Qt3 and KDE3 warnings
-#MACRO_ADD_COMPILE_FLAGS(schafkopf -Wno-deprecated-declarations)
-
 # add install target:
 INSTALL(TARGETS schafkopf DESTINATION bin)
