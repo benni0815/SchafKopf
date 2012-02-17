@@ -20,14 +20,10 @@
 #ifndef NEWGAMEWIZARD_H
 #define NEWGAMEWIZARD_H
 
-
-
 #include <k3wizard.h>
-//Added by qt3to4:
 #include <QLabel>
 
 class QWidget;
-class Q3HBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
@@ -59,6 +55,5 @@ protected slots:
     void dataChanged(  );
 
 };
-
 
 #endif
