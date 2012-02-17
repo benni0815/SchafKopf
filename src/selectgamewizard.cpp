@@ -41,8 +41,8 @@ SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, 
     m_force = force;
     m_list=list;
     m_closing=false;
-    box1 = new SelectGameTypeBox(this, 0);
-    box2 = new SelectGameColorBox(this, 0);
+    box1 = new SelectGameTypeBox( this );
+    box2 = new SelectGameColorBox( this );
     addPage( box1, i18n("Step 1/2: Select Game") );
     addPage( box2, i18n("Step 2/2: Select Color") );
 

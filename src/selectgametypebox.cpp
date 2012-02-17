@@ -26,16 +26,14 @@
 #include "settings.h"
 
 #include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
+#include <QButtonGroup>
 #include <qlayout.h>
-#include <q3buttongroup.h>
 #include <klocale.h>
 #include <k3wizard.h>
 #include <qpainter.h>
@@ -48,38 +46,59 @@
 #define HELP_GAMETYPE_WENZ i18n("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 #define HELP_GAMETYPE_GEIER i18n("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 
-SelectGameTypeBox::SelectGameTypeBox( QWidget *parent, const char *name ):Q3HBox(parent, name, 0)
+SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
+    : QWidget( parent )
 {
     m_allowed = Settings::instance()->allowedGames();
 
-    setSpacing(8);
-    page = new Q3HBox( this );
-    row1 = new Q3VBox( page );
+    row1 = new QWidget;
 
-    preview = new QLabel( row1 );
-    infoLabel = new QLabel( row1 );
-    //infoLabel=QLabel(row1);
+    preview = new QLabel;
+    infoLabel = new QLabel;
     infoLabel->setMargin( 11 );
     infoLabel->setAlignment( Qt::AlignBottom | Qt::AlignLeft );
     infoLabel->setWordWrap( true );
-
-
     infoLabel->setMinimumHeight(100);
-    group_TypeSelect  = new Q3ButtonGroup( 1, Qt::Horizontal, i18n("Game"), page );
-
 
     checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );
     checkSolo = new QRadioButton( i18n("&Solo"), group_TypeSelect );
     checkGeier = new QRadioButton( i18n("&Geier"), group_TypeSelect );
     checkWenz = new QRadioButton( i18n("&Wenz"), group_TypeSelect );
     checkDachs = new QRadioButton( i18n("&Dachs"), group_TypeSelect );
-    connect( group_TypeSelect, SIGNAL(clicked(int)), this, SLOT(typeChanged()));
 
     checkRufspiel->setChecked(TRUE);
 
     checkGeier->setEnabled( m_allowed->geier );
     checkWenz->setEnabled( m_allowed->wenz );
     checkDachs->setEnabled( m_allowed->dachs );
+
+    QButtonGroup *myGroup = new QButtonGroup;
+    myGroup->addButton( checkRufspiel );
+    myGroup->addButton( checkSolo );
+    myGroup->addButton( checkGeier );
+    myGroup->addButton( checkWenz );
+    myGroup->addButton( checkDachs );
+    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(typeChanged()));
+
+    group_TypeSelect = new QGroupBox( i18n("Game") );
+    QVBoxLayout *button_layout = new QVBoxLayout;
+    button_layout->addWidget( checkRufspiel );
+    button_layout->addWidget( checkSolo );
+    button_layout->addWidget( checkGeier );
+    button_layout->addWidget( checkWenz );
+    button_layout->addWidget( checkDachs );
+    group_TypeSelect->setLayout( button_layout );
+
+    QVBoxLayout *row_layout = new QVBoxLayout;
+    row_layout->addWidget( preview );
+    row_layout->addWidget( infoLabel );
+    row1->setLayout( row_layout );
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(8);
+    layout->addWidget( row1 );
+    layout->addWidget( group_TypeSelect );
+    this->setLayout( layout );
 
     typeChanged();
     infoLabel->setMaximumWidth(preview->size().width());

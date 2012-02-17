@@ -20,9 +20,8 @@
 #ifndef SELECTGAMETYPEBOX_H
 #define SELECTGAMETYPEBOX_H
 
-#include <q3hbox.h>
-//Added by qt3to4:
 #include <QLabel>
+#include <QGroupBox>
 
 class QWidget;
 class Q3HBox;
@@ -38,11 +37,11 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameTypeBox : public Q3HBox
+class SelectGameTypeBox : public QWidget
 {
     Q_OBJECT
 public:
-    SelectGameTypeBox(QWidget *parent = 0, const char *name = 0);
+    SelectGameTypeBox(QWidget *parent = 0 );
 
     ~SelectGameTypeBox();
     GameInfo* gameInfo() const;
@@ -56,9 +55,9 @@ protected:
     QRadioButton* checkGeier;
     QRadioButton* checkWenz;
     QRadioButton* checkDachs;
-    Q3HBox *page;
-    Q3VBox *row1;
-    Q3ButtonGroup* group_TypeSelect;
+    QWidget *page;
+    QWidget *row1;
+    QGroupBox* group_TypeSelect;
     QLabel* preview;
     QLabel* infoLabel;
 
