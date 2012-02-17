@@ -21,7 +21,6 @@
 #define SELECTGAMETYPEBOX_H
 
 #include <QLabel>
-#include <QGroupBox>
 
 class QWidget;
 class QLineEdit;
@@ -52,9 +51,6 @@ protected:
     QRadioButton* checkGeier;
     QRadioButton* checkWenz;
     QRadioButton* checkDachs;
-    QWidget *page;
-    QWidget *row1;
-    QGroupBox* group_TypeSelect;
     QLabel* preview;
     QLabel* infoLabel;
 

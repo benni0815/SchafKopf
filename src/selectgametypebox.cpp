@@ -33,6 +33,7 @@
 #include <qapplication.h>
 #include <qradiobutton.h>
 #include <QButtonGroup>
+#include <QGroupBox>
 #include <qlayout.h>
 #include <klocale.h>
 #include <k3wizard.h>
@@ -51,7 +52,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
 {
     m_allowed = Settings::instance()->allowedGames();
 
-    row1 = new QWidget;
+    QWidget* row1 = new QWidget;
 
     preview = new QLabel;
     infoLabel = new QLabel;
@@ -60,11 +61,11 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     infoLabel->setWordWrap( true );
     infoLabel->setMinimumHeight(100);
 
-    checkRufspiel = new QRadioButton( i18n("&Callgame"), group_TypeSelect );
-    checkSolo = new QRadioButton( i18n("&Solo"), group_TypeSelect );
-    checkGeier = new QRadioButton( i18n("&Geier"), group_TypeSelect );
-    checkWenz = new QRadioButton( i18n("&Wenz"), group_TypeSelect );
-    checkDachs = new QRadioButton( i18n("&Dachs"), group_TypeSelect );
+    checkRufspiel = new QRadioButton( i18n("&Callgame") );
+    checkSolo = new QRadioButton( i18n("&Solo") );
+    checkGeier = new QRadioButton( i18n("&Geier") );
+    checkWenz = new QRadioButton( i18n("&Wenz") );
+    checkDachs = new QRadioButton( i18n("&Dachs") );
 
     checkRufspiel->setChecked(TRUE);
 
@@ -80,7 +81,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     myGroup->addButton( checkDachs );
     connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(typeChanged()));
 
-    group_TypeSelect = new QGroupBox( i18n("Game") );
+    QGroupBox* group_TypeSelect = new QGroupBox( i18n("Game") );
     QVBoxLayout *button_layout = new QVBoxLayout;
     button_layout->addWidget( checkRufspiel );
     button_layout->addWidget( checkSolo );
