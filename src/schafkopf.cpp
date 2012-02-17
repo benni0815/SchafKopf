@@ -299,7 +299,7 @@ void SchafKopf::setupActions()
     connect( m_actStich, SIGNAL( triggered( bool ) ), this, SLOT( showStich() ) );
 
 
-    m_actQuit = KStandardAction::quit( kapp, SLOT( endGame() ), actionCollection() );
+    m_actQuit = KStandardAction::quit( this, SLOT( endGame() ), actionCollection() );
     connect( m_actQuit, SIGNAL( triggered() ), kapp, SLOT( quit() ));
     connect( kapp, SIGNAL( lastWindowClosed() ), this, SLOT( endGame() ) );
 
