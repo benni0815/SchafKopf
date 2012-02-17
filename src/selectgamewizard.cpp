@@ -20,15 +20,12 @@
 #include "selectgamewizard.h"
 
 #include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
 #include <klocale.h>
 #include "selectgametypebox.h"
 #include "selectgamecolorbox.h"
@@ -36,7 +33,7 @@
 #include "card.h"
 
 SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, const char *name )
-        : K3Wizard( parent, name, TRUE )
+    : K3Wizard( parent, name, TRUE )
 {
     m_force = force;
     m_list=list;

@@ -24,12 +24,9 @@
 #include <QGroupBox>
 
 class QWidget;
-class Q3HBox;
-class Q3VBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
-class Q3ButtonGroup;
 class GameInfo;
 
 struct t_AllowedGames;
