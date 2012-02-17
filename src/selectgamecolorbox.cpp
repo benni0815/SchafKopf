@@ -24,48 +24,50 @@
 #include "game.h"
 #include "gameinfo.h"
 #include "settings.h"
+#include "card.h"
+#include "selectgamewizard.h"
 
 #include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+#include <QGroupBox>
+#include <QButtonGroup>
 #include <qvalidator.h>
 #include <qapplication.h>
 #include <qradiobutton.h>
 #include <qlayout.h>
-#include <q3buttongroup.h>
 #include <klocale.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include "card.h"
-#include "selectgamewizard.h"
 
-SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):Q3HBox(parent, name, 0)
+SelectGameColorBox::SelectGameColorBox( QWidget *parent )
+    : QWidget( parent )
 {
     m_allowed = Settings::instance()->allowedGames();
 
     m_gameinfo=0;
-    setSpacing(8);
-    page = new Q3VBox( this );
-    //row1 = new QVBox( page );
 
     this->parent=(SelectGameWizard*)parent;
-    color_group = new Q3ButtonGroup( 1, Qt::Vertical, i18n("Color:"), page );
-    checkEichel = new QRadioButton( i18n("&Eichel"), color_group );
-    checkGras = new QRadioButton( i18n("&Gras"), color_group );
-    checkHerz = new QRadioButton( i18n("&Herz"), color_group );
-    checkSchellen = new QRadioButton( i18n("&Schellen"), color_group );
-    checkFarblos = new QRadioButton( i18n("&Farblos"), color_group );
+
+    checkEichel = new QRadioButton( i18n("&Eichel") );
+    checkGras = new QRadioButton( i18n("&Gras") );
+    checkHerz = new QRadioButton( i18n("&Herz") );
+    checkSchellen = new QRadioButton( i18n("&Schellen") );
+    checkFarblos = new QRadioButton( i18n("&Farblos") );
 
     m_Herz=new Card(Card::SAU, Card::HERZ);
     m_Schelle=new Card(Card::SAU, Card::SCHELLEN);
     m_Eichel=new Card(Card::SAU, Card::EICHEL);
     m_Gras=new Card(Card::SAU, Card::GRAS);
 
-
-    connect( color_group, SIGNAL(clicked(int)), this, SLOT(colorChanged()));
+    QButtonGroup *myGroup = new QButtonGroup;
+    myGroup->addButton( checkEichel );
+    myGroup->addButton( checkGras );
+    myGroup->addButton( checkHerz );
+    myGroup->addButton( checkSchellen );
+    myGroup->addButton( checkFarblos );
+    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(colorChanged()));
 
     checkHerz->setIconSize( m_Herz->pixmap()->size() );
     checkHerz->setIcon( QIcon( *m_Herz->pixmap() ) );
@@ -75,6 +77,20 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent, const char *name ):Q3HB
     checkEichel->setIcon( QIcon( *m_Eichel->pixmap() ) );
     checkSchellen->setIconSize( m_Schelle->pixmap()->size() );
     checkSchellen->setIcon( QIcon( *m_Schelle->pixmap() ) );
+
+    QGroupBox* color_group = new QGroupBox( i18n("Color:") );
+    QHBoxLayout *button_layout = new QHBoxLayout;
+    button_layout->addWidget( checkEichel );
+    button_layout->addWidget( checkGras );
+    button_layout->addWidget( checkHerz );
+    button_layout->addWidget( checkSchellen );
+    button_layout->addWidget( checkFarblos );
+    color_group->setLayout( button_layout );
+
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(8);
+    layout->addWidget( color_group );
+    this->setLayout( layout );
 }
 
 SelectGameColorBox::~SelectGameColorBox()

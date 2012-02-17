@@ -20,18 +20,12 @@
 #ifndef SELECTGAMECOLORBOX_H
 #define SELECTGAMECOLORBOX_H
 
-
-#include <q3hbox.h>
-//Added by qt3to4:
 #include <QLabel>
 
 class QWidget;
-class Q3HBox;
-class Q3VBox;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
-class Q3ButtonGroup;
 class GameInfo;
 class Card;
 class SelectGameWizard;
@@ -42,12 +36,12 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameColorBox : public Q3HBox
+class SelectGameColorBox : public QWidget
 {
     Q_OBJECT
 
 public:
-    SelectGameColorBox(QWidget *parent = 0, const char *name = 0);
+    SelectGameColorBox( QWidget *parent = 0 );
     void cleanGameInfo();
 
     ~SelectGameColorBox();
@@ -60,14 +54,11 @@ private:
 
 protected:
     GameInfo* m_gameinfo;
-    Q3ButtonGroup* color_group;
     QRadioButton* checkFarblos;
     QRadioButton* checkEichel;
     QRadioButton* checkGras;
     QRadioButton* checkHerz;
     QRadioButton* checkSchellen;
-    Q3VBox* page;
-    Q3VBox* row1;
     Card* m_Herz;
     Card* m_Schelle;
     Card* m_Eichel;
