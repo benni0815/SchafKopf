@@ -44,9 +44,6 @@
 #include <qtooltip.h>
 #include <q3vbox.h>
 #include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <QCustomEvent>
-#include <Q3MemArray>
 
 #include <KAction>
 #include <KActionCollection>
@@ -435,7 +432,7 @@ void SchafKopf::updateInfo()
 
 void SchafKopf::clearTable()
 {
-    Q3MemArray<int> cols(m_table->numRows());
+    QVector<int> cols(m_table->numRows());
     int i;
     
     for(i=0;i<m_table->numRows();i++)
