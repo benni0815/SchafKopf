@@ -28,8 +28,6 @@
 #include <QDebug>
 
 #include <qstring.h>
-//Added by qt3to4:
-#include <Q3ValueList>
 #include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
@@ -186,7 +184,7 @@ Card *ComputerPlayer::play()
 
 GameInfo* ComputerPlayer::gameInfo( bool force )
 {
-    Q3ValueList<game_data> lst;
+    QList<game_data> lst;
     
     for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
     {
