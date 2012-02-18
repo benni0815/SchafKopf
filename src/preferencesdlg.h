@@ -24,6 +24,7 @@
 //Added by qt3to4:
 #include <QLabel>
 #include <q3vbox.h>
+#include <QStackedWidget>
 
 class KIntNumInput;
 class KDoubleNumInput;
@@ -65,7 +66,7 @@ class PreferencesDlg : public KPageDialog
     private:
         Q3VBox* stackMoney;
         Q3VBox* stackPoints;
-        Q3WidgetStack* stack;
+        QStackedWidget * stack;
 
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;

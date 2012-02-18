@@ -27,7 +27,6 @@
 #include <kurlrequester.h>
 #include <KPageWidgetItem>
 
-#include <q3frame.h>
 #include <qlayout.h>
 #include <qradiobutton.h>
 #include <q3buttongroup.h>
@@ -36,7 +35,6 @@
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qtooltip.h>
-#include <q3widgetstack.h>
 #include <QGridLayout>
 
 PreferencesDlg::PreferencesDlg( QWidget *parent )
@@ -53,7 +51,6 @@ PreferencesDlg::PreferencesDlg( QWidget *parent )
 
     enableControls();
 }
-
 
 PreferencesDlg::~PreferencesDlg()
 {
@@ -205,7 +202,7 @@ void PreferencesDlg::addPageResults()
     m_radioMoney = new QRadioButton( i18n("count &money"), group );
     m_radioPoints = new QRadioButton( i18n("count &points"), group );
 
-    stack = new Q3WidgetStack( box );
+    stack = new QStackedWidget( box );
 
     stackMoney = new Q3VBox( stack );
     stackPoints = new Q3VBox( stack );
@@ -380,9 +377,9 @@ void PreferencesDlg::addPageGames()
 void PreferencesDlg::enableControls()
 {
     if( m_radioPoints->isChecked() )
-        stack->raiseWidget( stackPoints );
+        stack->setCurrentWidget( stackPoints );
     else if( m_radioMoney->isChecked() )
-            stack->raiseWidget( stackMoney );
+            stack->setCurrentWidget( stackMoney );
 
     m_checkDoubleNextGame->setEnabled( m_radioThrowAway->isChecked() );
 

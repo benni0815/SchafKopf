@@ -34,10 +34,8 @@
 #include <math.h>
 
 #include <qfontmetrics.h>
-#include <q3header.h>
 #include <qlabel.h>
 #include <qpixmap.h>
-#include <q3semaphore.h>
 #include <qsplitter.h>
 #include <q3table.h>
 #include <qtimer.h>
