@@ -37,7 +37,7 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qsplitter.h>
-#include <q3table.h>
+#include <QHeaderView>
 #include <qtimer.h>
 #include <qtooltip.h>
 #include <q3vbox.h>
@@ -79,19 +79,11 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     Q3VBox * leftBox = new Q3VBox( split );
     new QLabel( i18n("Results:"), leftBox );
 
-    m_table = new Q3Table( leftBox );
-    m_table->setReadOnly( true );
-    m_table->setNumCols( PLAYERS );
-    m_table->setLeftMargin( 0 );
+    m_table = new QTableWidget( leftBox );
+    m_table->setColumnCount( PLAYERS );
+    //m_table->setLeftMargin( 0 );
     updateTableNames();
-    //QFontMetrics fm( m_table->horizontalHeader()->font() );
-    for( unsigned int i = 0; i < PLAYERS; i++ )
-    {
-        /*int w = fm.width( m_table->horizontalHeader()->label(i) ) + 10;
-        if(w<45) w=45;
-        m_table->setColumnWidth( i, w );*/
-        m_table->setColumnStretchable( i, true );
-    }
+    m_table->horizontalHeader()->setResizeMode( QHeaderView::Stretch );
 
     Q3VGroupBox* groupInfo = new Q3VGroupBox( i18n("Game Information:"), leftBox );
     lblCurGame = new QLabel( groupInfo );
@@ -382,11 +374,15 @@ void SchafKopf::enableControls()
 
 void SchafKopf::slotPlayerResult( unsigned int col, const QString & result )
 {
-    if( !m_table->numRows() || !m_table->text( m_table->numRows()-1, col ).isEmpty() )
-        m_table->insertRows( m_table->numRows() );
+    int lastRow = m_table->rowCount() - 1;
+    if( lastRow == -1 || ( m_table->item( lastRow, 0 ) && m_table->item( lastRow, 1 ) && m_table->item( lastRow, 2 ) && m_table->item( lastRow, 3 ) ) )
+        m_table->insertRow( m_table->rowCount() );
 
-    m_table->setText( m_table->numRows()-1, col, result );
-    m_table->ensureCellVisible( m_table->numRows()-1, col );
+    QTableWidgetItem* item = new QTableWidgetItem();
+    item->setText( result );
+    item->setFlags( Qt::NoItemFlags | Qt::ItemIsEnabled );
+    m_table->setItem( m_table->rowCount() - 1, col, item );
+    m_table->scrollToItem( item );
 }
 
 void SchafKopf::updateInfo()
@@ -430,12 +426,8 @@ void SchafKopf::updateInfo()
 
 void SchafKopf::clearTable()
 {
-    QVector<int> cols(m_table->numRows());
-    int i;
-    
-    for(i=0;i<m_table->numRows();i++)
-        cols[i]=i;
-    m_table->removeRows(cols);
+    for( int i = 0; i < m_table->rowCount(); i++ )
+        m_table->removeRow( i );
 }
 
 void SchafKopf::configure()
@@ -449,7 +441,7 @@ void SchafKopf::configure()
 
 void SchafKopf::updateTableNames()
 {
-    m_table->setColumnLabels( Settings::instance()->playerNames() );
+    m_table->setHorizontalHeaderLabels( Settings::instance()->playerNames() );
 }
 
 GameInfo* SchafKopf::selectGame( bool force, int* cardids )

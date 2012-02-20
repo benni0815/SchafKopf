@@ -27,7 +27,7 @@
 
 #include <KXmlGuiWindow>
 #include <qpointer.h>
-//Added by qt3to4:
+#include <QTableWidget>
 #include <QCustomEvent>
 #include <QLabel>
 #include <QPushButton>
@@ -43,7 +43,6 @@ class KPushButton;
 class Q3Canvas;
 class QLabel;
 class QSplitter;
-class Q3Table;
 class StichDlg;
 
 /**
@@ -115,7 +114,7 @@ class SchafKopf : public KXmlGuiWindow
         Game* m_game;
         GameCanvas* m_canvasview;
         Q3Canvas* m_canvas;
-        Q3Table* m_table;
+        QTableWidget* m_table;
         QSplitter* split;
 
         QLabel* lblCurGame;
