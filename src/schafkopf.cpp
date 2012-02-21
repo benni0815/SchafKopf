@@ -40,8 +40,8 @@
 #include <QHeaderView>
 #include <qtimer.h>
 #include <qtooltip.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
+#include <QVBoxLayout>
+#include <QGroupBox>
 
 #include <KAction>
 #include <KActionCollection>
@@ -76,23 +76,34 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_canvasview->setHScrollBarMode(Q3ScrollView::AlwaysOff);
     m_canvasview->setVScrollBarMode(Q3ScrollView::AlwaysOff);
     
-    Q3VBox * leftBox = new Q3VBox( split );
-    new QLabel( i18n("Results:"), leftBox );
+    QLabel* label = new QLabel( i18n("Results:") );
+    label->setAlignment( Qt::AlignHCenter );
 
-    m_table = new QTableWidget( leftBox );
+    m_table = new QTableWidget;
     m_table->setColumnCount( PLAYERS );
     //m_table->setLeftMargin( 0 );
     updateTableNames();
     m_table->horizontalHeader()->setResizeMode( QHeaderView::Stretch );
 
-    Q3VGroupBox* groupInfo = new Q3VGroupBox( i18n("Game Information:"), leftBox );
-    lblCurGame = new QLabel( groupInfo );
-    lblDoubled = new QLabel( groupInfo );
+    lblCurGame = new QLabel;
+    lblDoubled = new QLabel;
 
-    btnLastTrick = new KPushButton( groupInfo );
+    btnLastTrick = new KPushButton;
     btnLastTrick->setFlat( true );
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
+
+    QGroupBox* groupInfo = new QGroupBox( i18n("Game Information:") );
+    QVBoxLayout *groupInfo_layout = new QVBoxLayout( groupInfo );
+    groupInfo_layout->addWidget( lblCurGame );
+    groupInfo_layout->addWidget( lblDoubled );
+    groupInfo_layout->addWidget( btnLastTrick );
+
+    QWidget* leftBox = new QWidget( split );
+    QVBoxLayout* leftBox_layout = new QVBoxLayout( leftBox );
+    leftBox_layout->addWidget( label );
+    leftBox_layout->addWidget( m_table );
+    leftBox_layout->addWidget( groupInfo );
 
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
     connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
