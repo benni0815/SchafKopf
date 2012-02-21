@@ -21,9 +21,7 @@
 #define PREFERENCESDLG_H
 
 #include <kpagedialog.h>
-//Added by qt3to4:
 #include <QLabel>
-#include <q3vbox.h>
 #include <QStackedWidget>
 
 class KIntNumInput;
@@ -64,8 +62,8 @@ class PreferencesDlg : public KPageDialog
         void addPageGames();
 
     private:
-        Q3VBox* stackMoney;
-        Q3VBox* stackPoints;
+        QWidget* stackMoney;
+        QWidget* stackPoints;
         QStackedWidget * stack;
 
         QRadioButton* m_radioMoney;

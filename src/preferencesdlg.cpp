@@ -190,22 +190,19 @@ void PreferencesDlg::addPageResults()
     KPageWidgetItem *item = addPage( box, i18n( "Results" ) );
     item->setIcon( KIcon( "edit" ) );
 
-    QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
-    layout->setSpacing( 6 );
-
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
     KLocale* locale = KGlobal::locale();
 
-    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("Results:"), box, "group" );
-    m_radioMoney = new QRadioButton( i18n("count &money"), group );
-    m_radioPoints = new QRadioButton( i18n("count &points"), group );
+    m_radioMoney = new QRadioButton( i18n("count &money") );
+    m_radioPoints = new QRadioButton( i18n("count &points") );
 
-    stack = new QStackedWidget( box );
+    QGroupBox* group = new QGroupBox( i18n("Results:") );
+    QVBoxLayout *button_layout = new QVBoxLayout( group );
+    button_layout->addWidget( m_radioMoney );
+    button_layout->addWidget( m_radioPoints );
 
-    stackMoney = new Q3VBox( stack );
-    stackPoints = new Q3VBox( stack );
+    stackMoney = new QWidget;
 
     m_money_call = new KDoubleNumInput( 0.0, 100.00, rm->rufspiel, stackMoney, 0.10, 2 );
     m_money_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
@@ -230,6 +227,16 @@ void PreferencesDlg::addPageResults()
     m_money_ramsch = new KDoubleNumInput( 0.0, 100.00, rm->ramsch, stackMoney, 0.10, 2 );
     m_money_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_money_ramsch->setSuffix( locale->currencySymbol() );
+
+    QVBoxLayout* stackMoney_layout = new QVBoxLayout( stackMoney );
+    stackMoney_layout->addWidget( m_money_call );
+    stackMoney_layout->addWidget( m_money_solo );
+    stackMoney_layout->addWidget( m_money_lauf );
+    stackMoney_layout->addWidget( m_money_notrick );
+    stackMoney_layout->addWidget( m_money_schneider );
+    stackMoney_layout->addWidget( m_money_ramsch );
+
+    stackPoints = new QWidget;
 
     m_point_call = new KIntNumInput( (int)rp->rufspiel, stackPoints, 10 );
     m_point_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
@@ -261,12 +268,24 @@ void PreferencesDlg::addPageResults()
     m_point_ramsch->setMinimum( 0 );
     m_point_ramsch->setMaximum( 100 );
 
+    QVBoxLayout* stackPoints_layout = new QVBoxLayout( stackPoints );
+    stackPoints_layout->addWidget( m_point_call );
+    stackPoints_layout->addWidget( m_point_solo );
+    stackPoints_layout->addWidget( m_point_lauf );
+    stackPoints_layout->addWidget( m_point_notrick );
+    stackPoints_layout->addWidget( m_point_schneider );
+    stackPoints_layout->addWidget( m_point_ramsch );
+
+    stack = new QStackedWidget( box );
     stack->addWidget( stackMoney );
     stack->addWidget( stackPoints );
 
     delete rm;
     delete rp;
 
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
     layout->addWidget( group, 0, 0 );
     layout->addWidget( stack, 1, 0 );
 
