@@ -30,11 +30,6 @@
 #include <klocale.h>
 #include <qtimer.h>
 #include <qimage.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QFocusEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
 #include <QDebug>
 
 class CanvasText : public Q3CanvasText {

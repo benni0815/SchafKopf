@@ -411,8 +411,10 @@ bool Game::setupGameInfo(Player *players[])
         // find the highest game in the list
         GameInfo* best = games.first();
         for( int t = 0; t < games.count(); t++ )
+        {
             if( *games.at( t ) > *best )
                 best = games.at( t );
+        }
 
         m_gameinfo = *best;
     }
