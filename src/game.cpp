@@ -53,6 +53,7 @@ Game::Game(sem_t* sem, QObject *parent )
     // Create our player objects
     // delete these only in the destructor    
     m_players[0] = new HumanPlayer( def_id++, this );
+
     for( i=1;i<PLAYERS;i++)
         m_players[i] = new ComputerPlayer( def_id++, this );
 #else
@@ -93,7 +94,8 @@ void Game::startGame()
 
     m_allcards.randomize();
     for( i=0; i<PLAYERS; i++)
-    playercards[i]=new CardList();
+        playercards[i]=new CardList();
+
     for( i=0; i<CARD_CNT; i++)
         playercards[i%PLAYERS]->append(m_allcards.at(i));
 
@@ -129,68 +131,68 @@ void Game::gameLoop()
         // setLast() has to be done after startGame(),
         // so that CanvasPlayer draws cards correctly for
         // doubling when gameStarted is emited.
-    for(i=0;i<PLAYERS;i++)
+        for(i=0;i<PLAYERS;i++)
         {
-        tmp[i]=m_players[(i+gamecnt)%PLAYERS];
-            if( (i==PLAYERS-1) )
+            tmp[i]=m_players[(i+gamecnt)%PLAYERS];
+            if( (i == PLAYERS - 1 ) )
                 postEvent( PlayerIsLast, tmp[i]->id() );
         }
 
-    for(i=0;i<PLAYERS;i++)
-    {
-        tmp[i]->klopfen();
-        tmp[i]->sortCards();
-        if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
+        for(i=0;i<PLAYERS;i++)
         {
+            tmp[i]->klopfen();
+            tmp[i]->sortCards();
+            if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
+            {
                 //m_canvas->information( i18n("%1 has doubled.").arg( tmp[i]->name() ) );
                 postEvent( PlayerDoubled, tmp[i]->id(), 0, i18n("%1 has doubled.").arg( tmp[i]->name() ), true );
                 // emit signalDoubled();
+            }
+            if(terminated)
+                return;
         }
-        if(terminated)
-        return;
-    }
 
         postEvent( RedrawPlayers );
 
         // find a player you can playercards
         // and setup m_gameinfo
-    if( !setupGameInfo(tmp) )
-        continue;
+        if( !setupGameInfo(tmp) )
+            continue;
 
         for(i=0;i<PLAYERS;i++)
-    {
-        tmp[i]->sortCards();
-        tmp[i]->init();
-    }
+        {
+            tmp[i]->sortCards();
+            tmp[i]->init();
+        }
 
         postEvent( RedrawPlayers );
 
-        for(i=0;i<TURNS ;i++)
-    {
+        for( i = 0; i < TURNS; i++ )
+        {
             m_currstich.clear();
 
-        for(a=0;a<PLAYERS;a++)
-        {
+            for(a=0;a<PLAYERS;a++)
+            {
                 // TODO: if this check fails we have
                 //       a problem anyways so we should
                 //       maybe remove it
                 if(tmp[a])
                 {
                     m_nextPlayer = ( a+1 < PLAYERS ? tmp[a+1] : NULL );
-            c = tmp[a]->play();
+                    c = tmp[a]->play();
                 }
 
-        if(terminated || c==NULL)
-            return;
+                if(terminated || c==NULL)
+                    return;
 
-        for(unsigned int z=0;z<tmp[a]->cards()->count();z++)
-        {
-            if(tmp[a]->cards()->at(z) == c)
-            {
-                        tmp[a]->cards()->take(z);
-                        break;
-            }
-        }
+                for(unsigned int z=0;z<tmp[a]->cards()->count();z++)
+                {
+                    if(tmp[a]->cards()->at(z) == c)
+                    {
+                                tmp[a]->cards()->take(z);
+                                break;
+                    }
+                }
 
                 m_currstich.append(c);
                 int* cards = new int[2];
@@ -201,34 +203,35 @@ void Game::gameLoop()
                 //emit playerPlayedCard(tmp[a]->id(),c);
 
 #ifndef SIMULATION_MODE
-                sleep( 1 );
+               sleep( 1 );
 #endif // SIMULATION_MODE
 
-        if( terminated )
-            return;
-        }
-        index = highestCard();
+                if( terminated )
+                    return;
+            }
+            index = highestCard();
             tmp[index]->addStich( m_currstich );
 
             playernames = new QStringList();
-            for(a=0;a<PLAYERS;a++)
+            for( a = 0; a < PLAYERS; a++ )
                 playernames->append( m_currstich.at(a)->owner()->name() );
 
-        postEvent( PlayerMadeStich, tmp[index]->id(), m_currstich.toIntList(),
-                       tmp[index]->name(), false, playernames );
+            postEvent( PlayerMadeStich, tmp[index]->id(), m_currstich.toIntList(), tmp[index]->name(), false, playernames );
 
             //emit playerMadeStich(tmp[index]->id());
-        // Sortiere so, das der stecher n�hste karte spielt
-        for(realindex=0;realindex<PLAYERS;realindex++)
-        if(m_players[realindex]==tmp[index])
-            break;
-        for(a=0;a<PLAYERS;a++)
-        tmp[a]=m_players[(a+realindex)%PLAYERS];
+            // Sortiere so, das der stecher n�hste karte spielt
+            for( realindex = 0; realindex < PLAYERS; realindex++ )
+            {
+                if(m_players[realindex]==tmp[index])
+                    break;
+            }
+            for( a = 0; a < PLAYERS; a++ )
+                tmp[a]=m_players[(a+realindex)%PLAYERS];
         }
 
-    if(!terminated)
-        gameResults();
-    gamecnt++;
+        if(!terminated)
+            gameResults();
+        gamecnt++;
 
 #ifdef SIMULATION_MODE
         if( gamecnt >= SIMULATION_MODE_MAX )
@@ -262,8 +265,10 @@ void Game::endGame(void)
 Player* Game::findId( unsigned int id ) const
 {
     for( unsigned int i = 0; i < PLAYERS; i++)
+    {
         if( id == m_players[i]->id() )
             return m_players[i];
+    }
     return 0;
 }
 
@@ -291,9 +296,10 @@ int Game::highestCard( CardList* list )
     }
     
     for( ; i < (signed int)list->count(); i++ )
+    {
         if( list->at(i) == high )
             break;
-            
+    }
     return i;
 }
 
@@ -304,26 +310,26 @@ bool Game::isHigher( Card* card, Card* high )
 
     cardVal=m_gameinfo.evalCard(card, &m_gameinfo);
     highVal=m_gameinfo.evalCard(high, &m_gameinfo);
-    if(m_gameinfo.istTrumpf(card) || m_gameinfo.istTrumpf(high))
-    return highVal < cardVal;
+    if( m_gameinfo.istTrumpf( card ) || m_gameinfo.istTrumpf( high ) )
+        return highVal < cardVal;
     else
     {
-    switch( m_gameinfo.mode() )
-    {
-        case GameInfo::GEIER:
-        case GameInfo::WENZ:
-        colcnt=NUMCARDS-1;
-        break;
-        case GameInfo::RAMSCH:
-        case GameInfo::RUFSPIEL:
-        case GameInfo::STICHT:
-        case GameInfo::DACHS:
-        default:
-        colcnt=NUMCARDS-2;
-        break;
-    }
-    if((highVal-1)/colcnt==(cardVal-1)/colcnt)
-        return highVal < cardVal;
+        switch( m_gameinfo.mode() )
+        {
+            case GameInfo::GEIER:
+            case GameInfo::WENZ:
+                colcnt=NUMCARDS-1;
+                break;
+            case GameInfo::RAMSCH:
+            case GameInfo::RUFSPIEL:
+            case GameInfo::STICHT:
+            case GameInfo::DACHS:
+            default:
+                colcnt=NUMCARDS-2;
+                break;
+        }
+        if( ( highVal - 1 ) / colcnt == ( cardVal - 1 ) / colcnt )
+            return highVal < cardVal;
     }
     return false;
 }
@@ -368,18 +374,18 @@ bool Game::setupGameInfo(Player *players[])
         if(playerInstance>3)
              playerInstance=playerInstance-4;
         GameInfo* info = players[i]->gameInfo();
-    if(terminated)
-        return false;
-    if( info )
+        if(terminated)
+            return false;
+        if( info )
         {
-        info->setSpieler( players[i] );
+            info->setSpieler( players[i] );
             games.append( info );
             if( players[i]->rtti() != Player::HUMAN )
             {
                 postEvent( Bubble, playerInstance, 0, i18n("%1: \"I want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
             }
-        //m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
+            //m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
         }
         else
         {
@@ -388,7 +394,7 @@ bool Game::setupGameInfo(Player *players[])
                 postEvent( Bubble, playerInstance, 0, i18n("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
             }
-        //m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
+            //m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
         }
     }
 
@@ -404,10 +410,10 @@ bool Game::setupGameInfo(Player *players[])
     {
         // find the highest game in the list
         GameInfo* best = games.first();
-        for( i=0;i<games.count();i++ )        
-            if( *games.at( i ) > *best )
-                best = games.at( i );
-        
+        for( int t = 0; t < games.count(); t++ )
+            if( *games.at( t ) > *best )
+                best = games.at( t );
+
         m_gameinfo = *best;
     }
 
@@ -417,12 +423,14 @@ bool Game::setupGameInfo(Player *players[])
         Card sau( Card::SAU, static_cast<Card::EColor>(m_gameinfo.color()) );
         for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
         {
-            for( unsigned int z=0;z<CARD_CNT/PLAYERS;z++ )
+            for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
+            {
                 if( players[i]->cards()->at(z)->isEqual( &sau ) )
                 {
                     m_gameinfo.setMitspieler(players[i]);
                     break;
                 }
+            }
         }
     }
 
@@ -446,6 +454,7 @@ bool Game::setupGameInfoForced(Player *players[])
         // if someone has doubled he is forced to player
         // if more players have doubled the last one has to play
         for( i=PLAYERS-1;i>=0;i-- )
+        {
             if( players[i]->geklopft() )
             {
                 postEvent( InfoMessage, 0, 0, i18n("%1 has doubled last\nand has to play now.").arg( players[i]->name() ), true );
@@ -456,6 +465,7 @@ bool Game::setupGameInfoForced(Player *players[])
                 delete info;
                 return true;
             }
+        }
     }
 
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
@@ -472,6 +482,7 @@ bool Game::setupGameInfoForced(Player *players[])
     {
         // find player with eichel ober
         for( i=0;i<PLAYERS;i++ )
+        {
             if( players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
             {
                 postEvent( InfoMessage, 0, 0, i18n("%1 has got the Eichel Ober\nand has to play.").arg( players[i]->name() ), true );
@@ -482,6 +493,7 @@ bool Game::setupGameInfoForced(Player *players[])
                 delete info;
                 return true;
             }
+        }
     }
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
     {
