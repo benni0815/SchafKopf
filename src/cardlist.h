@@ -21,7 +21,6 @@
 #ifndef CARDLIST_H
 #define CARDLIST_H
 
-#include <q3ptrlist.h>
 #include "card.h"
 
 typedef int (*eval_func)(Card *card, void *param);
@@ -32,7 +31,7 @@ typedef int (*eval_func)(Card *card, void *param);
  * @author Dominik Seichter
  */
 
-class CardList : public Q3PtrList<Card>
+class CardList : public QList<Card*>
 {
     public:
         CardList();
@@ -67,6 +66,9 @@ class CardList : public Q3PtrList<Card>
         bool contains( int color, int type );
         bool contains( int cardid );
 
+        void removeCard( uint index );
+        void removeCard( Card* card );
+
         CardList* FindCards(int color, int type);
         void RemoveCards(CardList* itemsToRem);
 
@@ -76,6 +78,11 @@ class CardList : public Q3PtrList<Card>
           * int has the id of one card assigned.
           */
         int* toIntList();
+
+        void setAutoDelete( bool autoDelete ) { m_autoDelete = autoDelete; }
+
+    private:
+        bool m_autoDelete;
 };
 
 #endif

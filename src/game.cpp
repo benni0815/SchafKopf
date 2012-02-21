@@ -185,11 +185,11 @@ void Game::gameLoop()
                 if(terminated || c==NULL)
                     return;
 
-                for(unsigned int z=0;z<tmp[a]->cards()->count();z++)
+                for( int z = 0; z<tmp[a]->cards()->count(); z++ )
                 {
                     if(tmp[a]->cards()->at(z) == c)
                     {
-                                tmp[a]->cards()->take(z);
+                                tmp[a]->cards()->removeAt(z);
                                 break;
                     }
                 }
@@ -282,12 +282,14 @@ int Game::highestCard( CardList* list )
     if( !list )
         list = &m_currstich;
         
-    Card* high = list->first();
-    Card* card = list->first();
+    Card* high = 0;
+    if( !list->empty() ) high = list->first();
+    Card* card = 0;
     int i = 0;
 
-    while( (card = list->next() ) )
+    for( int t = 0; t < list->count(); t++ )
     {
+        card = list->at( t );
         if( isHigher( card, high ) )
         {
             high = card;

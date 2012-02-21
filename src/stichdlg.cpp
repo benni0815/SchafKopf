@@ -67,7 +67,7 @@ void StichDlg::changed( const QString & name, int* list, QStringList* playerlist
     else
         trick->setText( i18n("No trick was made.") );
 
-    for( unsigned int i = 0; i < PLAYERS; i++ )
+    for( int i = 0; i < PLAYERS; i++ )
     {
         if( stich.count() > i ) 
         {

@@ -28,12 +28,12 @@
 
 CardList::CardList()
 {
-    setAutoDelete( false );
+    m_autoDelete = false;
 }
 
 CardList::CardList( int* cards )
 {
-    setAutoDelete( false );
+    m_autoDelete = false;
 
     if( cards )
         while( *cards != 0 )
@@ -45,8 +45,9 @@ CardList::CardList( int* cards )
 
 void CardList::init()
 {
-    setAutoDelete( true );
-    clear();
+    m_autoDelete = true;
+    while( !isEmpty() )
+        delete takeFirst();
 
     for( int i = 0; i < CARD_CNT ; i += 4  )
         for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
@@ -56,7 +57,7 @@ void CardList::init()
 int CardList::points()
 {
     int tmp = 0;
-    for( unsigned int i = 0; i < this->count(); i++ )
+    for( int i = 0; i < this->count(); i++ )
         tmp += at( i )->points();
         
     return tmp;
@@ -64,7 +65,7 @@ int CardList::points()
 
 void CardList::appendList( CardList* list )
 {
-    for( unsigned int i=0;i<list->count();i++)
+    for( int i=0;i<list->count();i++)
         append( list->at( i ) );
 }
 
@@ -93,8 +94,8 @@ void CardList::randomize()
     for(i=0;i<CARD_CNT;i++)
         append(at(rnd[i]));
     while(count() > CARD_CNT )
-        (void)take(0); // we always remove the first item
-                       // Do not use remove(), as autoDeletion is
+        (void)removeAt(0); // we always remove the first item
+                       // Do not use removeCard(), as autoDeletion is
                        // enabled!!! 
 }
 
@@ -106,7 +107,7 @@ CardList* CardList::FindCards(int color, int type)
 {
     CardList* found=new CardList();
 
-    for( unsigned int i = 0; i < this->count(); i++ )
+    for( int i = 0; i < this->count(); i++ )
     {
         if( (color==Card::NOCOLOR || at(i)->color()==color) && (type==Card::NOSTICH || at(i)->card()==type) )
             found->append(at(i));
@@ -122,7 +123,7 @@ bool CardList::contains( int color, int type )
 
 bool CardList::contains( int cardid )
 {
-    for( unsigned int i = 0; i < this->count(); i++ )
+    for( int i = 0; i < this->count(); i++ )
     {
         if( at(i)->id() == cardid )
             return true;
@@ -134,12 +135,14 @@ void CardList::RemoveCards(CardList* itemsToRem)
 {
     Card *card;
     Card *thiscard;
-    for ( card = itemsToRem->first(); card; card = itemsToRem->next() )
+    for( int i = 0; i < itemsToRem->count(); i++ )
     {
-        for(thiscard = this->first(); thiscard; thiscard = this->next() )
+        card = itemsToRem->at( i );
+        for( int t = 0; t < this->count(); t++ )
         {
+            thiscard = this->at( t );
             if(thiscard->isEqual(card))
-                this->removeNode(this->currentNode());
+                removeCard( thiscard );
         }
     }
 }
@@ -172,7 +175,7 @@ void CardList::sort(eval_func eval, void *param)
 int* CardList::toIntList()
 {
     int* list = new int[count()+1];
-    uint i;
+    int i;
 
     for( i=0; i<count(); i++ )
         list[i] = at(i)->id();
@@ -181,3 +184,18 @@ int* CardList::toIntList()
     return list;
 }
 
+void CardList::removeCard( uint index )
+{
+    Card* card = this->takeAt( index );
+    if( m_autoDelete ) delete card;
+}
+
+void CardList::removeCard( Card* card )
+{
+    int i = this->indexOf( card );
+    if (i != -1)
+    {
+        card = this->takeAt( i );
+        if( m_autoDelete ) delete card;
+    }
+}

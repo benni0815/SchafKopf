@@ -159,7 +159,7 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
             return false;
 
         // ok now we have to test if we have a card in this color with is no trumpf_index
-        for( unsigned int i=0;i<cards->count();i++)
+        for( int i = 0; i < cards->count(); i++ )
         {
             Card* c = cards->at(i);
             if( c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER )

@@ -188,7 +188,7 @@ void CanvasPlayer::init()
 
     if( m_cards->count() )
     {
-        for( unsigned int z = 0; z < m_cards->count(); z++ ) 
+        for( int z = 0; z < m_cards->count(); z++ )
         {
             CanvasCard *c = m_items[z];
             c->setCard( m_cards->at( z ) );

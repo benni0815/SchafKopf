@@ -53,7 +53,7 @@ Card *HumanPlayer::play()
     int* ret;
     int cpy;
     int* cpylist;
-    unsigned int i;
+    int i;
     
     m_allowed = allowedCards();
     m_card=NULL;

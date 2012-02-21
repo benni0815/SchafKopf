@@ -46,7 +46,7 @@ CardList *Player::cards() const
 
 void Player::setCards( CardList *cards )
 {
-    unsigned int i = 0;
+    int i = 0;
 
     delete m_cards;
 
@@ -86,7 +86,7 @@ CardList* Player::stiche() const
 
 void Player::addStich( CardList stich )
 {
-    for( unsigned int i = 0; i < stich.count(); i++ )
+    for( int i = 0; i < stich.count(); i++ )
         m_stiche->append( stich.at( i ) );
 }
 
@@ -94,8 +94,9 @@ void Player::removeTrumpf(CardList* liste)
 {
     Card *card;
     CardList* entfernen=new CardList;
-    for ( card = liste->first(); card; card = liste->next() )
+    for( int i = 0; i < liste->count(); i++ )
     {
+        card = liste->at( i );
         if(m_game->gameInfo()->istTrumpf(card)) entfernen->append(card);
     }
     liste->RemoveCards(entfernen);
@@ -105,8 +106,9 @@ void Player::removeTrumpf(CardList* liste)
 bool Player::hasTrumpf(CardList* liste)
 {
     Card* card;
-    for ( card = liste->first(); card; card = liste->next() )
+    for( int i = 0; i < liste->count(); i++ )
     {
+        card = liste->at( i );
         if(m_game->gameInfo()->istTrumpf(card)) return true;
     }
     return false;
@@ -172,11 +174,11 @@ CardList* Player::allowedCards()
         CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
         CardList* Spielfarbe= allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
         // entferne alle trumpfe aus Spielfarbe
-        for(unsigned int i=0;i<Spielfarbe->count();i++)
+        for( int i = 0; i < Spielfarbe->count(); i++ )
         {
             if( istTrumpf( Spielfarbe->at(i) ) )
             {
-                Spielfarbe->removeRef( Spielfarbe->at(i) );
+                Spielfarbe->removeCard( Spielfarbe->at(i) );
                 qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
             }
         }

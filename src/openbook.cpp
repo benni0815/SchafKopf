@@ -35,7 +35,7 @@
         if( !(condition) ) \
             return 0; \
         CardList* list = new CardList(); \
-        unsigned int i=0; \
+        int i=0; \
         for( i=0;i<allowed->count();i++ ) \
         { \
             Card* c = allowed->at( i ); \
