@@ -33,9 +33,7 @@
 #include <klocale.h>
 #include <kmessagebox.h>
 #include <string.h>
-//Added by qt3to4:
 #include <QCustomEvent>
-#include <Q3PtrList>
 #include <QEvent>
 
 unsigned int Game::def_id=0;
@@ -355,8 +353,7 @@ bool Game::setupGameInfo(Player *players[])
 {
     // list of games the players want to playercards
     // maximum 4 entries
-    Q3PtrList<GameInfo> games;
-    games.setAutoDelete( true );
+    QList<GameInfo*> games;
     unsigned int i = 0;
     int humanPlayer = 0, playerInstance;
     for( i=0;i<PLAYERS;i++)
