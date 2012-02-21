@@ -33,7 +33,6 @@ class QSpinBox;
 class QCheckBox;
 class QPushButton;
 class KUrlRequester;
-class Q3WidgetStack;
 
 /**
 Preferences dialog for schafkopf

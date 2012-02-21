@@ -29,8 +29,6 @@
 
 #include <qlayout.h>
 #include <qradiobutton.h>
-#include <q3buttongroup.h>
-#include <Q3HButtonGroup>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -148,21 +146,27 @@ void PreferencesDlg::addPageRules()
     KPageWidgetItem *item = addPage( box, i18n( "Rules" ) );
     item->setIcon( KIcon( "schafkopf" ) );
 
+    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
+
+    m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones.") );
+    m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play.") );
+    m_radioRamsch = new QRadioButton( i18n("Play Ramsch") );
+    m_radioRamsch->setToolTip( i18n( "The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too." ) );
+    m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play.") );
+    m_checkDoublerPlays->setToolTip( i18n( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
+    m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together.") );
+
+    QGroupBox* group = new QGroupBox( i18n("No one wants to play:") );
+    QVBoxLayout *button_layout = new QVBoxLayout( group );
+    button_layout->addWidget( m_radioThrowAway );
+    button_layout->addWidget( m_radioForcedGame );
+    button_layout->addWidget( m_radioRamsch );
+    button_layout->addWidget( m_checkDoublerPlays );
+    button_layout->addWidget( m_checkDoubleNextGame );
+
     QGridLayout* layout = new QGridLayout( box );
     layout->setMargin( 6 );
     layout->setSpacing( 6 );
-    QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
-
-    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("No one wants to play:"), box, "group" );
-    m_radioThrowAway = new QRadioButton( i18n("&Throw cards together and give new ones."), group );
-    m_radioForcedGame = new QRadioButton( i18n("The player who has the Eichel &Ober has to play."), group );
-    m_radioRamsch = new QRadioButton( i18n("Play Ramsch"), group );
-
-    m_radioRamsch->setToolTip( i18n( "The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too." ) );
-    m_checkDoublerPlays = new QCheckBox ( i18n("The &last player who has doubled has to play."), group );
-    m_checkDoublerPlays->setToolTip( i18n( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
-    m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together."), group );
-
     layout->addWidget( group, 0, 0 );
     layout->addItem( spacer, 1, 0 );
 
@@ -310,15 +314,23 @@ void PreferencesDlg::addPageView()
     layout->setSpacing( 6 );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
-    Q3VButtonGroup* group2 = new Q3VButtonGroup( i18n("Game Canvas:"), box, "group2" );
-    QLabel* label3 = new QLabel( i18n("&Background image:"), group2 );
-    m_linePathBackground = new KUrlRequester( Settings::instance()->backgroundImage(), group2 );
-    m_pushURLClear = new QPushButton( i18n("&Clear background image"), group2 );
+    QLabel* label3 = new QLabel( i18n("&Background image:") );
+    m_linePathBackground = new KUrlRequester( Settings::instance()->backgroundImage() );
+    m_pushURLClear = new QPushButton( i18n("&Clear background image") );
     label3->setBuddy( m_linePathBackground );
 
-    Q3VButtonGroup* group = new Q3VButtonGroup( i18n("Card Arrangement:"), box, "group" );
-    m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick."), group );
+    QGroupBox* group2 = new QGroupBox( i18n("Game Canvas:") );
+    QVBoxLayout *button_layout = new QVBoxLayout( group2 );
+    button_layout->addWidget( label3 );
+    button_layout->addWidget( m_linePathBackground );
+    button_layout->addWidget( m_pushURLClear );
+
+    m_checkRearrangeCards = new QCheckBox ( i18n("Rearrange cards after each trick.") );
     m_checkRearrangeCards->setToolTip( i18n( "Cards will be rearranged after each trick." ) );
+
+    QGroupBox* group = new QGroupBox( i18n("Card Arrangement:") );
+    QVBoxLayout *button_layout2 = new QVBoxLayout( group );
+    button_layout2->addWidget( m_checkRearrangeCards );
 
     layout->addWidget( group2, 0, 0 );
     layout->addWidget( group, 1, 0 );
