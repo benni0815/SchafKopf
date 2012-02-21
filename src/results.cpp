@@ -196,7 +196,7 @@ double Results::points( Player* player )
     m = klopfen( player->game()->timesDoubled(), m );
     
     //if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
-    if( !m_winners.containsRef( player ) )
+    if( !m_winners.contains( player ) )
         m *= -1.0;
         
     //if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
@@ -204,12 +204,12 @@ double Results::points( Player* player )
 
     if( m_winners.count() == 1 )
     {
-        if( m_winners.containsRef( player ) )
+        if( m_winners.contains( player ) )
             m *= (PLAYERS - 1);
     }
     else if( m_winners.count() == PLAYERS - 1 )
     {
-        if( !m_winners.containsRef( player ) )
+        if( !m_winners.contains( player ) )
             m *= m_winners.count();
     }
        
