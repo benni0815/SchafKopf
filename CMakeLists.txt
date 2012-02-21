@@ -63,6 +63,8 @@ SET(schafkopf_HDRS
     src/newgamewizard.h
 )
 
+SET(CMAKE_BUILD_TYPE Debug)
+
 QT4_WRAP_CPP(schafkopf_HDRS_MOC ${schafkopf_HDRS})
 
 INCLUDE(${QT_USE_FILE})
