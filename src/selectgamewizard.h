@@ -20,7 +20,7 @@
 #ifndef SELECTGAMEWIZARD_H
 #define SELECTGAMEWIZARD_H
 
-#include <k3wizard.h>
+#include <QWizard>
 #include <QLabel>
 
 class QWidget;
@@ -35,20 +35,21 @@ class GameInfo;
 /**
 @author Christian Kern
 */
-class SelectGameWizard : public K3Wizard
+class SelectGameWizard : public QWizard
 {
     Q_OBJECT
 
 public:
 
-    SelectGameWizard(bool force, CardList* list, QWidget *parent = 0, const char *name = 0 );
+    SelectGameWizard(bool force, CardList* list, QWidget *parent = 0 );
     ~SelectGameWizard();
-     void showPage(QWidget* page);
-     CardList* getCardList();
+    CardList* getCardList();
     GameInfo* gameInfo();
-    void canFinish(bool fin);
 
     void reject();
+
+public slots:
+    void pageChanged( int id );
 
 protected:
     CardList* m_list;

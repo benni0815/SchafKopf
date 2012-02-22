@@ -42,8 +42,9 @@
 #include <qpixmap.h>
 
 SelectGameColorBox::SelectGameColorBox( QWidget *parent )
-    : QWidget( parent )
+    : QWizardPage( parent )
 {
+    setTitle( i18n("Step 2/2: Select Color") );
     m_allowed = Settings::instance()->allowedGames();
 
     m_gameinfo=0;
@@ -217,7 +218,6 @@ bool SelectGameColorBox::getFinish()
 
 void SelectGameColorBox::setGameInfo(GameInfo* info)
 {
-
     m_gameinfo=info;
     statusChanged();
 }

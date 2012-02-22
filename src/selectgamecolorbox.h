@@ -21,6 +21,7 @@
 #define SELECTGAMECOLORBOX_H
 
 #include <QLabel>
+#include <QWizardPage>
 
 class QWidget;
 class QLineEdit;
@@ -36,7 +37,7 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameColorBox : public QWidget
+class SelectGameColorBox : public QWizardPage
 {
     Q_OBJECT
 

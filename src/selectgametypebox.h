@@ -21,6 +21,7 @@
 #define SELECTGAMETYPEBOX_H
 
 #include <QLabel>
+#include <QWizardPage>
 
 class QWidget;
 class QLineEdit;
@@ -33,7 +34,7 @@ struct t_AllowedGames;
 /**
 @author Christian Kern
 */
-class SelectGameTypeBox : public QWidget
+class SelectGameTypeBox : public QWizardPage
 {
     Q_OBJECT
 public:

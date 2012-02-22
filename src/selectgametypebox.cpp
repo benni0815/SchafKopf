@@ -36,7 +36,6 @@
 #include <QGroupBox>
 #include <qlayout.h>
 #include <klocale.h>
-#include <k3wizard.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 
@@ -48,8 +47,9 @@
 #define HELP_GAMETYPE_GEIER i18n("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
-    : QWidget( parent )
+    : QWizardPage( parent )
 {
+    setTitle( i18n("Step 1/2: Select Game") );
     m_allowed = Settings::instance()->allowedGames();
 
     QWidget* row1 = new QWidget;

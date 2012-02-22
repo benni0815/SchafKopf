@@ -32,23 +32,18 @@
 #include "cardlist.h"
 #include "card.h"
 
-SelectGameWizard::SelectGameWizard(bool force, CardList* list, QWidget *parent, const char *name )
-    : K3Wizard( parent, name, TRUE )
+SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent )
+    : QWizard( parent )
 {
     m_force = force;
     m_list=list;
     m_closing=false;
     box1 = new SelectGameTypeBox( this );
     box2 = new SelectGameColorBox( this );
-    addPage( box1, i18n("Step 1/2: Select Game") );
-    addPage( box2, i18n("Step 2/2: Select Color") );
-
-
-    cancelButton()->setEnabled( !m_force );
-    setNextEnabled( box1, TRUE );
-    setFinishEnabled(box2, TRUE);
-    setHelpEnabled( box1, FALSE );
-    setHelpEnabled(box2, FALSE);
+    addPage( box1 );
+    addPage( box2 );
+    button( QWizard::CancelButton )->setEnabled( !m_force );
+    connect( this, SIGNAL( currentIdChanged( int ) ), this, SLOT( pageChanged( int ) ) );
 }
 
 CardList* SelectGameWizard::getCardList()
@@ -63,30 +58,24 @@ GameInfo* SelectGameWizard::gameInfo()
     return NULL;
 }
 
-void SelectGameWizard::showPage( QWidget* page )
+void SelectGameWizard::pageChanged( int id )
 {
-    if(page==box2&&!m_closing)
+    if( id == 1 && !m_closing )
     {
         box2->cleanGameInfo();
-        box2->setGameInfo(box1->gameInfo());
-        setFinishEnabled(box2, box2->getFinish());
+        box2->setGameInfo( box1->gameInfo() );
+        button( QWizard::FinishButton )->setEnabled( box2->getFinish() );
     }
-    K3Wizard::showPage(page);
-}
-
-void SelectGameWizard::canFinish(bool fin)
-{
-    if(box2) setFinishEnabled(box2,fin);
 }
 
 SelectGameWizard::~SelectGameWizard()
 {
-    m_closing=true;
+    m_closing = true;
 }
 
 void SelectGameWizard::reject()
 {
     // only allow reject if player is not forced to play something
     if( !m_force )
-        K3Wizard::reject();
+        QWizard::reject();
 }
