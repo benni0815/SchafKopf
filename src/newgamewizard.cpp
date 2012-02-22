@@ -31,16 +31,18 @@
 #include <QButtonGroup>
 #include <klocale.h>
 
-newgamewizard::newgamewizard( QWidget *parent, const char *name )
-        : K3Wizard( parent, name, TRUE )
+newgamewizard::newgamewizard( QWidget *parent )
+        : QWizard( parent )
 {
+    setWindowTitle( i18n("Start New Game") );
     setup_page_selectgame();
     //this->setSize(300,300,300,300);
 }
 
 void newgamewizard::setup_page_selectgame()
 {
-    page_selectgame = new QWidget;
+    page_selectgame = new QWizardPage;
+    page_selectgame->setTitle( i18n("Select Game Type") );
 
     info = new QLabel;
     info->setMargin( 11 );
@@ -72,17 +74,11 @@ void newgamewizard::setup_page_selectgame()
     layout->addWidget( group_TypeSelect );
     layout->addWidget( info );
     page_selectgame->setLayout( layout );
-    addPage( page_selectgame, i18n("Select Game Type") );
+    addPage( page_selectgame );
 
-    setNextEnabled( page_selectgame, FALSE );
-    setHelpEnabled( page_selectgame, FALSE );
+    button( QWizard::NextButton )->setEnabled( false );
+    button( QWizard::HelpButton )->setEnabled( false );
     dataChanged();
-}
-
-
-void newgamewizard::showPage( QWidget* page )
-{
-    Q3Wizard::showPage(page);
 }
 
 int newgamewizard::getGame()
@@ -135,15 +131,15 @@ void newgamewizard::dataChanged(  )
     switch(game)
     {
     case GAME_LOCAL:
-        setFinishEnabled( page_selectgame, TRUE );
+        button( QWizard::FinishButton )->setEnabled( true );
         break;
     case GAME_NETWORK_SERVER:
-        setFinishEnabled( page_selectgame, FALSE );
-        nextButton()->setEnabled(FALSE);
+        button( QWizard::FinishButton )->setEnabled( false );
+        button( QWizard::NextButton )->setEnabled( false );
         break;
     case GAME_NETWORK_CLIENT:
-        setFinishEnabled( page_selectgame, FALSE );
-        nextButton()->setEnabled(FALSE);
+        button( QWizard::FinishButton )->setEnabled( false );
+        button( QWizard::NextButton )->setEnabled( false );
         break;
     }
 }

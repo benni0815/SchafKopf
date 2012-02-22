@@ -20,10 +20,9 @@
 #ifndef NEWGAMEWIZARD_H
 #define NEWGAMEWIZARD_H
 
-#include <k3wizard.h>
+#include <QWizard>
 #include <QLabel>
 
-class QWidget;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
@@ -31,19 +30,18 @@ class QRadioButton;
 /**
 @author Christian Kern
 */
-class newgamewizard : public K3Wizard
+class newgamewizard : public QWizard
 {
     Q_OBJECT
 
 public:
     enum __gameType {GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER};
-    newgamewizard( QWidget *parent = 0, const char *name = 0 );
+    newgamewizard( QWidget *parent = 0 );
     int getGame();
-    void showPage(QWidget* page);
 
 protected:
     void setup_page_selectgame();
-    QWidget *page_selectgame;
+    QWizardPage *page_selectgame;
     QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
     QString getGameInfoString(int gameType);
     QLabel *info;
