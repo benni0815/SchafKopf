@@ -68,12 +68,12 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     // save window size automatically
     setAutoSaveSettings( "SchafKopf", true );
 
-    m_canvas = new Q3Canvas( this, "canvas" );
-    m_canvasview = new GameCanvas( m_canvas, split, "canvasview" );
+    m_graphicsScene = new QGraphicsScene( this );
+    m_gameGraphicsView = new GameCanvas( m_graphicsScene, split );
 
     m_game = new Game( &m_sem, this );
-    m_canvasview->setHScrollBarMode(Q3ScrollView::AlwaysOff);
-    m_canvasview->setVScrollBarMode(Q3ScrollView::AlwaysOff);
+    m_gameGraphicsView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+    m_gameGraphicsView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     
     QLabel* label = new QLabel( i18n("Results:") );
     label->setAlignment( Qt::AlignHCenter );
@@ -145,17 +145,17 @@ void SchafKopf::customEvent( QEvent* e )
         {
             case GameEnded:
                 //EXIT_LOOP();
-                m_canvasview->resetPlayerCards();
+                m_gameGraphicsView->resetPlayerCards();
                 // fall through!
 
             case RedrawPlayers:
-                m_canvasview->redrawPlayers();
+                m_gameGraphicsView->redrawPlayers();
                 enableControls();
                 break;
             
             case GameStarted:
-                m_canvasview->resetPlayers();
-                m_canvasview->redrawPlayers();
+                m_gameGraphicsView->resetPlayers();
+                m_gameGraphicsView->redrawPlayers();
                 enableControls();
                 break;
                         
@@ -164,24 +164,24 @@ void SchafKopf::customEvent( QEvent* e )
                 break;
                 
             case PlayerIsLast:
-                m_canvasview->playerIsLast( data->playerid );
+                m_gameGraphicsView->playerIsLast( data->playerid );
                 break;
                 
             case PlayerDoubled:
                 updateInfo();
-                m_canvasview->information( data->data );
+                m_gameGraphicsView->information( data->data );
                 break;
                 
             case PlayerHasDoubled:
-                m_canvasview->playerHasDoubled( data->playerid, true );
+                m_gameGraphicsView->playerHasDoubled( data->playerid, true );
                 break;
                 
             case CardPlayed:
-                m_canvasview->slotPlayerPlayedCard( data->playerid, *(data->cardids) );
+                m_gameGraphicsView->slotPlayerPlayedCard( data->playerid, *(data->cardids) );
                 break;
             
             case PlayerMadeStich:
-                m_canvasview->slotPlayerMadeStich( data->playerid );
+                m_gameGraphicsView->slotPlayerMadeStich( data->playerid );
                 m_stichdlg->changed( data->data, data->cardids, data->playernames );
                 break;
             
@@ -190,27 +190,27 @@ void SchafKopf::customEvent( QEvent* e )
                 break;
                 
             case InfoMessage:
-                m_canvasview->information( data->data );
+                m_gameGraphicsView->information( data->data );
                 break;
                 
             case Bubble:
-                m_canvasview->Bubble( data->data, data->playerid );
+                m_gameGraphicsView->Bubble( data->data, data->playerid );
                 break;
                 
             case QuestionYesNo:
                 a = new int;
-                *a = m_canvasview->questionYesNo( data->data ) ? YES : NO;
+                *a = m_gameGraphicsView->questionYesNo( data->data ) ? YES : NO;
                 data->returncode = (void*)a;
                 break;
             
             case HumanPlayerGetCard:
                 a = new int;
-                *a = m_canvasview->getCard();
+                *a = m_gameGraphicsView->getCard();
                 data->returncode = (void*)a;
                 break;
             
             case ForbiddenCard:
-                m_canvasview->cardForbidden( *(data->cardids) );
+                m_gameGraphicsView->cardForbidden( *(data->cardids) );
                 break;
             
             case ForcedSelectGame:
@@ -221,11 +221,11 @@ void SchafKopf::customEvent( QEvent* e )
                 break;
                 
             case PlayerNameChanged:
-                m_canvasview->setPlayerName( data->playerid, data->data );
+                m_gameGraphicsView->setPlayerName( data->playerid, data->data );
                 break;
                 
             case PlayerGotCards:
-                m_canvasview->setPlayerCards( data->playerid, data->cardids );
+                m_gameGraphicsView->setPlayerCards( data->playerid, data->cardids );
                 break;
                 
             default:
@@ -359,7 +359,7 @@ void SchafKopf::endGame()
     if( !m_terminated )
     {
         m_terminated = true;
-        m_canvasview->exitLoop();
+        m_gameGraphicsView->exitLoop();
         //KApplication::postEvent( m_game, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT_QUIT ) );
     }
     
@@ -445,7 +445,7 @@ void SchafKopf::configure()
     PreferencesDlg prefs( this );
     if( prefs.exec() == QDialog::Accepted )
     {
-        m_canvasview->updateBackground();
+        m_gameGraphicsView->updateBackground();
     }
 }
 

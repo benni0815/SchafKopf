@@ -26,13 +26,12 @@
 #include "game.h"
 #include "settings.h"
 
-#include <q3canvas.h>
 #include <qfont.h>
 #include <qtimer.h>
 #include <qwidget.h>
 
-CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )
-    : m_canvas( canvas )
+CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* gs, QGraphicsView* view )
+    : m_canvas( gs )
 {
     create();
     m_view = view;
@@ -71,15 +70,19 @@ void CanvasPlayer::create()
 {
     unsigned int z = 0;
     for(z=0;z<NUMCARDS;z++)
-        m_items[z] = new CanvasCard( m_canvas );
+    {
+        m_items[z] = new CanvasCard();
+        m_canvas->addItem( m_items[z] );
+    }
 
     m_cards = new CardList;
     m_cards->setAutoDelete( true );
 
-    m_name = new Q3CanvasText( m_canvas );
-    m_name->setColor( Qt::white );
+    m_name = new QGraphicsSimpleTextItem();
+    m_name->setPen( QPen( Qt::white ) );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
+    m_canvas->addItem( m_name );
 
     m_is_last = false;
     m_has_doubled = false;
@@ -120,26 +123,26 @@ void CanvasPlayer::position()
                 x=DIST+offsetl;
             y=h-cardh-DIST;
 
-            m_name->move( (w-m_name->boundingRect().width())/2, y-m_name->boundingRect().height() );
+            m_name->setPos( (w-m_name->sceneBoundingRect().width())/2, y-m_name->sceneBoundingRect().height() );
             break;
         case 1:
             x=DIST; 
             y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
 
-            m_name->move(x,y-m_name->boundingRect().height());
+            m_name->setPos(x,y-m_name->sceneBoundingRect().height());
             break;
         case 2:
             x=( w-( (cardw*cardoverlap)*(num-1)+cardw ) )/2; //berechnet die Position der linken Seite des Kartenstapels
             y=DIST;
 
-            m_name->move( (w-m_name->boundingRect().width())/2, y+cardh );
+            m_name->setPos( (w-m_name->sceneBoundingRect().width())/2, y+cardh );
             break;
         case 3:
         default:
             x=w-cardw-DIST;
             y=(h-((cardh*cardoverlap)*(num-1)+cardh))/2; 
 
-            m_name->move(x, y-m_name->boundingRect().height());
+            m_name->setPos(x, y-m_name->sceneBoundingRect().height());
             break;
     }
 
@@ -152,7 +155,7 @@ void CanvasPlayer::position()
             if( x != card->x() || y != card->y() )
             {
                 if(num==NUMCARDS)
-                    card->move( x, y );
+                    card->setPos( x, y );
                 else
                 {
                     card->setDestination( x, y );
@@ -191,7 +194,7 @@ void CanvasPlayer::init()
         {
             CanvasCard *c = m_items[z];
             c->setCard( m_cards->at( z ) );
-            c->setZ( double(-1 - z) );
+            c->setZValue( double(-1 - z) );
             c->show();
 
             if(m_position==1)
@@ -283,7 +286,7 @@ void CanvasPlayer::say( const QString & message, unsigned int )
         break;
     case 2:
         pop->show(); // this sucks, but we don't get the correct width of the pop-up if it is not shown
-        p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->boundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
+        p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->sceneBoundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
         break;
     case 3:
     default:

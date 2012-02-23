@@ -20,7 +20,8 @@
 #ifndef CANVASCARD_H
 #define CANVASCARD_H
 
-#include <q3canvas.h>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
 #include <QPixmap>
 
 #define CANVASCARD 1000
@@ -28,11 +29,11 @@
 class Card;
 class QPainter;
 
-class CanvasCard : public QObject, public Q3CanvasRectangle
+class CanvasCard : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
     public:
-        CanvasCard(Q3Canvas*c);
+        CanvasCard();
         ~CanvasCard();
 
         void setCard(Card* card);
@@ -45,17 +46,18 @@ class CanvasCard : public QObject, public Q3CanvasRectangle
         void setDestination( int x, int y );
 
 
-        int rtti() const { return CANVASCARD; }
+        int type() const { return CANVASCARD; }
 
         /** mark this card as forbidden to play
           * in the UI
           */
         void forbidden();
 
-        void setActive( bool b );
+        QRectF boundingRect() const;
+        void setSelected( bool b );
 
     private:
-        void draw( QPainter & p );
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
 
         QPoint m_point;
         

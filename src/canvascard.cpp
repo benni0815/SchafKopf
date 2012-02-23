@@ -28,10 +28,10 @@
 #include <qpixmap.h>
 
 #include <qimageblitz.h>
+#include <QDebug>
 
-
-CanvasCard::CanvasCard(Q3Canvas*c)
- : Q3CanvasRectangle(c), m_rotation(0)
+CanvasCard::CanvasCard()
+ :  QGraphicsRectItem(), m_rotation(0)
 {
     m_card = NULL;
     m_forbidden = false;
@@ -50,18 +50,17 @@ void CanvasCard::setCard( Card* card )
     m_card = card;
 }
 
-void CanvasCard::draw( QPainter & p )
+void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
 {
 #ifdef SIMULATION_MODE
     return;
 #endif // SIMULATION_MODE
-
+    //qDebug() << m_card->points() << m_forbidden << isSelected();
     if( m_card )
     {
         QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
-
         // this code handles already matrix transformations
-        QMatrix wm = p.worldMatrix();    
+        QMatrix wm = painter->worldMatrix();
         QPoint point( (int)x(), (int)y() );
         point =  point * wm;
 
@@ -71,18 +70,26 @@ void CanvasCard::draw( QPainter & p )
         QImage img = pix.toImage();
         if( m_forbidden )
             Blitz::fade( img, 0.5, Qt::gray );
-        else if( isActive() )
+        else if( isSelected() )
             Blitz::fade( img, 0.25, Qt::yellow );
 
-        setSize( img.width()+3, img.height()+3 );
-        p.drawImage( point, img );
+        QSize size( img.width()+3, img.height()+3 );
+        QRectF myRect( QPoint(0,0), size );
+        setRect( myRect );
+        painter->drawImage( myRect, img );
     }
 }
 
-void CanvasCard::setActive( bool b )
+QRectF CanvasCard::boundingRect() const
 {
-    Q3CanvasItem::update();
-    Q3CanvasItem::setActive( b );
+    return rect();
+}
+
+void CanvasCard::setSelected( bool b )
+{
+    qDebug() << b;
+    QGraphicsRectItem::update();
+    QGraphicsRectItem::setSelected( b );
 }
 
 void CanvasCard::setFrontVisible( bool b )
@@ -98,14 +105,14 @@ void CanvasCard::setRotation( int d )
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    Q3CanvasRectangle::update();
+    QGraphicsRectItem::update();
     QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
 }
 
 void CanvasCard::disableForbidden()
 {
     m_forbidden = false;
-    Q3CanvasRectangle::update();
+    QGraphicsRectItem::update();
 }
 
 void CanvasCard::setDestination( int x, int y )
@@ -145,6 +152,6 @@ void CanvasCard::cardDeckChanged()
     if( m_card )
     {
         m_card->cardDeckChanged();
-        Q3CanvasItem::update();
+        QGraphicsRectItem::update();
     }
 }

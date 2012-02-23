@@ -22,7 +22,8 @@
 
 #include "schafkopfdef.h"
 
-#include <q3canvas.h>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 #include <qimage.h>
 #include <QResizeEvent>
 #include <QMouseEvent>
@@ -34,18 +35,15 @@ class CanvasCard;
 class Card;
 class Game;
 class CanvasPlayer;
-class Q3CanvasItem;
-class Q3CanvasItemList;
-class Q3CanvasText;
 class QMouseEvent;
 class QResizeEvent;
 
-class GameCanvas : public Q3CanvasView
+class GameCanvas : public QGraphicsView
 {
     Q_OBJECT
     
     public:
-        GameCanvas(Q3Canvas* c,QWidget *parent = 0, const char *name = 0);
+        GameCanvas(QGraphicsScene* gs, QWidget *parent = 0 );
         ~GameCanvas();
         
         /** the user has to click a card to play
@@ -96,7 +94,7 @@ class GameCanvas : public Q3CanvasView
         void slotPlayerMadeStich(unsigned int);
                 
     signals:
-        void clicked( Q3CanvasItem* item );
+        void clicked( QGraphicsItem* item );
         void playCard( Card* card );
         
     private slots:
@@ -104,15 +102,15 @@ class GameCanvas : public Q3CanvasView
           */
         void positionObjects(bool redraw=true);
         
-        void cardClicked( Q3CanvasItem* item );
-        void yesNoClicked( Q3CanvasItem* item );
+        void cardClicked( QGraphicsItem* item );
+        void yesNoClicked( QGraphicsItem* item );
         
     protected:
         void resizeEvent( QResizeEvent *r );
         void resizeBackground();
 
-        void contentsMousePressEvent(QMouseEvent*);
-        void contentsMouseReleaseEvent(QMouseEvent*);
+        void mousePressEvent(QMouseEvent*);
+        void mouseReleaseEvent(QMouseEvent*);
         void keyPressEvent(QKeyEvent*);
         void focusInEvent(QFocusEvent*);
         void focusOutEvent(QFocusEvent*);
@@ -123,16 +121,16 @@ class GameCanvas : public Q3CanvasView
     private:        
         int m_result;
         
-        Q3CanvasItemList m_focus_list;
+        QList<QGraphicsItem*> m_focus_list;
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
         
-        Q3CanvasItem* m_item; // currently clicked item
+        QGraphicsItem* m_item; // currently clicked item
 
-        Q3CanvasText* m_message;
-        Q3CanvasText* m_yes;
-        Q3CanvasText* m_no;
-        Q3CanvasText* m_ok;
+        QGraphicsSimpleTextItem* m_message;
+        QGraphicsSimpleTextItem* m_yes;
+        QGraphicsSimpleTextItem* m_no;
+        QGraphicsSimpleTextItem* m_ok;
 
         QImage ImgBack;
         bool loadOK;

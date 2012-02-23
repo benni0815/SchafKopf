@@ -31,46 +31,61 @@
 #include <qimage.h>
 #include <QDebug>
 
-class CanvasText : public Q3CanvasText {
+class CanvasText : public QGraphicsSimpleTextItem
+{
     public:
-        CanvasText( const QString & t, const QFont & f, Q3Canvas* c )
-            : Q3CanvasText( t, f, c )
+        CanvasText( const QString & t, const QFont & f )
+            : QGraphicsSimpleTextItem( t )
         {
-            setActive( false );
-            setColor( Qt::yellow );
-
+            setFlag( QGraphicsItem::ItemIsSelectable );
+            setFont( f );
+            setPen( QPen( Qt::yellow ) );
         }
         
-        void setActive( bool b )
+        void setUnderlined( bool b )
         {
             QFont f = font();
             f.setUnderline( b );
             setFont( f );
-            Q3CanvasText::setActive( b );
         }
 
+        bool isUnderlined()
+        {
+            QFont f = font();
+            return f.underline();
+        }
 };
 
-GameCanvas::GameCanvas(Q3Canvas* c, QWidget *parent, const char *name)
- : Q3CanvasView(c,parent, name)
+GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
+ : QGraphicsView( gs, parent )
 {
     unsigned int i = 0;
     for(;i<PLAYERS;i++)
     {
-        m_stich[i]=new CanvasCard( c );
-        m_players[i]=new CanvasPlayer( i, c, this );
+        m_stich[i] = new CanvasCard();
+        scene()->addItem( m_stich[i] );
+        m_players[i]=new CanvasPlayer( i, scene(), this );
     }
     
     m_item = NULL;
         
     QFont f( "Helvetica", 24 );
     
-    m_message = new CanvasText( QString::null, f, canvas() );;
-    m_yes = new CanvasText( i18n("Yes"), f, canvas() );;
-    m_no = new CanvasText( i18n("No"), f, canvas() );;
-    m_ok = new CanvasText( i18n("OK"), f, canvas() );
-    
-    
+    m_message = new CanvasText( QString::null, f );;
+    m_yes = new CanvasText( i18n("Yes"), f );;
+    m_no = new CanvasText( i18n("No"), f );;
+    m_ok = new CanvasText( i18n("OK"), f );
+
+    scene()->addItem( m_message );
+    scene()->addItem( m_yes );
+    scene()->addItem( m_no );
+    scene()->addItem( m_ok );
+
+    m_message->hide();
+    m_yes->hide();
+    m_no->hide();
+    m_ok->hide();
+
     // Does not work :-(
     /*
     m_message->setZ( 100 );
@@ -82,14 +97,18 @@ GameCanvas::GameCanvas(Q3Canvas* c, QWidget *parent, const char *name)
     m_result = 0;
     setFocusPolicy( Qt::StrongFocus );
     
-    canvas()->setBackgroundColor( Qt::darkGreen );
+    setBackgroundBrush( QBrush( Qt::darkGreen ) );
     
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
-    canvas()->setAdvancePeriod( 30 );
+
+    //scene()->setAdvancePeriod( 30 );
+    QTimer *timer = new QTimer( this) ;
+    connect( timer, SIGNAL( timeout() ), scene(), SLOT( advance() ) );
+    timer->start( 30 );
     update();
     
     connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
-    connect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(yesNoClicked(Q3CanvasItem*)));
+    connect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(yesNoClicked(QGraphicsItem*)));
     
     m_focus_list.append( m_yes );
     m_focus_list.append( m_no );
@@ -131,34 +150,33 @@ void GameCanvas::positionObjects(bool redraw)
     for( unsigned int i = 0; i < PLAYERS; i++ ) 
     {
         QPoint p = getStichPosition(i);
-        m_stich[i]->move( (int)p.x(), (int)p.y() );
+        m_stich[i]->setPos( (int)p.x(), (int)p.y() );
     }
 
-    m_message->move( canvas()->width()/2, canvas()->height()/2 );
-    m_message->setTextFlags(Qt::AlignCenter);
-    m_ok->move( ( canvas()->width() - m_ok->boundingRect().width() )/2,
-                     m_message->y() + m_message->boundingRect().height()*2/3 );
-    m_yes->move( m_message->x() - m_message->boundingRect().width()/2, 
-                 m_message->y() + m_message->boundingRect().height()*2/3 );
-    m_no->move( m_message->x() + m_message->boundingRect().width()/2 - m_no->boundingRect().width(), 
-                m_message->y() + m_message->boundingRect().height()*2/3 );
+    m_message->setPos( scene()->width()/2, scene()->height()/2 );
+    //m_message->setTextFlags(Qt::AlignCenter);
+    m_ok->setPos( ( scene()->width() - m_ok->sceneBoundingRect().width() )/2,
+                     m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
+    m_yes->setPos( m_message->x() - m_message->sceneBoundingRect().width()/2,
+                 m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
+    m_no->setPos( m_message->x() + m_message->sceneBoundingRect().width()/2 - m_no->sceneBoundingRect().width(),
+                m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
 
     if(redraw)
     {
-        canvas()->setAllChanged();
-        canvas()->update();
+        scene()->update();
     }
 }
 
 QPoint GameCanvas::getStichPosition( int player )
 {
     QPoint p;
-    int w = canvas()->width();//-DIST;
-    int h = canvas()->height();//-DIST;
+    int w = scene()->width();//-DIST;
+    int h = scene()->height();//-DIST;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
-    int stichcanvasw = canvas()->width() - (2*DIST) - (2*cardh) - 50;
-    int stichcanvash = canvas()->height() - (2*DIST) - (2*cardh) - 50;
+    int stichcanvasw = scene()->width() - (2*DIST) - (2*cardh) - 50;
+    int stichcanvash = scene()->height() - (2*DIST) - (2*cardh) - 50;
     int cx = w/2;
     int cy = h/2;
     
@@ -218,7 +236,7 @@ int GameCanvas::getCard()
     CanvasCard* c = NULL;
     unsigned int i;
 
-    connect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
+    connect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(cardClicked(QGraphicsItem*)));
     m_result = -1;
 
     if( hasFocus() && human )
@@ -227,7 +245,7 @@ int GameCanvas::getCard()
             c = human->canvasCard( i );
             if( c )
             {
-                c->setActive( true );
+                c->setSelected( true );
                 break;
             }
         }
@@ -237,12 +255,12 @@ int GameCanvas::getCard()
     return m_result;
 }
 
-void GameCanvas::cardClicked( Q3CanvasItem* item )
+void GameCanvas::cardClicked( QGraphicsItem* item )
 {
     if( item )
-        item->setActive( false );
+        item->setSelected( false );
 
-    if( item->rtti() == CANVASCARD ) 
+    if( item->type() == CANVASCARD )
     {
         CanvasCard* card = static_cast<CanvasCard*>(item);
 
@@ -251,7 +269,7 @@ void GameCanvas::cardClicked( Q3CanvasItem* item )
             if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
                 m_result = card->card()->id();
-                disconnect( this, SIGNAL(clicked( Q3CanvasItem* )), this, SLOT(cardClicked(Q3CanvasItem*)));
+                disconnect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(cardClicked(QGraphicsItem*)));
 
                 // be sure that focusOutEvent does not use its parameter
                 focusOutEvent( NULL );
@@ -297,7 +315,7 @@ void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
                 z++;
         }
 
-        stich->setZ( z );
+        stich->setZValue( z );
         stich->setFrontVisible( true );
         stich->show();
     }
@@ -312,8 +330,8 @@ void GameCanvas::slotPlayerMadeStich(unsigned int)
 
 void GameCanvas::resizeEvent( QResizeEvent * r )
 {
-    canvas()->resize( this->width() -2, this->height()-2 );
-    Q3CanvasView::resizeEvent( r );
+    scene()->setSceneRect( 0, 0, this->width() -2, this->height()-2 );
+    QGraphicsView::resizeEvent( r );
     
     positionObjects();
     resizeBackground();
@@ -321,11 +339,11 @@ void GameCanvas::resizeEvent( QResizeEvent * r )
 
 void GameCanvas::resizeBackground()
 {
-    QPixmap ImgBack2;
+    QImage ImgBack2;
     if(loadOK)
     {
-        ImgBack2.convertFromImage( ImgBack.scaled( canvas()->width(), canvas()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ) );
-        canvas()->setBackgroundPixmap( ImgBack2 );
+        ImgBack2 = ImgBack.scaled( scene()->width(), scene()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation );
+        setBackgroundBrush( QBrush( ImgBack2 ) );
     }
 
 }
@@ -335,7 +353,7 @@ void GameCanvas::updateBackground()
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
     resizeBackground();
     if(!loadOK)
-         canvas()->setBackgroundPixmap( NULL );
+        setBackgroundBrush( QBrush( Qt::darkGreen ) );
 }
 
 void GameCanvas::redrawPlayers()
@@ -349,34 +367,34 @@ void GameCanvas::redrawPlayers()
     }
 }
 
-void GameCanvas::contentsMousePressEvent(QMouseEvent* e)
+void GameCanvas::mousePressEvent(QMouseEvent* e)
 {
     m_item = NULL;
     double z = 0;
     bool first=true;
     if( e->button() == Qt::LeftButton )
     {
-        Q3CanvasItemList list = canvas()->allItems();
+        QList<QGraphicsItem*> list = scene()->items();
         for( int i = 0; i < list.count(); i++ )
-            if( list[i]->boundingRect().contains( e->pos() ) && list[i]->isVisible() )
+            if( list[i]->sceneBoundingRect().contains( e->pos() ) && list[i]->isVisible() )
             {
                 if(first)
                 {
                     first=false;
-                    z=list[i]->z();
+                    z=list[i]->zValue();
                     m_item = list[i];
                 }
-                //qDebug("z-wert:"+QString::number(list[i]->z()));
-                if(list[i]->z()>z)
+                //qDebug("z-wert:"+QString::number(list[i]->zValue()));
+                if(list[i]->zValue()>z)
                 {
-                    z=list[i]->z();
+                    z=list[i]->zValue();
                     m_item = list[i];
                 }
             }
     }
 }
 
-void GameCanvas::contentsMouseReleaseEvent(QMouseEvent* e)
+void GameCanvas::mouseReleaseEvent(QMouseEvent* e)
 {
     if( e->button() == Qt::LeftButton && m_item ) {
         emit clicked( m_item );
@@ -391,27 +409,27 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
     if( e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return )
     {
         for( int i=0;i<m_focus_list.count();i++ )
-            if( m_focus_list[i]->isActive() )
+            if( m_focus_list[i]->isSelected() )
             {
-                if( m_focus_list[i]->rtti() == Q3CanvasItem::Rtti_Text )                
+                if( m_focus_list[i]->type() == 3 ) // CHECK THIS!! DON'T KNOW THE TYPE OF A TEXT ITEM
                     yesNoClicked( m_focus_list[i] );
-                else if( m_focus_list[i]->rtti() == CANVASCARD )
+                else if( m_focus_list[i]->type() == CANVASCARD )
                     cardClicked( m_focus_list[i] );
             }
     }
     else if( e->key() == Qt::Key_Right )
     {
         for( int i=0;i<m_focus_list.count();i++ )
-            if( m_focus_list[i]->isActive() )
+            if( m_focus_list[i]->isSelected() )
             {
                 for( z=i+1;z<m_focus_list.count();z++ )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->rtti() == CANVASCARD )
+                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
                             continue;
                             
-                        m_focus_list[i]->setActive( false );
-                        m_focus_list[z]->setActive( true );
+                        m_focus_list[i]->setSelected( false );
+                        m_focus_list[z]->setSelected( true );
                         break;
                     }
                 break;
@@ -420,16 +438,16 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
     else if( e->key() == Qt::Key_Left )
     {
         for( int i=0;i<m_focus_list.count();i++ )
-            if( m_focus_list[i]->isActive() )
+            if( m_focus_list[i]->isSelected() )
             {
                 for( z=i-1;z>=0;z-- )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->rtti() == CANVASCARD )
+                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
                             continue;
 
-                        m_focus_list[i]->setActive( false );
-                        m_focus_list[z]->setActive( true );
+                        m_focus_list[i]->setSelected( false );
+                        m_focus_list[z]->setSelected( true );
                         break;
                     }
                 break;
@@ -443,7 +461,7 @@ void GameCanvas::focusInEvent(QFocusEvent*)
     for(i=0;i<m_focus_list.count();i++)
         if( m_focus_list[i]->isVisible() )
         {
-            m_focus_list[i]->setActive( true );
+            m_focus_list[i]->setSelected( true );
             break;
         }
 }
@@ -452,9 +470,9 @@ void GameCanvas::focusOutEvent(QFocusEvent*)
 {
     int i;
     for(i=0;i<m_focus_list.count();i++)
-        if( m_focus_list[i]->isActive() )
+        if( m_focus_list[i]->isSelected() )
         {
-            m_focus_list[i]->setActive( false );
+            m_focus_list[i]->setSelected( false );
             break;
         }
 }
@@ -470,25 +488,25 @@ bool GameCanvas::questionYesNo( const QString & message )
 
     positionObjects();
     
-    canvas()->update();
+    scene()->update();
     if( hasFocus() )
-        m_yes->setActive( true );
+        m_yes->setSelected( true );
     m_loop.exec();
 
     m_message->hide();
     m_yes->hide();
     m_no->hide();
     
-    canvas()->update();
+    scene()->update();
         
     return ( m_result == YES );
 }
 
-void GameCanvas::yesNoClicked( Q3CanvasItem* item )
+void GameCanvas::yesNoClicked( QGraphicsItem* item )
 {
     if( item )
-        item->setActive( false );
-        
+        item->setSelected( false );
+
     if( m_message && ((m_yes && m_no) || m_ok ))
     {
         if( item == m_yes )
@@ -521,15 +539,15 @@ void GameCanvas::information( const QString & message )
 
     positionObjects();
     
-    canvas()->update();
+    scene()->update();
     if( hasFocus() )
-        m_ok->setActive( true );
+        m_ok->setSelected( true );
     m_loop.exec();
 
     m_message->hide();
     m_ok->hide();
         
-    canvas()->update();
+    scene()->update();
         
     return;
 }

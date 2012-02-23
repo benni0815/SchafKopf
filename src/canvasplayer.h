@@ -25,14 +25,14 @@
 #include <qstring.h>
 #include <kpassivepopup.h>
 #include <qlabel.h>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsSimpleTextItem>
 
 class Card;
 class CardList;
 class CanvasCard;
 class Player;
-class Q3Canvas;
-class Q3CanvasView;
-class Q3CanvasText;
 
 /**
 Represents a player on the canvas
@@ -41,7 +41,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view );
+        CanvasPlayer( int i, QGraphicsScene* gs, QGraphicsView* view );
         ~CanvasPlayer();
         
         void position();
@@ -71,9 +71,9 @@ class CanvasPlayer{
         bool m_is_human;
         QString m_player_name;
         
-        Q3Canvas* m_canvas;
-        Q3CanvasView* m_view;
-        Q3CanvasText* m_name;
+        QGraphicsScene* m_canvas;
+        QGraphicsView* m_view;
+        QGraphicsSimpleTextItem* m_name;
         KPassivePopup* pop;
         QLabel *pop_text;
         CanvasCard* m_items[NUMCARDS];

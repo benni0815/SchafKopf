@@ -31,6 +31,8 @@
 #include <QCustomEvent>
 #include <QLabel>
 #include <QPushButton>
+#include <QGraphicsScene>
+#include <QGraphicsView>
 
 #include <semaphore.h>
 
@@ -39,7 +41,6 @@ class GameCanvas;
 class Game;
 class GameInfo;
 class KAction;
-class Q3Canvas;
 class QLabel;
 class QSplitter;
 class StichDlg;
@@ -111,8 +112,8 @@ class SchafKopf : public KXmlGuiWindow
         sem_t m_sem;
 
         Game* m_game;
-        GameCanvas* m_canvasview;
-        Q3Canvas* m_canvas;
+        QGraphicsScene* m_graphicsScene;
+        GameCanvas* m_gameGraphicsView;
         QTableWidget* m_table;
         QSplitter* split;
 
