@@ -25,7 +25,6 @@
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
 
-class KLineEdit;
 class QRadioButton;
 class QLabel;
 class QSpinBox;
@@ -80,10 +79,10 @@ class PreferencesDlg : public KPageDialog
         QCheckBox* m_games_farbgeier;
         QCheckBox* m_games_dachs;
 
-        KLineEdit* m_p1_name;
-        KLineEdit* m_p2_name;
-        KLineEdit* m_p3_name;
-        KLineEdit* m_p4_name;
+        QLineEdit* m_p1_name;
+        QLineEdit* m_p2_name;
+        QLineEdit* m_p3_name;
+        QLineEdit* m_p4_name;
 
         KUrlRequester* m_linePathBackground;
 

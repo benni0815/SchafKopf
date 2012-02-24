@@ -119,22 +119,22 @@ void PreferencesDlg::addPagePlayer()
     QStringList names = Settings::instance()->playerNames();
 
     box->addWidget( new QLabel( i18n("Human Player:") ), 0, 0 );
-    m_p1_name = new KLineEdit( names[0] );
+    m_p1_name = new QLineEdit( names[0] );
     m_p1_name->setObjectName( "m_p1_name" );
     box->addWidget( m_p1_name, 0, 1 );
 
     box->addWidget( new QLabel( i18n("Computer Player 1:") ), 1, 0 );
-    m_p2_name = new KLineEdit( names[1] );
+    m_p2_name = new QLineEdit( names[1] );
     m_p2_name->setObjectName( "m_p2_name" );
     box->addWidget( m_p2_name, 1, 1 );
 
     box->addWidget( new QLabel( i18n("Computer Player 2:") ), 2, 0 );
-    m_p3_name = new KLineEdit( names[2] );
+    m_p3_name = new QLineEdit( names[2] );
     m_p3_name->setObjectName( "m_p3_name" );
     box->addWidget( m_p3_name, 2, 1 );
 
     box->addWidget( new QLabel( i18n("Computer Player 3:") ), 3, 0 );
-    m_p4_name = new KLineEdit( names[3] );
+    m_p4_name = new QLineEdit( names[3] );
     m_p4_name->setObjectName( "m_p4_name" );
     box->addWidget( m_p4_name, 3, 1 );
 }
