@@ -31,7 +31,6 @@
 
 #include <kapplication.h>
 #include <klocale.h>
-#include <kmessagebox.h>
 #include <string.h>
 #include <QCustomEvent>
 #include <QEvent>

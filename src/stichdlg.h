@@ -22,7 +22,7 @@
 
 #include "schafkopfdef.h"
 
-#include <kdialog.h>
+#include <QDialog>
 #include <QLabel>
 
 class QLabel;
@@ -34,7 +34,7 @@ Show the last trick which was made
 
 #include "game.h"
 
-class StichDlg : public KDialog
+class StichDlg : public QDialog
 {
     Q_OBJECT
     public:

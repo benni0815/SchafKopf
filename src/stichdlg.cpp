@@ -26,32 +26,33 @@
 #include <QLabel>
 #include <QLayout>
 #include <QGridLayout>
+#include <QPushButton>
 
 #include <KLocale>
 
 StichDlg::StichDlg(QWidget *parent )
-    : KDialog( parent )
+    : QDialog( parent )
 {
-    setCaption( i18n("Last Trick") );
-    setButtons( KDialog::Close );
-    QWidget *plainPage = new QWidget( this );
-    setMainWidget( plainPage );
-    QGridLayout* layout = new QGridLayout( plainPage );
-    trick = new QLabel( plainPage );
+    setWindowTitle( i18n("Last Trick") );
+    QGridLayout* layout = new QGridLayout( this );
+    trick = new QLabel();
     layout->addWidget( trick, 0, 0, 1, 4);
 
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        cards[i] = new QLabel( plainPage );
+        cards[i] = new QLabel();
         layout->addWidget( cards[i], 1, i );
 
-        players[i] = new QLabel( plainPage );
+        players[i] = new QLabel();
         layout->addWidget( players[i], 2, i );
     }
 
+    QPushButton* close = new QPushButton( i18n("&Close" ) );
+    layout->addWidget( close, 3, 0, 1, 4, Qt::AlignRight );
+    connect( close, SIGNAL( clicked() ), this, SLOT( close() ) );
+
     reset();
 }
-
 
 StichDlg::~StichDlg()
 {
