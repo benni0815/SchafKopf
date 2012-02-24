@@ -22,7 +22,6 @@
 #include <kapplication.h>
 #include <kaboutdata.h>
 #include <kcmdlineargs.h>
-#include <kglobal.h>
 #include <klocale.h>
 
 static const char version[] = "0.8-devel";
@@ -30,7 +29,7 @@ static const char version[] = "0.8-devel";
 int main(int argc, char **argv)
 {
     // if you want copyright, then add you to the list:
-    KLocalizedString description = ki18n("<qt>Schafkopf is a popular card game in Bavaria. SchafKopf ist the KDE version of this game.</qt>");
+    KLocalizedString description = ki18n("\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game.");
     KAboutData about("schafkopf", "SchafKopf", ki18n("SchafKopf"), version, description,
                      KAboutData::License_GPL, ki18n("(C) 2004-2005 Dominik Seichter (and others)"), ki18n(""), "http://schafkopf.berlios.de", "domseichter@web.de");
     about.addAuthor( ki18n("Christian Kern"), ki18n(""), "kernch@in.tum.de" );

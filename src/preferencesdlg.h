@@ -21,15 +21,15 @@
 #define PREFERENCESDLG_H
 
 #include <kpagedialog.h>
-#include <QLabel>
 #include <QStackedWidget>
-#include <QDoubleSpinBox>
 
 class QRadioButton;
 class QLabel;
 class QSpinBox;
+class QDoubleSpinBox;
 class QCheckBox;
 class QPushButton;
+class QLineEdit;
 class KUrlRequester;
 
 /**
@@ -61,7 +61,7 @@ class PreferencesDlg : public KPageDialog
     private:
         QWidget* stackMoney;
         QWidget* stackPoints;
-        QStackedWidget * stack;
+        QStackedWidget* stack;
 
         QRadioButton* m_radioMoney;
         QRadioButton* m_radioPoints;
