@@ -52,7 +52,6 @@
 #include <kmainwindow.h>
 #include <kmenubar.h>
 #include <ktoolbar.h>
-#include <kpushbutton.h>
 #include <kmenu.h>
 #include <kstandardgameaction.h>
 
@@ -88,7 +87,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     lblCurGame = new QLabel;
     lblDoubled = new QLabel;
 
-    btnLastTrick = new KPushButton;
+    btnLastTrick = new QPushButton;
     btnLastTrick->setFlat( true );
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();

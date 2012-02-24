@@ -39,7 +39,6 @@ class GameCanvas;
 class Game;
 class GameInfo;
 class KAction;
-class KPushButton;
 class Q3Canvas;
 class QLabel;
 class QSplitter;
