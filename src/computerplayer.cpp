@@ -28,7 +28,6 @@
 #include <QDebug>
 
 #include <qstring.h>
-#include <kapplication.h>
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
     : Player(id,game)

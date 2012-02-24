@@ -26,7 +26,6 @@
 #include "player.h"
 #include "settings.h"
 
-#include <kapplication.h>
 #include <klocale.h>
 #include <qtimer.h>
 #include <qimage.h>

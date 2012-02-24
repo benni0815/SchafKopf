@@ -21,8 +21,6 @@
 
 #include "schafkopfdef.h"
 
-#include <kapplication.h>
-
 #include <iostream>
 #include <krandom.h>
 

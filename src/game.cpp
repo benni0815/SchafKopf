@@ -29,9 +29,9 @@
 #include "results.h"
 #include "settings.h"
 
-#include <kapplication.h>
 #include <klocale.h>
 #include <string.h>
+#include <QCoreApplication>
 #include <QCustomEvent>
 #include <QEvent>
 

@@ -29,7 +29,6 @@
 #include <q3canvas.h>
 #include <qfont.h>
 #include <qtimer.h>
-#include <kapplication.h>
 #include <qwidget.h>
 
 CanvasPlayer::CanvasPlayer( int i, Q3Canvas* canvas, Q3CanvasView* view )

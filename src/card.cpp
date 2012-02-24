@@ -23,7 +23,6 @@
 
 #include <qpixmap.h>
 
-#include <kapplication.h>
 #include <kcarddialog.h>
 
 QPixmap* Card::m_background = 0;
