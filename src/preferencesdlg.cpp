@@ -22,7 +22,6 @@
 
 #include <kiconloader.h>
 #include <klocale.h>
-#include <knuminput.h>
 #include <klineedit.h>
 #include <kurlrequester.h>
 #include <KPageWidgetItem>
@@ -267,35 +266,36 @@ void PreferencesDlg::addPageResults()
 
     stackPoints = new QWidget;
 
-    m_point_call = new KIntNumInput( (int)rp->rufspiel, stackPoints, 10 );
-    m_point_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_call->setMinimum( 0 );
-    m_point_call->setMaximum( 100 );
-
-    m_point_solo = new KIntNumInput( (int)rp->solo, stackPoints, 10 );
+    /*m_point_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
     m_point_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_solo->setMinimum( 0 );
-    m_point_solo->setMaximum( 100 );
-
-    m_point_lauf = new KIntNumInput( (int)rp->laufende, stackPoints, 10 );
     m_point_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_lauf->setMinimum( 0 );
-    m_point_lauf->setMaximum( 100 );
-
-    m_point_notrick = new KIntNumInput( (int)rp->schwarz, stackPoints, 10 );
     m_point_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_notrick->setMinimum( 0 );
-    m_point_notrick->setMaximum( 100 );
-
-    m_point_schneider = new KIntNumInput( (int)rp->schneider, stackPoints, 10 );
     m_point_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_schneider->setMinimum( 0 );
-    m_point_schneider->setMaximum( 100 );
+    m_point_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );*/
 
-    m_point_ramsch = new KIntNumInput( (int)rp->ramsch, stackPoints, 10 );
-    m_point_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_ramsch->setMinimum( 0 );
-    m_point_ramsch->setMaximum( 100 );
+    m_point_call = new QSpinBox();
+    m_point_call->setRange( 0, 100 );
+    m_point_call->setValue( (int)rp->rufspiel );
+
+    m_point_solo = new QSpinBox();
+    m_point_solo->setRange( 0, 100 );
+    m_point_solo->setValue( (int)rp->solo );
+
+    m_point_lauf = new QSpinBox();
+    m_point_lauf->setRange( 0, 100 );
+    m_point_lauf->setValue( (int)rp->laufende );
+
+    m_point_notrick = new QSpinBox();
+    m_point_notrick->setRange( 0, 100 );
+    m_point_notrick->setValue( (int)rp->schwarz );
+
+    m_point_schneider = new QSpinBox();
+    m_point_schneider->setRange( 0, 100 );
+    m_point_schneider->setValue( (int)rp->schneider );
+
+    m_point_ramsch = new QSpinBox();
+    m_point_ramsch->setRange( 0, 100 );
+    m_point_ramsch->setValue( (int)rp->ramsch );
 
     QVBoxLayout* stackPoints_layout = new QVBoxLayout( stackPoints );
     stackPoints_layout->addWidget( m_point_call );

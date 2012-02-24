@@ -25,7 +25,6 @@
 #include <QStackedWidget>
 #include <QDoubleSpinBox>
 
-class KIntNumInput;
 class KLineEdit;
 class QRadioButton;
 class QLabel;
@@ -97,12 +96,12 @@ class PreferencesDlg : public KPageDialog
         QDoubleSpinBox* m_money_schneider;
         QDoubleSpinBox* m_money_ramsch;
 
-        KIntNumInput* m_point_solo;
-        KIntNumInput* m_point_call;
-        KIntNumInput* m_point_lauf;
-        KIntNumInput* m_point_notrick;
-        KIntNumInput* m_point_schneider;
-        KIntNumInput* m_point_ramsch;
+        QSpinBox* m_point_solo;
+        QSpinBox* m_point_call;
+        QSpinBox* m_point_lauf;
+        QSpinBox* m_point_notrick;
+        QSpinBox* m_point_schneider;
+        QSpinBox* m_point_ramsch;
 };
 
 #endif
