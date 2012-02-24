@@ -28,7 +28,6 @@
 #include <qpixmap.h>
 
 #include <qimageblitz.h>
-#include <QDebug>
 
 CanvasCard::CanvasCard()
  :  QGraphicsRectItem(), m_rotation(0)
@@ -55,7 +54,7 @@ void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
 #ifdef SIMULATION_MODE
     return;
 #endif // SIMULATION_MODE
-    //qDebug() << m_card->points() << m_forbidden << isSelected();
+
     if( m_card )
     {
         QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
@@ -73,7 +72,7 @@ void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWid
         else if( isSelected() )
             Blitz::fade( img, 0.25, Qt::yellow );
 
-        QSize size( img.width()+3, img.height()+3 );
+        QSize size( img.width(), img.height() );
         QRectF myRect( QPoint(0,0), size );
         setRect( myRect );
         painter->drawImage( myRect, img );
@@ -87,7 +86,6 @@ QRectF CanvasCard::boundingRect() const
 
 void CanvasCard::setSelected( bool b )
 {
-    qDebug() << b;
     QGraphicsRectItem::update();
     QGraphicsRectItem::setSelected( b );
 }
