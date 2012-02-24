@@ -207,12 +207,12 @@ void PreferencesDlg::addPageResults()
 
     stackMoney = new QWidget;
 
-    /*m_money_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_money_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_money_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_money_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_money_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_money_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );*/
+    QLabel* callgame_label = new QLabel( i18n("Callgame:") );
+    QLabel* solo_label = new QLabel( i18n("Solo:") );
+    QLabel* lauf_label = new QLabel( i18n("Cards in a row:") );
+    QLabel* notrick_label = new QLabel( i18n("Notrick:") );
+    QLabel* schneider_label = new QLabel( i18n("Schneider:") );
+    QLabel* ramsch_label = new QLabel( i18n("Ramsch:") );
 
     m_money_call = new QDoubleSpinBox();
     m_money_call->setRange( 0., 100. );
@@ -256,22 +256,28 @@ void PreferencesDlg::addPageResults()
     m_money_ramsch->setSingleStep( 0.1 );
     m_money_ramsch->setSuffix( locale->currencySymbol() );
 
-    QVBoxLayout* stackMoney_layout = new QVBoxLayout( stackMoney );
-    stackMoney_layout->addWidget( m_money_call );
-    stackMoney_layout->addWidget( m_money_solo );
-    stackMoney_layout->addWidget( m_money_lauf );
-    stackMoney_layout->addWidget( m_money_notrick );
-    stackMoney_layout->addWidget( m_money_schneider );
-    stackMoney_layout->addWidget( m_money_ramsch );
+    QGridLayout* stackMoney_layout = new QGridLayout( stackMoney );
+    stackMoney_layout->addWidget( m_money_call, 0, 1 );
+    stackMoney_layout->addWidget( m_money_solo, 1, 1 );
+    stackMoney_layout->addWidget( m_money_lauf, 2, 1 );
+    stackMoney_layout->addWidget( m_money_notrick, 3, 1 );
+    stackMoney_layout->addWidget( m_money_schneider, 4, 1 );
+    stackMoney_layout->addWidget( m_money_ramsch, 5, 1 );
+    stackMoney_layout->addWidget( callgame_label, 0, 0 );
+    stackMoney_layout->addWidget( solo_label, 1, 0 );
+    stackMoney_layout->addWidget( lauf_label, 2, 0 );
+    stackMoney_layout->addWidget( notrick_label, 3, 0 );
+    stackMoney_layout->addWidget( schneider_label, 4, 0 );
+    stackMoney_layout->addWidget( ramsch_label, 5, 0 );
 
     stackPoints = new QWidget;
 
-    /*m_point_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
-    m_point_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );*/
+    QLabel* callgame_label2 = new QLabel( i18n("Callgame:") );
+    QLabel* solo_label2 = new QLabel( i18n("Solo:") );
+    QLabel* lauf_label2 = new QLabel( i18n("Cards in a row:") );
+    QLabel* notrick_label2 = new QLabel( i18n("Notrick:") );
+    QLabel* schneider_label2 = new QLabel( i18n("Schneider:") );
+    QLabel* ramsch_label2 = new QLabel( i18n("Ramsch:") );
 
     m_point_call = new QSpinBox();
     m_point_call->setRange( 0, 100 );
@@ -297,13 +303,19 @@ void PreferencesDlg::addPageResults()
     m_point_ramsch->setRange( 0, 100 );
     m_point_ramsch->setValue( (int)rp->ramsch );
 
-    QVBoxLayout* stackPoints_layout = new QVBoxLayout( stackPoints );
-    stackPoints_layout->addWidget( m_point_call );
-    stackPoints_layout->addWidget( m_point_solo );
-    stackPoints_layout->addWidget( m_point_lauf );
-    stackPoints_layout->addWidget( m_point_notrick );
-    stackPoints_layout->addWidget( m_point_schneider );
-    stackPoints_layout->addWidget( m_point_ramsch );
+    QGridLayout* stackPoints_layout = new QGridLayout( stackPoints );
+    stackPoints_layout->addWidget( m_point_call, 0, 1 );
+    stackPoints_layout->addWidget( m_point_solo, 1, 1 );
+    stackPoints_layout->addWidget( m_point_lauf, 2, 1 );
+    stackPoints_layout->addWidget( m_point_notrick, 3, 1 );
+    stackPoints_layout->addWidget( m_point_schneider, 4, 1 );
+    stackPoints_layout->addWidget( m_point_ramsch, 5, 1 );
+    stackPoints_layout->addWidget( callgame_label2, 0, 0 );
+    stackPoints_layout->addWidget( solo_label2, 1, 0 );
+    stackPoints_layout->addWidget( lauf_label2, 2, 0 );
+    stackPoints_layout->addWidget( notrick_label2, 3, 0 );
+    stackPoints_layout->addWidget( schneider_label2, 4, 0 );
+    stackPoints_layout->addWidget( ramsch_label2, 5, 0 );
 
     stack = new QStackedWidget( box );
     stack->addWidget( stackMoney );
