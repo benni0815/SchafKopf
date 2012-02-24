@@ -35,9 +35,9 @@ CanvasCard::CanvasCard()
 {
     m_card = NULL;
     m_forbidden = false;
+    setFlag( QGraphicsItem::ItemIsSelectable );
     show();
     timer = new QTimer( this );
-
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
 
@@ -50,7 +50,7 @@ void CanvasCard::setCard( Card* card )
     m_card = card;
 }
 
-void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget )
+void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * )
 {
 #ifdef SIMULATION_MODE
     return;

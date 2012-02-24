@@ -29,7 +29,6 @@
 #include <klocale.h>
 #include <qtimer.h>
 #include <qimage.h>
-#include <QDebug>
 
 class CanvasText : public QGraphicsSimpleTextItem
 {
@@ -42,17 +41,23 @@ class CanvasText : public QGraphicsSimpleTextItem
             setPen( QPen( Qt::yellow ) );
         }
         
-        void setUnderlined( bool b )
+        void setSelected( bool b )
         {
             QFont f = font();
             f.setUnderline( b );
             setFont( f );
+            QGraphicsSimpleTextItem::update();
         }
 
-        bool isUnderlined()
+        bool isSelected()
         {
             QFont f = font();
             return f.underline();
+        }
+
+        int type() const
+        {
+            return UserType + 1;
         }
 };
 
@@ -411,7 +416,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
         for( int i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isSelected() )
             {
-                if( m_focus_list[i]->type() == 3 ) // CHECK THIS!! DON'T KNOW THE TYPE OF A TEXT ITEM
+                if( m_focus_list[i]->type() == QGraphicsItem::UserType + 1 )
                     yesNoClicked( m_focus_list[i] );
                 else if( m_focus_list[i]->type() == CANVASCARD )
                     cardClicked( m_focus_list[i] );
