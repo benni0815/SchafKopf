@@ -23,9 +23,9 @@
 #include <kpagedialog.h>
 #include <QLabel>
 #include <QStackedWidget>
+#include <QDoubleSpinBox>
 
 class KIntNumInput;
-class KDoubleNumInput;
 class KLineEdit;
 class QRadioButton;
 class QLabel;
@@ -90,12 +90,12 @@ class PreferencesDlg : public KPageDialog
 
         QPushButton* m_pushURLClear;
 
-        KDoubleNumInput* m_money_solo;
-        KDoubleNumInput* m_money_call;
-        KDoubleNumInput* m_money_lauf;
-        KDoubleNumInput* m_money_notrick;
-        KDoubleNumInput* m_money_schneider;
-        KDoubleNumInput* m_money_ramsch;
+        QDoubleSpinBox* m_money_solo;
+        QDoubleSpinBox* m_money_call;
+        QDoubleSpinBox* m_money_lauf;
+        QDoubleSpinBox* m_money_notrick;
+        QDoubleSpinBox* m_money_schneider;
+        QDoubleSpinBox* m_money_ramsch;
 
         KIntNumInput* m_point_solo;
         KIntNumInput* m_point_call;

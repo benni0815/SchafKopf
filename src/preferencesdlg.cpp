@@ -208,28 +208,53 @@ void PreferencesDlg::addPageResults()
 
     stackMoney = new QWidget;
 
-    m_money_call = new KDoubleNumInput( 0.0, 100.00, rm->rufspiel, stackMoney, 0.10, 2 );
-    m_money_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
+    /*m_money_call->setLabel( i18n("Callgame:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );*/
+
+    m_money_call = new QDoubleSpinBox();
+    m_money_call->setRange( 0., 100. );
+    m_money_call->setValue( rm->rufspiel );
+    m_money_call->setDecimals( 2 );
+    m_money_call->setSingleStep( 0.1 );
     m_money_call->setSuffix( locale->currencySymbol() );
 
-    m_money_solo = new KDoubleNumInput( 0.0, 100.00, rm->solo, stackMoney, 0.10, 2);
-    m_money_solo->setLabel( i18n("Solo:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_solo = new QDoubleSpinBox();
+    m_money_solo->setRange( 0., 100. );
+    m_money_solo->setValue( rm->solo );
+    m_money_solo->setDecimals( 2 );
+    m_money_solo->setSingleStep( 0.1 );
     m_money_solo->setSuffix( locale->currencySymbol() );
 
-    m_money_lauf = new KDoubleNumInput( 0.0, 100.00, rm->laufende, stackMoney, 0.10, 2 );
-    m_money_lauf->setLabel( i18n("Cards in a row:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_lauf = new QDoubleSpinBox();
+    m_money_lauf->setRange( 0., 100. );
+    m_money_lauf->setValue( rm->laufende );
+    m_money_lauf->setDecimals( 2 );
+    m_money_lauf->setSingleStep( 0.1 );
     m_money_lauf->setSuffix( locale->currencySymbol() );
 
-    m_money_notrick = new KDoubleNumInput( 0.0, 100.00, rm->schwarz, stackMoney, 0.10, 2 );
-    m_money_notrick->setLabel( i18n("Notrick:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_notrick = new QDoubleSpinBox();
+    m_money_notrick->setRange( 0., 100. );
+    m_money_notrick->setValue( rm->schwarz );
+    m_money_notrick->setDecimals( 2 );
+    m_money_notrick->setSingleStep( 0.1 );
     m_money_notrick->setSuffix( locale->currencySymbol() );
 
-    m_money_schneider = new KDoubleNumInput( 0.0, 100.00, rm->schneider, stackMoney, 0.10, 2 );
-    m_money_schneider->setLabel( i18n("Schneider:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_schneider = new QDoubleSpinBox();
+    m_money_schneider->setRange( 0., 100. );
+    m_money_schneider->setValue( rm->schneider );
+    m_money_schneider->setDecimals( 2 );
+    m_money_schneider->setSingleStep( 0.1 );
     m_money_schneider->setSuffix( locale->currencySymbol() );
 
-    m_money_ramsch = new KDoubleNumInput( 0.0, 100.00, rm->ramsch, stackMoney, 0.10, 2 );
-    m_money_ramsch->setLabel( i18n("Ramsch:"), Qt::AlignLeft | Qt::AlignVCenter );
+    m_money_ramsch = new QDoubleSpinBox();
+    m_money_ramsch->setRange( 0., 100. );
+    m_money_ramsch->setValue( rm->ramsch );
+    m_money_ramsch->setDecimals( 2 );
+    m_money_ramsch->setSingleStep( 0.1 );
     m_money_ramsch->setSuffix( locale->currencySymbol() );
 
     QVBoxLayout* stackMoney_layout = new QVBoxLayout( stackMoney );
