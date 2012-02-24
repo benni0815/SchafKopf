@@ -309,9 +309,6 @@ void PreferencesDlg::addPageView()
     KPageWidgetItem *item = addPage( box, i18n( "View" ) );
     item->setIcon( KIcon( "background" ) );
 
-    QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
-    layout->setSpacing( 6 );
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
     QLabel* label3 = new QLabel( i18n("&Background image:") );
@@ -332,6 +329,9 @@ void PreferencesDlg::addPageView()
     QVBoxLayout *button_layout2 = new QVBoxLayout( group );
     button_layout2->addWidget( m_checkRearrangeCards );
 
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
     layout->addWidget( group2, 0, 0 );
     layout->addWidget( group, 1, 0 );
     layout->addItem( spacer, 2, 0 );
@@ -350,37 +350,38 @@ void PreferencesDlg::addPageGames()
     KPageWidgetItem *item = addPage( box, i18n( "Games" ) );
     item->setIcon( KIcon( "joystick" ) );
 
-    QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
-    layout->setSpacing( 6 );
-
-    QGridLayout* farbWenzLayout = new QGridLayout( box );
-    farbWenzLayout->setMargin( 6 );
-    farbWenzLayout->setSpacing( 6 );
-
-    QGridLayout* farbGeierLayout = new QGridLayout( box );
-    farbGeierLayout->setMargin( 6 );
-    farbGeierLayout->setSpacing( 6 );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
     QSpacerItem* smallSpace = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
     QSpacerItem* smallSpace2 = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
 
-    m_games_wenz = new QCheckBox( i18n("&Wenz"), box );
+    m_games_wenz = new QCheckBox( i18n("&Wenz") );
     m_games_farbwenz = new QCheckBox( i18n("Colored &Wenz"), box );
     m_games_geier = new QCheckBox( i18n("&Geier"), box );
     m_games_farbgeier = new QCheckBox( i18n("Colored &Geier"), box );
     m_games_dachs = new QCheckBox( i18n("&Badger"), box );
 
-    layout->addWidget( new QLabel( i18n("<qt>You can configure which games are allowed to play."
+    QLabel* infoLabel = new QLabel( i18n("<qt>You can configure which games are allowed to play."
                                         " You cannot disable certain games, such as Callgames and Solos as they are always "
-                                        "enabled by default.</qt>"), box ), 0, 0 );
+                                        "enabled by default.</qt>") );
+    infoLabel->setWordWrap( true );
 
+    QGridLayout* farbWenzLayout = new QGridLayout();
+    farbWenzLayout->setMargin( 6 );
+    farbWenzLayout->setSpacing( 6 );
     farbWenzLayout->addItem( smallSpace, 0, 0 );
     farbWenzLayout->addWidget( m_games_farbwenz, 0, 1 );
+
+    QGridLayout* farbGeierLayout = new QGridLayout();
+    farbGeierLayout->setMargin( 6 );
+    farbGeierLayout->setSpacing( 6 );
     farbGeierLayout->addItem( smallSpace2, 0, 0 );
     farbGeierLayout->addWidget( m_games_farbgeier, 0, 1 );
 
+    QGridLayout* layout = new QGridLayout( box );
+    layout->setMargin( 6 );
+    layout->setSpacing( 6 );
+    layout->addWidget( infoLabel );
     layout->addWidget( m_games_wenz, 1, 0 );
     layout->addLayout( farbWenzLayout, 2, 0 );
     layout->addWidget( m_games_geier, 3, 0 );
