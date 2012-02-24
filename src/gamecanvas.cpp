@@ -33,26 +33,12 @@
 class CanvasText : public QGraphicsSimpleTextItem
 {
     public:
-        CanvasText( const QString & t, const QFont & f )
-            : QGraphicsSimpleTextItem( t )
+        CanvasText( const QString & t, const QFont & f, QGraphicsItem *parent = 0 )
+            : QGraphicsSimpleTextItem( t, parent )
         {
             setFlag( QGraphicsItem::ItemIsSelectable );
             setFont( f );
-            setPen( QPen( Qt::yellow ) );
-        }
-        
-        void setSelected( bool b )
-        {
-            QFont f = font();
-            f.setUnderline( b );
-            setFont( f );
-            QGraphicsSimpleTextItem::update();
-        }
-
-        bool isSelected()
-        {
-            QFont f = font();
-            return f.underline();
+            setBrush( QBrush( Qt::yellow ) );
         }
 
         int type() const
@@ -76,15 +62,15 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
         
     QFont f( "Helvetica", 24 );
     
-    m_message = new CanvasText( QString::null, f );;
-    m_yes = new CanvasText( i18n("Yes"), f );;
-    m_no = new CanvasText( i18n("No"), f );;
-    m_ok = new CanvasText( i18n("OK"), f );
+    m_message = new QGraphicsSimpleTextItem();
+    m_message->setFont( f );
+    m_message->setBrush( QBrush( Qt::yellow ) );
+
+    m_yes = new CanvasText( i18n("Yes"), f, m_message );
+    m_no = new CanvasText( i18n("No"), f, m_message );
+    m_ok = new CanvasText( i18n("OK"), f, m_message );
 
     scene()->addItem( m_message );
-    scene()->addItem( m_yes );
-    scene()->addItem( m_no );
-    scene()->addItem( m_ok );
 
     m_message->hide();
     m_yes->hide();
@@ -106,7 +92,6 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
 
-    //scene()->setAdvancePeriod( 30 );
     QTimer *timer = new QTimer( this) ;
     connect( timer, SIGNAL( timeout() ), scene(), SLOT( advance() ) );
     timer->start( 30 );
@@ -157,15 +142,6 @@ void GameCanvas::positionObjects(bool redraw)
         QPoint p = getStichPosition(i);
         m_stich[i]->setPos( (int)p.x(), (int)p.y() );
     }
-
-    m_message->setPos( scene()->width()/2, scene()->height()/2 );
-    //m_message->setTextFlags(Qt::AlignCenter);
-    m_ok->setPos( ( scene()->width() - m_ok->sceneBoundingRect().width() )/2,
-                     m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
-    m_yes->setPos( m_message->x() - m_message->sceneBoundingRect().width()/2,
-                 m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
-    m_no->setPos( m_message->x() + m_message->sceneBoundingRect().width()/2 - m_no->sceneBoundingRect().width(),
-                m_message->y() + m_message->sceneBoundingRect().height()*2/3 );
 
     if(redraw)
     {
@@ -487,6 +463,11 @@ bool GameCanvas::questionYesNo( const QString & message )
     m_result = NO;
 
     m_message->setText( message );
+    m_message->setPos( scene()->sceneRect().center() - m_message->boundingRect().center() );
+
+    m_yes->setPos( m_message->boundingRect().center() + QPoint( -100, m_message->boundingRect().height() ) - m_yes->boundingRect().center());
+    m_no->setPos( m_message->boundingRect().center() + QPoint( 100, m_message->boundingRect().height() ) - m_no->boundingRect().center() );
+
     m_message->show();
     m_yes->show();
     m_no->show();
@@ -539,6 +520,10 @@ void GameCanvas::yesNoClicked( QGraphicsItem* item )
 void GameCanvas::information( const QString & message )
 {
     m_message->setText( message );
+
+    m_message->setPos( scene()->sceneRect().center() - m_message->boundingRect().center() );
+    m_ok->setPos( m_message->boundingRect().center() + QPoint( 0, m_message->boundingRect().height() ) );
+
     m_message->show();
     m_ok->show();
 

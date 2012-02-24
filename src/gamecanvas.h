@@ -35,6 +35,7 @@ class CanvasCard;
 class Card;
 class Game;
 class CanvasPlayer;
+class CanvasText;
 class QMouseEvent;
 class QResizeEvent;
 
@@ -128,9 +129,9 @@ class GameCanvas : public QGraphicsView
         QGraphicsItem* m_item; // currently clicked item
 
         QGraphicsSimpleTextItem* m_message;
-        QGraphicsSimpleTextItem* m_yes;
-        QGraphicsSimpleTextItem* m_no;
-        QGraphicsSimpleTextItem* m_ok;
+        CanvasText* m_yes;
+        CanvasText* m_no;
+        CanvasText* m_ok;
 
         QImage ImgBack;
         bool loadOK;

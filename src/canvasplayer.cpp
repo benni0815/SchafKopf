@@ -79,7 +79,7 @@ void CanvasPlayer::create()
     m_cards->setAutoDelete( true );
 
     m_name = new QGraphicsSimpleTextItem();
-    m_name->setPen( QPen( Qt::white ) );
+    m_name->setBrush( QBrush( Qt::white ) );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
     m_canvas->addItem( m_name );
