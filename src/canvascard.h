@@ -21,7 +21,7 @@
 #define CANVASCARD_H
 
 #include <QGraphicsScene>
-#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 #include <QPixmap>
 
 #define CANVASCARD 1000
@@ -29,7 +29,7 @@
 class Card;
 class QPainter;
 
-class CanvasCard : public QObject, public QGraphicsRectItem
+class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
     public:
@@ -40,7 +40,7 @@ class CanvasCard : public QObject, public QGraphicsRectItem
         Card* card() const { return m_card; }
 
         void setFrontVisible( bool b );
-        void setRotation( int d );
+        //void setRotation( int d );
 
         void animatedMove();
         void setDestination( int x, int y );
@@ -53,17 +53,26 @@ class CanvasCard : public QObject, public QGraphicsRectItem
           */
         void forbidden();
 
-        QRectF boundingRect() const;
+        //QRectF boundingRect() const;
         void setSelected( bool b );
+        void focusInEvent(QFocusEvent *event);
 
     private:
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
+        //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
+        void updatePixmap();
+        void reloadPixmaps();
+
+        QPixmap frontPixmap;
+        QPixmap forbiddenFrontPixmap;
+        QPixmap selectedFrontPixmap;
+        QPixmap backPixmap;
 
         QPoint m_point;
         
+        bool m_selected;
         bool m_visible;
         bool m_forbidden;
-        int m_rotation;
+        //int m_rotation;
 
         int tox;
         int toy;
