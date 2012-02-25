@@ -20,9 +20,7 @@
 #include "preferencesdlg.h"
 #include "settings.h"
 
-#include <kiconloader.h>
 #include <klocale.h>
-#include <klineedit.h>
 #include <kurlrequester.h>
 #include <KPageWidgetItem>
 
@@ -32,6 +30,7 @@
 #include <qspinbox.h>
 #include <qcheckbox.h>
 #include <qtooltip.h>
+#include <QLineEdit>
 #include <QGridLayout>
 
 PreferencesDlg::PreferencesDlg( QWidget *parent )
