@@ -86,6 +86,8 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 
     lblCurGame = new QLabel;
     lblDoubled = new QLabel;
+    lblCurGame->setWordWrap( true );
+    lblDoubled->setWordWrap( true );
 
     btnLastTrick = new QPushButton;
     btnLastTrick->setFlat( true );

@@ -465,8 +465,8 @@ bool GameCanvas::questionYesNo( const QString & message )
     m_message->setText( message );
     m_message->setPos( scene()->sceneRect().center() - m_message->boundingRect().center() );
 
-    m_yes->setPos( m_message->boundingRect().center() + QPoint( -100, m_message->boundingRect().height() ) - m_yes->boundingRect().center());
-    m_no->setPos( m_message->boundingRect().center() + QPoint( 100, m_message->boundingRect().height() ) - m_no->boundingRect().center() );
+    m_yes->setPos( m_message->boundingRect().center() + QPoint( -100, m_message->boundingRect().height()/2. + 50 ) - m_yes->boundingRect().center());
+    m_no->setPos( m_message->boundingRect().center() + QPoint( 100, m_message->boundingRect().height()/2. + 50 ) - m_no->boundingRect().center() );
 
     m_message->show();
     m_yes->show();
@@ -522,7 +522,7 @@ void GameCanvas::information( const QString & message )
     m_message->setText( message );
 
     m_message->setPos( scene()->sceneRect().center() - m_message->boundingRect().center() );
-    m_ok->setPos( m_message->boundingRect().center() + QPoint( 0, m_message->boundingRect().height() ) );
+    m_ok->setPos( m_message->boundingRect().center() - m_ok->boundingRect().center() + QPoint( 0, m_message->boundingRect().height()/2. + 50 ) );
 
     m_message->show();
     m_ok->show();
