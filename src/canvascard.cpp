@@ -39,6 +39,7 @@ CanvasCard::CanvasCard()
     m_forbidden = false;
     m_selected = false;
     setFlag( QGraphicsItem::ItemIsSelectable );
+    setTransformationMode( Qt::SmoothTransformation );
     //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
     show();
     timer = new QTimer( this );
