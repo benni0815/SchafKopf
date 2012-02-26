@@ -33,7 +33,7 @@
 #include <QDebug>
 
 CanvasCard::CanvasCard()
- :  QGraphicsPixmapItem()//, m_rotation(0)
+ :  QGraphicsPixmapItem()
 {
     m_card = NULL;
     m_forbidden = false;
@@ -127,17 +127,6 @@ void CanvasCard::updatePixmap()
     }
 }*/
 
-/*QRectF CanvasCard::boundingRect() const
-{
-    return rect();
-}*/
-
-void CanvasCard::focusInEvent(QFocusEvent *event)
-{
-    qDebug() << event;
-
-}
-
 void CanvasCard::setSelected( bool b )
 {
     m_selected = b;
@@ -152,15 +141,9 @@ void CanvasCard::setFrontVisible( bool b )
     updatePixmap();
 }
 
-/*void CanvasCard::setRotation( int d )
-{
-    m_rotation = d;
-}*/
-
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    //QGraphicsPixmapItem::update();
     QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
     updatePixmap();
 }
@@ -168,7 +151,6 @@ void CanvasCard::forbidden()
 void CanvasCard::disableForbidden()
 {
     m_forbidden = false;
-    //QGraphicsPixmapItem::update();
     updatePixmap();
 }
 
@@ -210,6 +192,5 @@ void CanvasCard::cardDeckChanged()
     {
         m_card->cardDeckChanged();
         reloadPixmaps();
-        //QGraphicsPixmapItem::update();
     }
 }

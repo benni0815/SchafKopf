@@ -40,11 +40,9 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         Card* card() const { return m_card; }
 
         void setFrontVisible( bool b );
-        //void setRotation( int d );
 
         void animatedMove();
         void setDestination( int x, int y );
-
 
         int type() const { return CANVASCARD; }
 
@@ -53,9 +51,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
           */
         void forbidden();
 
-        //QRectF boundingRect() const;
         void setSelected( bool b );
-        void focusInEvent(QFocusEvent *event);
 
     private:
         //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
@@ -72,7 +68,6 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         bool m_selected;
         bool m_visible;
         bool m_forbidden;
-        //int m_rotation;
 
         int tox;
         int toy;
@@ -84,7 +79,6 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         void disableForbidden();
         void moveLoop();
         void cardDeckChanged();
-        //void loadAlpha();
 };
 
 #endif
