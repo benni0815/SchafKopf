@@ -406,11 +406,18 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
                 for( z=i+1;z<m_focus_list.count();z++ )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
-                            continue;
-                            
-                        m_focus_list[i]->setSelected( false );
-                        m_focus_list[z]->setSelected( true );
+                        if( m_focus_list[z]->type() == CANVASCARD )
+                        {
+                            if( m_message->isVisible() )
+                                continue;
+                            static_cast<CanvasCard*>( m_focus_list[i] )->setSelected( false );
+                            static_cast<CanvasCard*>( m_focus_list[z] )->setSelected( true );
+                        }
+                        else
+                        {
+                            m_focus_list[i]->setSelected( false );
+                            m_focus_list[z]->setSelected( true );
+                        }
                         break;
                     }
                 break;
@@ -424,11 +431,18 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
                 for( z=i-1;z>=0;z-- )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
-                            continue;
-
-                        m_focus_list[i]->setSelected( false );
-                        m_focus_list[z]->setSelected( true );
+                        if( m_focus_list[z]->type() == CANVASCARD )
+                        {
+                            if( m_message->isVisible() )
+                                continue;
+                            static_cast<CanvasCard*>( m_focus_list[i] )->setSelected( false );
+                            static_cast<CanvasCard*>( m_focus_list[z] )->setSelected( true );
+                        }
+                        else
+                        {
+                            m_focus_list[i]->setSelected( false );
+                            m_focus_list[z]->setSelected( true );
+                        }
                         break;
                     }
                 break;

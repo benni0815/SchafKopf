@@ -39,7 +39,7 @@ CanvasCard::CanvasCard()
     m_forbidden = false;
     m_selected = false;
     setFlag( QGraphicsItem::ItemIsSelectable );
-    setGraphicsEffect( new  QGraphicsDropShadowEffect() );
+    //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
     show();
     timer = new QTimer( this );
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
