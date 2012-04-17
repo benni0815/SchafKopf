@@ -62,15 +62,19 @@ SET(schafkopf_HDRS
     src/newgamewizard.h
 )
 
-SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_BUILD_TYPE Release)
 
 QT4_WRAP_CPP(schafkopf_HDRS_MOC ${schafkopf_HDRS})
 
 INCLUDE(${QT_USE_FILE})
 
+ADD_SUBDIRECTORY(icons)
+
 # actual target:
-ADD_EXECUTABLE(schafkopf ${schafkopf_SRCS} ${schafkopf_HDRS_MOC})
+kde4_add_app_icon(schafkopf_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/src/hi*-apps-schafkopf.png") # for win and mac only(?)
+kde4_add_executable(schafkopf ${schafkopf_SRCS})
 TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${QIMAGEBLITZ_LIBRARIES})
 
 # add install target:
-INSTALL(TARGETS schafkopf DESTINATION bin)
+INSTALL(TARGETS schafkopf ${INSTALL_TARGETS_DEFAULT_ARGS})
+INSTALL(FILES data/background01.jpg DESTINATION ${DATA_INSTALL_DIR}/schafkopf/data/)
