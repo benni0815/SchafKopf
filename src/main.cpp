@@ -24,7 +24,7 @@
 #include <kcmdlineargs.h>
 #include <klocale.h>
 
-static const char version[] = "0.8-devel";
+static const char version[] = "0.7.91";
 
 int main(int argc, char **argv)
 {

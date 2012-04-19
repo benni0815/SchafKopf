@@ -4,5 +4,5 @@ Exec=schafkopf
 Icon=schafkopf
 Type=Application
 Comment=Schafkopf - A popular Bavarian Cardgame
-Comment[de]=Schafkopfen
+Comment[de]=Bayerischer Schafkopf (Kartenspiel)
 Categories=Qt;KDE;Game;CardGame;
