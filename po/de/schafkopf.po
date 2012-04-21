@@ -28,8 +28,8 @@ msgid ""
 "Your emails"
 msgstr "domseichter@web.de\nbenjamin.loewe@freenet.de"
 
-msgid "<qt>Schafkopf is a popular card game in Bavaria. SchafKopf ist the KDE version of this game.</qt>"
-msgstr "<qt>Schafkopf ist ein beliebtes Kartenspiel in Bayern. SchafKopf ist die KDE-Version dieses Spiels.</qt>"
+msgid "\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game."
+msgstr "\"Schafkopf\" ist ein beliebtes Kartenspiel in Bayern. SchafKopf ist die KDE-Version dieses Spiels."
 
 #: game.cpp:124
 msgid "%1 has doubled."
@@ -343,8 +343,7 @@ msgstr "Farbgeier"
 msgid "&Badger"
 msgstr "&Dachs"
 
-msgid "<qt>You can configure which games are allowed to play."
-                                        "You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"
+msgid "<qt>You can configure which games are allowed to play." " You cannot disable certain games, such as Callgames and Solos as they are always " "enabled by default.</qt>"
 msgstr "<qt>Hier kannst du einstellen welche Spiele gespielt werden dürfen. Bestimmte Spiele, wie Rufspiel und Solo, können nicht deaktiviert werden.</qt>"
 
 msgid "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>"
@@ -401,8 +400,8 @@ msgstr "<qt><b>%1</b> hat geklopft.</qt>"
 msgid "<qt>Times thrown together: <b>%1</b></qt>"
 msgstr "<qt>Zusammen geworfen: <b>%1 Mal</b></qt>"
 
-msgid "<qt>Game counts <b>%1-fold</b>.</qt>"
-msgstr "<qt>Spiel zählt <b>%1-fach</b>.</qt>"
+msgid "<qt><br>Game counts <b>%1-fold</b>.</qt>"
+msgstr "<qt><br>Spiel zählt <b>%1-fach</b>.</qt>"
 
 #: selectgamecolorbox.cpp:53 selectgamedlg.cpp:50
 msgid "Color:"
