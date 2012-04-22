@@ -47,6 +47,7 @@ CanvasCard::~CanvasCard()
 void CanvasCard::setCard( Card* card )
 {
     m_card = card;
+    update();
 }
 
 void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * )
