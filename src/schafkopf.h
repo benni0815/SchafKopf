@@ -112,8 +112,8 @@ class SchafKopf : public KXmlGuiWindow
         sem_t m_sem;
 
         Game* m_game;
-        QGraphicsScene* m_graphicsScene;
-        GameCanvas* m_gameGraphicsView;
+        QGraphicsScene* m_scene;
+        GameCanvas* m_view;
         QTableWidget* m_table;
         QSplitter* split;
 

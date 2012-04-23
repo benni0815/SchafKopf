@@ -30,15 +30,14 @@
 #include <qtimer.h>
 #include <qwidget.h>
 
-CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* gs, QGraphicsView* view )
-    : m_canvas( gs )
+CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view )
+    : m_scene( scene ), m_view( view )
 {
     create();
-    m_view = view;
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
-    pop = new KPassivePopup( view );
+    pop = new KPassivePopup( m_view );
     pop_text = new QLabel( "" );
     pop->setView( pop_text );
     pop->setTimeout( 1000 );
@@ -72,7 +71,7 @@ void CanvasPlayer::create()
     for(z=0;z<NUMCARDS;z++)
     {
         m_items[z] = new CanvasCard();
-        m_canvas->addItem( m_items[z] );
+        m_scene->addItem( m_items[z] );
     }
 
     m_cards = new CardList;
@@ -82,7 +81,7 @@ void CanvasPlayer::create()
     m_name->setBrush( QBrush( Qt::white ) );
     m_name->setFont( QFont( "Helvetica", 24 ) );
     m_name->hide();
-    m_canvas->addItem( m_name );
+    m_scene->addItem( m_name );
 
     m_is_last = false;
     m_has_doubled = false;
@@ -93,10 +92,10 @@ void CanvasPlayer::position()
 {
     int x = 0, y = 0;
     int num = 0;
-    int w = m_canvas->width();
-    int h = m_canvas->height();
+    int w = m_scene->width();
+    int h = m_scene->height();
     int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fuer z.B. ein Bild des Spielers (Netzwerkmodus).
-    int availw = m_canvas->width() - 2*DIST - offsetl;
+    int availw = m_scene->width() - 2*DIST - offsetl;
     int cardw = Card::backgroundPixmap()->width();
     int cardh = Card::backgroundPixmap()->height();
     float cardoverlap = 1./8.; //Ueberlapp der Karten im Verhaeltnis zur Kartenbreite

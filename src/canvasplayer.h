@@ -41,7 +41,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( int i, QGraphicsScene* gs, QGraphicsView* view );
+        CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view );
         ~CanvasPlayer();
         
         void position();
@@ -71,7 +71,7 @@ class CanvasPlayer{
         bool m_is_human;
         QString m_player_name;
         
-        QGraphicsScene* m_canvas;
+        QGraphicsScene* m_scene;
         QGraphicsView* m_view;
         QGraphicsSimpleTextItem* m_name;
         KPassivePopup* pop;
