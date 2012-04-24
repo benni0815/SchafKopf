@@ -57,12 +57,8 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
 
         QPixmap frontPixmap;
         QPixmap forbiddenFrontPixmap;
-        QPixmap selectedFrontPixmap;
         QPixmap backPixmap;
 
-        QPoint m_point;
-        
-        bool m_selected;
         bool m_visible;
         bool m_forbidden;
 

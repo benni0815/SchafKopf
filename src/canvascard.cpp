@@ -30,14 +30,11 @@
 
 #include <qimageblitz.h>
 
-#include <QDebug>
-
 CanvasCard::CanvasCard()
  :  QGraphicsPixmapItem()
 {
     m_card = NULL;
     m_forbidden = false;
-    m_selected = false;
     setFlag( QGraphicsItem::ItemIsSelectable );
     setTransformationMode( Qt::SmoothTransformation );
     //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
@@ -66,10 +63,6 @@ void CanvasCard::reloadPixmaps()
     Blitz::fade( forbiddenFrontImage, 0.5, Qt::gray );
     forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
 
-    QImage selectedFrontImage = frontPixmap.toImage();
-    Blitz::fade( selectedFrontImage, 0.25, Qt::yellow );
-    selectedFrontPixmap.convertFromImage( selectedFrontImage );
-
     backPixmap = *( Card::backgroundPixmap() );
 
     float height = frontPixmap.height();
@@ -89,12 +82,6 @@ void CanvasCard::updatePixmap()
     if( m_forbidden )
     {
         setPixmap( forbiddenFrontPixmap );
-        return;
-    }
-    if( m_selected )
-    {
-        setPixmap( selectedFrontPixmap );
-        QGraphicsPixmapItem::update();
         return;
     }
     setPixmap( frontPixmap );
