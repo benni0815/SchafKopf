@@ -51,10 +51,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
           */
         void forbidden();
 
-        void setSelected( bool b );
-
     private:
-        //void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
         void updatePixmap();
         void reloadPixmaps();
 

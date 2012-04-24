@@ -41,7 +41,6 @@ CanvasCard::CanvasCard()
     setFlag( QGraphicsItem::ItemIsSelectable );
     setTransformationMode( Qt::SmoothTransformation );
     //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
-    show();
     timer = new QTimer( this );
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
@@ -73,6 +72,10 @@ void CanvasCard::reloadPixmaps()
 
     backPixmap = *( Card::backgroundPixmap() );
 
+    float height = frontPixmap.height();
+    float width = frontPixmap.width();
+    setTransformOriginPoint(height/2, width/2);
+
     updatePixmap();
 }
 
@@ -96,44 +99,6 @@ void CanvasCard::updatePixmap()
     }
     setPixmap( frontPixmap );
     QGraphicsPixmapItem::update();
-}
-
-/*void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * )
-{
-#ifdef SIMULATION_MODE
-    return;
-#endif // SIMULATION_MODE
-
-    if( m_card )
-    {
-        QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
-        // this code handles already matrix transformations
-        QMatrix wm = painter->worldMatrix();
-        QPoint point( (int)x(), (int)y() );
-        point =  point * wm;
-
-        wm.rotate( (double)m_rotation );
-
-        QPixmap pix = pixmap->transformed( wm );
-        QImage img = pix.toImage();
-        if( m_forbidden )
-            Blitz::fade( img, 0.5, Qt::gray );
-        else if( isSelected() )
-            Blitz::fade( img, 0.25, Qt::yellow );
-
-        QSize size( img.width(), img.height() );
-        QRectF myRect( QPoint(0,0), size );
-        //setRect( myRect );
-        painter->drawImage( myRect, img );
-    }
-}*/
-
-void CanvasCard::setSelected( bool b )
-{
-    m_selected = b;
-    //QGraphicsPixmapItem::update();
-    QGraphicsPixmapItem::setSelected( b );
-    updatePixmap();
 }
 
 void CanvasCard::setFrontVisible( bool b )
