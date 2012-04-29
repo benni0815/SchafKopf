@@ -340,9 +340,9 @@ int GameInfo::laufende()
     {
         Card* c = all->at( i );
         CardList* list = laufend.FindCards( c->color(), c->card() );
-        if( list->count() && ( l>0 || i == int(all->count()) - 1 ) )
+        if( list->count() && ( l>0 || i == all->count() - 1 ) )
             l++;
-        else if( ( !list->count() && l<0 ) || i == int(all->count()) - 1 )
+        else if( ( !list->count() && l<0 ) || i == all->count() - 1 )
             l--;
         else
         {
