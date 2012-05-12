@@ -21,7 +21,7 @@
 #define CANVASCARD_H
 
 #include <QGraphicsScene>
-#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 #include <QPixmap>
 
 #define CANVASCARD 1000
@@ -29,7 +29,7 @@
 class Card;
 class QPainter;
 
-class CanvasCard : public QObject, public QGraphicsRectItem
+class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
     public:
@@ -40,11 +40,9 @@ class CanvasCard : public QObject, public QGraphicsRectItem
         Card* card() const { return m_card; }
 
         void setFrontVisible( bool b );
-        void setRotation( int d );
 
         void animatedMove();
         void setDestination( int x, int y );
-
 
         int type() const { return CANVASCARD; }
 
@@ -53,17 +51,16 @@ class CanvasCard : public QObject, public QGraphicsRectItem
           */
         void forbidden();
 
-        QRectF boundingRect() const;
-        void setSelected( bool b );
-
     private:
-        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget );
+        void updatePixmap();
+        void reloadPixmaps();
 
-        QPoint m_point;
-        
+        QPixmap frontPixmap;
+        QPixmap forbiddenFrontPixmap;
+        QPixmap backPixmap;
+
         bool m_visible;
         bool m_forbidden;
-        int m_rotation;
 
         int tox;
         int toy;
@@ -75,7 +72,6 @@ class CanvasCard : public QObject, public QGraphicsRectItem
         void disableForbidden();
         void moveLoop();
         void cardDeckChanged();
-        //void loadAlpha();
 };
 
 #endif

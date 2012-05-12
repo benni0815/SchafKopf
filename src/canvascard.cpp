@@ -26,16 +26,18 @@
 #include <qtimer.h>
 #include <qmatrix.h>
 #include <qpixmap.h>
+#include <QGraphicsDropShadowEffect>
 
 #include <qimageblitz.h>
 
 CanvasCard::CanvasCard()
- :  QGraphicsRectItem(), m_rotation(0)
+ :  QGraphicsPixmapItem()
 {
     m_card = NULL;
     m_forbidden = false;
     setFlag( QGraphicsItem::ItemIsSelectable );
-    show();
+    setTransformationMode( Qt::SmoothTransformation );
+    //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
     timer = new QTimer( this );
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
 }
@@ -47,71 +49,62 @@ CanvasCard::~CanvasCard()
 void CanvasCard::setCard( Card* card )
 {
     m_card = card;
-    update();
-}
-
-void CanvasCard::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget * )
-{
-#ifdef SIMULATION_MODE
-    return;
-#endif // SIMULATION_MODE
-
     if( m_card )
     {
-        QPixmap* pixmap = m_visible ? m_card->pixmap() : Card::backgroundPixmap();
-        // this code handles already matrix transformations
-        QMatrix wm = painter->worldMatrix();
-        QPoint point( (int)x(), (int)y() );
-        point =  point * wm;
-
-        wm.rotate( (double)m_rotation );
-
-        QPixmap pix = pixmap->transformed( wm );
-        QImage img = pix.toImage();
-        if( m_forbidden )
-            Blitz::fade( img, 0.5, Qt::gray );
-        else if( isSelected() )
-            Blitz::fade( img, 0.25, Qt::yellow );
-
-        QSize size( img.width(), img.height() );
-        QRectF myRect( QPoint(0,0), size );
-        setRect( myRect );
-        painter->drawImage( myRect, img );
+        reloadPixmaps();
     }
 }
 
-QRectF CanvasCard::boundingRect() const
+void CanvasCard::reloadPixmaps()
 {
-    return rect();
+    frontPixmap = *( m_card->pixmap() );
+
+    QImage forbiddenFrontImage = frontPixmap.toImage();
+    Blitz::fade( forbiddenFrontImage, 0.5, Qt::gray );
+    forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
+
+    backPixmap = *( Card::backgroundPixmap() );
+
+    float height = frontPixmap.height();
+    float width = frontPixmap.width();
+    setTransformOriginPoint(height/2, width/2);
+
+    updatePixmap();
 }
 
-void CanvasCard::setSelected( bool b )
+void CanvasCard::updatePixmap()
 {
-    QGraphicsRectItem::update();
-    QGraphicsRectItem::setSelected( b );
+    if( !m_visible )
+    {
+        setPixmap( backPixmap );
+        return;
+    }
+    if( m_forbidden )
+    {
+        setPixmap( forbiddenFrontPixmap );
+        return;
+    }
+    setPixmap( frontPixmap );
+    QGraphicsPixmapItem::update();
 }
 
 void CanvasCard::setFrontVisible( bool b )
 {
     m_visible = b;
-}
-
-void CanvasCard::setRotation( int d )
-{
-    m_rotation = d;
+    updatePixmap();
 }
 
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    QGraphicsRectItem::update();
     QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
+    updatePixmap();
 }
 
 void CanvasCard::disableForbidden()
 {
     m_forbidden = false;
-    QGraphicsRectItem::update();
+    updatePixmap();
 }
 
 void CanvasCard::setDestination( int x, int y )
@@ -122,8 +115,8 @@ void CanvasCard::setDestination( int x, int y )
 
 void CanvasCard::animatedMove()
 {
-        connect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
-        timer->start( 2 );
+    connect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
+    timer->start( 2 );
 }
 
 void CanvasCard::moveLoop()
@@ -151,6 +144,6 @@ void CanvasCard::cardDeckChanged()
     if( m_card )
     {
         m_card->cardDeckChanged();
-        QGraphicsRectItem::update();
+        reloadPixmaps();
     }
 }

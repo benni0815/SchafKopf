@@ -408,7 +408,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
                     {
                         if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
                             continue;
-                            
+
                         m_focus_list[i]->setSelected( false );
                         m_focus_list[z]->setSelected( true );
                         break;
