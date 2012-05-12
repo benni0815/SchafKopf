@@ -21,11 +21,12 @@
 #define SELECTGAMECOLORBOX_H
 
 #include <QLabel>
+
 #include <QWizardPage>
 
 class QWidget;
 class QLineEdit;
-class QLabel;
+class QPushButton;
 class QRadioButton;
 class GameInfo;
 class Card;
@@ -60,10 +61,11 @@ protected:
     QRadioButton* checkGras;
     QRadioButton* checkHerz;
     QRadioButton* checkSchellen;
-    Card* m_Herz;
-    Card* m_Schelle;
-    Card* m_Eichel;
-    Card* m_Gras;
+    QPushButton* labelEichel;
+    QPushButton* labelGras;
+    QPushButton* labelHerz;
+    QPushButton* labelSchellen;
+
     SelectGameWizard* parent;
     void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
     void checkFirstVisible();
@@ -73,6 +75,10 @@ protected:
 
 protected slots:
     void colorChanged();
+    void colorChangedToEichel();
+    void colorChangedToGras();
+    void colorChangedToHerz();
+    void colorChangedToSchellen();
 };
 
 #endif

@@ -51,18 +51,33 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 
     this->parent=(SelectGameWizard*)parent;
 
-    checkEichel = new QRadioButton( i18n("&Eichel") );
-    checkGras = new QRadioButton( i18n("&Gras") );
-    checkHerz = new QRadioButton( i18n("&Herz") );
-    checkSchellen = new QRadioButton( i18n("&Schellen") );
-    checkFarblos = new QRadioButton( i18n("&Farblos") );
+    labelEichel = new QPushButton( this );
+    labelGras = new QPushButton( this );
+    labelHerz = new QPushButton( this );
+    labelSchellen = new QPushButton( this );
 
-    m_Herz=new Card(Card::SAU, Card::HERZ);
-    m_Schelle=new Card(Card::SAU, Card::SCHELLEN);
-    m_Eichel=new Card(Card::SAU, Card::EICHEL);
-    m_Gras=new Card(Card::SAU, Card::GRAS);
+    labelEichel->setFlat(true);
+    labelGras->setFlat(true);
+    labelHerz->setFlat(true);
+    labelSchellen->setFlat(true);
+    connect( labelEichel, SIGNAL(clicked(bool)), this, SLOT(colorChangedToEichel()));
+    connect( labelGras, SIGNAL(clicked(bool)), this, SLOT(colorChangedToGras()));
+    connect( labelHerz, SIGNAL(clicked(bool)), this, SLOT(colorChangedToHerz()));
+    connect( labelSchellen, SIGNAL(clicked(bool)), this, SLOT(colorChangedToSchellen()));
 
-    QButtonGroup *myGroup = new QButtonGroup;
+
+    checkEichel = new QRadioButton( i18n("&Eichel"), this );
+    checkGras = new QRadioButton( i18n("&Gras"), this );
+    checkHerz = new QRadioButton( i18n("&Herz"), this );
+    checkSchellen = new QRadioButton( i18n("&Schellen"), this );
+    checkFarblos = new QRadioButton( i18n("&Farblos"), this );
+
+    Card* herz=new Card(Card::SAU, Card::HERZ);
+    Card* schelle=new Card(Card::SAU, Card::SCHELLEN);
+    Card* eichel=new Card(Card::SAU, Card::EICHEL);
+    Card* gras=new Card(Card::SAU, Card::GRAS);
+
+    QButtonGroup *myGroup = new QButtonGroup(this);
     myGroup->addButton( checkEichel );
     myGroup->addButton( checkGras );
     myGroup->addButton( checkHerz );
@@ -70,21 +85,35 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkFarblos );
     connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(colorChanged()));
 
-    checkHerz->setIconSize( m_Herz->pixmap()->size() );
-    checkHerz->setIcon( QIcon( *m_Herz->pixmap() ) );
-    checkGras->setIconSize( m_Gras->pixmap()->size() );
-    checkGras->setIcon( QIcon( *m_Gras->pixmap() ) );
-    checkEichel->setIconSize( m_Eichel->pixmap()->size() );
-    checkEichel->setIcon( QIcon( *m_Eichel->pixmap() ) );
-    checkSchellen->setIconSize( m_Schelle->pixmap()->size() );
-    checkSchellen->setIcon( QIcon( *m_Schelle->pixmap() ) );
+    labelHerz->setIcon( ( *herz->pixmap() ) );
+    labelGras->setIcon( ( *gras->pixmap() ) );
+    labelEichel->setIcon( ( *eichel->pixmap() ) );
+    labelSchellen->setIcon( ( *schelle->pixmap() ) );
+    labelHerz->setIconSize( herz->pixmap()->size() );
+    labelGras->setIconSize( gras->pixmap()->size() );
+    labelEichel->setIconSize( eichel->pixmap()->size() );
+    labelSchellen->setIconSize( schelle->pixmap()->size() );
 
-    QGroupBox* color_group = new QGroupBox( i18n("Color:") );
-    QHBoxLayout *button_layout = new QHBoxLayout;
-    button_layout->addWidget( checkEichel );
-    button_layout->addWidget( checkGras );
-    button_layout->addWidget( checkHerz );
-    button_layout->addWidget( checkSchellen );
+    QGroupBox* color_group = new QGroupBox( i18n("Color:"), this );
+    QVBoxLayout* eichelLayout = new QVBoxLayout;
+    QVBoxLayout* grasLayout = new QVBoxLayout;
+    QVBoxLayout* herzLayout = new QVBoxLayout;
+    QVBoxLayout* schellenLayout = new QVBoxLayout;
+
+    eichelLayout->addWidget( labelEichel );
+    eichelLayout->addWidget( checkEichel );
+    grasLayout->addWidget( labelGras );
+    grasLayout->addWidget( checkGras );
+    herzLayout->addWidget( labelHerz );
+    herzLayout->addWidget( checkHerz );
+    schellenLayout->addWidget( labelSchellen );
+    schellenLayout->addWidget( checkSchellen );
+
+    QHBoxLayout* button_layout = new QHBoxLayout;
+    button_layout->addLayout( eichelLayout );
+    button_layout->addLayout( grasLayout );
+    button_layout->addLayout( herzLayout );
+    button_layout->addLayout( schellenLayout );
     button_layout->addWidget( checkFarblos );
     color_group->setLayout( button_layout );
 
@@ -96,10 +125,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 
 SelectGameColorBox::~SelectGameColorBox()
 {
-    delete m_Herz;
-    delete m_Schelle;
-    delete m_Eichel;
-    delete m_Gras;
+
     delete m_allowed;
 }
 
@@ -196,19 +222,27 @@ void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schel
     if( m_gameinfo->mode() == GameInfo::GEIER )
         allow_colors = allow_colors & m_allowed->farb_geier;
 
-    if(allow_colors&&Eichel==true) checkEichel->show();
-    else checkEichel->hide();
-    if(allow_colors&&Gras==true) checkGras->show();
-    else checkGras->hide();
-    if(allow_colors&&Herz==true) checkHerz->show();
-    else checkHerz->hide();
-    if(allow_colors&&Schellen==true) checkSchellen->show();
-    else checkSchellen->hide();
-    if(Farblos==true) checkFarblos->show();
-    else checkFarblos->hide();
+    checkEichel->setVisible(allow_colors&&Eichel==true);
+    labelEichel->setVisible(allow_colors&&Eichel==true);
 
-    if(!Eichel && !Gras && !Herz && !Schellen && !Farblos) m_finish=false;
-    else m_finish=true;
+    checkGras->setVisible(allow_colors&&Gras==true);
+    labelGras->setVisible(allow_colors&&Gras==true);
+
+    checkHerz->setVisible(allow_colors&&Herz==true);
+    labelHerz->setVisible(allow_colors&&Herz==true);
+
+    checkSchellen->setVisible(allow_colors&&Schellen==true);
+    labelSchellen->setVisible(allow_colors&&Schellen==true);
+
+    if(Farblos==true)
+        checkFarblos->show();
+    else
+        checkFarblos->hide();
+
+    if(!Eichel && !Gras && !Herz && !Schellen && !Farblos)
+        m_finish=false;
+    else
+        m_finish=true;
 }
 
 bool SelectGameColorBox::getFinish()
@@ -234,4 +268,24 @@ void SelectGameColorBox::cleanGameInfo()
         delete m_gameinfo;
         m_gameinfo=0;
     }
+}
+
+void SelectGameColorBox::colorChangedToEichel()
+{
+    checkEichel->setChecked(true);
+}
+
+void SelectGameColorBox::colorChangedToGras()
+{
+    checkGras->setChecked(true);
+}
+
+void SelectGameColorBox::colorChangedToHerz()
+{
+    checkHerz->setChecked(true);
+}
+
+void SelectGameColorBox::colorChangedToSchellen()
+{
+    checkSchellen->setChecked(true);
 }
