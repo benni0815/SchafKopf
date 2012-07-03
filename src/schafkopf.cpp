@@ -47,7 +47,6 @@
 #include <KActionCollection>
 #include <KStandardAction>
 #include <kapplication.h>
-#include <kgame/kgame.h>
 #include <klocale.h>
 #include <kmainwindow.h>
 #include <kmenubar.h>
