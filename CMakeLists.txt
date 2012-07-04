@@ -77,8 +77,9 @@ SET(schafkopf_HDRS
     src/newgamewizard.h
 )
 
-kde4_add_ui_files( schafkopf_SRCS
-    src/fromlibkdegames/kgamecardselector.ui )
+kde4_add_ui_files(schafkopf_SRCS
+    src/fromlibkdegames/kgamecardselector.ui
+)
 
 SET(CMAKE_BUILD_TYPE Release)
 
