@@ -22,7 +22,7 @@
 
 #include <qobject.h>
 
-#include <cardcache.h>
+#include "fromlibkdegames/cardcache.h"
 
 /** a small datatype which contains configureable 
   * values to calculate how much a game was.
@@ -77,7 +77,6 @@ class Settings : public QObject
         KCardCache* cardCache();
 
         const QString cardDeck() const;
-        const QString cardBackground() const;
 
         const QStringList playerNames() const;
         void setPlayerNames( const QStringList & names );

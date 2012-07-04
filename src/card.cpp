@@ -23,7 +23,7 @@
 
 #include <qpixmap.h>
 
-#include <kcarddialog.h>
+#include "fromlibkdegames/kcarddialog.h"
 
 QPixmap* Card::m_background = 0;
 

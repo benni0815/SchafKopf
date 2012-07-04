@@ -6,7 +6,11 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.4.5)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
 
 FIND_PACKAGE(KDE4 REQUIRED)
-FIND_PACKAGE(LibKDEGames REQUIRED)
+IF(KDE_VERSION VERSION_GREATER 4.8.80)
+    FIND_PACKAGE(KDEGames REQUIRED)
+ELSE()
+    FIND_PACKAGE(LibKDEGames REQUIRED)
+ENDIF()
 FIND_PACKAGE(Qt4 REQUIRED)
 FIND_PACKAGE(QImageBlitz REQUIRED)
 FIND_PACKAGE(Gettext)
@@ -56,6 +60,9 @@ SET(schafkopf_SRCS
     src/canvasplayer.cpp
     src/openbook.cpp
     src/canvascard.cpp
+    src/fromlibkdegames/cardcache.cpp
+    src/fromlibkdegames/carddeckinfo.cpp
+    src/fromlibkdegames/kcarddialog.cpp
 )
 
 # Headers:
@@ -72,6 +79,10 @@ SET(schafkopf_HDRS
     src/selectgametypebox.h
     src/selectgamecolorbox.h
     src/newgamewizard.h
+)
+
+kde4_add_ui_files(schafkopf_SRCS
+    src/fromlibkdegames/kgamecardselector.ui
 )
 
 SET(CMAKE_BUILD_TYPE Release)
