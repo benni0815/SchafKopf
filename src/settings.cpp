@@ -25,8 +25,8 @@
 #include <kconfig.h>
 #include <kuser.h>
 #include <kstandarddirs.h>
-#include <KCardDialog>
-#include <carddeckinfo.h>
+#include "fromlibkdegames/kcarddialog.h"
+#include "fromlibkdegames/carddeckinfo.h"
 
 #include <qmutex.h>
 #include <kglobal.h>
@@ -71,29 +71,19 @@ const QString Settings::cardDeck() const
     return config.readEntry("Cardname", "XSkat German" );
 }
 
-const QString Settings::cardBackground() const
-{
-    QMutexLocker locker( m_mutex );
-
-    KConfigGroup config = KGlobal::config()->group("CardDeck");
-    return config.readEntry("Deckname", "Oxygen White" );
-}
-
 void Settings::loadCardDeck()
 {
-    if( CardDeckInfo::frontNames().contains( cardDeck() ) ) m_cardCache->setFrontTheme( cardDeck() );
-    else m_cardCache->setFrontTheme( CardDeckInfo::defaultFrontName() );
-    if( CardDeckInfo::backNames().contains( cardBackground() ) ) m_cardCache->setBackTheme( cardBackground() );
-    else m_cardCache->setBackTheme( CardDeckInfo::defaultBackName() );
+    if( CardDeckInfo::deckNames().contains( cardDeck() ) ) m_cardCache->setDeckName( cardDeck() );
+    else m_cardCache->setDeckName( CardDeckInfo::defaultDeckName() );
     KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
-    QSize size = m_cardCache->defaultFrontSize( card ).toSize();
+    QSize size = m_cardCache->defaultCardSize( card ).toSize();
     double scale = 140. / size.height();
     m_cardCache->setSize( scale * size );
 }
 
 void Settings::configureCardDecks( QWidget* parent )
 {
-    // no mutex locker here as we would lock cardDeck and cardBackground
+    // no mutex locker here as we would lock cardDeck
     
     KConfigGroup configGroup = KGlobal::config()->group( "CardDeck" );
     KCardWidget* cardwidget = new KCardWidget( parent );
