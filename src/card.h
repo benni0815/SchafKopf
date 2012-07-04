@@ -22,7 +22,7 @@
 
 #include <QPixmap>
 
-#include <cardcache.h>
+#include "fromlibkdegames/cardcache.h"
 
 class QPixmap;
 class Player;
