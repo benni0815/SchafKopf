@@ -23,8 +23,6 @@
 #include <kdialog.h>
 #include <kconfig.h>
 
-#include <libkdegames_export.h>
-
 class QListWidgetItem;
 class KCardWidgetPrivate;
 class KCardWidget;
@@ -52,7 +50,7 @@ class KCardWidget;
  * \endcode
  *
  */
-class KDEGAMES_EXPORT KCardDialog : public KDialog
+class KCardDialog : public KDialog
 {
   Q_OBJECT
 public:
@@ -80,7 +78,7 @@ public:
  * For an example usage see @ref KCardDialog.
  *
  */
-class KDEGAMES_EXPORT KCardWidget : public QWidget
+class KCardWidget : public QWidget
 {
   Q_OBJECT
 

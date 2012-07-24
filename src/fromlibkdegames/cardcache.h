@@ -31,7 +31,7 @@ class QSizeF;
 /**
  * \class KCardInfo cardcache.h <KCardCache>
  */
-class KDEGAMES_EXPORT KCardInfo
+class KCardInfo
 {
 public:
     enum Suit { None, Diamond, Heart, Club, Spade };
@@ -79,7 +79,7 @@ private:
  * </code>
  * 
  */
-class KDEGAMES_EXPORT KCardCache
+class KCardCache
 {
 public:
 
