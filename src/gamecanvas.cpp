@@ -38,7 +38,7 @@ class CanvasText : public QGraphicsSimpleTextItem
         {
             setFlag( QGraphicsItem::ItemIsSelectable );
             setFont( f );
-            setBrush( QBrush( Qt::yellow ) );
+            setBrush( QBrush( Qt::black ) );
         }
 
         int type() const
@@ -64,7 +64,8 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     
     m_message = new QGraphicsSimpleTextItem();
     m_message->setFont( f );
-    m_message->setBrush( QBrush( Qt::yellow ) );
+    //    m_message->setBrush( QBrush( Qt::yellow ) );
+    m_message->setBrush( QBrush( Qt::black ) );
 
     m_yes = new CanvasText( i18n("Yes"), f, m_message );
     m_no = new CanvasText( i18n("No"), f, m_message );
