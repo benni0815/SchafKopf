@@ -274,6 +274,28 @@ bool Settings::ramschHerzIsTrumpf() const
     return b;
 }
 
+void Settings::setAllowKlopfen( bool b )
+{
+    QMutexLocker locker( m_mutex );
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "AllowKlopfen", b );
+    config.sync();
+}
+
+
+bool Settings::allowKlopfen() const
+{
+    QMutexLocker locker( m_mutex );
+    
+    bool b = false;
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "AllowKlopfen", b );
+
+    return b;
+}
+
+
 void Settings::setDoublerHasToPlay( bool b )
 {
     QMutexLocker locker( m_mutex );

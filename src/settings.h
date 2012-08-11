@@ -101,6 +101,9 @@ class Settings : public QObject
         void setRamschHerzIsTrumpf( bool b );
         bool ramschHerzIsTrumpf() const;
 
+        void setAllowKlopfen( bool b );
+        bool allowKlopfen() const;
+
         void setDoubleNextGame( bool b );
         bool doubleNextGame() const;
 

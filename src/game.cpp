@@ -139,8 +139,10 @@ void Game::gameLoop()
 
         for(i=0;i<PLAYERS;i++)
         {
+	  if (Settings::instance()->allowKlopfen())
             tmp[i]->klopfen();
-            tmp[i]->sortCards();
+         
+	    tmp[i]->sortCards();
             if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
             {
                 //m_canvas->information( i18n("%1 has doubled.").arg( tmp[i]->name() ) );

@@ -155,7 +155,7 @@ void PreferencesDlg::addPageRules()
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together.") );
 
     m_checkRamschHerzIsTrumpf = new QCheckBox ( i18n("&Set Herz as Trumpf in Ramsch.") );
-
+    m_checkAllowKlopfen = new QCheckBox ( i18n("&Allow Klopfen.") );
 
     QGroupBox* group = new QGroupBox( i18n("No one wants to play:") );
     QVBoxLayout *button_layout = new QVBoxLayout( group );
@@ -165,7 +165,8 @@ void PreferencesDlg::addPageRules()
     button_layout->addWidget( m_checkRamschHerzIsTrumpf );
     button_layout->addWidget( m_checkDoublerPlays );
     button_layout->addWidget( m_checkDoubleNextGame );
-
+    // onlyu temporarily here
+    button_layout->addWidget( m_checkAllowKlopfen );
 
     QGridLayout* layout = new QGridLayout( box );
     layout->setMargin( 6 );
@@ -183,6 +184,9 @@ void PreferencesDlg::addPageRules()
     
     if( Settings::instance()->ramschHerzIsTrumpf() == true )
         m_checkRamschHerzIsTrumpf->setChecked( true );
+
+    if( Settings::instance()->allowKlopfen() == true )
+      m_checkAllowKlopfen->setChecked( true );
 
     m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
 
