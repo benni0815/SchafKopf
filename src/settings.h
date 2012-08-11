@@ -98,6 +98,9 @@ class Settings : public QObject
         void setDoublerHasToPlay( bool b );
         bool doublerHasToPlay() const;
 
+        void setRamschHerzIsTrumpf( bool b );
+        bool ramschHerzIsTrumpf() const;
+
         void setDoubleNextGame( bool b );
         bool doubleNextGame() const;
 

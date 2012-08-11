@@ -68,7 +68,7 @@ const QString Settings::cardDeck() const
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = KGlobal::config()->group("CardDeck");
-    return config.readEntry("Cardname", "XSkat German" );
+    return config.readEntry("Cardname", "OpenTarock" );
 }
 
 void Settings::loadCardDeck()
@@ -232,6 +232,7 @@ t_ResultValues* Settings::pointResults() const
     return r;    
 }
 
+
 void Settings::setNoGame( int e )
 {
     QMutexLocker locker( m_mutex );
@@ -250,6 +251,27 @@ int Settings::noGame() const
     e = config.readEntry( "KeinSpiel", e );
     
     return e;
+}
+
+void Settings::setRamschHerzIsTrumpf( bool b )
+{
+    QMutexLocker locker( m_mutex );
+
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    config.writeEntry( "RamschHerzIsTrumpf", b );
+    config.sync();
+}
+
+
+bool Settings::ramschHerzIsTrumpf() const
+{
+    QMutexLocker locker( m_mutex );
+    
+    bool b = false;
+    KConfigGroup config = KGlobal::config()->group("SchafKopf");
+    b = config.readEntry( "RamschHerzIsTrumpf", b );
+
+    return b;
 }
 
 void Settings::setDoublerHasToPlay( bool b )
@@ -336,8 +358,8 @@ t_AllowedGames* Settings::allowedGames() const
 
     KConfigGroup config = KGlobal::config()->group("Games");
     a->wenz = config.readEntry( "AllowWenz", true );
-    a->farb_wenz = config.readEntry( "AllowFarbWenz", true );
-    a->geier = config.readEntry( "AllowGeier", true );
+    a->farb_wenz = config.readEntry( "AllowFarbWenz", false );
+    a->geier = config.readEntry( "AllowGeier", false );
     a->farb_geier = config.readEntry( "AllowFarbGeier", false );
     a->dachs = config.readEntry( "AllowDachs", false );
 

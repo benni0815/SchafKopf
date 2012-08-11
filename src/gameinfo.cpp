@@ -115,9 +115,18 @@ bool GameInfo::istTrumpf(Card *card) const
     switch(mode())
     {
         case GameInfo::RUFSPIEL:
-        case GameInfo::RAMSCH:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
                     return true;
+                break;
+        case GameInfo::RAMSCH:
+	  // here you should choose if you want herz as trump in Ramsch 
+	  if( Settings::instance()->ramschHerzIsTrumpf() == true ){
+	    if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
+	      return true;
+	  } else {
+	    if(card->card()==Card::OBER || card->card()==Card::UNTER)
+	      return true;
+	  }
                 break;
         case GameInfo::STICHT:
                 if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==color())
