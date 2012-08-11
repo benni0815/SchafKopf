@@ -94,6 +94,10 @@ void PreferencesDlg::accept()
 
     s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
 
+    s->setAllowKlopfen( m_checkAllowKlopfen->isChecked() );
+
+    s->setRamschHerzIsTrumpf( m_checkRamschHerzIsTrumpf->isChecked() );
+
     s->setRearrangeCards( m_checkRearrangeCards->isChecked() );
     s->setBackgroundImage( m_linePathBackground->text() );
 
@@ -182,11 +186,9 @@ void PreferencesDlg::addPageRules()
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
         m_radioRamsch->setChecked( true );
     
-    if( Settings::instance()->ramschHerzIsTrumpf() == true )
-        m_checkRamschHerzIsTrumpf->setChecked( true );
-
-    if( Settings::instance()->allowKlopfen() == true )
-      m_checkAllowKlopfen->setChecked( true );
+    m_checkRamschHerzIsTrumpf->setChecked( Settings::instance()->ramschHerzIsTrumpf());
+    
+    m_checkAllowKlopfen->setChecked( Settings::instance()->allowKlopfen() );
 
     m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
 
