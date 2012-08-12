@@ -103,4 +103,13 @@ GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/
 INSTALL(TARGETS schafkopf ${INSTALL_TARGETS_DEFAULT_ARGS})
 INSTALL(PROGRAMS src/schafkopf.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
 INSTALL(FILES data/background01.jpg DESTINATION ${DATA_INSTALL_DIR}/schafkopf/data/)
+
+set(INSTALL_OPEN_TAROCK OFF CACHE BOOL "Install the OpenTarock card deck")
+set(CARDDECK_DIRECTORY ${DATA_INSTALL_DIR}/carddecks CACHE PATH "The directories for carddeck installation.")
+if(INSTALL_OPEN_TAROCK)
+  install(FILES carddecks/decks/bavarian_tux2.svgz carddecks/decks/bavarian_tux2.desktop
+    DESTINATION ${CARDDECK_DIRECTORY}/decks)
+  install(DIRECTORY carddecks/svg-OpenTarock DESTINATION ${CARDDECK_DIRECTORY})
+endif(INSTALL_OPEN_TAROCK)
+
 KDE4_UPDATE_ICONCACHE()
