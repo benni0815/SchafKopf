@@ -109,7 +109,7 @@ set(CARDDECK_DIRECTORY ${DATA_INSTALL_DIR}/carddecks CACHE PATH "The directories
 if(INSTALL_OPEN_TAROCK)
   install(FILES carddecks/decks/bavarian_tux2.svgz carddecks/decks/bavarian_tux2.desktop
     DESTINATION ${CARDDECK_DIRECTORY}/decks)
-  install(DIRECTORY carddecks/svg-OpenTarock DESTINATION ${CARDDECK_DIRECTORY})
+  install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})
 endif(INSTALL_OPEN_TAROCK)
 
 KDE4_UPDATE_ICONCACHE()
