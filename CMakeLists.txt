@@ -107,9 +107,7 @@ INSTALL(FILES data/background01.jpg DESTINATION ${DATA_INSTALL_DIR}/schafkopf/da
 set(INSTALL_OPEN_TAROCK OFF CACHE BOOL "Install the OpenTarock card deck")
 set(CARDDECK_DIRECTORY ${DATA_INSTALL_DIR}/carddecks CACHE PATH "The directories for carddeck installation.")
 if(INSTALL_OPEN_TAROCK)
-  install(FILES carddecks/decks/bavarian_tux2.svgz carddecks/decks/bavarian_tux2.desktop
-    DESTINATION ${CARDDECK_DIRECTORY}/decks)
   install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})
 endif(INSTALL_OPEN_TAROCK)
 
-KDE4_UPDATE_ICONCACHE()
+    KDE4_UPDATE_ICONCACHE()
