@@ -96,7 +96,7 @@ ADD_SUBDIRECTORY(icons)
 # actual target:
 kde4_add_app_icon(schafkopf_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/src/hi*-apps-schafkopf.png") # for win and mac only(?)
 kde4_add_executable(schafkopf ${schafkopf_SRCS})
-TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${QIMAGEBLITZ_LIBRARIES})
+TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${QIMAGEBLITZ_LIBRARIES} pthread)
 
 # add install target:
 GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
