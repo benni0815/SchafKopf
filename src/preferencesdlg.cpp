@@ -94,6 +94,10 @@ void PreferencesDlg::accept()
 
     s->setDoubleNextGame( m_checkDoubleNextGame->isChecked() );
 
+    s->setAllowKlopfen( m_checkAllowKlopfen->isChecked() );
+
+    s->setRamschHerzIsTrumpf( m_checkRamschHerzIsTrumpf->isChecked() );
+
     s->setRearrangeCards( m_checkRearrangeCards->isChecked() );
     s->setBackgroundImage( m_linePathBackground->text() );
 
@@ -154,13 +158,19 @@ void PreferencesDlg::addPageRules()
     m_checkDoublerPlays->setToolTip( i18n( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
     m_checkDoubleNextGame = new QCheckBox ( i18n("&Double next game when cards were thrown together.") );
 
+    m_checkRamschHerzIsTrumpf = new QCheckBox ( i18n("&Set Herz as Trumpf in Ramsch.") );
+    m_checkAllowKlopfen = new QCheckBox ( i18n("&Allow Klopfen.") );
+
     QGroupBox* group = new QGroupBox( i18n("No one wants to play:") );
     QVBoxLayout *button_layout = new QVBoxLayout( group );
     button_layout->addWidget( m_radioThrowAway );
     button_layout->addWidget( m_radioForcedGame );
     button_layout->addWidget( m_radioRamsch );
+    button_layout->addWidget( m_checkRamschHerzIsTrumpf );
     button_layout->addWidget( m_checkDoublerPlays );
     button_layout->addWidget( m_checkDoubleNextGame );
+    // onlyu temporarily here
+    button_layout->addWidget( m_checkAllowKlopfen );
 
     QGridLayout* layout = new QGridLayout( box );
     layout->setMargin( 6 );
@@ -175,6 +185,10 @@ void PreferencesDlg::addPageRules()
         m_radioThrowAway->setChecked( true );
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
         m_radioRamsch->setChecked( true );
+    
+    m_checkRamschHerzIsTrumpf->setChecked( Settings::instance()->ramschHerzIsTrumpf());
+    
+    m_checkAllowKlopfen->setChecked( Settings::instance()->allowKlopfen() );
 
     m_checkDoublerPlays->setChecked( Settings::instance()->doublerHasToPlay() );
 
@@ -396,6 +410,7 @@ void PreferencesDlg::addPageGames()
     m_games_geier = new QCheckBox( i18n("&Geier"), box );
     m_games_farbgeier = new QCheckBox( i18n("Colored &Geier"), box );
     m_games_dachs = new QCheckBox( i18n("&Badger"), box );
+    //m_games_bettel = new QCheckBox( i18n("&Bettel"), box );
 
     QLabel* infoLabel = new QLabel( i18n("<qt>You can configure which games are allowed to play."
                                         " You cannot disable certain games, such as Callgames and Solos as they are always "
@@ -423,6 +438,7 @@ void PreferencesDlg::addPageGames()
     layout->addWidget( m_games_geier, 3, 0 );
     layout->addLayout( farbGeierLayout, 4, 0 );
     layout->addWidget( m_games_dachs, 5, 0 );
+    //    layout->addWidget( m_games_bettel, 5, 0 );
     layout->addItem( spacer, 6, 0 );
 
     // load settings

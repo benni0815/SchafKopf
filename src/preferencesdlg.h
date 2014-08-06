@@ -72,6 +72,8 @@ class PreferencesDlg : public KPageDialog
         QCheckBox* m_checkDoublerPlays;
         QCheckBox* m_checkDoubleNextGame;
         QCheckBox* m_checkRearrangeCards;
+	QCheckBox* m_checkRamschHerzIsTrumpf;
+	QCheckBox* m_checkAllowKlopfen;
 
         QCheckBox* m_games_wenz;
         QCheckBox* m_games_farbwenz;
