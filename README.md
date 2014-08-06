@@ -26,7 +26,6 @@ SchafKopf
 3. Start the compilation
 
    ```bash
-   cd ..
    make
    ```
 
