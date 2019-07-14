@@ -106,8 +106,9 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     leftBox_layout->addWidget( m_table );
     leftBox_layout->addWidget( groupInfo );
 
-    connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
-    connect(kapp, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+    const auto app = QApplication::instance();
+    connect(app, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
+    connect(app, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
     //connect(kapp, SIGNAL(aboutToQuit()), this, SLOT(endGame()));
 
     connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
@@ -315,8 +316,9 @@ void SchafKopf::setupActions()
 
 
     m_actQuit = KStandardAction::quit( this, SLOT( endGame() ), actionCollection() );
-    connect( m_actQuit, SIGNAL( triggered() ), kapp, SLOT( quit() ));
-    connect( kapp, SIGNAL( lastWindowClosed() ), this, SLOT( endGame() ) );
+    const auto app = QApplication::instance();
+    connect( m_actQuit, SIGNAL( triggered() ), app, SLOT( quit() ));
+    connect( app, SIGNAL( lastWindowClosed() ), this, SLOT( endGame() ) );
 
     mnuGame->addAction( m_actStich);
     mnuGame->addAction( m_actNew );
