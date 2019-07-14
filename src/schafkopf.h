@@ -26,10 +26,12 @@
 #endif
 
 #include <KXmlGuiWindow>
+#include <KAboutData>
 
 #include <QPointer>
 
 #include <semaphore.h>
+
 
 class CardList;
 class GameCanvas;
@@ -54,6 +56,8 @@ class SchafKopf : public KXmlGuiWindow
     public:
         SchafKopf(QWidget *parent=0);
         ~SchafKopf();
+
+        static KAboutData aboutData();
 
     private slots:
         /** Configure the carddeck to be used

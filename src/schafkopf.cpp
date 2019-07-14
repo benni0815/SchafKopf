@@ -50,6 +50,10 @@
 #include <cmath>
 
 
+namespace
+{
+  static const char version[] = "0.7.91";
+}
 
 SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {
@@ -129,6 +133,22 @@ SchafKopf::~SchafKopf()
     sem_destroy( &m_sem );
 
     delete m_stichdlg;
+}
+
+KAboutData SchafKopf::aboutData()
+{
+  // if you want copyright, then add you to the list:
+  KAboutData about("schafkopf", "SchafKopf", version);
+  about.setLicense(KAboutLicense::GPL);
+  about.setShortDescription(tr("\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game."));
+  about.setHomepage("https://github.com/benni0815/SchafKopf/");
+  about.setCopyrightStatement(tr("(C) 2004-2019 Dominik Seichter (and others)"));
+  about.addAuthor( tr("Christian Kern"), "", "kernch@in.tum.de" );
+  about.addAuthor( tr("Lorenz Moesenlechner"), "", "moesenle@in.tum.de" );
+  about.addAuthor( tr("Benjamin Löwe"), "", "benjamin.loewe@freenet.de" );
+  about.addAuthor( tr("Dominik Seichter"), "", "domseichter@web.de", "http://www.krename.net" );
+
+  return about;
 }
 
 void SchafKopf::customEvent( QEvent* e )
