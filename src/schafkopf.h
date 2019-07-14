@@ -37,7 +37,6 @@ class CardList;
 class GameCanvas;
 class Game;
 class GameInfo;
-class KAction;
 class QLabel;
 class QSplitter;
 class QTableWidget;
@@ -123,8 +122,8 @@ class SchafKopf : public KXmlGuiWindow
         QLabel* lblDoubled;
         QPushButton* btnLastTrick;
 
-        KAction* m_actStich;
-        KAction* m_actEnd;
+        QAction* m_actStich;
+        QAction* m_actEnd;
 
         QPointer<StichDlg> m_stichdlg;
 };

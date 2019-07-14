@@ -294,7 +294,7 @@ void SchafKopf::saveConfig()
 
 void SchafKopf::setupActions()
 {
-    KAction *m_actNew, *m_actQuit;
+    QAction *m_actNew, *m_actQuit;
     KMenu* mnuGame = new KMenu( this );
     KMenu* mnuSettings = new KMenu( this );
 
