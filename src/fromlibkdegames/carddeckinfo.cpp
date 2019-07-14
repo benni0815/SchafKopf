@@ -23,6 +23,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
+#include <QGlobalStatic>
 
 #include <klocale.h>
 #include <kstandarddirs.h>
@@ -101,7 +102,7 @@ public:
     QString defaultDeck;
 };
 
-K_GLOBAL_STATIC( KCardThemeInfoStatic, deckinfoStatic )
+Q_GLOBAL_STATIC( KCardThemeInfoStatic, deckinfoStatic )
 
 QDebug operator<<(QDebug debug, const KCardThemeInfo &cn)
 {
