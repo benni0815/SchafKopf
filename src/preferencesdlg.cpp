@@ -37,7 +37,7 @@ PreferencesDlg::PreferencesDlg( QWidget *parent )
     : KPageDialog( parent )
 {
     setWindowTitle( tr("Preferences") );
-    setButtons( KDialog::Ok | KDialog::Cancel );
+    setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     addPagePlayer();
     addPageGames(); // erlaubte spiele
     // addPageSchafkopf(); // ton an aus .....
