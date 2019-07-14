@@ -28,8 +28,8 @@
 #include "player.h"
 #include "settings.h"
 
-#include <kglobal.h>
-#include <klocale.h>
+#include <KLocale>
+
 
 Results::Results()
 {
@@ -222,7 +222,7 @@ QString Results::formatedPoints( Player* player )
     
     if( Settings::instance()->resultsType() == Settings::MONEY )
     {
-        KLocale* locale = KGlobal::locale();
+        const auto locale = KLocale::global();
         return locale->formatMoney( player->points() );
     }
     else

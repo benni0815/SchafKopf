@@ -194,7 +194,7 @@ void PreferencesDlg::addPageResults()
 
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
-    KLocale* locale = KGlobal::locale();
+    const auto locale = KLocale::global();
 
     m_radioMoney = new QRadioButton( tr("count &money") );
     m_radioPoints = new QRadioButton( tr("count &points") );
