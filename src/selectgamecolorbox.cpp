@@ -37,14 +37,13 @@
 #include <qapplication.h>
 #include <qradiobutton.h>
 #include <qlayout.h>
-#include <klocale.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 
 SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     : QWizardPage( parent )
 {
-    setTitle( i18n("Step 2/2: Select Color") );
+    setTitle( tr("Step 2/2: Select Color") );
     m_allowed = Settings::instance()->allowedGames();
 
     m_gameinfo=0;
@@ -66,11 +65,11 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     connect( labelSchellen, SIGNAL(clicked(bool)), this, SLOT(colorChangedToSchellen()));
 
 
-    checkEichel = new QRadioButton( i18n("&Eichel"), this );
-    checkGras = new QRadioButton( i18n("&Gras"), this );
-    checkHerz = new QRadioButton( i18n("&Herz"), this );
-    checkSchellen = new QRadioButton( i18n("&Schellen"), this );
-    checkFarblos = new QRadioButton( i18n("&Farblos"), this );
+    checkEichel = new QRadioButton( tr("&Eichel"), this );
+    checkGras = new QRadioButton( tr("&Gras"), this );
+    checkHerz = new QRadioButton( tr("&Herz"), this );
+    checkSchellen = new QRadioButton( tr("&Schellen"), this );
+    checkFarblos = new QRadioButton( tr("&Farblos"), this );
 
     Card* herz=new Card(Card::SAU, Card::HERZ);
     Card* schelle=new Card(Card::SAU, Card::SCHELLEN);
@@ -94,7 +93,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     labelEichel->setIconSize( eichel->pixmap()->size() );
     labelSchellen->setIconSize( schelle->pixmap()->size() );
 
-    QGroupBox* color_group = new QGroupBox( i18n("Color:"), this );
+    QGroupBox* color_group = new QGroupBox( tr("Color:"), this );
     QVBoxLayout* eichelLayout = new QVBoxLayout;
     QVBoxLayout* grasLayout = new QVBoxLayout;
     QVBoxLayout* herzLayout = new QVBoxLayout;

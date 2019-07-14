@@ -29,12 +29,12 @@
 #include <qradiobutton.h>
 #include <QGroupBox>
 #include <QButtonGroup>
-#include <klocale.h>
+
 
 newgamewizard::newgamewizard( QWidget *parent )
         : QWizard( parent )
 {
-    setWindowTitle( i18n("Start New Game") );
+    setWindowTitle( tr("Start New Game") );
     setup_page_selectgame();
     //this->setSize(300,300,300,300);
 }
@@ -42,15 +42,15 @@ newgamewizard::newgamewizard( QWidget *parent )
 void newgamewizard::setup_page_selectgame()
 {
     page_selectgame = new QWizardPage;
-    page_selectgame->setTitle( i18n("Select Game Type") );
+    page_selectgame->setTitle( tr("Select Game Type") );
 
     info = new QLabel;
     info->setMargin( 11 );
     info->setMinimumWidth( 220);
 
-    checkLocalGame = new QRadioButton( i18n("&Start local Game") );
-    checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server") );
-    checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client") );
+    checkLocalGame = new QRadioButton( tr("&Start local Game") );
+    checkNetworkServer = new QRadioButton( tr("Start network Game as &Server") );
+    checkNetworkClient = new QRadioButton( tr("Start network Game as &Client") );
 
     checkLocalGame->setChecked(true);
 
@@ -106,15 +106,15 @@ QString newgamewizard::getGameInfoString(int gameType)
       default:
       case GAME_LOCAL:
           return
-              i18n("Start a local Game:\nYou will play against\n3 Computer Players");
+              tr("Start a local Game:\nYou will play against\n3 Computer Players");
           break;
       case GAME_NETWORK_SERVER:
           return
-              i18n("Start a Game Server\nYou will be the host\nof a new Network game");
+              tr("Start a Game Server\nYou will be the host\nof a new Network game");
           break;
       case GAME_NETWORK_CLIENT:
           return
-              i18n("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
+              tr("Connect to a Game Server\nYou will connect to a Computer,\nrunning a Schafkopf server");
           break;
     }
 }

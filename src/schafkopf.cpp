@@ -47,7 +47,6 @@
 #include <KActionCollection>
 #include <KStandardAction>
 #include <kapplication.h>
-#include <klocale.h>
 #include <kmainwindow.h>
 #include <kmenubar.h>
 #include <ktoolbar.h>
@@ -74,7 +73,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     
-    QLabel* label = new QLabel( i18n("Results:") );
+    QLabel* label = new QLabel( tr("Results:") );
     label->setAlignment( Qt::AlignHCenter );
 
     m_table = new QTableWidget;
@@ -93,7 +92,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
 
-    QGroupBox* groupInfo = new QGroupBox( i18n("Game Information:") );
+    QGroupBox* groupInfo = new QGroupBox( tr("Game Information:") );
     QVBoxLayout *groupInfo_layout = new QVBoxLayout( groupInfo );
     groupInfo_layout->addWidget( lblCurGame );
     groupInfo_layout->addWidget( lblDoubled );
@@ -114,7 +113,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
     connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( updateInfo() ) );
 
-    btnLastTrick->setToolTip( i18n( "Show the last trick that was made." ) );
+    btnLastTrick->setToolTip( tr( "Show the last trick that was made." ) );
 
     m_stichdlg = new StichDlg( this );
 
@@ -281,8 +280,8 @@ void SchafKopf::setupActions()
     KMenu* mnuGame = new KMenu( this );
     KMenu* mnuSettings = new KMenu( this );
 
-    mnuGame->setTitle( i18n("&Game") );
-    mnuSettings->setTitle( i18n("&Settings") );
+    mnuGame->setTitle( tr("&Game") );
+    mnuSettings->setTitle( tr("&Settings") );
 
     menuBar()->addMenu( mnuGame );
     menuBar()->addMenu( mnuSettings );
@@ -291,8 +290,8 @@ void SchafKopf::setupActions()
     m_actNew = KStandardGameAction::gameNew( this, SLOT( newGame() ), this );
     m_actEnd = KStandardGameAction::end( this, SLOT( endGame() ), this );
 
-    m_actStich = new KAction( this );
-    m_actStich->setText( i18n( "&Last Trick" ) );
+    m_actStich = new QAction( this );
+    m_actStich->setText( tr( "&Last Trick" ) );
     actionCollection()->addAction( "Last Trick", m_actStich );
     connect( m_actStich, SIGNAL( triggered( bool ) ), this, SLOT( showStich() ) );
 
@@ -405,7 +404,7 @@ void SchafKopf::updateInfo()
     btnLastTrick->setIcon( QIcon( *(Card::backgroundPixmap()) ) );
 
     if( !m_terminated && m_game->gameInfo()->isValid() )
-        lblCurGame->setText( i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
+        lblCurGame->setText( tr("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
     else
     {
         lblCurGame->setText( QString::null );
@@ -420,17 +419,17 @@ void SchafKopf::updateInfo()
         Player* player = m_game->findIndex( i );
         if( player->geklopft() )
         {
-            sDoubled.append( i18n("<qt><b>%1</b> has doubled.</qt>").arg( player->name() ) );
+            sDoubled.append( tr("<qt><b>%1</b> has doubled.</qt>").arg( player->name() ) );
             timesDoubled++;
         }
     }
     timesThrownTogether = m_game->timesThrownTogether();
     if(timesThrownTogether>0)
-        sDoubled.append( i18n("<qt>Times thrown together: <b>%1</b></qt>").arg(timesThrownTogether) );
+        sDoubled.append( tr("<qt>Times thrown together: <b>%1</b></qt>").arg(timesThrownTogether) );
     valuation=(int)pow(2, timesDoubled);
     if( Settings::instance()->doubleNextGame() )
         valuation = valuation * (int)pow(2, timesThrownTogether );
-    sDoubled.append( i18n("<qt><br>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
+    sDoubled.append( tr("<qt><br>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
     
     lblDoubled->setText( sDoubled );
 }

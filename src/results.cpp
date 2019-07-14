@@ -55,8 +55,8 @@ QString Results::result()
     bool positive = m_laufende > 0;
    
     QString s;
-    QString schneider = m_schneider ? i18n(" schneider" ) : QString::null;
-    QString schwarz = m_schwarz ? i18n(" no-trick") : QString::null;
+    QString schneider = m_schneider ? QObject::tr(" schneider" ) : QString::null;
+    QString schwarz = m_schwarz ? QObject::tr(" no-trick") : QString::null;
     Player* winner = m_gameinfo->spieler();
     bool won = m_points > 60;
     
@@ -67,18 +67,18 @@ QString Results::result()
     }
     
     if( won )
-        s = winner->name() + QString(i18n(" wins with %1 points%2."))
+        s = winner->name() + QString(QObject::tr(" wins with %1 points%2."))
             .arg( m_points ).arg( schneider + schwarz );
     else
-        s = winner->name() + QString(i18n(" loses with %1 points%2.") )
+        s = winner->name() + QString(QObject::tr(" loses with %1 points%2.") )
             .arg( m_points ).arg( schneider + schwarz );
     
     if( m_laufende )
     {
         if( positive )
-            s += "\n" + winner->name() + QString( i18n(" got %1 cards in a row.").arg( m_laufende ) );
+            s += "\n" + winner->name() + QString( QObject::tr(" got %1 cards in a row.").arg( m_laufende ) );
         else
-            s += "\n" + winner->name() + QString( i18n(" played without %1 cards in a row.").arg( m_laufende ) );
+            s += "\n" + winner->name() + QString( QObject::tr(" played without %1 cards in a row.").arg( m_laufende ) );
     }
     
     return s;

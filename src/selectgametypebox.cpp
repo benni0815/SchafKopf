@@ -35,21 +35,14 @@
 #include <QButtonGroup>
 #include <QGroupBox>
 #include <qlayout.h>
-#include <klocale.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 
-// DS: moved those from the header into the source file so that these messages are found during make messages-merge
-#define HELP_GAMETYPE_SOLO i18n("When you play a \"Solo\", you have to additionally choose a color. Trumps are all \"Ober\", \"Unter\" and the color you chose. You will play alone against the other three players.")
-#define HELP_GAMETYPE_DACHS i18n("When you play a \"Dachs\", the only trumps are aces and tenners. You will play alone against the other three players.")
-#define HELP_GAMETYPE_RUFSPIEL i18n("When you play a callgame, you will have to choose a color. You will then play in team with the player which has the ace of the color you chose. Hearts are trumps.")
-#define HELP_GAMETYPE_WENZ i18n("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
-#define HELP_GAMETYPE_GEIER i18n("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.")
 
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     : QWizardPage( parent )
 {
-    setTitle( i18n("Step 1/2: Select Game") );
+    setTitle( tr("Step 1/2: Select Game") );
     m_allowed = Settings::instance()->allowedGames();
 
     QWidget* row1 = new QWidget;
@@ -61,11 +54,11 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     infoLabel->setWordWrap( true );
     infoLabel->setMinimumHeight(100);
 
-    checkRufspiel = new QRadioButton( i18n("&Callgame") );
-    checkSolo = new QRadioButton( i18n("&Solo") );
-    checkGeier = new QRadioButton( i18n("&Geier") );
-    checkWenz = new QRadioButton( i18n("&Wenz") );
-    checkDachs = new QRadioButton( i18n("&Dachs") );
+    checkRufspiel = new QRadioButton( tr("&Callgame") );
+    checkSolo = new QRadioButton( tr("&Solo") );
+    checkGeier = new QRadioButton( tr("&Geier") );
+    checkWenz = new QRadioButton( tr("&Wenz") );
+    checkDachs = new QRadioButton( tr("&Dachs") );
 
     checkRufspiel->setChecked(true);
 
@@ -81,7 +74,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     myGroup->addButton( checkDachs );
     connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(typeChanged()));
 
-    QGroupBox* group_TypeSelect = new QGroupBox( i18n("Game") );
+    QGroupBox* group_TypeSelect = new QGroupBox( tr("Game") );
     QVBoxLayout *button_layout = new QVBoxLayout;
     button_layout->addWidget( checkRufspiel );
     button_layout->addWidget( checkSolo );
@@ -112,28 +105,34 @@ SelectGameTypeBox::~SelectGameTypeBox()
 
 void SelectGameTypeBox::typeChanged()
 {
+    const auto HelpGametypeSolo = tr("When you play a \"Solo\", you have to additionally choose a color. Trumps are all \"Ober\", \"Unter\" and the color you chose. You will play alone against the other three players.");
+    const auto HelpGametypeDachs = tr("When you play a \"Dachs\", the only trumps are aces and tenners. You will play alone against the other three players.");
+    const auto HelpGametypeRufspiel = tr("When you play a callgame, you will have to choose a color. You will then play in team with the player which has the ace of the color you chose. Hearts are trumps.");
+    const auto HelpGametypeWenz = tr("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
+    const auto HelpGametypeGeier = tr("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
+
     GameInfo *info=gameInfo();
     updatePreview();
     switch(info->mode())
     {
     case (GameInfo::RUFSPIEL):
-        setInfoText(HELP_GAMETYPE_RUFSPIEL);
-    break;
+        setInfoText(HelpGametypeRufspiel);
+        break;
     case (GameInfo::WENZ):
-        setInfoText(HELP_GAMETYPE_WENZ);
-    break;
+        setInfoText(HelpGametypeWenz);
+        break;
     case (GameInfo::STICHT):
-        setInfoText(HELP_GAMETYPE_SOLO);
-    break;
+        setInfoText(HelpGametypeSolo);
+        break;
     case (GameInfo::GEIER):
-        setInfoText(HELP_GAMETYPE_GEIER);
-    break;
+        setInfoText(HelpGametypeGeier);
+        break;
     case (GameInfo::DACHS):
-        setInfoText(HELP_GAMETYPE_DACHS);
-    break;
+        setInfoText(HelpGametypeDachs);
+        break;
     // DS: Fix a compiler warning
     default:
-    break;
+        break;
     }
     delete info;
 }

@@ -29,7 +29,6 @@
 #include "results.h"
 #include "settings.h"
 
-#include <klocale.h>
 #include <string.h>
 #include <QCoreApplication>
 #include <QCustomEvent>
@@ -143,8 +142,8 @@ void Game::gameLoop()
             tmp[i]->sortCards();
             if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
             {
-                //m_canvas->information( i18n("%1 has doubled.").arg( tmp[i]->name() ) );
-                postEvent( PlayerDoubled, tmp[i]->id(), 0, i18n("%1 has doubled.").arg( tmp[i]->name() ), true );
+                //m_canvas->information( tr("%1 has doubled.").arg( tmp[i]->name() ) );
+                postEvent( PlayerDoubled, tmp[i]->id(), 0, tr("%1 has doubled.").arg( tmp[i]->name() ), true );
                 // emit signalDoubled();
             }
             if(terminated)
@@ -383,19 +382,19 @@ bool Game::setupGameInfo(Player *players[])
             games.append( info );
             if( players[i]->rtti() != Player::HUMAN )
             {
-                postEvent( Bubble, playerInstance, 0, i18n("%1: \"I want to play.\"").arg( players[i]->name() ), true );
+                postEvent( Bubble, playerInstance, 0, tr("%1: \"I want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
             }
-            //m_canvas->information( i18n("%1 has a game.").arg( players[i]->name() ) );
+            //m_canvas->information( tr("%1 has a game.").arg( players[i]->name() ) );
         }
         else
         {
             if( players[i]->rtti() != Player::HUMAN )
             {
-                postEvent( Bubble, playerInstance, 0, i18n("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
+                postEvent( Bubble, playerInstance, 0, tr("%1: \"I don't want to play.\"").arg( players[i]->name() ), true );
                 sleep ( 1 );
             }
-            //m_canvas->information( i18n("%1 has no game.").arg( players[i]->name() ) );
+            //m_canvas->information( tr("%1 has no game.").arg( players[i]->name() ) );
         }
     }
 
@@ -460,7 +459,7 @@ bool Game::setupGameInfoForced(Player *players[])
         {
             if( players[i]->geklopft() )
             {
-                postEvent( InfoMessage, 0, 0, i18n("%1 has doubled last\nand has to play now.").arg( players[i]->name() ), true );
+                postEvent( InfoMessage, 0, 0, tr("%1 has doubled last\nand has to play now.").arg( players[i]->name() ), true );
 
                 info = players[i]->gameInfo( true );
                 info->setSpieler( players[i] );
@@ -473,8 +472,8 @@ bool Game::setupGameInfoForced(Player *players[])
 
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
     {
-        postEvent( InfoMessage, 0, 0, i18n("No one wants to play.\nCards will be thrown together."), true );
-        //m_canvas->information( i18n("No one wants to play.\nCards will be thrown together.") );
+        postEvent( InfoMessage, 0, 0, tr("No one wants to play.\nCards will be thrown together."), true );
+        //m_canvas->information( tr("No one wants to play.\nCards will be thrown together.") );
         m_timesThrownTogether++;
         m_gameinfo.setValid( false );
         postEvent( GameInfoSetup );
@@ -488,7 +487,7 @@ bool Game::setupGameInfoForced(Player *players[])
         {
             if( players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
             {
-                postEvent( InfoMessage, 0, 0, i18n("%1 has got the Eichel Ober\nand has to play.").arg( players[i]->name() ), true );
+                postEvent( InfoMessage, 0, 0, tr("%1 has got the Eichel Ober\nand has to play.").arg( players[i]->name() ), true );
                 
                 info = players[i]->gameInfo( true );
                 info->setSpieler( players[i] );
@@ -500,7 +499,7 @@ bool Game::setupGameInfoForced(Player *players[])
     }
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
     {
-        postEvent( InfoMessage, 0, 0, i18n("No one wants to play.\nRamsch will be played."), true );
+        postEvent( InfoMessage, 0, 0, tr("No one wants to play.\nRamsch will be played."), true );
         m_gameinfo.setSpieler( NULL );
         m_gameinfo.setMitspieler( NULL );
         m_gameinfo.setMode( GameInfo::RAMSCH );

@@ -26,7 +26,6 @@
 #include "player.h"
 #include "settings.h"
 
-#include <klocale.h>
 #include <qtimer.h>
 #include <qimage.h>
 
@@ -66,9 +65,9 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     m_message->setFont( f );
     m_message->setBrush( QBrush( Qt::yellow ) );
 
-    m_yes = new CanvasText( i18n("Yes"), f, m_message );
-    m_no = new CanvasText( i18n("No"), f, m_message );
-    m_ok = new CanvasText( i18n("OK"), f, m_message );
+    m_yes = new CanvasText( tr("Yes"), f, m_message );
+    m_no = new CanvasText( tr("No"), f, m_message );
+    m_ok = new CanvasText( tr("OK"), f, m_message );
 
     scene()->addItem( m_message );
 
