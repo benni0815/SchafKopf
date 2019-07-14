@@ -148,7 +148,6 @@ void SelectGameTypeBox::updatePreview()
     for(i=0;i<(int)list.count();i++)
         if( info->istTrumpf( list.at(i) ) )
             trumpf.append( list.at(i) );
-    delete info;
     trumpf.sort((eval_func)info->evalCard, (void *)info);
 
     Card c( Card::SAU, Card::EICHEL );
