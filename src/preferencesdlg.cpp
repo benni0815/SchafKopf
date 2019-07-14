@@ -22,7 +22,6 @@
 
 #include <KUrlRequester>
 #include <KPageWidgetItem>
-#include <KLocale>
 
 #include <QRadioButton>
 #include <QSpinBox>
@@ -194,7 +193,6 @@ void PreferencesDlg::addPageResults()
 
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
-    const auto locale = KLocale::global();
 
     m_radioMoney = new QRadioButton( tr("count &money") );
     m_radioPoints = new QRadioButton( tr("count &points") );
@@ -213,47 +211,49 @@ void PreferencesDlg::addPageResults()
     QLabel* schneider_label = new QLabel( tr("Schneider:") );
     QLabel* ramsch_label = new QLabel( tr("Ramsch:") );
 
+    const auto currencySymbol = QLocale().currencySymbol();
+
     m_money_call = new QDoubleSpinBox();
     m_money_call->setRange( 0., 100. );
     m_money_call->setValue( rm->rufspiel );
     m_money_call->setDecimals( 2 );
     m_money_call->setSingleStep( 0.1 );
-    m_money_call->setSuffix( locale->currencySymbol() );
+    m_money_call->setSuffix( currencySymbol );
 
     m_money_solo = new QDoubleSpinBox();
     m_money_solo->setRange( 0., 100. );
     m_money_solo->setValue( rm->solo );
     m_money_solo->setDecimals( 2 );
     m_money_solo->setSingleStep( 0.1 );
-    m_money_solo->setSuffix( locale->currencySymbol() );
+    m_money_solo->setSuffix( currencySymbol );
 
     m_money_lauf = new QDoubleSpinBox();
     m_money_lauf->setRange( 0., 100. );
     m_money_lauf->setValue( rm->laufende );
     m_money_lauf->setDecimals( 2 );
     m_money_lauf->setSingleStep( 0.1 );
-    m_money_lauf->setSuffix( locale->currencySymbol() );
+    m_money_lauf->setSuffix( currencySymbol );
 
     m_money_notrick = new QDoubleSpinBox();
     m_money_notrick->setRange( 0., 100. );
     m_money_notrick->setValue( rm->schwarz );
     m_money_notrick->setDecimals( 2 );
     m_money_notrick->setSingleStep( 0.1 );
-    m_money_notrick->setSuffix( locale->currencySymbol() );
+    m_money_notrick->setSuffix( currencySymbol );
 
     m_money_schneider = new QDoubleSpinBox();
     m_money_schneider->setRange( 0., 100. );
     m_money_schneider->setValue( rm->schneider );
     m_money_schneider->setDecimals( 2 );
     m_money_schneider->setSingleStep( 0.1 );
-    m_money_schneider->setSuffix( locale->currencySymbol() );
+    m_money_schneider->setSuffix( currencySymbol );
 
     m_money_ramsch = new QDoubleSpinBox();
     m_money_ramsch->setRange( 0., 100. );
     m_money_ramsch->setValue( rm->ramsch );
     m_money_ramsch->setDecimals( 2 );
     m_money_ramsch->setSingleStep( 0.1 );
-    m_money_ramsch->setSuffix( locale->currencySymbol() );
+    m_money_ramsch->setSuffix( currencySymbol );
 
     QGridLayout* stackMoney_layout = new QGridLayout( stackMoney );
     stackMoney_layout->addWidget( m_money_call, 0, 1 );
