@@ -1,25 +1,16 @@
 # ########## Project setup ##########
 PROJECT(schafkopf)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.4.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
+
+set(CMAKE_CXX_STANDARD 14)
 
 # ######### General setup ##########
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR})
+SET(CMAKE_AUTOMOC ON)
+SET(CMAKE_AUTOUIC ON)
+find_package(Qt5 REQUIRED Core Gui Widgets Svg)
+find_package(KF5KDELibs4Support REQUIRED)
+find_package(KF5KDEGames REQUIRED)
 
-FIND_PACKAGE(KDE4 REQUIRED)
-IF(KDE_VERSION VERSION_GREATER 4.8.80)
-    FIND_PACKAGE(KDEGames REQUIRED)
-ELSE()
-    FIND_PACKAGE(LibKDEGames REQUIRED)
-ENDIF()
-FIND_PACKAGE(Qt4 REQUIRED)
-FIND_PACKAGE(QImageBlitz REQUIRED)
-FIND_PACKAGE(Gettext)
-
-add_definitions(${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
-
-include(KDE4Defaults)
-
-include(MacroLibrary)
 
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Benni")
@@ -31,8 +22,6 @@ SET(CPACK_PACKAGE_VERSION_PATCH "91")
 SET(CPACK_SET_DESTDIR "ON")
 
 INCLUDE(CPack)
-
-include_directories(${KDE4_INCLUDES} ${KDE4_INCLUDE_DIR} ${QT_INCLUDES} ${QIMAGEBLITZ_INCLUDES})
 
 
 # ########## src executable ##########
@@ -65,44 +54,22 @@ SET(schafkopf_SRCS
     src/fromlibkdegames/kcarddialog.cpp
 )
 
-# Headers:
-SET(schafkopf_HDRS
-    src/schafkopfevent.h
-    src/schafkopf.h
-    src/selectgamewizard.h
-    src/preferencesdlg.h
-    src/gamecanvas.h
-    src/openbook.h
-    src/canvascard.h
-    src/stichdlg.h
-    src/settings.h
-    src/selectgametypebox.h
-    src/selectgamecolorbox.h
-    src/newgamewizard.h
-)
-
-kde4_add_ui_files(schafkopf_SRCS
-    src/fromlibkdegames/kgamecardselector.ui
-)
-
-SET(CMAKE_BUILD_TYPE Release)
-
-QT4_WRAP_CPP(schafkopf_HDRS_MOC ${schafkopf_HDRS})
-
-INCLUDE(${QT_USE_FILE})
-
 ADD_SUBDIRECTORY(icons)
 
 # actual target:
-kde4_add_app_icon(schafkopf_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/src/hi*-apps-schafkopf.png") # for win and mac only(?)
-kde4_add_executable(schafkopf ${schafkopf_SRCS})
-TARGET_LINK_LIBRARIES(schafkopf ${QT_LIBRARIES} ${KDE4_KIO_LIBS} ${KDE4_KDEUI_LIBS} ${KDEGAMES_LIBRARY} ${QIMAGEBLITZ_LIBRARIES} pthread)
+add_executable(schafkopf ${schafkopf_SRCS})
+TARGET_LINK_LIBRARIES(schafkopf
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::Svg
+    KF5KDEGames
+    KF5::KDELibs4Support
+    pthread
+)
 
 # add install target:
 GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
-INSTALL(TARGETS schafkopf ${INSTALL_TARGETS_DEFAULT_ARGS})
-INSTALL(PROGRAMS src/schafkopf.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-INSTALL(FILES data/background01.jpg DESTINATION ${DATA_INSTALL_DIR}/schafkopf/data/)
 
 set(INSTALL_OPEN_TAROCK OFF CACHE BOOL "Install the OpenTarock card deck")
 set(CARDDECK_DIRECTORY ${DATA_INSTALL_DIR}/carddecks CACHE PATH "The directories for carddeck installation.")
@@ -110,4 +77,3 @@ if(INSTALL_OPEN_TAROCK)
   install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})
 endif(INSTALL_OPEN_TAROCK)
 
-    KDE4_UPDATE_ICONCACHE()
