@@ -31,6 +31,7 @@
 #include <QSizeF>
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 
 #include <qsvgrenderer.h>
 #include <kpixmapcache.h>
@@ -39,7 +40,6 @@
 
 #include "carddeckinfo.h"
 
-#include <kdebug.h>
 
 #define DECKLIST_LENGTH 53
 
@@ -190,7 +190,7 @@ QSvgRenderer* KCardCachePrivate::renderer()
 {
     if ( !svgRenderer )
     {
-        kDebug() << "Loading front SVG renderer";
+        qDebug() << "Loading front SVG renderer";
         svgRenderer = new QSvgRenderer( CardDeckInfo::svgFilePath( deckName ) );
     }
     return svgRenderer;
@@ -200,7 +200,7 @@ void KCardCachePrivate::ensureNonNullPixmap( QPixmap& pix )
 {
     if( pix.isNull() )
     {
-        kWarning() << "Couldn't produce a non-null pixmap, creating a red cross";
+        qWarning() << "Couldn't produce a non-null pixmap, creating a red cross";
         pix = QPixmap( size );
         QPainter p(&pix);
         p.fillRect( QRect( 0,0, pix.width(), pix.height() ), QBrush( Qt::white ) );
@@ -216,14 +216,14 @@ void KCardCachePrivate::ensureNonNullPixmap( QPixmap& pix )
 
 QPixmap KCardCachePrivate::renderSvg( const QString& element )
 {
-    kDebug() << "Renderering" << element << "in main thread.";
+    qDebug() << "Renderering" << element << "in main thread.";
     QMutexLocker l( rendererMutex );
     return doRender( element, renderer(), size );
 }
 
 void KCardCachePrivate::submitRendering( const QString& key, const QImage& image )
 {
-    kDebug() << "Received render of" << key << "from rendering thread.";
+    qDebug() << "Received render of" << key << "from rendering thread.";
     QPixmap pix = QPixmap::fromImage( image );
     QMutexLocker l( cacheMutex );
     cache->insert( key, pix );
