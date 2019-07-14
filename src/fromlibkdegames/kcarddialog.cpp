@@ -204,5 +204,3 @@ KCardDialog::KCardDialog( KCardWidget* widget )
   setCaption(i18n("Card Deck Selection"));
   setButtons(KDialog::Ok | KDialog::Cancel);
 }
-
-#include "kcarddialog.moc"
