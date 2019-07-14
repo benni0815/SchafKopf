@@ -105,7 +105,7 @@ void SelectGameTypeBox::typeChanged()
     const auto HelpGametypeWenz = tr("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
     const auto HelpGametypeGeier = tr("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
 
-    GameInfo *info=gameInfo();
+    auto info = std::unique_ptr<GameInfo>(gameInfo());
     updatePreview();
     switch(info->mode())
     {
@@ -128,7 +128,6 @@ void SelectGameTypeBox::typeChanged()
     default:
         break;
     }
-    delete info;
 }
 
 void SelectGameTypeBox::setInfoText(QString Text)
@@ -142,13 +141,13 @@ void SelectGameTypeBox::updatePreview()
     int x=0, y = 0;
     CardList list;
     CardList trumpf;
-    GameInfo* info = gameInfo();
+    auto info = std::unique_ptr<GameInfo>(gameInfo());
 
     list.init();
     for(i=0;i<(int)list.count();i++)
         if( info->istTrumpf( list.at(i) ) )
             trumpf.append( list.at(i) );
-    trumpf.sort((eval_func)info->evalCard, (void *)info);
+    trumpf.sort((eval_func)info->evalCard, (void *)info.get());
 
     Card c( Card::SAU, Card::EICHEL );
     QPixmap pix(c.pixmap()->width()+(c.pixmap()->width()/2)*7,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
