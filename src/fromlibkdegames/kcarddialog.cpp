@@ -25,6 +25,7 @@
 #include <QListWidgetItem>
 #include <QFileInfo>
 #include <QDir>
+#include <QDialogButtonBox>
 
 #include <klocale.h>
 #include <kstandarddirs.h>
@@ -200,7 +201,14 @@ void KCardWidget::setDeckName(const QString& name)
 
 KCardDialog::KCardDialog( KCardWidget* widget )
 {
-  setMainWidget(widget);
-  setCaption(i18n("Card Deck Selection"));
-  setButtons(KDialog::Ok | KDialog::Cancel);
+  setWindowTitle(tr("Card Deck Selection"));
+
+  auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+  connect(buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+  connect(buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+  QVBoxLayout *vbox = new QVBoxLayout;
+  vbox->addWidget( widget );
+  vbox->addWidget(buttonBox);
+  setLayout(vbox);
 }

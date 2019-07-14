@@ -20,9 +20,9 @@
 #define __KCARDDIALOG_H_
 
 #include <KConfigGroup>
-#include <KDialog>
 
 #include <QWidget>
+#include <QDialog>
 
 
 class QListWidgetItem;
@@ -52,7 +52,7 @@ class KCardWidget;
  * \endcode
  *
  */
-class KCardDialog : public KDialog
+class KCardDialog : public QDialog
 {
   Q_OBJECT
 public:
