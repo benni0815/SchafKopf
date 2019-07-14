@@ -67,7 +67,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     checkWenz = new QRadioButton( i18n("&Wenz") );
     checkDachs = new QRadioButton( i18n("&Dachs") );
 
-    checkRufspiel->setChecked(TRUE);
+    checkRufspiel->setChecked(true);
 
     checkGeier->setEnabled( m_allowed->geier );
     checkWenz->setEnabled( m_allowed->wenz );

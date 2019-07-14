@@ -52,7 +52,7 @@ void newgamewizard::setup_page_selectgame()
     checkNetworkServer = new QRadioButton( i18n("Start network Game as &Server") );
     checkNetworkClient = new QRadioButton( i18n("Start network Game as &Client") );
 
-    checkLocalGame->setChecked(TRUE);
+    checkLocalGame->setChecked(true);
 
     QGroupBox *group_TypeSelect = new QGroupBox;
     QVBoxLayout *vbox = new QVBoxLayout;
