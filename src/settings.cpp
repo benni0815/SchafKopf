@@ -194,12 +194,12 @@ void Settings::setPointResults( const t_ResultValues* r )
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = m_config->group("PointValues");
-    config.writeEntry( "Solo", (int)r->solo );
-    config.writeEntry( "Rufspiel", (int)r->rufspiel );
-    config.writeEntry( "Laufende", (int)r->laufende );
-    config.writeEntry( "Schneider", (int)r->schneider );
-    config.writeEntry( "Schwarz", (int)r->schwarz );
-    config.writeEntry( "Ramsch", (int)r->ramsch );
+    config.writeEntry( "Solo", static_cast<int>(r->solo) );
+    config.writeEntry( "Rufspiel", static_cast<int>(r->rufspiel) );
+    config.writeEntry( "Laufende", static_cast<int>(r->laufende) );
+    config.writeEntry( "Schneider", static_cast<int>(r->schneider) );
+    config.writeEntry( "Schwarz", static_cast<int>(r->schwarz) );
+    config.writeEntry( "Ramsch", static_cast<int>(r->ramsch) );
     config.sync();
 }
 
