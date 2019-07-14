@@ -296,15 +296,16 @@ void SchafKopf::saveConfig()
 void SchafKopf::setupActions()
 {
     QAction *m_actNew, *m_actQuit;
-    KMenu* mnuGame = new KMenu( this );
-    KMenu* mnuSettings = new KMenu( this );
+    auto mnuGame = new QMenu( this );
+    auto mnuSettings = new QMenu( this );
 
     mnuGame->setTitle( tr("&Game") );
     mnuSettings->setTitle( tr("&Settings") );
 
     menuBar()->addMenu( mnuGame );
     menuBar()->addMenu( mnuSettings );
-    menuBar()->addMenu( helpMenu() );
+    auto help = new KHelpMenu(this, aboutData());
+    menuBar()->addMenu( help->menu() );
 
     m_actNew = KStandardGameAction::gameNew( this, SLOT( newGame() ), this );
     m_actEnd = KStandardGameAction::end( this, SLOT( endGame() ), this );
