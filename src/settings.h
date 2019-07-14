@@ -22,6 +22,8 @@
 
 #include "fromlibkdegames/cardcache.h"
 
+#include <KSharedConfig>
+
 #include <QObject>
 
 
@@ -133,6 +135,8 @@ class Settings : public QObject
         ~Settings();
 
         static Settings* m_instance;
+
+        KSharedConfig::Ptr m_config;
 
         QMutex* m_mutex;
 
