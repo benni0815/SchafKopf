@@ -30,28 +30,26 @@
 #include "preferencesdlg.h"
 #include "selectgamewizard.h"
 
-// for pow()
-#include <math.h>
-
-#include <qfontmetrics.h>
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <qsplitter.h>
+#include <QLabel>
+#include <QApplication>
+#include <QMenuBar>
+#include <QSplitter>
+#include <QTableWidget>
+#include <QPushButton>
 #include <QHeaderView>
-#include <qtimer.h>
-#include <qtooltip.h>
-#include <QVBoxLayout>
 #include <QGroupBox>
+#include <QVBoxLayout>
+#include <QTimer>
 
-#include <KAction>
 #include <KActionCollection>
-#include <KStandardAction>
-#include <kapplication.h>
-#include <kmainwindow.h>
-#include <kmenubar.h>
-#include <ktoolbar.h>
-#include <kmenu.h>
-#include <kstandardgameaction.h>
+#include <KHelpMenu>
+#include <KToolBar>
+#include <KStandardGameAction>
+
+// for pow()
+#include <cmath>
+
+
 
 SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {

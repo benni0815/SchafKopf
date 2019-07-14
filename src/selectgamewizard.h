@@ -21,7 +21,7 @@
 #define SELECTGAMEWIZARD_H
 
 #include <QWizard>
-#include <QLabel>
+
 
 class QWidget;
 class QLineEdit;

@@ -22,17 +22,16 @@
 
 #include "schafkopfdef.h"
 
-#include <qstring.h>
-#include <kpassivepopup.h>
-#include <qlabel.h>
-#include <QGraphicsScene>
-#include <QGraphicsView>
-#include <QGraphicsSimpleTextItem>
 
 class Card;
 class CardList;
 class CanvasCard;
 class Player;
+class KPassivePopup;
+class QLabel;
+class QGraphicsScene;
+class QGraphicsView;
+class QGraphicsSimpleTextItem;
 
 /**
 Represents a player on the canvas

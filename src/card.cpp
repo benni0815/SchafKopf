@@ -21,9 +21,10 @@
 #include "settings.h"
 #include "player.h"
 
-#include <qpixmap.h>
+#include <QPixmap>
 
 #include "fromlibkdegames/kcarddialog.h"
+
 
 QPixmap* Card::m_background = 0;
 

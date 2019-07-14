@@ -26,13 +26,8 @@
 #endif
 
 #include <KXmlGuiWindow>
-#include <qpointer.h>
-#include <QTableWidget>
-#include <QCustomEvent>
-#include <QLabel>
-#include <QPushButton>
-#include <QGraphicsScene>
-#include <QGraphicsView>
+
+#include <QPointer>
 
 #include <semaphore.h>
 
@@ -43,6 +38,9 @@ class GameInfo;
 class KAction;
 class QLabel;
 class QSplitter;
+class QTableWidget;
+class QPushButton;
+class QGraphicsScene;
 class StichDlg;
 
 /**

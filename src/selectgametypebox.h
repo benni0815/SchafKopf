@@ -20,8 +20,8 @@
 #ifndef SELECTGAMETYPEBOX_H
 #define SELECTGAMETYPEBOX_H
 
-#include <QLabel>
 #include <QWizardPage>
+
 
 class QWidget;
 class QLineEdit;

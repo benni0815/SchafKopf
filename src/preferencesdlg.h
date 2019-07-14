@@ -20,8 +20,10 @@
 #ifndef PREFERENCESDLG_H
 #define PREFERENCESDLG_H
 
-#include <kpagedialog.h>
+#include <KPageDialog>
+
 #include <QStackedWidget>
+
 
 class QRadioButton;
 class QLabel;

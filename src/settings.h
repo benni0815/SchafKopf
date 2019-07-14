@@ -20,9 +20,10 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <qobject.h>
-
 #include "fromlibkdegames/cardcache.h"
+
+#include <QObject>
+
 
 /** a small datatype which contains configureable 
   * values to calculate how much a game was.

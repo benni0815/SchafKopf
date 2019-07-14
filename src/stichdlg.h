@@ -21,19 +21,18 @@
 #define STICHDLG_H
 
 #include "schafkopfdef.h"
+#include "game.h"
 
 #include <QDialog>
-#include <QLabel>
+
 
 class QLabel;
+
 /**
 Show the last trick which was made
 
 @author Dominik Seichter
 */
-
-#include "game.h"
-
 class StichDlg : public QDialog
 {
     Q_OBJECT

@@ -19,18 +19,13 @@
  ***************************************************************************/
 #include "selectgamewizard.h"
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qvalidator.h>
-#include <qapplication.h>
-#include <qradiobutton.h>
-#include <klocale.h>
 #include "selectgametypebox.h"
 #include "selectgamecolorbox.h"
 #include "cardlist.h"
 #include "card.h"
+
+#include <QAbstractButton>
+
 
 SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent )
     : QWizard( parent )

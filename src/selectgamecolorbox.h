@@ -20,9 +20,8 @@
 #ifndef SELECTGAMECOLORBOX_H
 #define SELECTGAMECOLORBOX_H
 
-#include <QLabel>
-
 #include <QWizardPage>
+
 
 class QWidget;
 class QLineEdit;

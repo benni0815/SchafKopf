@@ -20,17 +20,18 @@
 #include "preferencesdlg.h"
 #include "settings.h"
 
-#include <kurlrequester.h>
+#include <KUrlRequester>
 #include <KPageWidgetItem>
+#include <KLocale>
 
-#include <qlayout.h>
-#include <qradiobutton.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qtooltip.h>
-#include <QLineEdit>
+#include <QRadioButton>
+#include <QSpinBox>
 #include <QGridLayout>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QLabel>
+#include <QGroupBox>
+
 
 PreferencesDlg::PreferencesDlg( QWidget *parent )
     : KPageDialog( parent )

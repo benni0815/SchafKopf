@@ -21,7 +21,7 @@
 #define NEWGAMEWIZARD_H
 
 #include <QWizard>
-#include <QLabel>
+
 
 class QLineEdit;
 class QLabel;

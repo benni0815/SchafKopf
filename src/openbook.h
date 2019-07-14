@@ -20,7 +20,8 @@
 #ifndef OPENBOOK_H
 #define OPENBOOK_H
 
-#include <qobject.h>
+#include <QObject>
+
 
 class Card;
 class CardList;

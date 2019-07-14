@@ -1,7 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <qstring.h>
+#include <QString>
+
 
 class Card;
 class CardList;

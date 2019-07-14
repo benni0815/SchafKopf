@@ -20,7 +20,6 @@
 #ifndef CANVASCARD_H
 #define CANVASCARD_H
 
-#include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 

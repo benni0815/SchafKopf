@@ -22,14 +22,9 @@
 
 #include "schafkopfdef.h"
 
-#include <QGraphicsScene>
 #include <QGraphicsView>
-#include <qimage.h>
-#include <QResizeEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QFocusEvent>
 #include <QEventLoop>
+
 
 class CanvasCard;
 class Card;

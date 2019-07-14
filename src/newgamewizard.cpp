@@ -19,15 +19,10 @@
  ***************************************************************************/
 #include "newgamewizard.h"
 
-#include <qwidget.h>
-#include <QHBoxLayout>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qvalidator.h>
-#include <qapplication.h>
-#include <qradiobutton.h>
+#include <QLabel>
+#include <QRadioButton>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QButtonGroup>
 
 

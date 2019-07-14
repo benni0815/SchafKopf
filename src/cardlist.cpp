@@ -21,8 +21,9 @@
 
 #include "schafkopfdef.h"
 
+#include <KRandom>
+
 #include <iostream>
-#include <krandom.h>
 
 CardList::CardList()
 {

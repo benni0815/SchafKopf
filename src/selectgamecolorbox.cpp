@@ -27,18 +27,12 @@
 #include "card.h"
 #include "selectgamewizard.h"
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <QGroupBox>
+#include <QPushButton>
+#include <QRadioButton>
 #include <QButtonGroup>
-#include <qvalidator.h>
-#include <qapplication.h>
-#include <qradiobutton.h>
-#include <qlayout.h>
-#include <qpainter.h>
-#include <qpixmap.h>
+#include <QVBoxLayout>
+#include <QGroupBox>
+
 
 SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     : QWizardPage( parent )

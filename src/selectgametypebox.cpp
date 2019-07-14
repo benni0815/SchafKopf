@@ -25,18 +25,12 @@
 #include "gameinfo.h"
 #include "settings.h"
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qvalidator.h>
-#include <qapplication.h>
-#include <qradiobutton.h>
+#include <QLabel>
+#include <QRadioButton>
 #include <QButtonGroup>
+#include <QVBoxLayout>
 #include <QGroupBox>
-#include <qlayout.h>
-#include <qpainter.h>
-#include <qpixmap.h>
+#include <QPainter>
 
 
 SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )

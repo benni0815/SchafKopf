@@ -25,8 +25,9 @@
 #include "cardlist.h"
 #include "gameinfo.h"
 
+#include <QThread>
+
 #include <semaphore.h>
-#include <qthread.h>
 
 class Player;
 class GameCanvas;

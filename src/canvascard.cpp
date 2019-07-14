@@ -22,13 +22,8 @@
 #include "settings.h"
 #include "schafkopfdef.h"
 
-#include <qpainter.h>
-#include <qtimer.h>
-#include <qmatrix.h>
-#include <qpixmap.h>
-#include <QGraphicsDropShadowEffect>
+#include <QTimer>
 
-#include <qimageblitz.h>
 
 CanvasCard::CanvasCard()
  :  QGraphicsPixmapItem()

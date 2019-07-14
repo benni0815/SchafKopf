@@ -29,10 +29,11 @@
 #include "results.h"
 #include "settings.h"
 
-#include <string.h>
 #include <QCoreApplication>
-#include <QCustomEvent>
 #include <QEvent>
+
+#include <string.h>
+
 
 unsigned int Game::def_id=0;
 

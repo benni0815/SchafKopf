@@ -26,9 +26,12 @@
 #include "game.h"
 #include "settings.h"
 
-#include <qfont.h>
-#include <qtimer.h>
-#include <qwidget.h>
+#include <KPassivePopup>
+
+#include <QGraphicsView>
+#include <QLabel>
+#include <QFont>
+
 
 CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view )
     : m_scene( scene ), m_view( view )

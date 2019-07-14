@@ -26,8 +26,10 @@
 #include "player.h"
 #include "settings.h"
 
-#include <qtimer.h>
-#include <qimage.h>
+#include <QTimer>
+#include <QImage>
+#include <QMouseEvent>
+
 
 class CanvasText : public QGraphicsSimpleTextItem
 {

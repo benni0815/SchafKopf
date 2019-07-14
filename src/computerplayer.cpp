@@ -26,8 +26,8 @@
 #include "openbook.h"
 
 #include <QDebug>
+#include <QString>
 
-#include <qstring.h>
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
     : Player(id,game)

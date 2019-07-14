@@ -44,7 +44,7 @@
   */
 #define SCHAFKOPF_EVENT 1984
 
-#include <qstring.h>
+#include <QString>
 
 class Card;
 class QSemaphore;
