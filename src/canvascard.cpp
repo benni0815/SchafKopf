@@ -23,6 +23,7 @@
 #include "schafkopfdef.h"
 
 #include <QTimer>
+#include <QPainter>
 
 
 CanvasCard::CanvasCard()
@@ -55,7 +56,13 @@ void CanvasCard::reloadPixmaps()
     frontPixmap = *( m_card->pixmap() );
 
     QImage forbiddenFrontImage = frontPixmap.toImage();
-    Blitz::fade( forbiddenFrontImage, 0.5, Qt::gray );
+
+    {
+      QPainter p(&forbiddenFrontImage);
+      p.setBrush(QBrush(QColor::fromRgbF(1, 1, 1, 0.5)));
+      p.drawRect(QRect(QPoint(0, 0), forbiddenFrontImage.size()));
+    }
+
     forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
 
     backPixmap = *( Card::backgroundPixmap() );

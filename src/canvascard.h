@@ -26,7 +26,6 @@
 #define CANVASCARD 1000
 
 class Card;
-class QPainter;
 
 class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
