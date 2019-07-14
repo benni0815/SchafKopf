@@ -23,6 +23,9 @@
 
 #include "libkdegames_export.h"
 
+#include <QFlags>
+
+
 class QPixmap;
 class QString;
 class QSize;

@@ -19,9 +19,11 @@
 #ifndef __KCARDDIALOG_H_
 #define __KCARDDIALOG_H_
 
-#include <QtGui/QWidget>
-#include <kdialog.h>
-#include <kconfig.h>
+#include <KConfigGroup>
+#include <KDialog>
+
+#include <QWidget>
+
 
 class QListWidgetItem;
 class KCardWidgetPrivate;
