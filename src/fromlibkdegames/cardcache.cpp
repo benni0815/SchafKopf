@@ -34,7 +34,7 @@
 #include <QDebug>
 #include <QSvgRenderer>
 
-#include <kpixmapcache.h>
+#include <KImageCache>
 
 #include "carddeckinfo.h"
 
@@ -224,7 +224,7 @@ void KCardCachePrivate::submitRendering( const QString& key, const QImage& image
     qDebug() << "Received render of" << key << "from rendering thread.";
     QPixmap pix = QPixmap::fromImage( image );
     QMutexLocker l( cacheMutex );
-    cache->insert( key, pix );
+    cache->insertPixmap( key, pix );
 }
 
 LoadThread::LoadThread( KCardCachePrivate* d_ )
@@ -316,10 +316,10 @@ QPixmap KCardCache::backside() const
 
     {
         QMutexLocker l( d->cacheMutex );
-        if( d->cache && ( !d->cache->find( key, pix ) || pix.isNull() ) )
+        if( d->cache && ( !d->cache->findPixmap( key, &pix ) || pix.isNull() ) )
         {
             pix = d->renderSvg( element );
-            d->cache->insert( key, pix );
+            d->cache->insertPixmap( key, pix );
         }
     }
     // Make sure we never return an invalid pixmap
@@ -336,10 +336,10 @@ QPixmap KCardCache::frontside( const KCardInfo& info ) const
 
     {
         QMutexLocker l( d->cacheMutex );
-        if( d->cache && ( !d->cache->find( key, pix ) || pix.isNull() ) )
+        if( d->cache && ( !d->cache->findPixmap( key, &pix ) || pix.isNull() ) )
         {
             pix = d->renderSvg( info.svgName() );
-            d->cache->insert( key, pix );
+            d->cache->insertPixmap( key, pix );
         }
     }
     // Make sure we never return an invalid pixmap
@@ -363,13 +363,12 @@ void KCardCache::setDeckName( const QString& theme )
     {
         QMutexLocker l( d->cacheMutex );
         delete d->cache;
-        d->cache = new KPixmapCache( QString::fromLatin1(  "kdegames-cards_%1" ).arg( theme ) );
-        d->cache->setUseQPixmapCache( true );
+        d->cache = new KImageCache( QString::fromLatin1(  "kdegames-cards_%1" ).arg( theme ), 10e6 );
         QDateTime dt = QFileInfo( CardDeckInfo::svgFilePath( theme ) ).lastModified();
-        if( d->cache->timestamp() < dt )
+        if( d->cache->timestamp() < dt.toTime_t() )
         {
-            d->cache->discard();
-            d->cache->setTimestamp( dt );
+            d->cache->clear();
+            d->cache->setTimestamp( dt.toTime_t() );
         }
     }
     {
@@ -414,7 +413,7 @@ void KCardCache::loadTheme( LoadInfos infos )
             QString key = keyForPixmap( d->deckName, element, d->size );
             {
                 QMutexLocker l( d->cacheMutex );
-                if( d->cache && !d->cache->find( key, pix ) )
+                if( d->cache && !d->cache->findPixmap( key, &pix ) )
                     elements << element;
             }
         }
@@ -437,7 +436,7 @@ QSizeF KCardCache::defaultCardSize( const KCardInfo& info ) const
     QString key = d->deckName + QLatin1Char( '_' ) + info.svgName() + QLatin1String( "_default" );
     {
         QMutexLocker( d->cacheMutex );
-        if ( d->cache && d->cache->find( key, pix ) )
+        if ( d->cache && d->cache->findPixmap( key, &pix ) )
             return pix.size();
     }
 
@@ -450,7 +449,7 @@ QSizeF KCardCache::defaultCardSize( const KCardInfo& info ) const
     {
         QMutexLocker( d->cacheMutex );
         if( d->cache )
-            d->cache->insert( key, pix );
+            d->cache->insertPixmap( key, pix );
     }
 
     return pix.size();
@@ -466,7 +465,7 @@ QSizeF KCardCache::defaultBackSize() const
     QString key = d->deckName + QLatin1Char( '_' ) + element + QLatin1String( "_default" );
     {
         QMutexLocker( d->cacheMutex );
-        if ( d->cache && d->cache->find( key, pix ) )
+        if ( d->cache && d->cache->findPixmap( key, &pix ) )
             return pix.size();
     }
 
@@ -479,7 +478,7 @@ QSizeF KCardCache::defaultBackSize() const
     {
         QMutexLocker( d->cacheMutex );
         if( d->cache )
-            d->cache->insert( key, pix );
+            d->cache->insertPixmap( key, pix );
     }
 
     return pix.size();
@@ -489,5 +488,5 @@ void KCardCache::invalidateCache()
 {
     QMutexLocker l( d->cacheMutex );
     if( d->cache )
-        d->cache->discard();
+        d->cache->clear();
 }

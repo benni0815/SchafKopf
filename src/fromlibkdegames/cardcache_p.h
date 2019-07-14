@@ -21,6 +21,8 @@
 #ifndef __CARDCACHE_P_H_
 #define __CARDCACHE_P_H_
 
+#include <KImageCache>
+
 #include <QImage>
 #include <QThread>
 #include <QString>
@@ -28,7 +30,7 @@
 #include <QSize>
 #include "cardcache.h"
 
-class KPixmapCache;
+
 class QMutex;
 class QSvgRenderer;
 class LoadThread;
@@ -37,7 +39,7 @@ class KCardCachePrivate : public QObject
 {
     Q_OBJECT
 public:
-    KPixmapCache* cache;
+    KImageCache* cache;
     QMutex* cacheMutex;
     QMutex* rendererMutex;
     LoadThread* loadThread;
