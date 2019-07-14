@@ -22,11 +22,11 @@
 
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 
 #include <klocale.h>
 #include <kstandarddirs.h>
 #include <krandom.h>
-#include <kdebug.h>
 #include <kconfiggroup.h>
 #include <kglobal.h>
 
@@ -134,7 +134,7 @@ QString defaultDeckName()
         // Collect any deck if no default is stored
         noDefault = v.noi18Name;
     }
-    if ( noDefault.isNull() ) kError() << "Could not find default card name";
+    if ( noDefault.isNull() ) qCritical() << "Could not find default card name";
     return noDefault;
 }
 
