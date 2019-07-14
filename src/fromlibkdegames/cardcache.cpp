@@ -287,11 +287,11 @@ void LoadThread::run()
 KCardCache::KCardCache()
     : d( new KCardCachePrivate )
 {
-    d->cache = 0;
+    d->cache = nullptr;
     d->cacheMutex = new QMutex();
     d->rendererMutex = new QMutex();
-    d->svgRenderer = 0;
-    d->loadThread = 0;
+    d->svgRenderer = nullptr;
+    d->loadThread = nullptr;
 }
 
 KCardCache::~KCardCache()
@@ -377,7 +377,7 @@ void KCardCache::setDeckName( const QString& theme )
     {
         QMutexLocker l( d->rendererMutex );
         delete d->svgRenderer;
-        d->svgRenderer = 0;
+        d->svgRenderer = nullptr;
     }
     d->deckName = theme;
 }

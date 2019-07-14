@@ -28,7 +28,9 @@
 #include <KStandardDirs>
 
 #include <QMutex>
-Settings* Settings::m_instance = 0;
+
+
+Settings* Settings::m_instance = nullptr;
 
 Settings* Settings::instance() 
 {
@@ -44,7 +46,7 @@ Settings::Settings( QObject *parent )
     m_config = KSharedConfig::openConfig("SchafKopf");
 
     // the mutex causes more problems right now than be useful...
-    m_mutex = NULL; // new QMutex();
+    m_mutex = nullptr; // new QMutex();
 
     m_cardCache = new KCardCache();
     loadCardDeck();
