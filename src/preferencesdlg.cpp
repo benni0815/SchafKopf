@@ -113,7 +113,7 @@ void PreferencesDlg::addPagePlayer()
     QWidget *page = new QWidget( this );
     QGridLayout* box = new QGridLayout( page );
     KPageWidgetItem *item = addPage( page, tr( "Player Settings" ) );
-    item->setIcon( KIcon( "user-identity" ) );
+    item->setIcon( QIcon::fromTheme( "user-identity" ) );
 
     QStringList names = Settings::instance()->playerNames();
 
@@ -142,7 +142,7 @@ void PreferencesDlg::addPageRules()
 {
     QFrame* box = new QFrame();
     KPageWidgetItem *item = addPage( box, tr( "Rules" ) );
-    item->setIcon( KIcon( "schafkopf" ) );
+    item->setIcon( QIcon::fromTheme( "schafkopf" ) );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
@@ -190,7 +190,7 @@ void PreferencesDlg::addPageResults()
 {
     QFrame* box = new QFrame();
     KPageWidgetItem *item = addPage( box, tr( "Results" ) );
-    item->setIcon( KIcon( "applications-education" ) );
+    item->setIcon( QIcon::fromTheme( "applications-education" ) );
 
     t_ResultValues* rm = Settings::instance()->moneyResults();
     t_ResultValues* rp = Settings::instance()->pointResults();
@@ -343,7 +343,7 @@ void PreferencesDlg::addPageView()
 {
     QFrame* box = new QFrame();
     KPageWidgetItem *item = addPage( box, tr( "View" ) );
-    item->setIcon( KIcon( "games-config-background" ) );
+    item->setIcon( QIcon::fromTheme( "games-config-background" ) );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
@@ -384,7 +384,7 @@ void PreferencesDlg::addPageGames()
 {
     QFrame* box = new QFrame();
     KPageWidgetItem *item = addPage( box, tr( "Games" ) );
-    item->setIcon( KIcon( "schafkopf" ) );
+    item->setIcon( QIcon::fromTheme( "schafkopf" ) );
 
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
