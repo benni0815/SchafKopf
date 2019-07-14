@@ -27,10 +27,7 @@
 #include <QDir>
 #include <QDialogButtonBox>
 
-#include <klocale.h>
-#include <kstandarddirs.h>
-#include <krandom.h>
-#include <kdebug.h>
+#include <KConfigGroup>
 
 #include "carddeckinfo.h"
 #include "carddeckinfo_p.h"

@@ -26,6 +26,7 @@
 
 #include <KUser>
 #include <KStandardDirs>
+#include <KConfigGroup>
 
 #include <QMutex>
 

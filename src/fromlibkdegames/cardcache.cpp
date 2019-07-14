@@ -32,11 +32,9 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
+#include <QSvgRenderer>
 
-#include <qsvgrenderer.h>
 #include <kpixmapcache.h>
-#include <kconfig.h>
-#include <kstandarddirs.h>
 
 #include "carddeckinfo.h"
 
