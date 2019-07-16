@@ -82,7 +82,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_table->setColumnCount( PLAYERS );
     //m_table->setLeftMargin( 0 );
     updateTableNames();
-    m_table->horizontalHeader()->setResizeMode( QHeaderView::Stretch );
+    m_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     lblCurGame = new QLabel;
     lblDoubled = new QLabel;
