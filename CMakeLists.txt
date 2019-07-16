@@ -8,7 +8,10 @@ set(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 find_package(Qt5 REQUIRED Core Gui Widgets Svg)
-find_package(KF5KDELibs4Support REQUIRED)
+find_package(KF5XmlGui REQUIRED)
+find_package(KF5GuiAddons REQUIRED)
+find_package(KF5Notifications REQUIRED)
+find_package(KF5KIO REQUIRED)
 find_package(KF5KDEGames REQUIRED)
 
 
@@ -63,8 +66,11 @@ TARGET_LINK_LIBRARIES(schafkopf
     Qt5::Gui
     Qt5::Widgets
     Qt5::Svg
+    KF5::XmlGui
+    KF5::GuiAddons
+    KF5::Notifications
+    KF5::KIOWidgets
     KF5KDEGames
-    KF5::KDELibs4Support
     pthread
 )
 
