@@ -26,13 +26,36 @@
 #include <QGlobalStatic>
 
 #include <klocale.h>
-#include <kstandarddirs.h>
 #include <krandom.h>
 #include <kconfiggroup.h>
 #include <kglobal.h>
 
 // KConfig entries
 #define CONF_CARD QString::fromLatin1("Cardname")
+
+namespace
+{
+
+QStringList findCardDecks(const QString& prefix)
+{
+  const auto cardDirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("carddecks"), QStandardPaths::LocateDirectory);
+  QStringList files;
+  for (const auto& dir : cardDirs)
+  {
+    const QStringList subDirs = QDir(dir).entryList({prefix + "*"}, QDir::Dirs);
+    for (const auto& subDir : subDirs)
+    {
+      const auto desktopFile = dir + '/' + subDir + "/index.desktop";
+      if (QFile::exists(desktopFile))
+      {
+        files.push_back(desktopFile);
+      }
+    }
+  }
+  return files;
+}
+
+} // namespace
 
 /**
  * Local static information.
@@ -42,7 +65,6 @@ class KCardThemeInfoStatic
 public:
     KCardThemeInfoStatic()
     {
-        KGlobal::dirs()->addResourceType( "cards", "data", "carddecks/" );
         KGlobal::locale()->insertCatalog( QLatin1String(  "libkdegames" ) );
         readDecks();
     }
@@ -55,10 +77,9 @@ public:
         // Empty data
         themeNameMap.clear();
 
-        QStringList svg;
         // Add SVG card sets
-        svg = KGlobal::dirs()->findAllResources( "cards", QLatin1String( "svg*/index.desktop" ), KStandardDirs::NoDuplicates );
-        const QStringList list = svg + KGlobal::dirs()->findAllResources( "cards", QLatin1String( "card*/index.desktop" ), KStandardDirs::NoDuplicates );
+        const auto svg = findCardDecks("svg");
+        const auto list = svg + findCardDecks("card");
 
         if ( list.isEmpty() ) return;
 
