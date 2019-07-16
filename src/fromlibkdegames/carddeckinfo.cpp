@@ -25,10 +25,10 @@
 #include <QDebug>
 #include <QGlobalStatic>
 
-#include <klocale.h>
-#include <krandom.h>
-#include <kconfiggroup.h>
-#include <kglobal.h>
+#include <KRandom>
+#include <KConfigGroup>
+#include <KConfig>
+
 
 // KConfig entries
 #define CONF_CARD QString::fromLatin1("Cardname")
@@ -65,7 +65,6 @@ class KCardThemeInfoStatic
 public:
     KCardThemeInfoStatic()
     {
-        KGlobal::locale()->insertCatalog( QLatin1String(  "libkdegames" ) );
         readDecks();
     }
     ~KCardThemeInfoStatic()
