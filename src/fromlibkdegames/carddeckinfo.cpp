@@ -92,8 +92,8 @@ public:
             QPixmap pixmap( path + cfgcg.readEntry( "Preview", "12c.png" ) );
             if ( pixmap.isNull() ) continue;
 
-            QString idx  = cfgcg.readEntryUntranslated( "Name", i18n( "unnamed" ) );
-            QString name = cfgcg.readEntry( "Name", i18n( "unnamed" ) );
+            QString idx  = cfgcg.readEntryUntranslated( "Name", QObject::tr( "unnamed" ) );
+            QString name = cfgcg.readEntry( "Name", QObject::tr( "unnamed" ) );
             KCardThemeInfo info;
             info.name         = name;
             info.noi18Name    = idx;
