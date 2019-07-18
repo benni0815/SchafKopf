@@ -12,7 +12,7 @@ find_package(KF5XmlGui REQUIRED)
 find_package(KF5GuiAddons REQUIRED)
 find_package(KF5Notifications REQUIRED)
 find_package(KF5KIO REQUIRED)
-find_package(KF5KDEGames REQUIRED)
+find_package(Gettext REQUIRED)
 
 
 SET(CPACK_GENERATOR "DEB")
@@ -70,7 +70,6 @@ TARGET_LINK_LIBRARIES(schafkopf
     KF5::GuiAddons
     KF5::Notifications
     KF5::KIOWidgets
-    KF5KDEGames
     pthread
 )
 

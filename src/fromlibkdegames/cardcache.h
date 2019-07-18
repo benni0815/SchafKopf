@@ -21,8 +21,6 @@
 #ifndef __CARDCACHE_H_
 #define __CARDCACHE_H_
 
-#include "libkdegames_export.h"
-
 #include <QFlags>
 
 
