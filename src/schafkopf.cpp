@@ -44,7 +44,6 @@
 #include <KActionCollection>
 #include <KHelpMenu>
 #include <KToolBar>
-#include <KStandardGameAction>
 
 // for pow()
 #include <cmath>
@@ -295,7 +294,6 @@ void SchafKopf::saveConfig()
 
 void SchafKopf::setupActions()
 {
-    QAction *m_actNew, *m_actQuit;
     auto mnuGame = new QMenu( this );
     auto mnuSettings = new QMenu( this );
 
@@ -307,30 +305,42 @@ void SchafKopf::setupActions()
     auto help = new KHelpMenu(this, aboutData());
     menuBar()->addMenu( help->menu() );
 
-    m_actNew = KStandardGameAction::gameNew( this, SLOT( newGame() ), this );
-    m_actEnd = KStandardGameAction::end( this, SLOT( endGame() ), this );
+    {
+      m_actStich = new QAction(this);
+      m_actStich->setText(tr("&Last Trick"));
+      actionCollection()->addAction("Last Trick", m_actStich);
+      connect(m_actStich, &QAction::triggered, this, &SchafKopf::showStich);
+      mnuGame->addAction( m_actStich);
+    }
 
-    m_actStich = new QAction( this );
-    m_actStich->setText( tr( "&Last Trick" ) );
-    actionCollection()->addAction( "Last Trick", m_actStich );
-    connect( m_actStich, SIGNAL( triggered( bool ) ), this, SLOT( showStich() ) );
+    {
+      auto actNew =KStandardAction::openNew(this, &SchafKopf::newGame, this);
+      mnuGame->addAction(actNew);
+      toolBar()->addAction(actNew);
+    }
 
+    {
+      m_actEnd = new QAction(QIcon::fromTheme("window-close"), tr("End Game"), this);
+      connect(m_actEnd, &QAction::triggered, this, &SchafKopf::endGame);
+      mnuGame->addAction(m_actEnd);
+      toolBar()->addAction(m_actEnd);
+    }
 
-    m_actQuit = KStandardAction::quit( this, SLOT( endGame() ), actionCollection() );
-    const auto app = QApplication::instance();
-    connect( m_actQuit, SIGNAL( triggered() ), app, SLOT( quit() ));
-    connect( app, SIGNAL( lastWindowClosed() ), this, SLOT( endGame() ) );
+    {
+      auto actQuit = KStandardAction::quit(this, &SchafKopf::endGame, actionCollection());
+      const auto app = QApplication::instance();
+      connect(actQuit, &QAction::triggered, app, &QApplication::quit);
+      connect(app, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+      mnuGame->addAction( actQuit );
+    }
 
-    mnuGame->addAction( m_actStich);
-    mnuGame->addAction( m_actNew );
-    mnuGame->addAction( m_actEnd );
-    mnuGame->addAction( m_actQuit );
+    {
+      auto actCarddecks = new QAction(tr("Configure Carddecks"), this);
+      connect(actCarddecks, &QAction::triggered, this, &SchafKopf::carddecks);
+      mnuSettings->addAction(actCarddecks);
+    }
 
-    mnuSettings->addAction( KStandardGameAction::carddecks( this, SLOT( carddecks() ), this ) );
-    mnuSettings->addAction( KStandardAction::preferences( this, SLOT( configure() ), this ) );
-
-    toolBar()->addAction( m_actNew );
-    toolBar()->addAction( m_actEnd );
+    mnuSettings->addAction(KStandardAction::preferences(this, &SchafKopf::configure, this));
 
     enableControls();
 }
