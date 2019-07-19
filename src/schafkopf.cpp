@@ -56,8 +56,6 @@ namespace
 
 SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {
-    sem_init( &m_sem, 0, 0 );
-    
     split = new QSplitter( Qt::Horizontal, this );
     split->setChildrenCollapsible( true );
 
@@ -70,7 +68,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_scene = new QGraphicsScene( this );
     m_view = new GameCanvas( m_scene, split );
 
-    m_game = new Game( &m_sem, this );
+    m_game = new Game( &m_semaphore, this );
     m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     
@@ -130,7 +128,6 @@ SchafKopf::~SchafKopf()
     // make sure the thread is really not running
     // and does not wait for the semaphore
     endGame();
-    sem_destroy( &m_sem );
 
     delete m_stichdlg;
 }
@@ -254,7 +251,7 @@ void SchafKopf::customEvent( QEvent* e )
         
         if( data->wait )
         {
-            sem_post( &m_sem );
+            m_semaphore.release();
         }
         else        
         {

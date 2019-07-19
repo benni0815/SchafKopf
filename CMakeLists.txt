@@ -68,7 +68,6 @@ TARGET_LINK_LIBRARIES(schafkopf
     KF5::XmlGui
     KF5::GuiAddons
     KF5::KIOWidgets
-    pthread
 )
 
 # add install target:

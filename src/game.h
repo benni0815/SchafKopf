@@ -27,7 +27,6 @@
 
 #include <QThread>
 
-#include <semaphore.h>
 
 class Player;
 class GameCanvas;
@@ -38,7 +37,7 @@ class GameCanvas;
 class Game : public QThread
 {
     public:
-        Game(sem_t* sem, QObject *parent);
+        Game(QSemaphore* semaphore, QObject *parent);
         ~Game();
         void gameLoop();
         CardList *currStich();
@@ -116,7 +115,7 @@ class Game : public QThread
     private:
         static unsigned int def_id;
 
-        sem_t* m_sem;
+        QSemaphore* m_semaphore;
         bool terminated;
 
         Player *m_players[PLAYERS];

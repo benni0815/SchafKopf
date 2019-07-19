@@ -29,8 +29,7 @@
 #include <KAboutData>
 
 #include <QPointer>
-
-#include <semaphore.h>
+#include <QSemaphore>
 
 
 class CardList;
@@ -110,7 +109,7 @@ class SchafKopf : public KXmlGuiWindow
         GameInfo* selectGame( bool force, int* cardids );
 
         bool m_terminated;
-        sem_t m_sem;
+        QSemaphore m_semaphore;
 
         Game* m_game;
         QGraphicsScene* m_scene;

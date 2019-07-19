@@ -31,18 +31,19 @@
 
 #include <QCoreApplication>
 #include <QEvent>
+#include <QSemaphore>
 
 #include <string.h>
 
 
 unsigned int Game::def_id=0;
 
-Game::Game(sem_t* sem, QObject *parent )
+Game::Game(QSemaphore* semaphore, QObject *parent )
     : QThread()
 {
     unsigned int i;
     terminated = true;
-    m_sem = sem;
+    m_semaphore = semaphore;
     
     m_parent = parent;
     m_laufende = 0;
@@ -588,7 +589,7 @@ void* Game::postEvent( EAction action, unsigned int playerid, int* cardids, QStr
     QCoreApplication::postEvent( m_parent, new SchafKopfEvent( data ) );
     if( wait )
     {
-        sem_wait( m_sem );
+        m_semaphore->acquire();
 
         if( data->quitgame )
             endGame();
