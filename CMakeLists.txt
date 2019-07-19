@@ -10,7 +10,6 @@ SET(CMAKE_AUTOUIC ON)
 find_package(Qt5 REQUIRED Core Gui Widgets Svg)
 find_package(KF5XmlGui REQUIRED)
 find_package(KF5GuiAddons REQUIRED)
-find_package(KF5Notifications REQUIRED)
 find_package(KF5KIO REQUIRED)
 find_package(Gettext REQUIRED)
 
@@ -68,7 +67,6 @@ TARGET_LINK_LIBRARIES(schafkopf
     Qt5::Svg
     KF5::XmlGui
     KF5::GuiAddons
-    KF5::Notifications
     KF5::KIOWidgets
     pthread
 )
