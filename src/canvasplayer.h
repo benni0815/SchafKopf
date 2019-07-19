@@ -22,16 +22,20 @@
 
 #include "schafkopfdef.h"
 
+#include <QTimer>
+
+#include <memory>
+
 
 class Card;
 class CardList;
 class CanvasCard;
 class Player;
-class KPassivePopup;
 class QLabel;
 class QGraphicsScene;
 class QGraphicsView;
 class QGraphicsSimpleTextItem;
+class QGraphicsProxyWidget;
 
 /**
 Represents a player on the canvas
@@ -73,8 +77,9 @@ class CanvasPlayer{
         QGraphicsScene* m_scene;
         QGraphicsView* m_view;
         QGraphicsSimpleTextItem* m_name;
-        KPassivePopup* pop;
-        QLabel *pop_text;
+        std::unique_ptr<QLabel> m_bubbleLabel;
+        QGraphicsProxyWidget* m_bubble;
+        QTimer m_bubbleTimer;
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
 };

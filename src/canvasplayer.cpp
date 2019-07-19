@@ -26,11 +26,10 @@
 #include "game.h"
 #include "settings.h"
 
-#include <KPassivePopup>
-
 #include <QGraphicsView>
 #include <QLabel>
 #include <QFont>
+#include <QGraphicsProxyWidget>
 
 
 CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view )
@@ -40,10 +39,16 @@ CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view )
     m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
-    pop = new KPassivePopup( m_view );
-    pop_text = new QLabel( "" );
-    pop->setView( pop_text );
-    pop->setTimeout( 1000 );
+
+    m_bubbleLabel = std::make_unique<QLabel>();
+    m_bubbleLabel->setStyleSheet("background: lightgrey; font: 12pt; border: 1px solid black;");
+    m_bubble = m_scene->addWidget(m_bubbleLabel.get());
+    m_bubble->setParent(m_scene);
+    m_bubble->hide();
+
+    m_bubbleTimer.setSingleShot(true);
+    m_bubbleTimer.setInterval(std::chrono::seconds(1));
+    QObject::connect(&m_bubbleTimer, &QTimer::timeout, [this]() { m_bubble->hide(); });
 
 #ifndef SIMULATION_MODE
     // TODO: This should be passed as flag depending on Player::isHuman();
@@ -60,7 +65,6 @@ CanvasPlayer::~CanvasPlayer()
     // delete m_items before m_cards
     // as m_items has references to cards in
     // m_cards.
-    delete pop;
     for(i=0;i<NUMCARDS;i++)
         delete m_items[i];
 
@@ -279,29 +283,30 @@ void CanvasPlayer::setCards( CardList* cards )
 
 void CanvasPlayer::say( const QString & message, unsigned int )
 {
-    pop_text->setText( message );
-    QPoint p;
+    m_bubbleLabel->setText(message);
+    m_bubble->setPos(-10000, -10000);
+    m_bubble->show();
+    QPointF p;
     switch(m_position)
     {
     case 1:
-        p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
+        p = QPointF(m_name->x(), m_name->y() - 40);
         break;
     case 2:
-        pop->show(); // this sucks, but we don't get the correct width of the pop-up if it is not shown
-        p=m_view->mapToGlobal(QPoint(m_name->x()+m_name->sceneBoundingRect().width()/2-pop->width()/2, m_name->y()+40 ));
+        p = QPointF(m_name->x() + m_name->sceneBoundingRect().width() / 2 - m_bubble->size().width() / 2, m_name->y() + 40);
         break;
     case 3:
     default:
-        p=m_view->mapToGlobal(QPoint(m_name->x(), m_name->y()-40 ));
+        p = QPointF(m_scene->width() - m_bubble->size().width() - 40, m_name->y() - 40 );
         break;
     }
-    pop->show( p );
+    m_bubble->setPos(p);
+    m_bubbleTimer.start();
 }
 
 void CanvasPlayer::hideBubble()
 {
-    if(pop)
-        pop->hide();
+    m_bubble->hide();
 }
 
 void CanvasPlayer::setHasDoubled( bool h )
