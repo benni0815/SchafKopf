@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include <cstdlib>
-using namespace std;
+
 
 Player::Player(unsigned int id, Game* game)
     : m_game( game )
