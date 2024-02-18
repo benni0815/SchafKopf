@@ -1,6 +1,6 @@
 # ########## Project setup ##########
-PROJECT(schafkopf)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
+PROJECT(schafkopf)
 
 set(CMAKE_CXX_STANDARD 14)
 
