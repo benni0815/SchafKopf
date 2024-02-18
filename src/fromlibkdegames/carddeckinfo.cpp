@@ -24,8 +24,8 @@
 #include <QDir>
 #include <QDebug>
 #include <QGlobalStatic>
+#include <QRandomGenerator>
 
-#include <KRandom>
 #include <KConfigGroup>
 #include <KConfig>
 
@@ -166,7 +166,7 @@ QString randomDeckName()
     // Collect matching items
     QStringList list = deckinfoStatic->themeNameMap.keys();
     // Draw random one
-    int d = KRandom::random() % list.count();
+    int d = QRandomGenerator::global()->bounded(RAND_MAX) % list.count();
     return list.at( d );
 }
 

@@ -21,7 +21,7 @@
 
 #include "schafkopfdef.h"
 
-#include <KRandom>
+#include <QRandomGenerator>
 
 #include <iostream>
 
@@ -76,7 +76,7 @@ void CardList::randomize()
     init();
     for(i=0;i<CARD_CNT;i++)
     {
-        rval=KRandom::random()%CARD_CNT;
+        rval = QRandomGenerator::global()->bounded(RAND_MAX) % CARD_CNT;
         rnd[i]=rval;
         for(a=0;a<i;a++)
         {
