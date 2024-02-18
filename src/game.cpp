@@ -199,7 +199,7 @@ void Game::gameLoop()
                 cards[0] = c->id();
                 cards[1] = 0;
                 m_playedcards.append(c);
-                postEvent( CardPlayed, tmp[a]->id(), cards, QString::null, true );
+                postEvent( CardPlayed, tmp[a]->id(), cards, QString(), true );
                 //emit playerPlayedCard(tmp[a]->id(),c);
 
 #ifndef SIMULATION_MODE

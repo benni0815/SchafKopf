@@ -79,7 +79,7 @@ void StichDlg::changed( const QString & name, int* list, QStringList* playerlist
         else
         {
             cards[i]->setPixmap( *Card::backgroundPixmap() );
-            players[i]->setText( QString::null );
+            players[i]->setText( QString() );
         }
     }
 }

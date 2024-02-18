@@ -56,7 +56,7 @@ const QString GameInfo::toString() const
         case Card::SCHELLEN:
             c = QObject::tr("Schellen"); break;
         default:
-            c = QString::null;
+            c = QString();
             break;
     }
 
@@ -74,15 +74,15 @@ const QString GameInfo::toString() const
             g = QObject::tr("Badger"); break;
         case GameInfo::RUFSPIEL:
         default:            
-            g = QString::null;
+            g = QString();
     }
 
     if( m_mode == GameInfo::RUFSPIEL )
-        s = QObject::tr("%1 plays on the %2 Ace.").arg( m_spieler ? m_spieler->name() : QString::null ).arg(c);
+        s = QObject::tr("%1 plays on the %2 Ace.").arg( m_spieler ? m_spieler->name() : QString() ).arg(c);
     else if( m_mode == GameInfo::RAMSCH )
         s = QObject::tr("Ramsch is played.");
     else
-        s = QObject::tr("%1 plays %2 %3.").arg( m_spieler ? m_spieler->name() : QString::null ).arg(c).arg(g);
+        s = QObject::tr("%1 plays %2 %3.").arg( m_spieler ? m_spieler->name() : QString() ).arg(c).arg(g);
 
     return s; 
 }

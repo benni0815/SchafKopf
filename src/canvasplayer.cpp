@@ -92,7 +92,7 @@ void CanvasPlayer::create()
 
     m_is_last = false;
     m_has_doubled = false;
-    m_player_name = QString::null;
+    m_player_name = QString();
 }
 
 void CanvasPlayer::position()

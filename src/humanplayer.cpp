@@ -57,7 +57,7 @@ Card *HumanPlayer::play()
     m_allowed = allowedCards();
     m_card=NULL;
     
-    ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString::null, true );
+    ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString(), true );
     cpy = *ret;
     delete ret;
     
@@ -66,9 +66,9 @@ Card *HumanPlayer::play()
         cpylist = new int[2];
         cpylist[0] = cpy;
         cpylist[1] = 0;
-        m_game->postEvent( ForbiddenCard, id(), cpylist, QString::null, true );
+        m_game->postEvent( ForbiddenCard, id(), cpylist, QString(), true );
 
-        ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString::null, true );
+        ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString(), true );
         cpy = *ret;
         delete ret;
     }
@@ -89,7 +89,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
 {
     if( force )
     {
-        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toIntList(), QString::null, true );
+        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toIntList(), QString(), true );
     }
     else
     {
@@ -97,7 +97,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
         if( *ret == YES )
         {
             delete ret;
-            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toIntList(), QString::null, true );
+            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toIntList(), QString(), true );
         }
         else
             delete ret;

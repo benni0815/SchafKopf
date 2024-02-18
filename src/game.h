@@ -67,7 +67,7 @@ class Game : public QThread
         /** post a event to the parent object
           */
         void* postEvent( EAction action, unsigned int playerid = 0, int* cardids = NULL,
-                        QString data = QString::null, bool wait = false, QStringList* names = NULL );
+                        QString data = QString(), bool wait = false, QStringList* names = NULL );
 
         void endGame(void);
 

@@ -55,8 +55,8 @@ QString Results::result()
     bool positive = m_laufende > 0;
    
     QString s;
-    QString schneider = m_schneider ? QObject::tr(" schneider" ) : QString::null;
-    QString schwarz = m_schwarz ? QObject::tr(" no-trick") : QString::null;
+    QString schneider = m_schneider ? QObject::tr(" schneider" ) : QString();
+    QString schwarz = m_schwarz ? QObject::tr(" no-trick") : QString();
     Player* winner = m_gameinfo->spieler();
     bool won = m_points > 60;
     

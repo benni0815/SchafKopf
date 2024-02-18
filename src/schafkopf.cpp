@@ -435,8 +435,8 @@ void SchafKopf::updateInfo()
         lblCurGame->setText( tr("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
     else
     {
-        lblCurGame->setText( QString::null );
-        lblDoubled->setText( QString::null );
+        lblCurGame->setText( QString() );
+        lblDoubled->setText( QString() );
         return;
     }
 
