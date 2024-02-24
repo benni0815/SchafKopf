@@ -134,7 +134,7 @@ void Game::gameLoop()
         for(i=0;i<PLAYERS;i++)
         {
             tmp[i]=m_players[(i+gamecnt)%PLAYERS];
-            if( (i == PLAYERS - 1 ) )
+            if (i == PLAYERS - 1)
                 postEvent( PlayerIsLast, tmp[i]->id() );
         }
 
