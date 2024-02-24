@@ -1,0 +1,62 @@
+add_subdirectory(fromlibkdegames)
+
+add_executable(schafkopf)
+
+target_sources(schafkopf
+  PRIVATE
+    schafkopfevent.cpp
+    schafkopfevent.h
+    card.cpp
+    card.h
+    selectgamewizard.cpp
+    selectgamewizard.h
+    player.cpp
+    player.h
+    gameinfo.cpp
+    gameinfo.h
+    schafkopf.cpp
+    schafkopf.h
+    schafkopfdef.h
+    selectgametypebox.cpp
+    selectgametypebox.h
+    results.cpp
+    results.h
+    main.cpp
+    newgamewizard.cpp
+    newgamewizard.h
+    game.cpp
+    game.h
+    humanplayer.cpp
+    humanplayer.h
+    cardlist.cpp
+    cardlist.h
+    computerplayer.cpp
+    computerplayer.h
+    stichdlg.cpp
+    stichdlg.h
+    gamecanvas.cpp
+    gamecanvas.h
+    selectgamecolorbox.cpp
+    selectgamecolorbox.h
+    settings.cpp
+    settings.h
+    preferencesdlg.cpp
+    preferencesdlg.h
+    canvasplayer.cpp
+    canvasplayer.h
+    openbook.cpp
+    openbook.h
+    canvascard.cpp
+    canvascard.h
+)
+
+target_link_libraries(schafkopf
+  PRIVATE
+    kdegames
+    KF5::XmlGui
+    KF5::KIOWidgets
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::Svg
+)

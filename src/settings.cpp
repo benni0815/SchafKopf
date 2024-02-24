@@ -21,8 +21,8 @@
 
 #include "schafkopfdef.h"
 
-#include "fromlibkdegames/kcarddialog.h"
-#include "fromlibkdegames/carddeckinfo.h"
+#include <kcarddialog.h>
+#include <carddeckinfo.h>
 
 #include <KUser>
 #include <KConfigGroup>

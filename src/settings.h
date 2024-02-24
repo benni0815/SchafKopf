@@ -20,7 +20,7 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "fromlibkdegames/cardcache.h"
+#include <cardcache.h>
 
 #include <KSharedConfig>
 

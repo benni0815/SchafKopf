@@ -13,6 +13,7 @@ find_package(KF5GuiAddons REQUIRED)
 find_package(KF5KIO REQUIRED)
 find_package(Gettext REQUIRED)
 
+add_subdirectory(src)
 
 SET(CPACK_GENERATOR "DEB")
 SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Benni")
@@ -24,51 +25,6 @@ SET(CPACK_PACKAGE_VERSION_PATCH "91")
 SET(CPACK_SET_DESTDIR "ON")
 
 INCLUDE(CPack)
-
-
-# ########## src executable ##########
-# Sources:
-SET(schafkopf_SRCS
-    src/schafkopfevent.cpp
-    src/card.cpp
-    src/selectgamewizard.cpp
-    src/player.cpp
-    src/gameinfo.cpp
-    src/schafkopf.cpp
-    src/selectgametypebox.cpp
-    src/results.cpp
-    src/main.cpp
-    src/newgamewizard.cpp
-    src/game.cpp
-    src/humanplayer.cpp
-    src/cardlist.cpp
-    src/computerplayer.cpp
-    src/stichdlg.cpp
-    src/gamecanvas.cpp
-    src/selectgamecolorbox.cpp
-    src/settings.cpp
-    src/preferencesdlg.cpp
-    src/canvasplayer.cpp
-    src/openbook.cpp
-    src/canvascard.cpp
-    src/fromlibkdegames/cardcache.cpp
-    src/fromlibkdegames/carddeckinfo.cpp
-    src/fromlibkdegames/kcarddialog.cpp
-)
-
-ADD_SUBDIRECTORY(icons)
-
-# actual target:
-add_executable(schafkopf ${schafkopf_SRCS})
-TARGET_LINK_LIBRARIES(schafkopf
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Svg
-    KF5::XmlGui
-    KF5::GuiAddons
-    KF5::KIOWidgets
-)
 
 # add install target:
 GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
