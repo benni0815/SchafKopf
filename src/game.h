@@ -36,6 +36,8 @@ class GameCanvas;
 */
 class Game : public QThread
 {
+    Q_OBJECT
+
     public:
         Game(QSemaphore* semaphore, QObject *parent);
         ~Game();
