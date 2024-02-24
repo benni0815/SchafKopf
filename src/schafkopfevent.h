@@ -1,3 +1,5 @@
+#pragma once
+
 #include "schafkopfdef.h"
 
 #include <QEvent>
