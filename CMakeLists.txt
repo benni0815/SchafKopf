@@ -13,6 +13,8 @@ find_package(KF5GuiAddons REQUIRED)
 find_package(KF5KIO REQUIRED)
 find_package(Gettext REQUIRED)
 
+add_compile_options(-Wall -Wextra -Wpedantic)
+
 add_subdirectory(src)
 
 # add install target:
