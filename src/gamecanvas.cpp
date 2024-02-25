@@ -263,7 +263,6 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
 
 void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
 {
-    QPoint point;
     unsigned int i=0;
     CanvasCard* card = 0;
     for(i=0;i<PLAYERS;i++) {
