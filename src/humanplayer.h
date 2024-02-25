@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef HUMANPLAYER_H
-#define HUMANPLAYER_H
+#pragma once
 
 #include "player.h"
 
@@ -38,5 +37,3 @@ class HumanPlayer : public Player
         Card* m_card;
         CardList* m_allowed;
 };
-
-#endif

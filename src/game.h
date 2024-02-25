@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef GAME_H
-#define GAME_H
+#pragma once
 
 #include "schafkopfdef.h"
 
@@ -132,5 +131,3 @@ class Game : public QThread
 
         QObject* m_parent;
 };
-
-#endif

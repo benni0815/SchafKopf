@@ -17,9 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef CARDLIST_H
-#define CARDLIST_H
+#pragma once
 
 #include "card.h"
 
@@ -84,5 +82,3 @@ class CardList : public QList<Card*>
     private:
         bool m_autoDelete;
 };
-
-#endif

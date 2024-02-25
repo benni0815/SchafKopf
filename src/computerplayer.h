@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef COMPUTERPLAYER_H
-#define COMPUTERPLAYER_H
+#pragma once
 
 #include "player.h"
 #include "card.h"
@@ -104,5 +103,3 @@ class ComputerPlayer : public Player
         OpenBook* book;
         int mitspieler;
 };
-
-#endif

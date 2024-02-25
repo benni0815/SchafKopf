@@ -17,9 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef SCHAFKOPF_DEF_H
-#define SCHAFKOPF_DEF_H
+#pragma once
 
 #define PLAYERS   4
 
@@ -112,9 +110,3 @@ struct t_PlayerData {
 
 // DISTANCE from the border used in CanvasPlayer
 #define DIST 20
-
- 
- 
-#endif // SCHAFKOPF_DEF_H
- 
-

@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef CANVASPLAYER_H
-#define CANVASPLAYER_H
+#pragma once
 
 #include "schafkopfdef.h"
 
@@ -82,5 +81,3 @@ class CanvasPlayer{
         CanvasCard* m_items[NUMCARDS];
         CardList* m_cards;
 };
-
-#endif

@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PREFERENCESDLG_H
-#define PREFERENCESDLG_H
+#pragma once
 
 #include <KPageDialog>
 
@@ -104,5 +103,3 @@ class PreferencesDlg : public KPageDialog
         QSpinBox* m_point_schneider;
         QSpinBox* m_point_ramsch;
 };
-
-#endif

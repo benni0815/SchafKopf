@@ -17,9 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef _SCHAFKOPF_H_
-#define _SCHAFKOPF_H_
+#pragma once
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -126,5 +124,3 @@ class SchafKopf : public KXmlGuiWindow
 
         QPointer<StichDlg> m_stichdlg;
 };
-
-#endif // _SCHAFKOPF_H_

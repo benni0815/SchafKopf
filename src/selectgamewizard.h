@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef SELECTGAMEWIZARD_H
-#define SELECTGAMEWIZARD_H
+#pragma once
 
 #include <QWizard>
 
@@ -58,5 +57,3 @@ protected:
     SelectGameTypeBox *box1;
     SelectGameColorBox *box2;
 };
-
-#endif

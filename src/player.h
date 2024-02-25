@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
 #include <QString>
 
@@ -90,5 +89,3 @@ class Player
 
         CardList* PlayerCards();
 };
-
-#endif /* PLAYER_H */

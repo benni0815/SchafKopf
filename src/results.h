@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef RESULTS_H
-#define RESULTS_H
+#pragma once
 
 #include <QString>
 #include <QList>
@@ -70,5 +69,3 @@ class Results{
         bool m_schneider;
         bool m_schwarz;
 };
-
-#endif

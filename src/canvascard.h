@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef CANVASCARD_H
-#define CANVASCARD_H
+#pragma once
 
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
@@ -71,5 +70,3 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         void moveLoop();
         void cardDeckChanged();
 };
-
-#endif

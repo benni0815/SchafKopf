@@ -17,8 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef OPENBOOK_H
-#define OPENBOOK_H
+#pragma once
 
 #include <QObject>
 
@@ -70,5 +69,3 @@ class StrategyBook : public RuleBook {
         
         CardList* possibleCards();
 };
-
-#endif
