@@ -56,7 +56,7 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     {
         m_stich[i] = new CanvasCard();
         scene()->addItem( m_stich[i] );
-        m_players[i]=new CanvasPlayer( i, scene(), this );
+        m_players[i]=new CanvasPlayer( i, scene() );
     }
     
     m_item = NULL;

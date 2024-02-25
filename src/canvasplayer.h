@@ -44,7 +44,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
-        CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view );
+        CanvasPlayer( int i, QGraphicsScene* scene );
         ~CanvasPlayer();
         
         void position();
@@ -75,7 +75,6 @@ class CanvasPlayer{
         QString m_player_name;
         
         QGraphicsScene* m_scene;
-        QGraphicsView* m_view;
         QGraphicsSimpleTextItem* m_name;
         std::unique_ptr<QLabel> m_bubbleLabel;
         QGraphicsProxyWidget* m_bubble;

@@ -32,8 +32,8 @@
 #include <QGraphicsProxyWidget>
 
 
-CanvasPlayer::CanvasPlayer( int i, QGraphicsScene* scene, QGraphicsView* view )
-    : m_scene( scene ), m_view( view )
+CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
+    : m_scene( scene )
 {
     create();
     m_position = i;
