@@ -22,8 +22,7 @@
 #include "card.h"
 #include "canvascard.h"
 #include "canvasplayer.h"
-#include "game.h"
-#include "player.h"
+#include "cardlist.h"
 #include "settings.h"
 
 #include <QTimer>

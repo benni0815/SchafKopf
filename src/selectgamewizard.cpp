@@ -22,7 +22,6 @@
 #include "selectgametypebox.h"
 #include "selectgamecolorbox.h"
 #include "cardlist.h"
-#include "card.h"
 
 #include <QAbstractButton>
 

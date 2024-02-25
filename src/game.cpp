@@ -24,7 +24,6 @@
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "cardlist.h"
-#include "gamecanvas.h"
 #include "gameinfo.h"
 #include "results.h"
 #include "settings.h"

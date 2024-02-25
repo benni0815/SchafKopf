@@ -22,7 +22,6 @@
 
 #include "cardlist.h"
 #include "game.h"
-#include "gamecanvas.h"
 #include "gameinfo.h"
 
 

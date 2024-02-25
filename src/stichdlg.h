@@ -21,7 +21,6 @@
 #define STICHDLG_H
 
 #include "schafkopfdef.h"
-#include "game.h"
 
 #include <QDialog>
 

@@ -28,7 +28,6 @@
 #include <QString>
 #include <QStringList>
 #include <QSize>
-#include "cardcache.h"
 
 
 class QMutex;

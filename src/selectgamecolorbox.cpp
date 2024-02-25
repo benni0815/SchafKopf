@@ -21,7 +21,6 @@
 
 #include "card.h"
 #include "cardlist.h"
-#include "game.h"
 #include "gameinfo.h"
 #include "settings.h"
 #include "card.h"

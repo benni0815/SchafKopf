@@ -20,7 +20,6 @@
 #include "canvascard.h"
 #include "card.h"
 #include "settings.h"
-#include "schafkopfdef.h"
 
 #include <QTimer>
 #include <QPainter>

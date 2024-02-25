@@ -22,8 +22,6 @@
 #include "canvascard.h"
 #include "card.h"
 #include "cardlist.h"
-#include "player.h"
-#include "game.h"
 #include "settings.h"
 
 #include <QGraphicsView>

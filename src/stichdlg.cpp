@@ -21,7 +21,6 @@
 
 #include "card.h"
 #include "cardlist.h"
-#include "player.h"
 
 #include <QLabel>
 #include <QLayout>
