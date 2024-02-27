@@ -71,10 +71,6 @@ class ComputerPlayer : public Player
          *                 noch keine Karte gespielt wurde
          */
         bool ownStich();
-        bool istTrumpfFrei(int playerId);
-        bool istFarbFrei(int playerId, int c);
-        float gehtDurch(Card *card);
-        float gegnerSticht(Card *card);
 
         /** returns the highest trump that is still
          *  in the game not counting the own cards
@@ -85,7 +81,6 @@ class ComputerPlayer : public Player
         Card *highestTrumpfInGame();
 
         int myTrumpfs();
-        int trumpfsInGame();
 
     //private slots:
         void cardPlayed(unsigned int player, Card *c);

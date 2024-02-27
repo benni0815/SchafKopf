@@ -438,35 +438,6 @@ bool ComputerPlayer::ownStich()
         return ( this->isPlayer() ? false : true );
 }
 
-bool ComputerPlayer::istTrumpfFrei(int playerId)
-{
-    for( int i=0; i<m_angespielt->count(); i++ )
-    {
-        if(m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && !m_game->gameInfo()->istTrumpf(m_playedCards[playerId]->at(i)))
-            return true;
-    }
-    return false;
-}
-bool ComputerPlayer::istFarbFrei(int playerId, int c)
-{
-    for( int i=0; i<m_angespielt->count(); i++ )
-    {
-        if(!m_game->gameInfo()->istTrumpf(m_angespielt->at(i)) && m_angespielt->at(i)->color()==c && !m_playedCards[playerId]->at(i)->color()==c)
-            return true;
-    }
-    return false;
-}
-
-float ComputerPlayer::gehtDurch(Card *)
-{
-    return 0;
-}
-
-float ComputerPlayer::gegnerSticht(Card *)
-{
-    return 0;
-}
-
 Card *ComputerPlayer::highestTrumpfInGame()
 {
     CardList *trumpfs=new CardList();
@@ -511,30 +482,6 @@ int ComputerPlayer::myTrumpfs()
             trumpfs++;
     }
     return trumpfs;
-}
-
-int ComputerPlayer::trumpfsInGame()
-{
-    Card *c;
-    int trumpfs=0;
-    int i;
-
-    for( int i = 0; i < m_game->allCards()->count(); i++)
-    {
-        c = m_game->allCards()->at( i );
-        if( m_game->gameInfo()->istTrumpf( c ) )
-            trumpfs++;
-    }
-    for(i=0;i<PLAYERS;i++)
-    {
-        for( int i = 0; i < m_playedCards[i]->count(); i++ )
-        {
-            c = m_playedCards[i]->at( i );
-            if( m_game->gameInfo()->istTrumpf( c ) )
-                trumpfs--;
-        }
-    }
-    return trumpfs-myTrumpfs();
 }
 
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
