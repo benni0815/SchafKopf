@@ -25,3 +25,10 @@ target_include_directories(kdegames
   PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_precompile_headers(kdegames
+  PUBLIC
+    <QtCore>
+    <QtGui>
+    <QtWidgets>
+)

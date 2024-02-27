@@ -60,3 +60,5 @@ target_link_libraries(schafkopf
     Qt5::Widgets
     Qt5::Svg
 )
+
+target_precompile_headers(schafkopf REUSE_FROM kdegames)
