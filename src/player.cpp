@@ -139,10 +139,10 @@ CardList* Player::cardsOfSameType(Card* card)
     CardList* AntiMaske;
 
     if(card==NULL)
-        return SpielerKarten; //mssen alle Karten zurckgegeben werden
+        return SpielerKarten; // müssen alle Karten zurückgegeben werden
     else
     {
-        if(istTrumpf(card)) //mssen alle trmpfe zurckgegeben werden
+        if(istTrumpf(card)) // müssen alle trümpfe zurückgegeben werden
         {
             AntiMaske=PlayerCards();
             removeTrumpf(AntiMaske);
@@ -150,7 +150,7 @@ CardList* Player::cardsOfSameType(Card* card)
             delete AntiMaske;
             return SpielerKarten;
         }
-        else //muss die gleiche Farbe ohne Trmpfe zurckgegeben werden
+        else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
         {
             removeTrumpf(SpielerKarten);
             SpielerFarbe=SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
@@ -173,7 +173,7 @@ CardList* Player::allowedCards()
     {
         CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
         CardList* Spielfarbe= allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
-        // entferne alle trumpfe aus Spielfarbe
+        // entferne alle trümpfe aus Spielfarbe
         for( int i = 0; i < Spielfarbe->count(); i++ )
         {
             if( istTrumpf( Spielfarbe->at(i) ) )

@@ -110,7 +110,7 @@ void Game::startGame()
     //emit gameStarted();
 }
 
-// Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitter sofort erschie�n :)
+// Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitte sofort erschießen :)
 void Game::gameLoop()
 {
     int i, a, index, realindex;
@@ -218,7 +218,7 @@ void Game::gameLoop()
             postEvent( PlayerMadeStich, tmp[index]->id(), m_currstich.toIntList(), tmp[index]->name(), false, playernames );
 
             //emit playerMadeStich(tmp[index]->id());
-            // Sortiere so, das der stecher n�hste karte spielt
+            // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
             {
                 if(m_players[realindex]==tmp[index])
