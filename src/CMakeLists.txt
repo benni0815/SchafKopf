@@ -55,10 +55,10 @@ target_link_libraries(schafkopf
     kdegames
     KF5::XmlGui
     KF5::KIOWidgets
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Svg
+    Qt::Core
+    Qt::Gui
+    Qt::Widgets
+    Qt::Svg
 )
 
 target_precompile_headers(schafkopf REUSE_FROM kdegames)
