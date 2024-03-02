@@ -162,7 +162,7 @@ void PreferencesDlg::addPageRules()
     button_layout->addWidget( m_checkDoubleNextGame );
 
     QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
+    layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing( 6 );
     layout->addWidget( group, 0, 0 );
     layout->addItem( spacer, 1, 0 );
@@ -324,7 +324,7 @@ void PreferencesDlg::addPageResults()
     delete rp;
 
     QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
+    layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing( 6 );
     layout->addWidget( group, 0, 0 );
     layout->addWidget( stack, 1, 0 );
@@ -366,7 +366,7 @@ void PreferencesDlg::addPageView()
     button_layout2->addWidget( m_checkRearrangeCards );
 
     QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
+    layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing( 6 );
     layout->addWidget( group2, 0, 0 );
     layout->addWidget( group, 1, 0 );
@@ -403,19 +403,19 @@ void PreferencesDlg::addPageGames()
     infoLabel->setWordWrap( true );
 
     QGridLayout* farbWenzLayout = new QGridLayout();
-    farbWenzLayout->setMargin( 6 );
+    farbWenzLayout->setContentsMargins(6, 6, 6, 6);
     farbWenzLayout->setSpacing( 6 );
     farbWenzLayout->addItem( smallSpace, 0, 0 );
     farbWenzLayout->addWidget( m_games_farbwenz, 0, 1 );
 
     QGridLayout* farbGeierLayout = new QGridLayout();
-    farbGeierLayout->setMargin( 6 );
+    farbGeierLayout->setContentsMargins(6, 6, 6, 6);
     farbGeierLayout->setSpacing( 6 );
     farbGeierLayout->addItem( smallSpace2, 0, 0 );
     farbGeierLayout->addWidget( m_games_farbgeier, 0, 1 );
 
     QGridLayout* layout = new QGridLayout( box );
-    layout->setMargin( 6 );
+    layout->setContentsMargins(6, 6, 6, 6);
     layout->setSpacing( 6 );
     layout->addWidget( infoLabel );
     layout->addWidget( m_games_wenz, 1, 0 );
