@@ -266,10 +266,15 @@ void SchafKopf::customEvent( QEvent* e )
                 {
                 case QuestionYesNo:
                 case HumanPlayerGetCard:
-                    delete (int*)data->returncode;
+                    delete static_cast<int*>(data->returncode);
+                    break;
+
                 case SelectGame:
-                    delete (GameInfo*)data->returncode;
-                default:;
+                    delete static_cast<GameInfo*>(data->returncode);
+                    break;
+
+                default:
+                    break;
                 }
             }
 
