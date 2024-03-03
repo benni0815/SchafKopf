@@ -14,6 +14,7 @@ find_package(KF5KIO REQUIRED)
 find_package(Gettext REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
+add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x060000)
 
 add_subdirectory(src)
 
