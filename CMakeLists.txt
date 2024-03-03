@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
+set(CMAKE_CONFIGURATION_TYPES "Release;Debug;RelWithDebugInfo" CACHE STRING "")
+
 project(schafkopf)
 
 set(CMAKE_CXX_STANDARD 14)
