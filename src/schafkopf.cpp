@@ -30,6 +30,8 @@
 #include "preferencesdlg.h"
 #include "selectgamewizard.h"
 
+#include <schafkopf_version.h>
+
 #include <QLabel>
 #include <QApplication>
 #include <QMenuBar>
@@ -48,11 +50,6 @@
 // for pow()
 #include <cmath>
 
-
-namespace
-{
-  static const char version[] = "0.7.91";
-}
 
 SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {
@@ -135,7 +132,7 @@ SchafKopf::~SchafKopf()
 KAboutData SchafKopf::aboutData()
 {
   // if you want copyright, then add you to the list:
-  KAboutData about("schafkopf", "SchafKopf", version);
+  KAboutData about("schafkopf", "SchafKopf", QStringLiteral(SCHAFKOPF_VERSION_STRING));
   about.setLicense(KAboutLicense::GPL);
   about.setShortDescription(tr("\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game."));
   about.setHomepage("https://github.com/benni0815/SchafKopf/");

@@ -61,6 +61,8 @@ target_link_libraries(schafkopf
     Qt::Svg
 )
 
+target_include_directories(schafkopf PRIVATE ${CMAKE_BINARY_DIR})
+
 target_precompile_headers(schafkopf REUSE_FROM kdegames)
 
 # This has only an effect on Windows and Mac OS X.
