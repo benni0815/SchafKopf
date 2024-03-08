@@ -242,6 +242,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 
     switch( gameinfo->mode() )
     {
+        default:
         case GameInfo::RAMSCH:
         case GameInfo::RUFSPIEL:
             trumpf_cnt=2;
@@ -274,8 +275,6 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
             l_cards=l_cards_dachs;
             col=Card::NOCOLOR;
             break;
-        default:
-                break;
     }
     if(col==Card::NOCOLOR)
         col=Card::EICHEL;
