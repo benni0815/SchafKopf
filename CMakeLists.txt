@@ -9,6 +9,11 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
+find_package(ECM REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+
+include(ECMInstallIcons)
+
 find_package(Qt5 REQUIRED Core Gui Widgets Svg)
 find_package(KF5XmlGui REQUIRED)
 find_package(KF5GuiAddons REQUIRED)
@@ -19,6 +24,7 @@ add_compile_options(-Wall -Wextra -Wpedantic)
 add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x060000)
 
 add_subdirectory(src)
+add_subdirectory(icons)
 
 # add install target:
 GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
