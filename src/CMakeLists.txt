@@ -62,3 +62,15 @@ target_link_libraries(schafkopf
 )
 
 target_precompile_headers(schafkopf REUSE_FROM kdegames)
+
+# This has only an effect on Windows and Mac OS X.
+ecm_add_app_icon(schafkopf ICONS
+  ${CMAKE_SOURCE_DIR}/icons/16-apps-schafkopf.png
+  ${CMAKE_SOURCE_DIR}/icons/22-apps-schafkopf.png
+  ${CMAKE_SOURCE_DIR}/icons/32-apps-schafkopf.png
+  ${CMAKE_SOURCE_DIR}/icons/48-apps-schafkopf.png
+  ${CMAKE_SOURCE_DIR}/icons/64-apps-schafkopf.png
+  ${CMAKE_SOURCE_DIR}/icons/128-apps-schafkopf.png
+)
+
+INSTALL(TARGETS schafkopf ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

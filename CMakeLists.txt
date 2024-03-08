@@ -12,7 +12,9 @@ set(CMAKE_AUTOUIC ON)
 find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
+include(ECMAddAppIcon)
 include(ECMInstallIcons)
+include(KDEInstallDirs)
 
 find_package(Qt5 REQUIRED Core Gui Widgets Svg)
 find_package(KF5XmlGui REQUIRED)
