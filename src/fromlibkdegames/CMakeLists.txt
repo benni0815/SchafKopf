@@ -17,6 +17,7 @@ target_link_libraries(kdegames
     KF5::GuiAddons
   PRIVATE
     KF5::KIOWidgets
+    KF5::I18n
     Qt::Core
     Qt::Gui
     Qt::Svg

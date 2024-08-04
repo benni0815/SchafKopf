@@ -1,61 +1,26 @@
 /*
     This file is part of the KDE games library
-    Copyright 2008 Andreas Pakulat <apaku@gmx.de>
+    SPDX-FileCopyrightText: 2008 Andreas Pakulat <apaku@gmx.de>
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License version 2 as published by the Free Software Foundation.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Library General Public License for more details.
-
-    You should have received a copy of the GNU Library General Public License
-    along with this library; see the file COPYING.LIB.  If not, write to
-    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-    Boston, MA 02110-1301, USA.
+    SPDX-License-Identifier: LGPL-2.0-only
 */
 
 #include "carddeckinfo.h"
 #include "carddeckinfo_p.h"
 
-#include <QFileInfo>
 #include <QDir>
-#include <QDebug>
-#include <QGlobalStatic>
+#include <QFileInfo>
 #include <QRandomGenerator>
+#include <QStandardPaths>
 
-#include <KConfigGroup>
 #include <KConfig>
+#include <KConfigGroup>
+#include <KLocalizedString>
 
+#include <utility>
 
 // KConfig entries
 #define CONF_CARD QString::fromLatin1("Cardname")
-
-namespace
-{
-
-QStringList findCardDecks(const QString& prefix)
-{
-  const auto cardDirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("carddecks"), QStandardPaths::LocateDirectory);
-  QStringList files;
-  for (const auto& dir : cardDirs)
-  {
-    const QStringList subDirs = QDir(dir).entryList({prefix + "*"}, QDir::Dirs);
-    for (const auto& subDir : subDirs)
-    {
-      const auto desktopFile = dir + '/' + subDir + "/index.desktop";
-      if (QFile::exists(desktopFile))
-      {
-        files.push_back(desktopFile);
-      }
-    }
-  }
-  return files;
-}
-
-} // namespace
 
 /**
  * Local static information.
@@ -77,52 +42,55 @@ public:
         themeNameMap.clear();
 
         // Add SVG card sets
-        const auto svg = findCardDecks("svg");
-        const auto list = svg + findCardDecks("card");
+        QStringList list;
+        const QStringList dirs = QStandardPaths::locateAll(QStandardPaths::GenericDataLocation, QStringLiteral("carddecks"), QStandardPaths::LocateDirectory);
+        for (const QString& dir : dirs) {
+            const QStringList deckFolderNames = QDir(dir).entryList({QStringLiteral("svg*")});
+            list.reserve(list.size() + deckFolderNames.size());
+            for (const QString& deck : deckFolderNames) {
+                list.append(dir + QLatin1Char('/') + deck + QStringLiteral("/index.desktop"));
+            }
+        }
 
-        if ( list.isEmpty() ) return;
+        for (const QString &deckPath : std::as_const(list)) {
+            KConfig cfg(deckPath, KConfig::SimpleConfig);
+            KConfigGroup cfgcg(&cfg, QStringLiteral("KDE Backdeck"));
+            QString path = deckPath.left(deckPath.lastIndexOf(QLatin1Char('/')) + 1);
+            Q_ASSERT(path[path.length() - 1] == QLatin1Char('/'));
+            QPixmap pixmap(path + cfgcg.readEntry("Preview", "12c.png"));
+            if (pixmap.isNull()) continue;
 
-        for ( QStringList::ConstIterator it = list.begin(); it != list.end(); ++it )
-        {
-            KConfig cfg( *it, KConfig::SimpleConfig );
-            KConfigGroup cfgcg( &cfg, "KDE Backdeck" );
-            QString path = ( *it ).left(( *it ).lastIndexOf( QLatin1Char( '/' ) ) + 1 );
-            Q_ASSERT( path[path.length() - 1] == QLatin1Char( '/' ) );
-            QPixmap pixmap( path + cfgcg.readEntry( "Preview", "12c.png" ) );
-            if ( pixmap.isNull() ) continue;
-
-            QString idx  = cfgcg.readEntryUntranslated( "Name", QObject::tr( "unnamed" ) );
-            QString name = cfgcg.readEntry( "Name", QObject::tr( "unnamed" ) );
+            QString idx  = cfgcg.readEntryUntranslated("Name", i18n("unnamed"));
+            QString name = cfgcg.readEntry("Name", i18n("unnamed"));
             KCardThemeInfo info;
             info.name         = name;
             info.noi18Name    = idx;
-            info.comment      = cfgcg.readEntry( "Comment", QString() );
+            info.comment      = cfgcg.readEntry("Comment", QString());
             info.preview      = pixmap;
             info.path         = path;
-            info.back         = cfgcg.readEntry( "Back", QString() );
-            // if (!info.back.isNull()) kDebug() << "FOUND BACK " << info.back;
-            info.isDefault    = cfgcg.readEntry( "Default", false );
 
-            QString svg    = cfgcg.readEntry( "SVG", QString() );
-            if ( !svg.isEmpty() )
+            info.back         = cfgcg.readEntry("Back", QString());
+            // if (!info.back.isNull()) qCDebug(LSKAT_LOG) << "FOUND BACK " << info.back;
+            info.isDefault    = cfgcg.readEntry("Default", false);
+
+            QString svg    = cfgcg.readEntry("SVG", QString());
+            if (!svg.isEmpty())
             {
-                QFileInfo svgInfo( QDir( path ), svg );
+                QFileInfo svgInfo(QDir(path), svg);
                 info.svgfile = svgInfo.filePath();
                 themeNameMap[idx] = info;
             }
         }
     }
 
-    /** The card front sides for SVG decks.
-     */
+    /** The card front sides for SVG decks. */
     QMap<QString, KCardThemeInfo> themeNameMap;
 
-    /** The default front side name.
-     */
+    /** The default front side name. */
     QString defaultDeck;
 };
 
-Q_GLOBAL_STATIC( KCardThemeInfoStatic, deckinfoStatic )
+Q_GLOBAL_STATIC(KCardThemeInfoStatic, deckinfoStatic)
 
 QDebug operator<<(QDebug debug, const KCardThemeInfo &cn)
 {
@@ -138,27 +106,25 @@ QDebug operator<<(QDebug debug, const KCardThemeInfo &cn)
 
 namespace CardDeckInfo
 {
-
 // Retrieve default card set name
 QString defaultDeckName()
 {
     QString noDefault;
     // Count filtered cards
     QMap<QString, KCardThemeInfo> temp = deckinfoStatic->themeNameMap;
-    QMapIterator<QString, KCardThemeInfo> it( temp );
-    while ( it.hasNext() )
+    QMapIterator<QString, KCardThemeInfo> it(temp);
+    while (it.hasNext())
     {
         it.next();
         KCardThemeInfo v = it.value();
         // Filter
-        if ( v.isDefault ) return v.noi18Name;
+        if (v.isDefault) return v.noi18Name;
         // Collect any deck if no default is stored
         noDefault = v.noi18Name;
     }
-    if ( noDefault.isNull() ) qCritical() << "Could not find default card name";
+    if (noDefault.isNull()) qCritical() << "Could not find default card name";
     return noDefault;
 }
-
 
 // Retrieve a random card name
 QString randomDeckName()
@@ -166,15 +132,14 @@ QString randomDeckName()
     // Collect matching items
     QStringList list = deckinfoStatic->themeNameMap.keys();
     // Draw random one
-    int d = QRandomGenerator::global()->bounded(RAND_MAX) % list.count();
-    return list.at( d );
+    int d = QRandomGenerator::system()->bounded(list.count());
+    return list.at(d);
 }
 
-
 // Retrieve the SVG file belonging to the given card fronts.
-QString svgFilePath( const QString& name )
+QString svgFilePath(const QString &name)
 {
-    if ( !deckinfoStatic->themeNameMap.contains( name ) ) return QString();
+    if (!deckinfoStatic->themeNameMap.contains(name)) return QString();
     const KCardThemeInfo &v = deckinfoStatic->themeNameMap[name];
     return v.svgfile;
 }
@@ -184,25 +149,23 @@ QStringList deckNames()
     return deckinfoStatic->themeNameMap.keys();
 }
 
-KCardThemeInfo deckInfo( const QString& name )
+KCardThemeInfo deckInfo(const QString &name)
 {
-    if ( deckinfoStatic->themeNameMap.contains( name ) )
-        return deckinfoStatic->themeNameMap.value( name );
+    if (deckinfoStatic->themeNameMap.contains(name))
+        return deckinfoStatic->themeNameMap.value(name);
     return KCardThemeInfo();
 }
 
-QString deckName( const KConfigGroup& group, const QString& defaultTheme )
+QString deckName(const KConfigGroup &group, const QString &defaultTheme)
 {
-    QString theme = group.readEntry( CONF_CARD, defaultTheme );
+    QString theme = group.readEntry(CONF_CARD, defaultTheme);
     if (!deckNames().contains(theme))
         return defaultTheme;
     return theme;
 }
 
-void writeDeckName( KConfigGroup& group, const QString& theme )
+void writeDeckName(KConfigGroup &group, const QString &theme)
 {
-  group.writeEntry( CONF_CARD, theme );
+    group.writeEntry(CONF_CARD, theme);
 }
-
 }
-

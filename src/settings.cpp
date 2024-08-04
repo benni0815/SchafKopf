@@ -28,6 +28,7 @@
 #include <KConfigGroup>
 
 #include <QMutex>
+#include <QSvgRenderer>
 
 
 Settings* Settings::m_instance = nullptr;
@@ -48,7 +49,6 @@ Settings::Settings( QObject *parent )
     // the mutex causes more problems right now than be useful...
     m_mutex = nullptr; // new QMutex();
 
-    m_cardCache = new KCardCache();
     loadCardDeck();
 }
 
@@ -56,12 +56,11 @@ Settings::~Settings()
 {
     delete m_mutex;
     delete m_instance;
-    delete m_cardCache;
 }
 
 KCardCache* Settings::cardCache()
 {
-    return m_cardCache;
+    return &m_cardCache;
 }
 
 const QString Settings::cardDeck() const
@@ -74,12 +73,19 @@ const QString Settings::cardDeck() const
 
 void Settings::loadCardDeck()
 {
-    if( CardDeckInfo::deckNames().contains( cardDeck() ) ) m_cardCache->setDeckName( cardDeck() );
-    else m_cardCache->setDeckName( CardDeckInfo::defaultDeckName() );
-    KCardInfo card = KCardInfo( KCardInfo::Diamond, KCardInfo::Ace );
-    QSize size = m_cardCache->defaultCardSize( card ).toSize();
-    double scale = 140. / size.height();
-    m_cardCache->setSize( scale * size );
+    QString deckName = cardDeck();
+    if (!CardDeckInfo::deckNames().contains(deckName))
+    {
+      deckName = CardDeckInfo::defaultDeckName();
+    }
+    m_cardCache.setDeckName(deckName);
+
+    const auto renderer = QSvgRenderer(CardDeckInfo::svgFilePath(deckName));
+    const auto card = KCardInfo(KCardInfo::Diamond, KCardInfo::Ace);
+    const QSizeF size = renderer.boundsOnElement(card.svgName()).size();
+
+    const QSize scaledSize = size.scaled(1, 140, Qt::KeepAspectRatioByExpanding).toSize();
+    m_cardCache.setSize(scaledSize);
 }
 
 void Settings::configureCardDecks( QWidget* parent )

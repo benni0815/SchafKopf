@@ -9,7 +9,7 @@ set(RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_
 
 project(schafkopf VERSION ${RELEASE_SERVICE_VERSION})
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
@@ -31,6 +31,7 @@ find_package(Qt5 REQUIRED Core Gui Widgets Svg)
 find_package(KF5XmlGui REQUIRED)
 find_package(KF5GuiAddons REQUIRED)
 find_package(KF5KIO REQUIRED)
+find_package(KF5I18n REQUIRED)
 find_package(Gettext REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic)

@@ -139,5 +139,5 @@ class Settings : public QObject
 
         QMutex* m_mutex;
 
-        KCardCache* m_cardCache;
+        KCardCache m_cardCache;
 };
