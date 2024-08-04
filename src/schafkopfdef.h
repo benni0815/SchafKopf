@@ -43,10 +43,10 @@
 #define SCHAFKOPF_EVENT 1984
 
 #include <QString>
+#include <QStringList>
 
 class Card;
 class QSemaphore;
-class QStringList;
 
 enum { YES, NO };
     
