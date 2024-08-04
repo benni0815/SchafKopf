@@ -54,7 +54,6 @@ PreferencesDlg::~PreferencesDlg()
 void PreferencesDlg::accept()
 {
     ResultValues r;
-    AllowedGames allowed;
     Settings* s = Settings::instance();
 
     s->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
@@ -97,12 +96,13 @@ void PreferencesDlg::accept()
     s->setBackgroundImage( m_linePathBackground->text() );
 
     // allowed games
+    AllowedGames allowed;
     allowed.wenz = m_games_wenz->isChecked();
     allowed.farb_wenz = m_games_farbwenz->isChecked();
     allowed.geier = m_games_geier->isChecked();
     allowed.farb_geier = m_games_farbgeier->isChecked();
     allowed.dachs = m_games_dachs->isChecked();
-    s->setAllowedGames( &allowed );
+    s->setAllowedGames(allowed);
 
     KPageDialog::accept();
 }
@@ -423,13 +423,12 @@ void PreferencesDlg::addPageGames()
     layout->addItem( spacer, 6, 0 );
 
     // load settings
-    AllowedGames* allowed = Settings::instance()->allowedGames();
-    m_games_wenz->setChecked( allowed->wenz );
-    m_games_farbwenz->setChecked( allowed->farb_wenz );
-    m_games_geier->setChecked( allowed->geier );
-    m_games_farbgeier->setChecked( allowed->farb_geier );
-    m_games_dachs->setChecked( allowed->dachs );
-    delete allowed;
+    const AllowedGames allowed = Settings::instance()->allowedGames();
+    m_games_wenz->setChecked( allowed.wenz );
+    m_games_farbwenz->setChecked( allowed.farb_wenz );
+    m_games_geier->setChecked( allowed.geier );
+    m_games_farbgeier->setChecked( allowed.farb_geier );
+    m_games_dachs->setChecked( allowed.dachs );
 
     // connections
     connect(m_games_wenz, &QCheckBox::clicked, this, &PreferencesDlg::enableControls);

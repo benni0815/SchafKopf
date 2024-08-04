@@ -28,7 +28,6 @@ class QLabel;
 class QRadioButton;
 class GameInfo;
 
-struct AllowedGames;
 
 /**
 @author Christian Kern
@@ -39,11 +38,8 @@ class SelectGameTypeBox : public QWizardPage
 public:
     SelectGameTypeBox(QWidget *parent = 0 );
 
-    ~SelectGameTypeBox();
+    ~SelectGameTypeBox() = default;
     GameInfo* gameInfo() const;
-
-private:
-    AllowedGames* m_allowed;
 
 protected:
     QRadioButton* checkRufspiel;

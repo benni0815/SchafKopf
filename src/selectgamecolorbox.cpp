@@ -37,7 +37,6 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     : QWizardPage( parent )
 {
     setTitle( tr("Step 2/2: Select Color") );
-    m_allowed = Settings::instance()->allowedGames();
 
     m_gameinfo=0;
 
@@ -113,12 +112,6 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     layout->setSpacing(8);
     layout->addWidget( color_group );
     this->setLayout( layout );
-}
-
-SelectGameColorBox::~SelectGameColorBox()
-{
-
-    delete m_allowed;
 }
 
 int SelectGameColorBox::getColor()
@@ -208,11 +201,13 @@ void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schel
 {
     bool allow_colors = true;
 
+    const AllowedGames allowed = Settings::instance()->allowedGames();
+
     if( m_gameinfo->mode() == GameInfo::WENZ )
-        allow_colors = allow_colors & m_allowed->farb_wenz;
+        allow_colors = allow_colors & allowed.farb_wenz;
 
     if( m_gameinfo->mode() == GameInfo::GEIER )
-        allow_colors = allow_colors & m_allowed->farb_geier;
+        allow_colors = allow_colors & allowed.farb_geier;
 
     checkEichel->setVisible(allow_colors&&Eichel==true);
     labelEichel->setVisible(allow_colors&&Eichel==true);

@@ -331,29 +331,29 @@ QString Settings::backgroundImage() const
 }
 
 
-AllowedGames* Settings::allowedGames() const
+AllowedGames Settings::allowedGames() const
 {
     QMutexLocker locker( m_mutex );
-    AllowedGames* a = new AllowedGames;
 
+    AllowedGames a;
     KConfigGroup config = m_config->group("Games");
-    a->wenz = config.readEntry( "AllowWenz", true );
-    a->farb_wenz = config.readEntry( "AllowFarbWenz", true );
-    a->geier = config.readEntry( "AllowGeier", true );
-    a->farb_geier = config.readEntry( "AllowFarbGeier", false );
-    a->dachs = config.readEntry( "AllowDachs", false );
+    a.wenz = config.readEntry( "AllowWenz", true );
+    a.farb_wenz = config.readEntry( "AllowFarbWenz", true );
+    a.geier = config.readEntry( "AllowGeier", true );
+    a.farb_geier = config.readEntry( "AllowFarbGeier", false );
+    a.dachs = config.readEntry( "AllowDachs", false );
 
     return a;
 }
 
-void Settings::setAllowedGames( const AllowedGames* allowed )
+void Settings::setAllowedGames(const AllowedGames& allowed)
 {
     QMutexLocker locker( m_mutex );
     KConfigGroup config = m_config->group("Games");
-    config.writeEntry( "AllowWenz", allowed->wenz );
-    config.writeEntry( "AllowFarbWenz", allowed->farb_wenz );
-    config.writeEntry( "AllowGeier", allowed->geier );
-    config.writeEntry( "AllowFarbGeier", allowed->farb_geier );
-    config.writeEntry( "AllowDachs", allowed->dachs );
+    config.writeEntry( "AllowWenz", allowed.wenz );
+    config.writeEntry( "AllowFarbWenz", allowed.farb_wenz );
+    config.writeEntry( "AllowGeier", allowed.geier );
+    config.writeEntry( "AllowFarbGeier", allowed.farb_geier );
+    config.writeEntry( "AllowDachs", allowed.dachs );
     config.sync();
 }

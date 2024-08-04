@@ -31,7 +31,6 @@ class Card;
 class SelectGameWizard;
 class GameInfo;
 
-struct AllowedGames;
 
 /**
 @author Christian Kern
@@ -44,13 +43,10 @@ public:
     SelectGameColorBox( QWidget *parent = 0 );
     void cleanGameInfo();
 
-    ~SelectGameColorBox();
+    ~SelectGameColorBox() = default;
     void setGameInfo(GameInfo* info);
     GameInfo* getGameInfo();
     bool getFinish();
-
-private:
-    AllowedGames* m_allowed;
 
 protected:
     GameInfo* m_gameinfo;

@@ -115,10 +115,8 @@ class Settings : public QObject
         ResultValues moneyResults() const;
         ResultValues pointResults() const;
 
-        /** delete after usage
-          */
-        AllowedGames* allowedGames() const;
-        void setAllowedGames( const AllowedGames* allowed );
+        AllowedGames allowedGames() const;
+        void setAllowedGames(const AllowedGames& allowed);
 
     signals:
         void cardChanged();

@@ -36,7 +36,6 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     : QWizardPage( parent )
 {
     setTitle( tr("Step 1/2: Select Game") );
-    m_allowed = Settings::instance()->allowedGames();
 
     QWidget* row1 = new QWidget;
 
@@ -55,9 +54,10 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
 
     checkRufspiel->setChecked(true);
 
-    checkGeier->setEnabled( m_allowed->geier );
-    checkWenz->setEnabled( m_allowed->wenz );
-    checkDachs->setEnabled( m_allowed->dachs );
+    const AllowedGames allowed = Settings::instance()->allowedGames();
+    checkGeier->setEnabled(allowed.geier);
+    checkWenz->setEnabled(allowed.wenz);
+    checkDachs->setEnabled(allowed.dachs);
 
     QButtonGroup *myGroup = new QButtonGroup;
     myGroup->addButton( checkRufspiel );
@@ -89,11 +89,6 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
 
     typeChanged();
     infoLabel->setMaximumWidth(preview->size().width());
-}
-
-SelectGameTypeBox::~SelectGameTypeBox()
-{
-    delete m_allowed;
 }
 
 void SelectGameTypeBox::typeChanged()

@@ -147,8 +147,6 @@ bool GameInfo::istTrumpf(Card *card) const
   */
 bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
-    AllowedGames* allowed = NULL;
-
     // it is never allowed to decide to play Ramsch
     if( mode == GameInfo::RAMSCH )
         return false;
@@ -173,28 +171,24 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
         return false;
 
     // check for the users preferences now
-    allowed = Settings::instance()->allowedGames();
-    if( mode == GameInfo::DACHS && !allowed->dachs )
+    const AllowedGames allowed = Settings::instance()->allowedGames();
+    if( mode == GameInfo::DACHS && !allowed.dachs )
     {
-        delete allowed;
         return false;
     }
 
-    if( (mode == GameInfo::WENZ && !allowed->wenz) ||
-        (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed->farb_wenz) )
+    if( (mode == GameInfo::WENZ && !allowed.wenz) ||
+        (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed.farb_wenz) )
     {
-        delete allowed;
         return false;
     }
 
-    if( (mode == GameInfo::GEIER && !allowed->geier) ||
-        (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed->farb_geier) )
+    if( (mode == GameInfo::GEIER && !allowed.geier) ||
+        (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed.farb_geier) )
     {
-        delete allowed;
         return false;
     }
 
-    delete allowed;
     return true;
 }
 
