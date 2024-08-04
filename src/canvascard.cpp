@@ -98,7 +98,7 @@ void CanvasCard::setFrontVisible( bool b )
 void CanvasCard::forbidden()
 {
     m_forbidden = true;
-    QTimer::singleShot( 1000, this, SLOT(disableForbidden()));
+    QTimer::singleShot(std::chrono::seconds(1), this, &CanvasCard::disableForbidden);
     updatePixmap();
 }
 

@@ -100,15 +100,15 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     leftBox_layout->addWidget( m_table );
     leftBox_layout->addWidget( groupInfo );
 
-    const auto app = QApplication::instance();
-    connect(app, SIGNAL(lastWindowClosed()), this, SLOT(saveConfig()));
-    connect(app, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+    const auto app = dynamic_cast<QGuiApplication*>(QApplication::instance());
+    connect(app, &QGuiApplication::lastWindowClosed, this, &SchafKopf::saveConfig);
+    connect(app, &QGuiApplication::lastWindowClosed, this, &SchafKopf::endGame);
     //connect(kapp, SIGNAL(aboutToQuit()), this, SLOT(endGame()));
 
-    connect(btnLastTrick,SIGNAL(clicked()),this,SLOT(showStich()));
-    connect(Settings::instance(),SIGNAL(resultsTypeChanged()),this,SLOT(clearTable()));
-    connect(Settings::instance(),SIGNAL(playerNamesChanged()),this,SLOT(updateTableNames()));
-    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( updateInfo() ) );
+    connect(btnLastTrick, &QPushButton::clicked, this, &SchafKopf::showStich);
+    connect(Settings::instance(), &Settings::resultsTypeChanged, this, &SchafKopf::clearTable);
+    connect(Settings::instance(), &Settings::playerNamesChanged, this, &SchafKopf::updateTableNames);
+    connect(Settings::instance(), &Settings::cardChanged, this, &SchafKopf::updateInfo);
 
     btnLastTrick->setToolTip( tr( "Show the last trick that was made." ) );
 
@@ -327,9 +327,9 @@ void SchafKopf::setupActions()
 
     {
       auto actQuit = KStandardAction::quit(this, &SchafKopf::endGame, actionCollection());
-      const auto app = QApplication::instance();
+      const auto app = dynamic_cast<QGuiApplication*>(QApplication::instance());
       connect(actQuit, &QAction::triggered, app, &QApplication::quit);
-      connect(app, SIGNAL(lastWindowClosed()), this, SLOT(endGame()));
+      connect(app, &QGuiApplication::lastWindowClosed, this, &SchafKopf::endGame);
       mnuGame->addAction( actQuit );
     }
 
@@ -360,7 +360,7 @@ void SchafKopf::newGame()
         {
         case newgamewizard::GAME_LOCAL:
             endGame();
-            QTimer::singleShot(0, this, SLOT(realNewGame()));
+            QTimer::singleShot(0, this, &SchafKopf::realNewGame);
             break;
         }
 
