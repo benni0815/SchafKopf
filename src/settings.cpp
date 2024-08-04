@@ -176,7 +176,7 @@ int Settings::resultsType() const
     return config.readEntry("ResultMode", 0 );
 }
 
-void Settings::setMoneyResults( const t_ResultValues* r )
+void Settings::setMoneyResults( const ResultValues* r )
 {
     QMutexLocker locker( m_mutex );
 
@@ -190,7 +190,7 @@ void Settings::setMoneyResults( const t_ResultValues* r )
     config.sync();
 }
 
-void Settings::setPointResults( const t_ResultValues* r )
+void Settings::setPointResults( const ResultValues* r )
 {
     QMutexLocker locker( m_mutex );
 
@@ -204,11 +204,11 @@ void Settings::setPointResults( const t_ResultValues* r )
     config.sync();
 }
 
-t_ResultValues* Settings::moneyResults() const
+ResultValues* Settings::moneyResults() const
 {
     QMutexLocker locker( m_mutex );
 
-    t_ResultValues* r = new t_ResultValues;
+    ResultValues* r = new ResultValues;
     KConfigGroup config = m_config->group("MoneyValues");
     r->solo = config.readEntry( "Solo", 0.2 );
     r->rufspiel = config.readEntry( "Rufspiel", 0.1 );
@@ -219,11 +219,11 @@ t_ResultValues* Settings::moneyResults() const
     return r;
 }
 
-t_ResultValues* Settings::pointResults() const
+ResultValues* Settings::pointResults() const
 {
     QMutexLocker locker( m_mutex );
 
-    t_ResultValues* r = new t_ResultValues;
+    ResultValues* r = new ResultValues;
     KConfigGroup config = m_config->group("PointValues");
     r->solo = config.readEntry( "Solo", 2 );
     r->rufspiel = config.readEntry( "Rufspiel", 1 );

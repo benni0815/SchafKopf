@@ -176,9 +176,8 @@ void Results::setGame( Game* game )
 
 double Results::points( Player* player )
 {
-    t_ResultValues* r = Settings::instance()->resultsType() == Settings::MONEY ? 
-                    Settings::instance()->moneyResults() :
-                    Settings::instance()->pointResults();                    
+    ResultValues* r = (Settings::instance()->resultsType() == Settings::MONEY) ? Settings::instance()->moneyResults()
+                                                                               : Settings::instance()->pointResults();
     double m = 0.0;
     
     parse();

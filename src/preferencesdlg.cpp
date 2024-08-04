@@ -53,7 +53,7 @@ PreferencesDlg::~PreferencesDlg()
 
 void PreferencesDlg::accept()
 {
-    t_ResultValues r;
+    ResultValues r;
     t_AllowedGames allowed;
     Settings* s = Settings::instance();
 
@@ -191,8 +191,8 @@ void PreferencesDlg::addPageResults()
     KPageWidgetItem *item = addPage( box, tr( "Results" ) );
     item->setIcon( QIcon::fromTheme( "applications-education" ) );
 
-    t_ResultValues* rm = Settings::instance()->moneyResults();
-    t_ResultValues* rp = Settings::instance()->pointResults();
+    ResultValues* rm = Settings::instance()->moneyResults();
+    ResultValues* rp = Settings::instance()->pointResults();
 
     m_radioMoney = new QRadioButton( tr("count &money") );
     m_radioPoints = new QRadioButton( tr("count &points") );
