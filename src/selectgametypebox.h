@@ -28,7 +28,7 @@ class QLabel;
 class QRadioButton;
 class GameInfo;
 
-struct t_AllowedGames;
+struct AllowedGames;
 
 /**
 @author Christian Kern
@@ -43,7 +43,7 @@ public:
     GameInfo* gameInfo() const;
 
 private:
-    t_AllowedGames* m_allowed;
+    AllowedGames* m_allowed;
 
 protected:
     QRadioButton* checkRufspiel;

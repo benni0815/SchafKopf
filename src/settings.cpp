@@ -331,10 +331,10 @@ QString Settings::backgroundImage() const
 }
 
 
-t_AllowedGames* Settings::allowedGames() const
+AllowedGames* Settings::allowedGames() const
 {
     QMutexLocker locker( m_mutex );
-    t_AllowedGames* a = new t_AllowedGames;
+    AllowedGames* a = new AllowedGames;
 
     KConfigGroup config = m_config->group("Games");
     a->wenz = config.readEntry( "AllowWenz", true );
@@ -346,7 +346,7 @@ t_AllowedGames* Settings::allowedGames() const
     return a;
 }
 
-void Settings::setAllowedGames( const t_AllowedGames* allowed )
+void Settings::setAllowedGames( const AllowedGames* allowed )
 {
     QMutexLocker locker( m_mutex );
     KConfigGroup config = m_config->group("Games");

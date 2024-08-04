@@ -54,7 +54,7 @@ PreferencesDlg::~PreferencesDlg()
 void PreferencesDlg::accept()
 {
     ResultValues r;
-    t_AllowedGames allowed;
+    AllowedGames allowed;
     Settings* s = Settings::instance();
 
     s->setResultsType( m_radioMoney->isChecked() ? Settings::MONEY: Settings::POINTS );
@@ -423,7 +423,7 @@ void PreferencesDlg::addPageGames()
     layout->addItem( spacer, 6, 0 );
 
     // load settings
-    t_AllowedGames* allowed = Settings::instance()->allowedGames();
+    AllowedGames* allowed = Settings::instance()->allowedGames();
     m_games_wenz->setChecked( allowed->wenz );
     m_games_farbwenz->setChecked( allowed->farb_wenz );
     m_games_geier->setChecked( allowed->geier );

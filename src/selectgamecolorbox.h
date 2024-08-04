@@ -31,7 +31,7 @@ class Card;
 class SelectGameWizard;
 class GameInfo;
 
-struct t_AllowedGames;
+struct AllowedGames;
 
 /**
 @author Christian Kern
@@ -50,7 +50,7 @@ public:
     bool getFinish();
 
 private:
-    t_AllowedGames* m_allowed;
+    AllowedGames* m_allowed;
 
 protected:
     GameInfo* m_gameinfo;

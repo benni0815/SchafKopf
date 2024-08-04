@@ -147,7 +147,7 @@ bool GameInfo::istTrumpf(Card *card) const
   */
 bool GameInfo::isAllowed( CardList* cards, int mode, int color )
 {
-    t_AllowedGames* allowed = NULL;
+    AllowedGames* allowed = NULL;
 
     // it is never allowed to decide to play Ramsch
     if( mode == GameInfo::RAMSCH )

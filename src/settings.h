@@ -41,7 +41,7 @@ struct ResultValues {
 /** a datatype defining which games are allowed to be 
   * played in this game according to the users preferences
   */
-struct t_AllowedGames {
+struct AllowedGames {
     bool wenz;
     bool farb_wenz;
     
@@ -117,8 +117,8 @@ class Settings : public QObject
 
         /** delete after usage
           */
-        t_AllowedGames* allowedGames() const;
-        void setAllowedGames( const t_AllowedGames* allowed );
+        AllowedGames* allowedGames() const;
+        void setAllowedGames( const AllowedGames* allowed );
 
     signals:
         void cardChanged();
