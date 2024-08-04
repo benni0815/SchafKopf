@@ -103,8 +103,8 @@ class Settings : public QObject
         void setDoubleNextGame( bool b );
         bool doubleNextGame() const;
 
-        void setMoneyResults( const ResultValues* r );
-        void setPointResults( const ResultValues* r );
+        void setMoneyResults(const ResultValues& r);
+        void setPointResults(const ResultValues& r);
 
         void setBackgroundImage( QString b);
         QString backgroundImage() const;

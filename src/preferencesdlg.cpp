@@ -65,7 +65,7 @@ void PreferencesDlg::accept()
     r.schneider = m_money_schneider->value();
     r.schwarz = m_money_notrick->value();
     r.ramsch = m_money_ramsch->value();
-    s->setMoneyResults( &r );
+    s->setMoneyResults(r);
 
     r.rufspiel = m_point_call->value();
     r.solo = m_point_solo->value();
@@ -73,7 +73,7 @@ void PreferencesDlg::accept()
     r.schneider = m_point_schneider->value();
     r.schwarz = m_point_notrick->value();
     r.ramsch = m_point_ramsch->value();
-    s->setPointResults( &r );
+    s->setPointResults(r);
 
     QStringList names; 
     names << m_p1_name->text();

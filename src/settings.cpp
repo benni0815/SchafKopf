@@ -176,31 +176,31 @@ int Settings::resultsType() const
     return config.readEntry("ResultMode", 0 );
 }
 
-void Settings::setMoneyResults( const ResultValues* r )
+void Settings::setMoneyResults(const ResultValues& r)
 {
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = m_config->group("MoneyValues");
-    config.writeEntry( "Solo", r->solo );
-    config.writeEntry( "Rufspiel", r->rufspiel );
-    config.writeEntry( "Laufende", r->laufende );
-    config.writeEntry( "Schneider", r->schneider );
-    config.writeEntry( "Schwarz", r->schwarz );
-    config.writeEntry( "Ramsch", r->ramsch );
+    config.writeEntry( "Solo", r.solo );
+    config.writeEntry( "Rufspiel", r.rufspiel );
+    config.writeEntry( "Laufende", r.laufende );
+    config.writeEntry( "Schneider", r.schneider );
+    config.writeEntry( "Schwarz", r.schwarz );
+    config.writeEntry( "Ramsch", r.ramsch );
     config.sync();
 }
 
-void Settings::setPointResults( const ResultValues* r )
+void Settings::setPointResults(const ResultValues& r)
 {
     QMutexLocker locker( m_mutex );
 
     KConfigGroup config = m_config->group("PointValues");
-    config.writeEntry( "Solo", static_cast<int>(r->solo) );
-    config.writeEntry( "Rufspiel", static_cast<int>(r->rufspiel) );
-    config.writeEntry( "Laufende", static_cast<int>(r->laufende) );
-    config.writeEntry( "Schneider", static_cast<int>(r->schneider) );
-    config.writeEntry( "Schwarz", static_cast<int>(r->schwarz) );
-    config.writeEntry( "Ramsch", static_cast<int>(r->ramsch) );
+    config.writeEntry( "Solo", static_cast<int>(r.solo) );
+    config.writeEntry( "Rufspiel", static_cast<int>(r.rufspiel) );
+    config.writeEntry( "Laufende", static_cast<int>(r.laufende) );
+    config.writeEntry( "Schneider", static_cast<int>(r.schneider) );
+    config.writeEntry( "Schwarz", static_cast<int>(r.schwarz) );
+    config.writeEntry( "Ramsch", static_cast<int>(r.ramsch) );
     config.sync();
 }
 
