@@ -65,7 +65,7 @@ SelectGameTypeBox::SelectGameTypeBox( QWidget *parent )
     myGroup->addButton( checkGeier );
     myGroup->addButton( checkWenz );
     myGroup->addButton( checkDachs );
-    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(typeChanged()));
+    connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameTypeBox::typeChanged);
 
     QGroupBox* group_TypeSelect = new QGroupBox( tr("Game") );
     QVBoxLayout *button_layout = new QVBoxLayout;

@@ -47,7 +47,7 @@ StichDlg::StichDlg(QWidget *parent )
 
     QPushButton* close = new QPushButton( tr("&Close" ) );
     layout->addWidget( close, 3, 0, 1, 4, Qt::AlignRight );
-    connect( close, SIGNAL( clicked() ), this, SLOT( close() ) );
+    connect(close, &QPushButton::clicked, this, &StichDlg::close);
 
     reset();
 }

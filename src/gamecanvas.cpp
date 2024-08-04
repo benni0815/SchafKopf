@@ -93,12 +93,12 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     loadOK = ImgBack.load( Settings::instance()->backgroundImage() );
 
     QTimer *timer = new QTimer( this) ;
-    connect( timer, SIGNAL( timeout() ), scene(), SLOT( advance() ) );
+    connect(timer, &QTimer::timeout, scene(), &QGraphicsScene::advance);
     timer->start( 30 );
     update();
     
-    connect( Settings::instance(), SIGNAL(cardChanged()), this, SLOT(positionObjects()));
-    connect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(yesNoClicked(QGraphicsItem*)));
+    connect(Settings::instance(), &Settings::cardChanged, this, &GameCanvas::positionObjects);
+    connect(this, &GameCanvas::clicked, this, &GameCanvas::yesNoClicked);
     
     m_focus_list.append( m_yes );
     m_focus_list.append( m_no );
@@ -132,7 +132,7 @@ void GameCanvas::cardForbidden( int cardid )
     }
 }
 
-void GameCanvas::positionObjects(bool redraw)
+void GameCanvas::positionObjects()
 {
     for( unsigned int i = 0; i < PLAYERS; i++ )
         m_players[i]->position();
@@ -143,10 +143,7 @@ void GameCanvas::positionObjects(bool redraw)
         m_stich[i]->setPos( (int)p.x(), (int)p.y() );
     }
 
-    if(redraw)
-    {
-        scene()->update();
-    }
+    scene()->update();
 }
 
 QPoint GameCanvas::getStichPosition( int player )
@@ -217,7 +214,7 @@ int GameCanvas::getCard()
     CanvasCard* c = NULL;
     unsigned int i;
 
-    connect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(cardClicked(QGraphicsItem*)));
+    connect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
     m_result = -1;
 
     if( hasFocus() && human )
@@ -250,7 +247,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
             if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
                 m_result = card->card()->id();
-                disconnect( this, SIGNAL(clicked( QGraphicsItem* )), this, SLOT(cardClicked(QGraphicsItem*)));
+                disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
 
                 // be sure that focusOutEvent does not use its parameter
                 focusOutEvent( NULL );

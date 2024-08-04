@@ -423,7 +423,7 @@ void KCardCache::loadTheme( LoadInfos infos )
     d->loadThread->setDeckName( d->deckName );
     d->loadThread->setSize( d->size );
     d->loadThread->setElementsToLoad( elements );
-    d->connect( d->loadThread, SIGNAL(renderingDone(QString,QImage)), SLOT(submitRendering(QString,QImage)), Qt::QueuedConnection );
+    d->connect(d->loadThread, &LoadThread::renderingDone, d, &KCardCachePrivate::submitRendering, Qt::QueuedConnection);
     d->loadThread->start( QThread::IdlePriority );
 }
 

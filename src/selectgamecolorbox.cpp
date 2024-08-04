@@ -52,10 +52,10 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     labelGras->setFlat(true);
     labelHerz->setFlat(true);
     labelSchellen->setFlat(true);
-    connect( labelEichel, SIGNAL(clicked(bool)), this, SLOT(colorChangedToEichel()));
-    connect( labelGras, SIGNAL(clicked(bool)), this, SLOT(colorChangedToGras()));
-    connect( labelHerz, SIGNAL(clicked(bool)), this, SLOT(colorChangedToHerz()));
-    connect( labelSchellen, SIGNAL(clicked(bool)), this, SLOT(colorChangedToSchellen()));
+    connect(labelEichel, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToEichel);
+    connect(labelGras, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToGras);
+    connect(labelHerz, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToHerz);
+    connect(labelSchellen, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToSchellen);
 
 
     checkEichel = new QRadioButton( tr("&Eichel"), this );
@@ -75,7 +75,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkHerz );
     myGroup->addButton( checkSchellen );
     myGroup->addButton( checkFarblos );
-    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(colorChanged()));
+    connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameColorBox::colorChanged);
 
     labelHerz->setIcon( ( *herz->pixmap() ) );
     labelGras->setIcon( ( *gras->pixmap() ) );

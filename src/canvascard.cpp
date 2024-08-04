@@ -34,7 +34,7 @@ CanvasCard::CanvasCard()
     setTransformationMode( Qt::SmoothTransformation );
     //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
     timer = new QTimer( this );
-    connect( Settings::instance(), SIGNAL( cardChanged() ), this, SLOT( cardDeckChanged() ) );
+    connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
 CanvasCard::~CanvasCard()
@@ -116,7 +116,7 @@ void CanvasCard::setDestination( int x, int y )
 
 void CanvasCard::animatedMove()
 {
-    connect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
+    connect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
     timer->start( 2 );
 }
 
@@ -136,7 +136,7 @@ void CanvasCard::moveLoop()
     if(tox==x() && toy==y())
     {
         timer->stop();
-        disconnect( timer, SIGNAL(timeout()), this, SLOT(moveLoop()) );
+        disconnect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
     }
 }
 

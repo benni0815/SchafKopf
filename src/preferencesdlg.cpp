@@ -180,9 +180,9 @@ void PreferencesDlg::addPageRules()
     m_checkDoubleNextGame->setChecked( Settings::instance()->doubleNextGame() );
 
     // connections
-    connect( m_radioThrowAway, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
-    connect( m_radioForcedGame, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
-    connect( m_radioRamsch, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect(m_radioThrowAway, &QRadioButton::clicked, this, &PreferencesDlg::enableControls);
+    connect(m_radioForcedGame, &QRadioButton::clicked, this, &PreferencesDlg::enableControls);
+    connect(m_radioRamsch, &QRadioButton::clicked, this, &PreferencesDlg::enableControls);
 }
 
 void PreferencesDlg::addPageResults()
@@ -335,8 +335,8 @@ void PreferencesDlg::addPageResults()
     else
         m_radioPoints->setChecked( true );
 
-    connect( m_radioPoints, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
-    connect( m_radioMoney, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect(m_radioPoints, &QRadioButton::clicked, this, &PreferencesDlg::enableControls);
+    connect(m_radioMoney, &QRadioButton::clicked, this, &PreferencesDlg::enableControls);
 }
 
 void PreferencesDlg::addPageView()
@@ -373,8 +373,8 @@ void PreferencesDlg::addPageView()
     layout->addItem( spacer, 2, 0 );
     disableClearButton(m_linePathBackground->text());
 
-    connect( m_pushURLClear, SIGNAL( clicked() ), m_linePathBackground, SLOT( clear() ) );
-    connect( m_linePathBackground, SIGNAL( textChanged(const QString &) ), this, SLOT( disableClearButton(const QString &) ) );
+    connect(m_pushURLClear, &QRadioButton::clicked, m_linePathBackground, &KUrlRequester::clear);
+    connect(m_linePathBackground, &KUrlRequester::textChanged, this, &PreferencesDlg::disableClearButton);
 
     // load data from configuration
     m_checkRearrangeCards->setChecked( Settings::instance()->rearrangeCards() );
@@ -435,8 +435,8 @@ void PreferencesDlg::addPageGames()
     delete allowed;
 
     // connections
-    connect( m_games_wenz, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
-    connect( m_games_geier, SIGNAL( clicked() ), this, SLOT( enableControls() ) );
+    connect(m_games_wenz, &QCheckBox::clicked, this, &PreferencesDlg::enableControls);
+    connect(m_games_geier, &QCheckBox::clicked, this, &PreferencesDlg::enableControls);
 
     // tool tips
     m_games_dachs->setToolTip( tr( "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>" ) );

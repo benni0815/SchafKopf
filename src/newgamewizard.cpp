@@ -60,7 +60,7 @@ void newgamewizard::setup_page_selectgame()
     myGroup->addButton( checkLocalGame );
     myGroup->addButton( checkNetworkServer );
     myGroup->addButton( checkNetworkClient );
-    connect( myGroup, SIGNAL(buttonClicked(int)), this, SLOT(dataChanged()));
+    connect(myGroup, &QButtonGroup::buttonClicked, this, &newgamewizard::dataChanged);
 
     //page_selectgame->setMinimumSize(QSize(400,200)) ;
 

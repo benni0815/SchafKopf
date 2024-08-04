@@ -37,7 +37,7 @@ SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent 
     addPage( box1 );
     addPage( box2 );
     button( QWizard::CancelButton )->setEnabled( !m_force );
-    connect( this, SIGNAL( currentIdChanged( int ) ), this, SLOT( pageChanged( int ) ) );
+    connect(this, &SelectGameWizard::currentIdChanged, this, &SelectGameWizard::pageChanged);
 }
 
 CardList* SelectGameWizard::getCardList()
