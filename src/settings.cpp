@@ -204,34 +204,34 @@ void Settings::setPointResults(const ResultValues& r)
     config.sync();
 }
 
-ResultValues* Settings::moneyResults() const
+ResultValues Settings::moneyResults() const
 {
     QMutexLocker locker( m_mutex );
 
-    ResultValues* r = new ResultValues;
+    ResultValues r;
     KConfigGroup config = m_config->group("MoneyValues");
-    r->solo = config.readEntry( "Solo", 0.2 );
-    r->rufspiel = config.readEntry( "Rufspiel", 0.1 );
-    r->laufende = config.readEntry( "Laufende", 0.1 );
-    r->schneider = config.readEntry( "Schneider", 0.1 );
-    r->schwarz = config.readEntry( "Schwarz", 0.1 );
-    r->ramsch = config.readEntry( "Ramsch", 0.2 );
+    r.solo = config.readEntry( "Solo", 0.2 );
+    r.rufspiel = config.readEntry( "Rufspiel", 0.1 );
+    r.laufende = config.readEntry( "Laufende", 0.1 );
+    r.schneider = config.readEntry( "Schneider", 0.1 );
+    r.schwarz = config.readEntry( "Schwarz", 0.1 );
+    r.ramsch = config.readEntry( "Ramsch", 0.2 );
     return r;
 }
 
-ResultValues* Settings::pointResults() const
+ResultValues Settings::pointResults() const
 {
     QMutexLocker locker( m_mutex );
 
-    ResultValues* r = new ResultValues;
+    ResultValues r;
     KConfigGroup config = m_config->group("PointValues");
-    r->solo = config.readEntry( "Solo", 2 );
-    r->rufspiel = config.readEntry( "Rufspiel", 1 );
-    r->laufende = config.readEntry( "Laufende", 1 );
-    r->schneider = config.readEntry( "Schneider", 1 );
-    r->schwarz = config.readEntry( "Schwarz", 1 );
-    r->ramsch = config.readEntry( "Ramsch", 1 );
-    return r;    
+    r.solo = config.readEntry( "Solo", 2 );
+    r.rufspiel = config.readEntry( "Rufspiel", 1 );
+    r.laufende = config.readEntry( "Laufende", 1 );
+    r.schneider = config.readEntry( "Schneider", 1 );
+    r.schwarz = config.readEntry( "Schwarz", 1 );
+    r.ramsch = config.readEntry( "Ramsch", 1 );
+    return r;
 }
 
 void Settings::setNoGame( int e )

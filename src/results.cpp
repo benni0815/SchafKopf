@@ -176,22 +176,22 @@ void Results::setGame( Game* game )
 
 double Results::points( Player* player )
 {
-    ResultValues* r = (Settings::instance()->resultsType() == Settings::MONEY) ? Settings::instance()->moneyResults()
-                                                                               : Settings::instance()->pointResults();
+    ResultValues r = (Settings::instance()->resultsType() == Settings::MONEY) ? Settings::instance()->moneyResults()
+                                                                              : Settings::instance()->pointResults();
     double m = 0.0;
     
     parse();
         
     if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
-        m = r->solo; // SOLO = 20cent
+        m = r.solo; // SOLO = 20cent
     else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
-        m = r->rufspiel;
+        m = r.rufspiel;
     else if( m_gameinfo->mode() == GameInfo::RAMSCH )
-        m = r->ramsch;
+        m = r.ramsch;
         
-    m += m_schneider ? r->schneider : 0.0;
-    m += m_schwarz ? r->schwarz : 0.0;
-    m += m_laufende * r->laufende;
+    m += m_schneider ? r.schneider : 0.0;
+    m += m_schwarz ? r.schwarz : 0.0;
+    m += m_laufende * r.laufende;
     m = klopfen( player->game()->timesDoubled(), m );
     
     //if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )

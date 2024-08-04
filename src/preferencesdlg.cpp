@@ -191,8 +191,8 @@ void PreferencesDlg::addPageResults()
     KPageWidgetItem *item = addPage( box, tr( "Results" ) );
     item->setIcon( QIcon::fromTheme( "applications-education" ) );
 
-    ResultValues* rm = Settings::instance()->moneyResults();
-    ResultValues* rp = Settings::instance()->pointResults();
+    ResultValues rm = Settings::instance()->moneyResults();
+    ResultValues rp = Settings::instance()->pointResults();
 
     m_radioMoney = new QRadioButton( tr("count &money") );
     m_radioPoints = new QRadioButton( tr("count &points") );
@@ -215,42 +215,42 @@ void PreferencesDlg::addPageResults()
 
     m_money_call = new QDoubleSpinBox();
     m_money_call->setRange( 0., 100. );
-    m_money_call->setValue( rm->rufspiel );
+    m_money_call->setValue( rm.rufspiel );
     m_money_call->setDecimals( 2 );
     m_money_call->setSingleStep( 0.1 );
     m_money_call->setSuffix( currencySymbol );
 
     m_money_solo = new QDoubleSpinBox();
     m_money_solo->setRange( 0., 100. );
-    m_money_solo->setValue( rm->solo );
+    m_money_solo->setValue( rm.solo );
     m_money_solo->setDecimals( 2 );
     m_money_solo->setSingleStep( 0.1 );
     m_money_solo->setSuffix( currencySymbol );
 
     m_money_lauf = new QDoubleSpinBox();
     m_money_lauf->setRange( 0., 100. );
-    m_money_lauf->setValue( rm->laufende );
+    m_money_lauf->setValue( rm.laufende );
     m_money_lauf->setDecimals( 2 );
     m_money_lauf->setSingleStep( 0.1 );
     m_money_lauf->setSuffix( currencySymbol );
 
     m_money_notrick = new QDoubleSpinBox();
     m_money_notrick->setRange( 0., 100. );
-    m_money_notrick->setValue( rm->schwarz );
+    m_money_notrick->setValue( rm.schwarz );
     m_money_notrick->setDecimals( 2 );
     m_money_notrick->setSingleStep( 0.1 );
     m_money_notrick->setSuffix( currencySymbol );
 
     m_money_schneider = new QDoubleSpinBox();
     m_money_schneider->setRange( 0., 100. );
-    m_money_schneider->setValue( rm->schneider );
+    m_money_schneider->setValue( rm.schneider );
     m_money_schneider->setDecimals( 2 );
     m_money_schneider->setSingleStep( 0.1 );
     m_money_schneider->setSuffix( currencySymbol );
 
     m_money_ramsch = new QDoubleSpinBox();
     m_money_ramsch->setRange( 0., 100. );
-    m_money_ramsch->setValue( rm->ramsch );
+    m_money_ramsch->setValue( rm.ramsch );
     m_money_ramsch->setDecimals( 2 );
     m_money_ramsch->setSingleStep( 0.1 );
     m_money_ramsch->setSuffix( currencySymbol );
@@ -280,27 +280,27 @@ void PreferencesDlg::addPageResults()
 
     m_point_call = new QSpinBox();
     m_point_call->setRange( 0, 100 );
-    m_point_call->setValue( (int)rp->rufspiel );
+    m_point_call->setValue( (int)rp.rufspiel );
 
     m_point_solo = new QSpinBox();
     m_point_solo->setRange( 0, 100 );
-    m_point_solo->setValue( (int)rp->solo );
+    m_point_solo->setValue( (int)rp.solo );
 
     m_point_lauf = new QSpinBox();
     m_point_lauf->setRange( 0, 100 );
-    m_point_lauf->setValue( (int)rp->laufende );
+    m_point_lauf->setValue( (int)rp.laufende );
 
     m_point_notrick = new QSpinBox();
     m_point_notrick->setRange( 0, 100 );
-    m_point_notrick->setValue( (int)rp->schwarz );
+    m_point_notrick->setValue( (int)rp.schwarz );
 
     m_point_schneider = new QSpinBox();
     m_point_schneider->setRange( 0, 100 );
-    m_point_schneider->setValue( (int)rp->schneider );
+    m_point_schneider->setValue( (int)rp.schneider );
 
     m_point_ramsch = new QSpinBox();
     m_point_ramsch->setRange( 0, 100 );
-    m_point_ramsch->setValue( (int)rp->ramsch );
+    m_point_ramsch->setValue( (int)rp.ramsch );
 
     QGridLayout* stackPoints_layout = new QGridLayout( stackPoints );
     stackPoints_layout->addWidget( m_point_call, 0, 1 );
@@ -319,9 +319,6 @@ void PreferencesDlg::addPageResults()
     stack = new QStackedWidget( box );
     stack->addWidget( stackMoney );
     stack->addWidget( stackPoints );
-
-    delete rm;
-    delete rp;
 
     QGridLayout* layout = new QGridLayout( box );
     layout->setContentsMargins(6, 6, 6, 6);

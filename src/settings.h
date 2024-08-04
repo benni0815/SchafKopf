@@ -112,12 +112,8 @@ class Settings : public QObject
         void setRearrangeCards( bool b);
         bool rearrangeCards() const;
 
-        /** delete after usage
-          */
-        ResultValues* moneyResults() const;
-        /** delete after usage
-          */
-        ResultValues* pointResults() const;
+        ResultValues moneyResults() const;
+        ResultValues pointResults() const;
 
         /** delete after usage
           */
