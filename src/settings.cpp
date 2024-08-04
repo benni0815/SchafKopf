@@ -31,14 +31,10 @@
 #include <QSvgRenderer>
 
 
-Settings* Settings::m_instance = nullptr;
-
 Settings* Settings::instance() 
 {
-    if( !m_instance )
-        m_instance = new Settings();
-
-    return m_instance;
+  static auto settings = Settings();
+  return &settings;
 }
 
 Settings::Settings( QObject *parent )
@@ -55,7 +51,6 @@ Settings::Settings( QObject *parent )
 Settings::~Settings()
 {
     delete m_mutex;
-    delete m_instance;
 }
 
 KCardCache* Settings::cardCache()

@@ -133,8 +133,6 @@ class Settings : public QObject
         Settings( QObject *parent = 0 );
         ~Settings();
 
-        static Settings* m_instance;
-
         KSharedConfig::Ptr m_config;
 
         QMutex* m_mutex;
