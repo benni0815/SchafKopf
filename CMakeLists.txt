@@ -43,11 +43,8 @@ add_subdirectory(icons)
 # add install target:
 GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
 
-set(INSTALL_OPEN_TAROCK OFF CACHE BOOL "Install the OpenTarock card deck")
-set(CARDDECK_DIRECTORY ${DATA_INSTALL_DIR}/carddecks CACHE PATH "The directories for carddeck installation.")
-if(INSTALL_OPEN_TAROCK)
-  install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})
-endif(INSTALL_OPEN_TAROCK)
+set(CARDDECK_DIRECTORY ${KDE_INSTALL_FULL_DATADIR}/carddecks CACHE PATH "The directory for carddeck installation.")
+install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})
 
 set(CPACK_GENERATOR "DEB")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Benni")

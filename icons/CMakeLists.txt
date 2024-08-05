@@ -8,5 +8,5 @@ set(schafkopf_icons
 )
 
 ecm_install_icons(ICONS ${schafkopf_icons}
-  DESTINATION ${ICON_INSTALL_DIR}
+  DESTINATION ${KDE_INSTALL_FULL_ICONDIR}
 )
