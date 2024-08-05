@@ -324,7 +324,7 @@ void Settings::setBackgroundImage( QString b)
 QString Settings::backgroundImage() const
 {
     QMutexLocker locker( m_mutex );
-    QString b = QStandardPaths::locate(QStandardPaths::AppDataLocation, "data/background01.jpg");
+    QString b = QStandardPaths::locate(QStandardPaths::AppDataLocation, "background01.jpg");
     KConfigGroup config = m_config->group("SchafKopf");
     b = config.readEntry( "backgroundImage", b );
     return b;

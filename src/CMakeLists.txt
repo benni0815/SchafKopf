@@ -76,3 +76,5 @@ ecm_add_app_icon(schafkopf ICONS
 )
 
 INSTALL(TARGETS schafkopf ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+INSTALL(PROGRAMS schafkopf.desktop DESTINATION ${KDE_INSTALL_FULL_APPDIR})
