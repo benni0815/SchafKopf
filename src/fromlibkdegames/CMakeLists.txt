@@ -14,10 +14,10 @@ target_sources(kdegames
 
 target_link_libraries(kdegames
   PUBLIC
-    KF5::GuiAddons
+    KF6::GuiAddons
   PRIVATE
-    KF5::KIOWidgets
-    KF5::I18n
+    KF6::KIOWidgets
+    KF6::I18n
     Qt::Core
     Qt::Gui
     Qt::Svg

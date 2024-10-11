@@ -14,6 +14,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(QT_MIN_VERSION "6.6.0")
+set(KF_MIN_VERSION "6.0.0")
+
+find_package(Qt6 ${QT_MIN_VERSION} REQUIRED Core Gui Widgets Svg)
+
 find_package(ECM REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
@@ -27,11 +32,10 @@ ecm_setup_version(${RELEASE_SERVICE_VERSION}
                   VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/schafkopf_version.h"
 )
 
-find_package(Qt5 REQUIRED Core Gui Widgets Svg)
-find_package(KF5XmlGui REQUIRED)
-find_package(KF5GuiAddons REQUIRED)
-find_package(KF5KIO REQUIRED)
-find_package(KF5I18n REQUIRED)
+find_package(KF6XmlGui ${KF_MIN_VERSION} REQUIRED)
+find_package(KF6GuiAddons ${KF_MIN_VERSION} REQUIRED)
+find_package(KF6KIO ${KF_MIN_VERSION} REQUIRED)
+find_package(KF6I18n ${KF_MIN_VERSION} REQUIRED)
 find_package(Gettext REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic)

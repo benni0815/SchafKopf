@@ -53,8 +53,8 @@ target_sources(schafkopf
 target_link_libraries(schafkopf
   PRIVATE
     kdegames
-    KF5::XmlGui
-    KF5::KIOWidgets
+    KF6::XmlGui
+    KF6::KIOWidgets
     Qt::Core
     Qt::Gui
     Qt::Widgets
