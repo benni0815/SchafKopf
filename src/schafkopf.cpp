@@ -53,6 +53,8 @@
 
 SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 {
+    KAboutData::setApplicationData(aboutData());
+
     split = new QSplitter( Qt::Horizontal, this );
     split->setChildrenCollapsible( true );
 
@@ -141,6 +143,7 @@ KAboutData SchafKopf::aboutData()
   about.addAuthor( tr("Lorenz Moesenlechner"), "", "moesenle@in.tum.de" );
   about.addAuthor( tr("Benjamin Löwe"), "", "benjamin.loewe@freenet.de" );
   about.addAuthor( tr("Dominik Seichter"), "", "domseichter@web.de", "http://www.krename.net" );
+  about.setDesktopFileName("org.schafkopf.SchafKopf");
 
   return about;
 }

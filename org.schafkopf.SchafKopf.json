@@ -5,7 +5,6 @@
   "sdk": "org.kde.Sdk",
   "command": "schafkopf",
   "rename-icon": "schafkopf",
-  "rename-desktop-file": "schafkopf.desktop",
   "tags": ["nightly"],
   "desktop-file-name-suffix": " (Nightly)",
   "finish-args": ["--share=ipc", "--socket=fallback-x11", "--socket=wayland", "--filesystem=host" ],
