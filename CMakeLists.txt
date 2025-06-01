@@ -25,6 +25,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(ECMAddAppIcon)
 include(ECMInstallIcons)
 include(ECMSetupVersion)
+include(ECMDeprecationSettings)
 include(KDEInstallDirs)
 
 ecm_setup_version(${RELEASE_SERVICE_VERSION}
@@ -39,7 +40,11 @@ find_package(KF6I18n ${KF_MIN_VERSION} REQUIRED)
 find_package(Gettext REQUIRED)
 
 add_compile_options(-Wall -Wextra -Wpedantic)
-add_compile_definitions(QT_DISABLE_DEPRECATED_BEFORE=0x060000)
+
+ecm_set_disabled_deprecation_versions(
+    QT 6.8.0
+    KF 6.14.0
+)
 
 add_subdirectory(src)
 add_subdirectory(icons)
