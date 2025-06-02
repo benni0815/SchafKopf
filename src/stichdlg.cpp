@@ -22,6 +22,8 @@
 #include "card.h"
 #include "cardlist.h"
 
+#include <KLocalizedString>
+
 #include <QLabel>
 #include <QLayout>
 #include <QGridLayout>
@@ -31,7 +33,7 @@
 StichDlg::StichDlg(QWidget *parent )
     : QDialog( parent )
 {
-    setWindowTitle( tr("Last Trick") );
+    setWindowTitle(i18n("Last Trick"));
     QGridLayout* layout = new QGridLayout( this );
     trick = new QLabel();
     layout->addWidget( trick, 0, 0, 1, 4);
@@ -45,7 +47,7 @@ StichDlg::StichDlg(QWidget *parent )
         layout->addWidget( players[i], 2, i );
     }
 
-    QPushButton* close = new QPushButton( tr("&Close" ) );
+    QPushButton* close = new QPushButton(i18n("&Close"));
     layout->addWidget( close, 3, 0, 1, 4, Qt::AlignRight );
     connect(close, &QPushButton::clicked, this, &StichDlg::close);
 
@@ -62,9 +64,9 @@ void StichDlg::changed( const QString & name, int* list, QStringList* playerlist
     stich.setAutoDelete( true );
 
     if( stich.count() )
-        trick->setText( tr("Trick was made by: <b>") + name + "</b>" );
+        trick->setText(i18n("Trick was made by: <b>") + name + "</b>");
     else
-        trick->setText( tr("No trick was made.") );
+        trick->setText(i18n("No trick was made."));
 
     for( int i = 0; i < PLAYERS; i++ )
     {

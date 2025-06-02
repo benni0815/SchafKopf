@@ -55,6 +55,7 @@ target_link_libraries(schafkopf
     kdegames
     KF6::XmlGui
     KF6::KIOWidgets
+    KF6::I18n
     Qt::Core
     Qt::Gui
     Qt::Widgets

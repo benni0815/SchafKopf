@@ -24,6 +24,8 @@
 #include "settings.h"
 #include "schafkopfdef.h"
 
+#include <KLocalizedString>
+
 #include <QString>
 
 
@@ -46,15 +48,15 @@ const QString GameInfo::toString() const
     switch( m_color )
     {
         case Card::NOCOLOR:
-            c = QObject::tr("colorless"); break;
+            c = i18n("colorless"); break;
         case Card::EICHEL:
-            c = QObject::tr("Eichel"); break;
+            c = i18n("Eichel"); break;
         case Card::GRAS:
-            c = QObject::tr("Gras"); break;
+            c = i18n("Gras"); break;
         case Card::HERZ:
-            c = QObject::tr("Heart"); break;
+            c = i18n("Heart"); break;
         case Card::SCHELLEN:
-            c = QObject::tr("Schellen"); break;
+            c = i18n("Schellen"); break;
         default:
             c = QString();
             break;
@@ -63,26 +65,26 @@ const QString GameInfo::toString() const
     switch( m_mode )
     {
         case GameInfo::STICHT:
-            g = QObject::tr("Sticht"); break;
+            g = i18n("Sticht"); break;
         case GameInfo::GEIER:
-            g = QObject::tr("Geier"); break;
+            g = i18n("Geier"); break;
         case GameInfo::WENZ:
-            g = QObject::tr("Wenz"); break;
+            g = i18n("Wenz"); break;
         case GameInfo::RAMSCH:
-            g = QObject::tr("Ramsch"); break;
+            g = i18n("Ramsch"); break;
         case GameInfo::DACHS:
-            g = QObject::tr("Badger"); break;
+            g = i18n("Badger"); break;
         case GameInfo::RUFSPIEL:
         default:            
             g = QString();
     }
 
     if( m_mode == GameInfo::RUFSPIEL )
-        s = QObject::tr("%1 plays on the %2 Ace.").arg( m_spieler ? m_spieler->name() : QString() ).arg(c);
+        s = i18n("%1 plays on the %2 Ace.", m_spieler ? m_spieler->name() : QString(), c);
     else if( m_mode == GameInfo::RAMSCH )
-        s = QObject::tr("Ramsch is played.");
+        s = i18n("Ramsch is played.");
     else
-        s = QObject::tr("%1 plays %2 %3.").arg( m_spieler ? m_spieler->name() : QString() ).arg(c).arg(g);
+        s = i18n("%1 plays %2 %3.", m_spieler ? m_spieler->name() : QString(), c, g);
 
     return s; 
 }

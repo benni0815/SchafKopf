@@ -20,6 +20,7 @@
 #include "preferencesdlg.h"
 #include "settings.h"
 
+#include <KLocalizedString>
 #include <KUrlRequester>
 #include <KPageWidgetItem>
 
@@ -35,7 +36,7 @@
 PreferencesDlg::PreferencesDlg( QWidget *parent )
     : KPageDialog( parent )
 {
-    setWindowTitle( tr("Preferences") );
+    setWindowTitle(i18n("Preferences"));
     setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     addPagePlayer();
     addPageGames(); // erlaubte spiele
@@ -111,27 +112,27 @@ void PreferencesDlg::addPagePlayer()
 {
     QWidget *page = new QWidget( this );
     QGridLayout* box = new QGridLayout( page );
-    KPageWidgetItem *item = addPage( page, tr( "Player Settings" ) );
+    KPageWidgetItem *item = addPage(page, i18n("Player Settings"));
     item->setIcon( QIcon::fromTheme( "user-identity" ) );
 
     QStringList names = Settings::instance()->playerNames();
 
-    box->addWidget( new QLabel( tr("Human Player:") ), 0, 0 );
+    box->addWidget(new QLabel(i18n("Human Player:")), 0, 0);
     m_p1_name = new QLineEdit( names[0] );
     m_p1_name->setObjectName( "m_p1_name" );
     box->addWidget( m_p1_name, 0, 1 );
 
-    box->addWidget( new QLabel( tr("Computer Player 1:") ), 1, 0 );
+    box->addWidget(new QLabel(i18n("Computer Player 1:")), 1, 0);
     m_p2_name = new QLineEdit( names[1] );
     m_p2_name->setObjectName( "m_p2_name" );
     box->addWidget( m_p2_name, 1, 1 );
 
-    box->addWidget( new QLabel( tr("Computer Player 2:") ), 2, 0 );
+    box->addWidget(new QLabel(i18n("Computer Player 2:")), 2, 0);
     m_p3_name = new QLineEdit( names[2] );
     m_p3_name->setObjectName( "m_p3_name" );
     box->addWidget( m_p3_name, 2, 1 );
 
-    box->addWidget( new QLabel( tr("Computer Player 3:") ), 3, 0 );
+    box->addWidget(new QLabel(i18n("Computer Player 3:")), 3, 0);
     m_p4_name = new QLineEdit( names[3] );
     m_p4_name->setObjectName( "m_p4_name" );
     box->addWidget( m_p4_name, 3, 1 );
@@ -140,20 +141,20 @@ void PreferencesDlg::addPagePlayer()
 void PreferencesDlg::addPageRules()
 {
     QFrame* box = new QFrame();
-    KPageWidgetItem *item = addPage( box, tr( "Rules" ) );
+    KPageWidgetItem *item = addPage(box, i18n("Rules"));
     item->setIcon( QIcon::fromTheme( "schafkopf" ) );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
-    m_radioThrowAway = new QRadioButton( tr("&Throw cards together and give new ones.") );
-    m_radioForcedGame = new QRadioButton( tr("The player who has the Eichel &Ober has to play.") );
-    m_radioRamsch = new QRadioButton( tr("Play Ramsch") );
-    m_radioRamsch->setToolTip( tr( "The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too." ) );
-    m_checkDoublerPlays = new QCheckBox ( tr("The &last player who has doubled has to play.") );
-    m_checkDoublerPlays->setToolTip( tr( "The last player who has doubled has to play. If no one has doubled the above rule takes effect." ) );
-    m_checkDoubleNextGame = new QCheckBox ( tr("&Double next game when cards were thrown together.") );
+    m_radioThrowAway = new QRadioButton(i18n("&Throw cards together and give new ones."));
+    m_radioForcedGame = new QRadioButton(i18n("The player who has the Eichel &Ober has to play."));
+    m_radioRamsch = new QRadioButton(i18n("Play Ramsch"));
+    m_radioRamsch->setToolTip(i18n("The aim when playing a Ramsch is to make no tricks. The player who made the most points is the sole loser. If you make all tricks you can win, too."));
+    m_checkDoublerPlays = new QCheckBox(i18n("The &last player who has doubled has to play."));
+    m_checkDoublerPlays->setToolTip(i18n("The last player who has doubled has to play. If no one has doubled the above rule takes effect."));
+    m_checkDoubleNextGame = new QCheckBox(i18n("&Double next game when cards were thrown together."));
 
-    QGroupBox* group = new QGroupBox( tr("No one wants to play:") );
+    QGroupBox* group = new QGroupBox(i18n("No one wants to play:"));
     QVBoxLayout *button_layout = new QVBoxLayout( group );
     button_layout->addWidget( m_radioThrowAway );
     button_layout->addWidget( m_radioForcedGame );
@@ -188,28 +189,28 @@ void PreferencesDlg::addPageRules()
 void PreferencesDlg::addPageResults()
 {
     QFrame* box = new QFrame();
-    KPageWidgetItem *item = addPage( box, tr( "Results" ) );
+    KPageWidgetItem *item = addPage(box, i18n("Results"));
     item->setIcon( QIcon::fromTheme( "applications-education" ) );
 
     ResultValues rm = Settings::instance()->moneyResults();
     ResultValues rp = Settings::instance()->pointResults();
 
-    m_radioMoney = new QRadioButton( tr("count &money") );
-    m_radioPoints = new QRadioButton( tr("count &points") );
+    m_radioMoney = new QRadioButton(i18n("count &money"));
+    m_radioPoints = new QRadioButton(i18n("count &points"));
 
-    QGroupBox* group = new QGroupBox( tr("Results:") );
+    QGroupBox* group = new QGroupBox(i18n("Results:"));
     QVBoxLayout *button_layout = new QVBoxLayout( group );
     button_layout->addWidget( m_radioMoney );
     button_layout->addWidget( m_radioPoints );
 
     stackMoney = new QWidget;
 
-    QLabel* callgame_label = new QLabel( tr("Callgame:") );
-    QLabel* solo_label = new QLabel( tr("Solo:") );
-    QLabel* lauf_label = new QLabel( tr("Cards in a row:") );
-    QLabel* notrick_label = new QLabel( tr("Notrick:") );
-    QLabel* schneider_label = new QLabel( tr("Schneider:") );
-    QLabel* ramsch_label = new QLabel( tr("Ramsch:") );
+    QLabel* callgame_label = new QLabel(i18n("Callgame:"));
+    QLabel* solo_label = new QLabel(i18n("Solo:"));
+    QLabel* lauf_label = new QLabel(i18n("Cards in a row:"));
+    QLabel* notrick_label = new QLabel(i18n("Notrick:"));
+    QLabel* schneider_label = new QLabel(i18n("Schneider:"));
+    QLabel* ramsch_label = new QLabel(i18n("Ramsch:"));
 
     const auto currencySymbol = QLocale().currencySymbol();
 
@@ -271,12 +272,12 @@ void PreferencesDlg::addPageResults()
 
     stackPoints = new QWidget;
 
-    QLabel* callgame_label2 = new QLabel( tr("Callgame:") );
-    QLabel* solo_label2 = new QLabel( tr("Solo:") );
-    QLabel* lauf_label2 = new QLabel( tr("Cards in a row:") );
-    QLabel* notrick_label2 = new QLabel( tr("Notrick:") );
-    QLabel* schneider_label2 = new QLabel( tr("Schneider:") );
-    QLabel* ramsch_label2 = new QLabel( tr("Ramsch:") );
+    QLabel* callgame_label2 = new QLabel(i18n("Callgame:"));
+    QLabel* solo_label2 = new QLabel(i18n("Solo:"));
+    QLabel* lauf_label2 = new QLabel(i18n("Cards in a row:"));
+    QLabel* notrick_label2 = new QLabel(i18n("Notrick:"));
+    QLabel* schneider_label2 = new QLabel(i18n("Schneider:"));
+    QLabel* ramsch_label2 = new QLabel(i18n("Ramsch:"));
 
     m_point_call = new QSpinBox();
     m_point_call->setRange( 0, 100 );
@@ -339,26 +340,26 @@ void PreferencesDlg::addPageResults()
 void PreferencesDlg::addPageView()
 {
     QFrame* box = new QFrame();
-    KPageWidgetItem *item = addPage( box, tr( "View" ) );
+    KPageWidgetItem *item = addPage(box, i18n("View"));
     item->setIcon( QIcon::fromTheme( "games-config-background" ) );
 
     QSpacerItem* spacer = new QSpacerItem( 0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding );
 
-    QLabel* label3 = new QLabel( tr("&Background image:") );
+    QLabel* label3 = new QLabel(i18n("&Background image:"));
     m_linePathBackground = new KUrlRequester( Settings::instance()->backgroundImage() );
-    m_pushURLClear = new QPushButton( tr("&Clear background image") );
+    m_pushURLClear = new QPushButton(i18n("&Clear background image"));
     label3->setBuddy( m_linePathBackground );
 
-    QGroupBox* group2 = new QGroupBox( tr("Game Canvas:") );
+    QGroupBox* group2 = new QGroupBox(i18n("Game Canvas:"));
     QVBoxLayout *button_layout = new QVBoxLayout( group2 );
     button_layout->addWidget( label3 );
     button_layout->addWidget( m_linePathBackground );
     button_layout->addWidget( m_pushURLClear );
 
-    m_checkRearrangeCards = new QCheckBox ( tr("Rearrange cards after each trick.") );
-    m_checkRearrangeCards->setToolTip( tr( "Cards will be rearranged after each trick." ) );
+    m_checkRearrangeCards = new QCheckBox (i18n("Rearrange cards after each trick."));
+    m_checkRearrangeCards->setToolTip(i18n("Cards will be rearranged after each trick." ));
 
-    QGroupBox* group = new QGroupBox( tr("Card Arrangement:") );
+    QGroupBox* group = new QGroupBox(i18n("Card Arrangement:"));
     QVBoxLayout *button_layout2 = new QVBoxLayout( group );
     button_layout2->addWidget( m_checkRearrangeCards );
 
@@ -380,7 +381,7 @@ void PreferencesDlg::addPageView()
 void PreferencesDlg::addPageGames()
 {
     QFrame* box = new QFrame();
-    KPageWidgetItem *item = addPage( box, tr( "Games" ) );
+    KPageWidgetItem *item = addPage(box, i18n("Games"));
     item->setIcon( QIcon::fromTheme( "schafkopf" ) );
 
 
@@ -388,15 +389,15 @@ void PreferencesDlg::addPageGames()
     QSpacerItem* smallSpace = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
     QSpacerItem* smallSpace2 = new QSpacerItem( 0, 0, QSizePolicy::Maximum, QSizePolicy::Maximum );
 
-    m_games_wenz = new QCheckBox( tr("&Wenz") );
-    m_games_farbwenz = new QCheckBox( tr("Colored &Wenz"), box );
-    m_games_geier = new QCheckBox( tr("&Geier"), box );
-    m_games_farbgeier = new QCheckBox( tr("Colored &Geier"), box );
-    m_games_dachs = new QCheckBox( tr("&Badger"), box );
+    m_games_wenz = new QCheckBox(i18n("&Wenz"));
+    m_games_farbwenz = new QCheckBox(i18n("Colored &Wenz"), box);
+    m_games_geier = new QCheckBox(i18n("&Geier"), box);
+    m_games_farbgeier = new QCheckBox(i18n("Colored &Geier"), box);
+    m_games_dachs = new QCheckBox(i18n("&Badger"), box);
 
-    QLabel* infoLabel = new QLabel( tr("<qt>You can configure which games are allowed to play."
+    QLabel* infoLabel = new QLabel(i18n("<qt>You can configure which games are allowed to play."
                                         " You cannot disable certain games, such as Callgames and Solos as they are always "
-                                        "enabled by default.</qt>") );
+                                        "enabled by default.</qt>"));
     infoLabel->setWordWrap( true );
 
     QGridLayout* farbWenzLayout = new QGridLayout();
@@ -435,7 +436,7 @@ void PreferencesDlg::addPageGames()
     connect(m_games_geier, &QCheckBox::clicked, this, &PreferencesDlg::enableControls);
 
     // tool tips
-    m_games_dachs->setToolTip( tr( "<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>" ) );
+    m_games_dachs->setToolTip(i18n("<qt>The badger is no official game in Schafkopf and is therefore not played at tournaments.</qt>"));
 }
 
 void PreferencesDlg::enableControls()

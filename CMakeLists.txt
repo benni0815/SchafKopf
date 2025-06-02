@@ -50,8 +50,7 @@ add_subdirectory(src)
 add_subdirectory(icons)
 add_subdirectory(data)
 
-# add install target:
-GETTEXT_PROCESS_PO_FILES(de ALL INSTALL_DESTINATION ${LOCALE_INSTALL_DIR} po/de/schafkopf.po)
+ki18n_install(po)
 
 set(CARDDECK_DIRECTORY ${KDE_INSTALL_FULL_DATADIR}/carddecks CACHE PATH "The directory for carddeck installation.")
 install(DIRECTORY carddecks/svg-open-tarock DESTINATION ${CARDDECK_DIRECTORY})

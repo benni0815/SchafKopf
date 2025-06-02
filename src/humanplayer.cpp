@@ -24,6 +24,8 @@
 #include "game.h"
 #include "gameinfo.h"
 
+#include <KLocalizedString>
+
 
 HumanPlayer::HumanPlayer(unsigned int id, Game* game)
  : Player(id,game)
@@ -39,7 +41,7 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-    int* ret = (int*)m_game->postEvent( QuestionYesNo, id(), 0, QObject::tr("Do you want to double?"), true );
+    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), 0, i18n("Do you want to double?"), true);
     m_geklopft = ( *ret == YES );
     delete ret;
     
@@ -92,7 +94,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
     }
     else
     {
-        int* ret = (int*)m_game->postEvent( QuestionYesNo, id(), NULL, QObject::tr("Do you want to play?"), true );
+        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), NULL, i18n("Do you want to play?"), true);
         if( *ret == YES )
         {
             delete ret;

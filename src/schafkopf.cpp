@@ -45,6 +45,7 @@
 
 #include <KActionCollection>
 #include <KHelpMenu>
+#include <KLocalizedString>
 #include <KToolBar>
 
 // for pow()
@@ -71,7 +72,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     
-    QLabel* label = new QLabel( tr("Results:") );
+    QLabel* label = new QLabel(i18n("Results:"));
     label->setAlignment( Qt::AlignHCenter );
 
     m_table = new QTableWidget;
@@ -90,7 +91,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     split->setSizes( Settings::instance()->splitterSizes( width() ) );
     setupActions();
 
-    QGroupBox* groupInfo = new QGroupBox( tr("Game Information:") );
+    QGroupBox* groupInfo = new QGroupBox(i18n("Game Information:"));
     QVBoxLayout *groupInfo_layout = new QVBoxLayout( groupInfo );
     groupInfo_layout->addWidget( lblCurGame );
     groupInfo_layout->addWidget( lblDoubled );
@@ -112,7 +113,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     connect(Settings::instance(), &Settings::playerNamesChanged, this, &SchafKopf::updateTableNames);
     connect(Settings::instance(), &Settings::cardChanged, this, &SchafKopf::updateInfo);
 
-    btnLastTrick->setToolTip( tr( "Show the last trick that was made." ) );
+    btnLastTrick->setToolTip(i18n("Show the last trick that was made."));
 
     m_stichdlg = new StichDlg( this );
 
@@ -136,13 +137,13 @@ KAboutData SchafKopf::aboutData()
   // if you want copyright, then add you to the list:
   KAboutData about("schafkopf", "SchafKopf", QStringLiteral(SCHAFKOPF_VERSION_STRING));
   about.setLicense(KAboutLicense::GPL);
-  about.setShortDescription(tr("\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game."));
+  about.setShortDescription(i18n("\"Schafkopf\" is a popular card game in Bavaria. SchafKopf ist the KDE version of this game."));
   about.setHomepage("https://github.com/benni0815/SchafKopf/");
-  about.setCopyrightStatement(tr("(C) 2004-2019 Dominik Seichter (and others)"));
-  about.addAuthor( tr("Christian Kern"), "", "kernch@in.tum.de" );
-  about.addAuthor( tr("Lorenz Moesenlechner"), "", "moesenle@in.tum.de" );
-  about.addAuthor( tr("Benjamin Löwe"), "", "benjamin.loewe@freenet.de" );
-  about.addAuthor( tr("Dominik Seichter"), "", "domseichter@web.de", "http://www.krename.net" );
+  about.setCopyrightStatement(i18n("(C) 2004-2019 Dominik Seichter (and others)"));
+  about.addAuthor(i18n("Christian Kern"), "", "kernch@in.tum.de");
+  about.addAuthor(i18n("Lorenz Moesenlechner"), "", "moesenle@in.tum.de");
+  about.addAuthor(i18n("Benjamin Löwe"), "", "benjamin.loewe@freenet.de");
+  about.addAuthor(i18n("Dominik Seichter"), "", "domseichter@web.de", "http://www.krename.net");
   about.setDesktopFileName("org.schafkopf.SchafKopf");
 
   return about;
@@ -299,8 +300,8 @@ void SchafKopf::setupActions()
     auto mnuGame = new QMenu( this );
     auto mnuSettings = new QMenu( this );
 
-    mnuGame->setTitle( tr("&Game") );
-    mnuSettings->setTitle( tr("&Settings") );
+    mnuGame->setTitle(i18n("&Game"));
+    mnuSettings->setTitle(i18n("&Settings"));
 
     menuBar()->addMenu( mnuGame );
     menuBar()->addMenu( mnuSettings );
@@ -309,7 +310,7 @@ void SchafKopf::setupActions()
 
     {
       m_actStich = new QAction(this);
-      m_actStich->setText(tr("&Last Trick"));
+      m_actStich->setText(i18n("&Last Trick"));
       actionCollection()->addAction("Last Trick", m_actStich);
       connect(m_actStich, &QAction::triggered, this, &SchafKopf::showStich);
       mnuGame->addAction( m_actStich);
@@ -322,7 +323,7 @@ void SchafKopf::setupActions()
     }
 
     {
-      m_actEnd = new QAction(QIcon::fromTheme("window-close"), tr("End Game"), this);
+      m_actEnd = new QAction(QIcon::fromTheme("window-close"), i18n("End Game"), this);
       connect(m_actEnd, &QAction::triggered, this, &SchafKopf::endGame);
       mnuGame->addAction(m_actEnd);
       toolBar()->addAction(m_actEnd);
@@ -337,7 +338,7 @@ void SchafKopf::setupActions()
     }
 
     {
-      auto actCarddecks = new QAction(tr("Configure Carddecks"), this);
+      auto actCarddecks = new QAction(i18n("Configure Carddecks"), this);
       connect(actCarddecks, &QAction::triggered, this, &SchafKopf::carddecks);
       mnuSettings->addAction(actCarddecks);
     }
@@ -437,7 +438,7 @@ void SchafKopf::updateInfo()
     btnLastTrick->setIcon( QIcon( *(Card::backgroundPixmap()) ) );
 
     if( !m_terminated && m_game->gameInfo()->isValid() )
-        lblCurGame->setText( tr("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>" );
+        lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>");
     else
     {
         lblCurGame->setText( QString() );
@@ -452,17 +453,17 @@ void SchafKopf::updateInfo()
         Player* player = m_game->findIndex( i );
         if( player->geklopft() )
         {
-            sDoubled.append( tr("<qt><b>%1</b> has doubled.</qt>").arg( player->name() ) );
+            sDoubled.append(i18n("<qt><b>%1</b> has doubled.</qt>", player->name()));
             timesDoubled++;
         }
     }
     timesThrownTogether = m_game->timesThrownTogether();
     if(timesThrownTogether>0)
-        sDoubled.append( tr("<qt>Times thrown together: <b>%1</b></qt>").arg(timesThrownTogether) );
+        sDoubled.append(i18n("<qt>Times thrown together: <b>%1</b></qt>", timesThrownTogether));
     valuation=(int)pow(2, timesDoubled);
     if( Settings::instance()->doubleNextGame() )
         valuation = valuation * (int)pow(2, timesThrownTogether );
-    sDoubled.append( tr("<qt><br>Game counts <b>%1-fold</b>.</qt>").arg(valuation) );
+    sDoubled.append(i18n("<qt><br>Game counts <b>%1-fold</b>.</qt>", valuation));
     
     lblDoubled->setText( sDoubled );
 }

@@ -20,12 +20,15 @@
 
 #include "schafkopf.h"
 
+#include <KLocalizedString>
+
 #include <QApplication>
 
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
+    KLocalizedString::setApplicationDomain(QByteArrayLiteral("schafkopf"));
     app.setQuitOnLastWindowClosed(true);
 
     auto mainWin = new SchafKopf();
