@@ -66,7 +66,6 @@ class ComputerPlayer : public Player
 
         int myTrumpfs();
 
-    //private slots:
         void cardPlayed(unsigned int player, Card *c);
 
     private:
