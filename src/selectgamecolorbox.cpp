@@ -245,20 +245,20 @@ void SelectGameColorBox::cleanGameInfo()
 
 void SelectGameColorBox::colorChangedToEichel()
 {
-    checkEichel->setChecked(true);
+  checkEichel->click();
 }
 
 void SelectGameColorBox::colorChangedToGras()
 {
-    checkGras->setChecked(true);
+  checkGras->click();
 }
 
 void SelectGameColorBox::colorChangedToHerz()
 {
-    checkHerz->setChecked(true);
+  checkHerz->click();
 }
 
 void SelectGameColorBox::colorChangedToSchellen()
 {
-    checkSchellen->setChecked(true);
+  checkSchellen->click();
 }
