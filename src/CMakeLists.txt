@@ -64,7 +64,9 @@ target_link_libraries(schafkopf
 
 target_include_directories(schafkopf PRIVATE ${CMAKE_BINARY_DIR})
 
-target_precompile_headers(schafkopf REUSE_FROM kdegames)
+if(NOT ENABLE_CLANG_TIDY)
+  target_precompile_headers(schafkopf REUSE_FROM kdegames)
+endif()
 
 # This has only an effect on Windows and Mac OS X.
 ecm_add_app_icon(schafkopf ICONS
