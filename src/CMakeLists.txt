@@ -64,7 +64,7 @@ target_link_libraries(schafkopf
 
 target_include_directories(schafkopf PRIVATE ${CMAKE_BINARY_DIR})
 
-if(NOT ENABLE_CLANG_TIDY)
+if(ENABLE_PRECOMPILED_HEADERS)
   target_precompile_headers(schafkopf REUSE_FROM kdegames)
 endif()
 

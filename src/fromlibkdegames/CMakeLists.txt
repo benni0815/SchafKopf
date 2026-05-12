@@ -28,7 +28,7 @@ target_include_directories(kdegames
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-if(NOT ENABLE_CLANG_TIDY)
+if(ENABLE_PRECOMPILED_HEADERS)
   target_precompile_headers(kdegames
     PUBLIC
       <QtCore>

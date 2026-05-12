@@ -11,7 +11,9 @@ project(schafkopf VERSION ${RELEASE_SERVICE_VERSION})
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(ENABLE_PRECOMPILED_HEADERS "Enable precompiled headers" ON)
 option(ENABLE_CLANG_TIDY "Enable clang-tidy" OFF)
+
 if(ENABLE_CLANG_TIDY)
     set(CMAKE_CXX_CLANG_TIDY "clang-tidy-22;--config-file=${CMAKE_SOURCE_DIR}/.clang-tidy")
 endif()
