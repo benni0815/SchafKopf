@@ -29,7 +29,11 @@ struct Rule
 
   CardList execute(const CardList& allowed, const Game& game) const
   {
-    std::cout << "Executing Rule: " << description << std::endl;
+    if constexpr (DebugMode)
+    {
+      std::cout << "Executing Rule: " << description << std::endl;
+    }
+
     const auto info = game.gameInfo();
     if (!condition(info, allowed))
     {

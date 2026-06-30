@@ -375,10 +375,14 @@ bool ComputerPlayer::ownStich()
     return false;
   }
 
+  if constexpr (DebugMode)
+  {
+    std::cout << QString("%1 ist %2Spieler.").arg(name()).arg(this->isPlayer() ? "" : "Nicht-").toStdString() << std::endl;
+  }
+
   // This looks butt ugly but it works!
   // We can only check if the card belongs to the player party, so we check afterwars
   // if we are part of the player part!! Think about it... it does really work :)
-  std::cout << QString("%1 ist %2Spieler.").arg(name()).arg(this->isPlayer() ? "" : "Nicht-").toStdString() << std::endl;
   if (highestCard.owner->isPlayer())
   {
     return (this->isPlayer() ? true : false);
@@ -461,5 +465,8 @@ int ComputerPlayer::cardsStillInGame(int c)
 
 void ComputerPlayer::log(const QString& msg) const
 {
-  std::cout << QString("%1: %2").arg(name()).arg(msg).toStdString() << std::endl;
+  if constexpr (DebugMode)
+  {
+    std::cout << QString("%1: %2").arg(name()).arg(msg).toStdString() << std::endl;
+  }
 }

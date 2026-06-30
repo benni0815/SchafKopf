@@ -145,7 +145,6 @@ CardList Player::allowedCards()
       if (istTrumpf(Spielfarbe.at(i)))
       {
         Cards::remove(Spielfarbe, Spielfarbe.at(i).id);
-        qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
       }
     }
 
