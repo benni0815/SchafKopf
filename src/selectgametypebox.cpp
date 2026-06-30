@@ -117,30 +117,29 @@ void SelectGameTypeBox::setInfoText(const QString& Text)
 
 void SelectGameTypeBox::updatePreview()
 {
-    int i = 0;
     GameInfo info = *gameInfo();
 
     CardList list;
     list.init();
     CardList trumpf;
-    for (int i = 0; i < (int)list.count(); i++)
+    for (int i = 0; i < list.size(); i++)
         if (info.istTrumpf(list.at(i)))
-            trumpf.append(list.at(i));
+            trumpf.push_back(list.at(i));
     trumpf.sort([&] (Card* card) { return info.evalCard(card); });
 
     Card c( Card::SAU, Card::EICHEL );
-    QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.count() / 4) + (trumpf.count() % 4)));
-    int x = c.pixmap().width() / 2 * (trumpf.count() - 1);
+    QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.size() / 4) + (trumpf.size() % 4)));
+    int x = c.pixmap().width() / 2 * (trumpf.size() - 1);
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
     int y = 0;
-    for(i=0;i<=(int)trumpf.count()-1;i++)
+    for (int i = 0; i <= trumpf.size() - 1; ++i)
     {
         const auto& pixmap = trumpf.at(i)->pixmap();
         p.drawPixmap(x, y, pixmap);
         x -= pixmap.width()/2;
 
-        int pos = trumpf.count() + i;
+        int pos = trumpf.size() + i;
         if(!(pos+1)%4)
         {
             x = 0;

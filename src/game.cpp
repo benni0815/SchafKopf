@@ -158,9 +158,9 @@ void Game::gameLoop()
                     return;
 
                 tmp[a]->removeCard(c);
-                m_currstich.append(c);
+                m_currstich.push_back(c);
 
-                m_playedcards.append(c);
+                m_playedcards.push_back(c);
                 emit cardPlayed(tmp[a]->id(), c->id());
 
                 if constexpr (!SIMULATION_MODE) { sleep(1); }
@@ -234,11 +234,10 @@ int Game::highestCard( CardList* list )
         list = &m_currstich;
 
     Card* high{};
-    if( !list->empty() ) high = list->first();
+    if (!list->empty()) { high = list->front(); }
     Card* card{};
-    int i = 0;
 
-    for( int t = 0; t < list->count(); t++ )
+    for (int t = 0; t < list->size(); ++t)
     {
         card = list->at( t );
         if( isHigher( card, high ) )
@@ -248,12 +247,12 @@ int Game::highestCard( CardList* list )
         }
     }
     
-    for( ; i < (signed int)list->count(); i++ )
+    for (int i = 0; i < (int)list->size(); ++i)
     {
         if( list->at(i) == high )
-            break;
+            return i;
     }
-    return i;
+    return 0;
 }
 
 bool Game::isHigher( Card* card, Card* high )

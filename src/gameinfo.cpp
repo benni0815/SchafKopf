@@ -129,7 +129,7 @@ bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
       return false;
 
     // ok now we have to test if we have a card in this color with is no trumpf_index
-    for (int i = 0; i < cards.count(); ++i)
+    for (int i = 0; i < cards.size(); ++i)
     {
       Card* c = cards.at(i);
       if (c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER)
@@ -302,13 +302,13 @@ int GameInfo::laufende()
   all.sort([this] (Card* card) { return evalCard(card); });
   all.setAutoDelete(true);
 
-  for (int i = all.count() - 1; i >= 0; --i)
+  for (int i = all.size() - 1; i >= 0; --i)
   {
     Card* c = all.at(i);
     CardList list = laufend.FindCards(c->color(), c->card());
-    if (list.count() && (l > 0 || i == all.count() - 1))
+    if (!list.empty() && (l > 0 || i == all.size() - 1))
       l++;
-    else if ((!list.count() && l < 0) || i == all.count() - 1)
+    else if ((list.empty() && l < 0) || i == all.size() - 1)
       l--;
     else
     {

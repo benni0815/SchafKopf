@@ -43,16 +43,16 @@ void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, con
     CardList stich(cardIds);
     stich.setAutoDelete(true);
 
-    if( stich.count() )
-        trick->setText(i18n("Trick was made by: <b>") + name + "</b>");
-    else
+    if (stich.empty())
         trick->setText(i18n("No trick was made."));
+    else
+      trick->setText(i18n("Trick was made by: <b>") + name + "</b>");
 
     for( int i = 0; i < PLAYERS; i++ )
     {
-        if( stich.count() > i ) 
+        if (stich.size() > i)
         {
-        Card* c = stich.at( stich.count() - PLAYERS + i );
+        Card* c = stich.at(stich.size() - PLAYERS + i);
         if( c )
         cards[i]->setPixmap(c->pixmap());
             players[i]->setText("<qt><b>" + playerlist.at(i) + "</b></qt>");

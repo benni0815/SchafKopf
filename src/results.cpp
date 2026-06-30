@@ -79,7 +79,7 @@ void Results::parse()
                 highest = i;
 
         m_points = m_game->findIndex(highest)->stiche().points();
-        if (m_game->findIndex(highest)->stiche().count() == TURNS)
+        if (m_game->findIndex(highest)->stiche().size() == TURNS)
         {
             m_winners.append( m_game->findIndex( highest ) );
             for( i=0;i<PLAYERS;i++ )
@@ -101,7 +101,7 @@ void Results::parse()
             stiche.appendList( m_gameinfo->mitspieler()->stiche() );
        
         m_points = stiche.points();
-        m_schwarz = ( stiche.isEmpty() || stiche.count() == NUMCARDS * PLAYERS );
+        m_schwarz = (stiche.empty() || stiche.size() == NUMCARDS * PLAYERS);
         m_schneider = (m_points < 31 || m_points >= 91 );
     
         if( m_points > 60 )

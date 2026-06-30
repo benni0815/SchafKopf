@@ -86,7 +86,7 @@ Card *ComputerPlayer::play()
     CardList allowed;
     int i;
 
-    if (m_game->currStich().isEmpty())
+    if (m_game->currStich().empty())
     {
         allowed = m_openBook.possibleCards();
         if (allowed.empty())
@@ -94,7 +94,7 @@ Card *ComputerPlayer::play()
         i=0;
         for(;;)
         {
-            if (!(i < allowed.count() && allowed.count() > 1))
+            if (!(i < allowed.size() && allowed.size() > 1))
                 break;
             if (allowed.at(i)->points() == 10)
                 allowed.removeCard(i);
@@ -104,14 +104,14 @@ Card *ComputerPlayer::play()
         i=0;
         for(;;)
         {
-            if (!(i < allowed.count() && allowed.count() > 1))
+            if (!(i < allowed.size() && allowed.size() > 1))
                 break;
             if (allowed.at(i)->points() == 4)
                 allowed.removeCard(i);
             else
                 i++;
         }
-        log(QString("allowed cards: %1").arg(allowed.count()));
+        log(QString("allowed cards: %1").arg(allowed.size()));
     }
     /*
       // The AI is more intelligent, let the AI decide
@@ -148,7 +148,7 @@ std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
             d.info.setMode( i );
             d.info.setColor( z );        
             
-            for (int c = 0; c < m_cards.count(); c++)
+            for (int c = 0; c < m_cards.size(); ++c)
             {
                 d.weight += d.info.weight(m_cards.at(c));
                 if (d.info.istTrumpf(m_cards.at(c)))
@@ -156,7 +156,7 @@ std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
                 else if (!d.info.istTrumpf(m_cards.at(c)) && m_cards.at(c)->card() != Card::SAU)
                 {
                     CardList list = m_cards.FindCards(m_cards.at(c)->color(), Card::SAU);
-                    if (list.isEmpty())
+                    if (list.empty())
                         d.fehlfarbe++;
                 }
             }
@@ -207,10 +207,10 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
             //  abzueglich der eigenen truempfe gestochen hat 
             // -oder wenn der darauf folgende spieler der selben
             //  partei angehoert wie man selbst (wichtig fuer solos)
-            if (m_game->currStich().count() == PLAYERS - 1 ||
+            if (m_game->currStich().size() == PLAYERS - 1 ||
                 ( highestTrump && 
                   findHighestCard(m_game->currStich() )->id() == highestTrump->id() ) ||
-                (m_game->currStich().count() == PLAYERS - 2 &&
+                (m_game->currStich().size() == PLAYERS - 2 &&
                   m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
             {
                 log("schmiere!");
@@ -243,7 +243,7 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
         bool gestochen = false;
 
         // sicher stellen das noch niemand gestochen hat
-        for (int i = 0; i < stich.count(); ++i)
+        for (int i = 0; i < stich.size(); ++i)
         {
           if (m_game->gameInfo()->istTrumpf(stich.at(i)))
           {
@@ -252,7 +252,7 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
           }
         }
 
-        if (!stich.isEmpty() && !gestochen && cardsStillInGame(m_game->currStich().at(0)->color()) >= 3)
+        if (!stich.empty() && !gestochen && cardsStillInGame(m_game->currStich().at(0)->color()) >= 3)
         {
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
@@ -263,7 +263,7 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
         {
           log("Versuche zu stechen.");
           // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
-          if (m_game->currStich().count() == PLAYERS - 1)
+          if (m_game->currStich().size() == PLAYERS - 1)
           {
             return findLowestPossibleCard(findHighestCard(stich), cards);
           }
@@ -280,10 +280,10 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
 Card* ComputerPlayer::findHighestCard(const CardList& cards) const
 {
   Card* high{};
-  if (!cards.empty()) high = cards.first();
+  if (!cards.empty()) { high = cards.front(); }
 
   Card* card{};
-  for (int i = 0; i < cards.count(); i++)
+  for (int i = 0; i < cards.size(); ++i)
   {
     card = cards.at(i);
     if (m_game->isHigher(card, high))
@@ -300,7 +300,7 @@ Card* ComputerPlayer::findLowestPossibleCard(Card* highest, const CardList& card
     Card* high = findHighestCard(cards);
     Card* card;
 
-    for (int i = 0; i < cards.count(); ++i)
+    for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
         if( m_game->isHigher( card, highest ) && !m_game->isHigher( card, high ) )
@@ -313,10 +313,10 @@ Card* ComputerPlayer::findLowestPossibleCard(Card* highest, const CardList& card
 Card* ComputerPlayer::findSchmiere(const CardList& cards) const
 {
     Card* schmiere{};
-    if (!cards.empty()) { schmiere = cards.first(); }
+    if (!cards.empty()) { schmiere = cards.front(); }
     Card* card{};
 
-    for (int i = 0; i < cards.count(); i++)
+    for (int i = 0; i < cards.size(); i++)
     {
         card = cards.at(i);
         if( card->points() > schmiere->points() )
@@ -332,10 +332,10 @@ Card* ComputerPlayer::findSchmiere(const CardList& cards) const
 Card* ComputerPlayer::findCheapestCard(const CardList& cards) const
 {
     Card* low{};
-    if (!cards.empty()) { low = cards.first(); }
+    if (!cards.empty()) { low = cards.front(); }
     Card* card{};
 
-    for (int i = 0; i < cards.count(); ++i)
+    for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
         if(card->points()<low->points() )
@@ -353,10 +353,10 @@ bool ComputerPlayer::canMakeStich(const CardList& cards)
     Card* card{};
 
     if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
-    if (!cards.empty()) { card = cards.first(); }
+    if (!cards.empty()) { card = cards.front(); }
     if(!highestCard)
         return true;
-    for (int i = 0; i < cards.count(); ++i)
+    for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
         if(m_game->isHigher(card, highestCard))
@@ -373,7 +373,7 @@ bool ComputerPlayer::ownStich()
     /* The stich cannot belong to us if we are to play
      * the first card! 
      */
-    if (!m_game->currStich().count())
+    if (!m_game->currStich().size())
         return false;
 
     /* This looks butt ugly but it works!
@@ -417,7 +417,7 @@ int ComputerPlayer::myTrumpfs()
     int trumpfs=0;
     Card *c;
 
-    for (int i = 0; i < m_cards.count(); ++i)
+    for (int i = 0; i < m_cards.size(); ++i)
     {
         c = m_cards.at( i );
         if( m_game->gameInfo()->istTrumpf( c ) )

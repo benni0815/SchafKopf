@@ -37,7 +37,7 @@ Card *HumanPlayer::play()
         emit getCard(&cpy);
     }
 
-    for (int i = 0; i < allowed.count(); ++i)
+    for (int i = 0; i < allowed.size(); ++i)
     {
         if (allowed.at(i)->id() == cpy)
         {

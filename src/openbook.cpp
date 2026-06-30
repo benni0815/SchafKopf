@@ -137,7 +137,7 @@ CardList StrategyBook::possibleCards()
     // the strategy book works only when it is called
     // for the last player
     const auto& stiche = m_game->currStich();
-    if (stiche.count() != 3 )
+    if (stiche.size() != 3 )
       return {};
         
     CardList allowed = m_self->allowedCards();
@@ -171,7 +171,7 @@ CardList StrategyBook::possibleCards()
         Card* c = m_self->findSchmiere(allowed);
         // nur karten die hoeher als ein koenig sind schmieren
         if( c && c->points() >= 4 )
-            list.append(c);
+            list.push_back(c);
         else
             abspatzen = true;
     }
@@ -182,7 +182,7 @@ CardList StrategyBook::possibleCards()
         // 2. feststellen ob sich der stich lohnen wuerde
         Card* c = allowed.at(m_game->highestCard(&allowed));
         if (c && m_game->isHigher(c, highest) && stiche.points() > 6)
-            list.append(m_self->findLowestPossibleCard(highest, allowed));
+            list.push_back(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;
     }
@@ -193,7 +193,7 @@ CardList StrategyBook::possibleCards()
         // abspatzen:
         Card* c = m_self->findCheapestCard(allowed);
         if( c && c->points() == 0 )
-            list.append(c);
+            list.push_back(c);
     }
     
     return list;

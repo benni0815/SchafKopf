@@ -38,7 +38,7 @@ int CardList::points() const
 
 void CardList::appendList(const CardList& list)
 {
-  for (int i = 0; i < list.count(); ++i)
+  for (int i = 0; i < list.size(); ++i)
   {
     append(list.at(i));
   }
@@ -110,7 +110,7 @@ void CardList::RemoveCards(const CardList& itemsToRem)
 {
     Card *card;
     Card *thiscard;
-    for (int i = 0; i < itemsToRem.count(); ++i)
+    for (int i = 0; i < itemsToRem.size(); ++i)
     {
         card = itemsToRem.at(i);
         for( int t = 0; t < this->count(); t++ )
