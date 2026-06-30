@@ -9,7 +9,7 @@ class HumanPlayer : public Player
 {
     public:
         HumanPlayer(unsigned int id, Game* game);
-        ~HumanPlayer() override;
+        ~HumanPlayer() override = default;
         
         void klopfen() override;
         Card *play() override;
@@ -19,5 +19,4 @@ class HumanPlayer : public Player
         
     private:
         Card* m_card{};
-        CardList* m_allowed{};
 };

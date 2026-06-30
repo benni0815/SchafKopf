@@ -14,11 +14,6 @@ HumanPlayer::HumanPlayer(unsigned int id, Game* game)
  : Player(id,game)
 {}
 
-HumanPlayer::~HumanPlayer()
-{
-    delete m_allowed;
-}
-
 void HumanPlayer::klopfen()
 {
     int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), {}, i18n("Do you want to double?"), true);
@@ -32,16 +27,15 @@ Card *HumanPlayer::play()
 {
     int* ret;
     int cpy;
-    int i;
     
-    m_allowed = allowedCards();
+    auto allowed = allowedCards();
     m_card = nullptr;
     
     ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), {}, QString(), true);
     cpy = *ret;
     delete ret;
     
-    while( cpy != -1 && !m_allowed->contains( cpy ) )
+    while (cpy != -1 && !allowed.contains(cpy))
     {
         m_game->postEvent( ForbiddenCard, id(), {cpy}, QString(), true );
 
@@ -50,15 +44,14 @@ Card *HumanPlayer::play()
         delete ret;
     }
     
-    for( i=0;i<m_allowed->count();i++ )
-        if( m_allowed->at(i)->id() == cpy )
+    for (int i = 0; i < allowed.count(); ++i)
+    {
+        if (allowed.at(i)->id() == cpy)
         {
-            m_card = m_allowed->at(i);
+            m_card = allowed.at(i);
             break;
         }
-           
-    delete m_allowed;
-    m_allowed = nullptr;
+    }
     return m_card;
 }
 

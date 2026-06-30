@@ -59,8 +59,8 @@ class Player
           */
         bool isPlayer() const;
 
-        CardList *allowedCards();
-        void removeTrumpf(CardList* liste);
+        CardList allowedCards();
+        void removeTrumpf(CardList& liste);
         bool hasTrumpf(CardList* liste);
 
     protected:
@@ -80,12 +80,12 @@ class Player
         bool m_has_doubled{false};
         unsigned int m_id{0};
 
-        CardList* cardsOfSameType(Card* card);
+        CardList cardsOfSameType(Card* card);
         Card* firstPlayedCard();
         bool istTrumpf(Card* card);
 
     private:
         double m_points{0};
 
-        CardList* PlayerCards();
+        CardList PlayerCards();
 };

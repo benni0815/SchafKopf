@@ -17,7 +17,7 @@ class RuleBook : public QObject {
         RuleBook( ComputerPlayer* player, Game* game );
         ~RuleBook() override = default;
 
-        virtual CardList* possibleCards() = 0;
+        virtual CardList possibleCards() = 0;
 
     protected:
         Game* m_game;
@@ -36,7 +36,7 @@ class OpenBook : public RuleBook {
     public:
         OpenBook( ComputerPlayer* player, Game* game );
         
-        CardList* possibleCards() override;
+        CardList possibleCards() override;
 };
 
 /**
@@ -51,5 +51,5 @@ class StrategyBook : public RuleBook {
     public:
         StrategyBook( ComputerPlayer* player, Game* game );
         
-        CardList* possibleCards() override;
+        CardList possibleCards() override;
 };

@@ -108,35 +108,35 @@ void ComputerPlayer::init()
 
 Card *ComputerPlayer::play()
 {
-    CardList* allowed{};
+    CardList allowed;
     int i;
 
     if (m_game->currStich().isEmpty())
     {
-        allowed=book->possibleCards();
-        if(!allowed)
-            allowed=allowedCards();
+        allowed = book->possibleCards();
+        if (allowed.empty())
+            allowed = allowedCards();
         i=0;
         for(;;)
         {
-            if(!(i<allowed->count() && allowed->count()>1))
+            if (!(i < allowed.count() && allowed.count() > 1))
                 break;
-            if(allowed->at(i)->points()==10)
-                allowed->removeCard(i);
+            if (allowed.at(i)->points() == 10)
+                allowed.removeCard(i);
             else
                 i++;
         }
         i=0;
         for(;;)
         {
-            if(!(i<allowed->count() && allowed->count()>1))
+            if (!(i < allowed.count() && allowed.count() > 1))
                 break;
-            if(allowed->at(i)->points()==4)
-                allowed->removeCard(i);
+            if (allowed.at(i)->points() == 4)
+                allowed.removeCard(i);
             else
                 i++;
         }
-        log(QString("allowed cards: %1").arg(allowed->count()));
+        log(QString("allowed cards: %1").arg(allowed.count()));
     }
     /*
       // The AI is more intelligent, let the AI decide
@@ -151,18 +151,14 @@ Card *ComputerPlayer::play()
         allowed = strategy.possibleCards();
     }
     */
-    if(!allowed)
-        allowed=allowedCards();
+    if (allowed.empty())
+        allowed = allowedCards();
     
-//    if( allowed->count() == 1 )
-//        return allowed->first();
-
-    auto* ToPlay = findCardToPlay(*allowed);
+    auto* ToPlay = findCardToPlay(allowed);
     if (m_game->currStich().isEmpty())
         m_angespielt->append(ToPlay);
     else
         m_angespielt->append(m_game->currStich().first());
-    delete allowed;
     return ToPlay;
 }
 
@@ -189,12 +185,10 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
                     d.trumpf++;
                 else if (!d.info.istTrumpf(m_cards.at(c)) && m_cards.at(c)->card() != Card::SAU)
                 {
-                    CardList* list = m_cards.FindCards(m_cards.at(c)->color(), Card::SAU);
-                    if( list->isEmpty() )
+                    CardList list = m_cards.FindCards(m_cards.at(c)->color(), Card::SAU);
+                    if (list.isEmpty())
                         d.fehlfarbe++;
-                    delete list;
                 }
-                    
             }
 
             if( i==GameInfo::RUFSPIEL && d.weight>=8 && ((d.fehlfarbe<=2 && d.trumpf>=5) || d.fehlfarbe<=1) )

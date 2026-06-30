@@ -51,8 +51,8 @@ class CardList : public QList<Card*>
         void removeCard( uint index );
         void removeCard( Card* card );
 
-        CardList* FindCards(int color, int type);
-        void RemoveCards(CardList* itemsToRem);
+        CardList FindCards(int color, int type);
+        void RemoveCards(const CardList& itemsToRem);
 
         void sort(eval_func eval, void *param);
 

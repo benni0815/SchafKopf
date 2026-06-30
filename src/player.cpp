@@ -89,17 +89,15 @@ void Player::addStich(const CardList& stich)
         m_stiche.append(stich.at(i));
 }
 
-void Player::removeTrumpf(CardList* liste)
+void Player::removeTrumpf(CardList& liste)
 {
-    Card *card;
-    CardList* entfernen=new CardList;
-    for( int i = 0; i < liste->count(); i++ )
+    CardList entfernen;
+    for (int i = 0; i < liste.count(); ++i)
     {
-        card = liste->at( i );
-        if(m_game->gameInfo()->istTrumpf(card)) entfernen->append(card);
+        auto* card = liste.at(i);
+        if (m_game->gameInfo()->istTrumpf(card)) { entfernen.append(card); }
     }
-    liste->RemoveCards(entfernen);
-    delete entfernen;
+    liste.RemoveCards(entfernen);
 }
 
 bool Player::hasTrumpf(CardList* liste)
@@ -118,7 +116,7 @@ bool Player::istTrumpf(Card* card)
     return m_game->gameInfo()->istTrumpf(card);
 }
 
-CardList* Player::PlayerCards()
+CardList Player::PlayerCards()
 {
     return m_cards.FindCards(Card::NOCOLOR, Card::NOSTICH);
 }
@@ -131,11 +129,9 @@ Card* Player::firstPlayedCard()
         return m_game->currStich().first();
 }
 
-CardList* Player::cardsOfSameType(Card* card)
+CardList Player::cardsOfSameType(Card* card)
 {
-    CardList* SpielerKarten=PlayerCards();
-    CardList* SpielerFarbe;
-    CardList* AntiMaske;
+    auto SpielerKarten = PlayerCards();
 
     if (!card)
         return SpielerKarten; // müssen alle Karten zurückgegeben werden
@@ -143,69 +139,61 @@ CardList* Player::cardsOfSameType(Card* card)
     {
         if(istTrumpf(card)) // müssen alle trümpfe zurückgegeben werden
         {
-            AntiMaske=PlayerCards();
+            auto AntiMaske = PlayerCards();
             removeTrumpf(AntiMaske);
-            SpielerKarten->RemoveCards(AntiMaske);
-            delete AntiMaske;
+            SpielerKarten.RemoveCards(AntiMaske);
             return SpielerKarten;
         }
         else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
         {
             removeTrumpf(SpielerKarten);
-            SpielerFarbe=SpielerKarten->FindCards(firstPlayedCard()->color(), Card::NOSTICH);
-            delete SpielerKarten;
-            return SpielerFarbe;
+            return SpielerKarten.FindCards(firstPlayedCard()->color(), Card::NOSTICH);
         }
     }
 }
 
-CardList* Player::allowedCards()
+CardList Player::allowedCards()
 {
-    CardList* allowed=cardsOfSameType(firstPlayedCard());
-    if(allowed->isEmpty())
+    CardList allowed = cardsOfSameType(firstPlayedCard());
+    if (allowed.isEmpty())
     {
-        delete allowed;
-        allowed=PlayerCards();
+        allowed = PlayerCards();
     }
 
     if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL)
     {
-        CardList* Sau=allowed->FindCards(m_game->gameInfo()->color(), Card::SAU);
-        CardList* Spielfarbe= allowed->FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
+        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), Card::SAU);
+        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
+
         // entferne alle trümpfe aus Spielfarbe
-        for( int i = 0; i < Spielfarbe->count(); i++ )
+        for (int i = 0; i < Spielfarbe.count(); ++i)
         {
-            if( istTrumpf( Spielfarbe->at(i) ) )
+            if (istTrumpf(Spielfarbe.at(i)))
             {
-                Spielfarbe->removeCard( Spielfarbe->at(i) );
+                Spielfarbe.removeCard(Spielfarbe.at(i));
                 qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
             }
         }
 
-        if(!Sau->isEmpty()) //muss nur was machen wenn ich die Sau habe
+        if (!Sau.isEmpty()) //muss nur was machen wenn ich die Sau habe
         {
             if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
             {
-                delete allowed;
                 allowed=Sau;
             }
             else if (m_game->currStich().isEmpty())
             {
-                if(Spielfarbe->count()<4)
+                if (Spielfarbe.count() < 4)
                 {
-                    Spielfarbe->RemoveCards(Sau);
-                    allowed->RemoveCards(Spielfarbe);
-                    delete Sau;
+                    Spielfarbe.RemoveCards(Sau);
+                    allowed.RemoveCards(Spielfarbe);
                 }
             }
             else if (m_game->currStich().count() > 0 && m_cards.count() > 1)
             {
-                allowed->RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
-                delete Sau;
+                allowed.RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
             }
         }
-        //delete Sau;
-        delete Spielfarbe;
     }
     return allowed;
 }

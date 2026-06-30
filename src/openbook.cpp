@@ -102,10 +102,10 @@ OpenBook::OpenBook( ComputerPlayer* player, Game* game )
 
 }
 
-CardList* OpenBook::possibleCards()
+CardList OpenBook::possibleCards()
 {
-    CardList* allowed = m_self->allowedCards();
-    CardList* list = new CardList();
+    CardList allowed = m_self->allowedCards();
+    CardList list;
     unsigned int i = 0;
 
     m_player = (Player*)m_self->isPlayer();
@@ -114,10 +114,10 @@ CardList* OpenBook::possibleCards()
         s_rule r = rules[i];
         if( r.player == m_player )
         {
-            CardList* l = r.rule( allowed, m_game );
+            CardList* l = r.rule(&allowed, m_game);
             if( l )
             {
-                list->appendList(*l);
+                list.appendList(*l);
                 if( !l->isEmpty() )
                 {
                     delete l;
@@ -128,14 +128,7 @@ CardList* OpenBook::possibleCards()
         } 
     }
     
-    delete allowed;
-    if( !list->isEmpty() )
-        return list;
-    else
-    {
-        delete list;
-        return nullptr;
-    }
+    return list;
 }
 
 //////////////////////////////////
@@ -147,16 +140,16 @@ StrategyBook::StrategyBook( ComputerPlayer* player, Game* game )
 
 }
         
-CardList* StrategyBook::possibleCards()
+CardList StrategyBook::possibleCards()
 {
     // the strategy book works only when it is called
     // for the last player    
     const auto& stiche = m_game->currStich();
     if (stiche.count() != 3 )
-        return nullptr;
+      return {};
         
-    CardList* allowed = m_self->allowedCards();
-    CardList* list = new CardList();
+    CardList allowed = m_self->allowedCards();
+    CardList list;
     Card* highest{};
     bool unser_stich = false;
     bool abspatzen = false;
@@ -183,10 +176,10 @@ CardList* StrategyBook::possibleCards()
     if( unser_stich )
     {
         // unser stich: suche die karte mit den meisten punkten
-        Card* c = m_self->findSchmiere(*allowed);
+        Card* c = m_self->findSchmiere(allowed);
         // nur karten die hoeher als ein koenig sind schmieren
         if( c && c->points() >= 4 )
-            list->append( c );
+            list.append(c);
         else
             abspatzen = true;
     }
@@ -195,9 +188,9 @@ CardList* StrategyBook::possibleCards()
         // stich des gegners
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
-        Card* c = allowed->at( m_game->highestCard( allowed ) );
+        Card* c = allowed.at(m_game->highestCard(&allowed));
         if (c && m_game->isHigher(c, highest) && stiche.points() > 6)
-            list->append(m_self->findLowestPossibleCard(highest, *allowed));
+            list.append(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;
     }
@@ -206,17 +199,10 @@ CardList* StrategyBook::possibleCards()
     {
         // nichts zum schmieren gefunden
         // abspatzen:
-        Card* c = m_self->findCheapestCard(*allowed );
+        Card* c = m_self->findCheapestCard(allowed);
         if( c && c->points() == 0 )
-            list->append( c );
+            list.append(c);
     }
     
-    delete allowed;
-    if( !list->isEmpty() )
-        return list;
-    else
-    {
-        delete list;
-        return nullptr;
-    }
+    return list;
 }

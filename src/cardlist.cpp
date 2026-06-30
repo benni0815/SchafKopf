@@ -7,8 +7,6 @@
 
 #include <QRandomGenerator>
 
-#include <iostream>
-
 
 CardList::CardList(const std::vector<int>& cardIds)
 {
@@ -80,14 +78,14 @@ void CardList::randomize()
     typedef bool (*__isTrumpf)(Card* Karte);
     CardList* FindCards(int color, int type, __isTrumpf _trumpf_func);*/
 
-CardList* CardList::FindCards(int color, int type)
+CardList CardList::FindCards(int color, int type)
 {
-    CardList* found=new CardList();
+    CardList found;
 
-    for( int i = 0; i < this->count(); i++ )
+    for (int i = 0; i < this->count(); i++ )
     {
-        if( (color==Card::NOCOLOR || at(i)->color()==color) && (type==Card::NOSTICH || at(i)->card()==type) )
-            found->append(at(i));
+        if ((color == Card::NOCOLOR || at(i)->color() == color) && (type == Card::NOSTICH || at(i)->card() == type))
+            found.append(at(i));
     }
 
     return found;
@@ -108,13 +106,13 @@ bool CardList::contains(int cardid) const
     return false;
 }
 
-void CardList::RemoveCards(CardList* itemsToRem)
+void CardList::RemoveCards(const CardList& itemsToRem)
 {
     Card *card;
     Card *thiscard;
-    for( int i = 0; i < itemsToRem->count(); i++ )
+    for (int i = 0; i < itemsToRem.count(); ++i)
     {
-        card = itemsToRem->at( i );
+        card = itemsToRem.at(i);
         for( int t = 0; t < this->count(); t++ )
         {
             thiscard = this->at( t );

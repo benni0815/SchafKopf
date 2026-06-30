@@ -305,7 +305,7 @@ int GameInfo::laufende()
   for (int i = all.count() - 1; i >= 0; --i)
   {
     Card* c = all.at(i);
-    CardList list = *laufend.FindCards(c->color(), c->card());
+    CardList list = laufend.FindCards(c->color(), c->card());
     if (list.count() && (l > 0 || i == all.count() - 1))
       l++;
     else if ((!list.count() && l < 0) || i == all.count() - 1)
