@@ -60,7 +60,7 @@ class GameInfo{
 
     private:
         bool m_valid{false};
-        Card::Color m_color{Card::NOCOLOR};
+        Card::Color m_color{Card::NoColor};
         Mode m_mode{GameInfo::STICHT};
         Player* m_spieler{};
         Player* m_mitspieler{};

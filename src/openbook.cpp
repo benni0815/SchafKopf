@@ -39,10 +39,10 @@ namespace OpeningRules
         bool player;
     };
     
-    RULE( player1, "davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", 
-        ( info->mode() == GameInfo::RUFSPIEL && 
-          !allowed->contains( info->color(), Card::SAU ) ),
-        ( !info->istTrumpf( c ) && c->color() == info->color() && c->card() != Card::SAU && c->card() != Card::ZEHN )
+    RULE( player1, "davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon",
+        ( info->mode() == GameInfo::RUFSPIEL &&
+          !allowed->contains(info->color(), Card::Sau)),
+        (!info->istTrumpf(c) && c->color() == info->color() && c->card() != Card::Sau && c->card() != Card::Zehn)
     )
     
     RULE( player2, "player plays trump",
@@ -54,7 +54,7 @@ namespace OpeningRules
         ( info->mode() == GameInfo::STICHT || 
           info->mode() == GameInfo::WENZ || 
           info->mode() == GameInfo::GEIER ),
-        ( !info->istTrumpf( c ) && c->card() == Card::SAU )
+        (!info->istTrumpf(c) && c->card() == Card::Sau)
     )
     
     // TODO: nur suchen wenn noch niemand gesucht hat 

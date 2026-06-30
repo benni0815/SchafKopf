@@ -17,15 +17,15 @@ const QString GameInfo::toString() const
     QString s, c, g;
     switch( m_color )
     {
-        case Card::NOCOLOR:
+        case Card::NoColor:
             c = i18n("colorless"); break;
-        case Card::EICHEL:
+        case Card::Eichel:
             c = i18n("Eichel"); break;
-        case Card::GRAS:
+        case Card::Gras:
             c = i18n("Gras"); break;
-        case Card::HERZ:
+        case Card::Herz:
             c = i18n("Heart"); break;
-        case Card::SCHELLEN:
+        case Card::Schellen:
             c = i18n("Schellen"); break;
         default:
             c = QString();
@@ -63,18 +63,18 @@ int GameInfo::weight( Card* card ) const
 {
     if( istTrumpf( card ) )
     {
-        if( card->card()==Card::OBER && mode() != GameInfo::WENZ )
+        if (card->card() == Card::Ober && mode() != GameInfo::WENZ)
             return 3;
-        else if( card->card()==Card::UNTER && mode() != GameInfo::WENZ )
+        else if (card->card() == Card::Unter && mode() != GameInfo::WENZ)
             return 2;
-        else if( card->card()==Card::UNTER && mode() == GameInfo::WENZ )
+        else if (card->card() == Card::Unter && mode() == GameInfo::WENZ)
             return 3;
         else
             return 1;
     }
     else 
     {
-        if( card->card() == Card::SAU )   
+        if (card->card() == Card::Sau)
             return 1;
         else
             // TODO: ausser man hat auch die SAU
@@ -88,23 +88,23 @@ bool GameInfo::istTrumpf(Card *card) const
     {
         case GameInfo::RUFSPIEL:
         case GameInfo::RAMSCH:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==Card::HERZ)
+                if (card->card() == Card::Ober || card->card() == Card::Unter || card->color() == Card::Herz)
                     return true;
                 break;
         case GameInfo::STICHT:
-                if(card->card()==Card::OBER || card->card()==Card::UNTER || card->color()==color())
+                if (card->card() == Card::Ober || card->card() == Card::Unter || card->color() == color())
                     return true;
                 break;
         case GameInfo::GEIER:
-                if(card->card()==Card::OBER || card->color()==color())
+                if (card->card() == Card::Ober || card->color() == color())
                     return true;
                 break;
         case GameInfo::WENZ:
-                if(card->card()==Card::UNTER || card->color()==color())
+                if (card->card() == Card::Unter || card->color() == color())
                     return true;
                 break;
         case GameInfo::DACHS:
-                if(card->card()==Card::SAU || card->card()==Card::ZEHN)
+                if (card->card() == Card::Sau || card->card() == Card::Zehn)
                     return true;
                 break;
         default:
@@ -125,21 +125,21 @@ bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
 
   if (mode == GameInfo::RUFSPIEL)
   {
-    if (cards.contains(color, Card::SAU) || color == Card::HERZ)
+    if (cards.contains(color, Card::Sau) || color == Card::Herz)
       return false;
 
     // ok now we have to test if we have a card in this color with is no trumpf_index
     for (int i = 0; i < cards.size(); ++i)
     {
       Card* c = cards.at(i);
-      if (c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER)
+      if (c->color() == color && c->card() != Card::Ober && c->card() != Card::Unter)
       {
         return true;
       }
     }
     return false;
   }
-  else if (mode == GameInfo::STICHT && color == Card::NOCOLOR)
+  else if (mode == GameInfo::STICHT && color == Card::NoColor)
       return false;
 
   // check for the users preferences now
@@ -150,13 +150,13 @@ bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
   }
 
   if ((mode == GameInfo::WENZ && !allowed.wenz) ||
-      (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed.farb_wenz))
+      (mode == GameInfo::WENZ && color != Card::NoColor && !allowed.farb_wenz))
   {
     return false;
   }
 
   if ((mode == GameInfo::GEIER && !allowed.geier) ||
-      (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed.farb_geier))
+      (mode == GameInfo::GEIER && color != Card::NoColor && !allowed.farb_geier))
   {
     return false;
   }
@@ -179,7 +179,7 @@ bool GameInfo::operator>(const GameInfo& info)
         // we have only to care about NOCOLOR
         // e.g. Farblos Wenz > Herz Wenz 
         // but Eichel Wenz == Gras Wenz
-        return ( this->color() == Card::NOCOLOR );
+        return (this->color() == Card::NoColor);
     } else
         return this->mode() < info.mode();
 }
@@ -190,20 +190,20 @@ int GameInfo::evalCard(Card* card)
 
     int *l_trumpf;
     int *l_cards;
-    int l_trumpf_std[]={ Card::OBER, Card::UNTER };
-    int l_trumpf_geier=Card::OBER;
-    int l_trumpf_wenz=Card::UNTER;
-    int l_trumpf_dachs[]={ Card::SAU, Card::ZEHN };
-    int l_cards_std[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
-    int l_cards_geier[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN };
-    int l_cards_wenz[]={ Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::NEUN, Card::ACHT, Card::SIEBEN };
-    int l_cards_dachs[]={ Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN, Card::NOSTICH };
+    int l_trumpf_std[]={ Card::Ober, Card::Unter };
+    int l_trumpf_geier=Card::Ober;
+    int l_trumpf_wenz=Card::Unter;
+    int l_trumpf_dachs[]={ Card::Sau, Card::Zehn };
+    int l_cards_std[]={ Card::Sau, Card::Zehn, Card::Koenig, Card::Neun, Card::Acht, Card::Sieben, Card::NoStich };
+    int l_cards_geier[]={ Card::Sau, Card::Zehn, Card::Koenig, Card::Unter, Card::Neun, Card::Acht, Card::Sieben };
+    int l_cards_wenz[]={ Card::Sau, Card::Zehn, Card::Koenig, Card::Ober, Card::Neun, Card::Acht, Card::Sieben };
+    int l_cards_dachs[]={ Card::Koenig, Card::Ober, Card::Unter, Card::Neun, Card::Acht, Card::Sieben, Card::NoStich };
     int l_colors[4];
     int trumpf_index=-1;
     int cards_index=-1;
     int colors_index=-1;
     int trumpf_cnt;
-    int col = Card::NOCOLOR;
+    int col = Card::NoColor;
     int i, a;
 
     switch (mode())
@@ -214,7 +214,7 @@ int GameInfo::evalCard(Card* card)
             trumpf_cnt=2;
             l_trumpf=l_trumpf_std;
             l_cards=l_cards_std;
-            col=Card::HERZ;
+            col=Card::Herz;
             break;
         case GameInfo::STICHT:
             trumpf_cnt=2;
@@ -239,11 +239,11 @@ int GameInfo::evalCard(Card* card)
             trumpf_cnt=2;
             l_trumpf=l_trumpf_dachs;
             l_cards=l_cards_dachs;
-            col=Card::NOCOLOR;
+            col=Card::NoColor;
             break;
     }
-    if(col==Card::NOCOLOR)
-        col=Card::EICHEL;
+    if (col == Card::NoColor)
+        col = Card::Eichel;
     l_colors[0]=col;
     for(i=0, a=1;i<4;i++)
     {

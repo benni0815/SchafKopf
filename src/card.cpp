@@ -21,11 +21,11 @@ QPixmap& background()
 int getPoints(Card::Type t)
 {
   static const auto map = std::unordered_map<Card::Type, int>{
-    {Card::SAU,    11},
-    {Card::ZEHN,   10},
-    {Card::KOENIG, 4},
-    {Card::OBER,   3},
-    {Card::UNTER,  2}
+    {Card::Sau,    11},
+    {Card::Zehn,   10},
+    {Card::Koenig, 4},
+    {Card::Ober,   3},
+    {Card::Unter,  2}
   };
   const auto it = map.find(t);
   if (it == std::end(map))
@@ -39,12 +39,11 @@ int getPoints(Card::Type t)
 
 Card::Card( const int id )
 {
-    Type t = NOSTICH;
-    Color c = NOCOLOR;
-    int i;
+    Type t = Type::NoStich;
+    Color c = Color::NoColor;
     
     // try to calculate the type and color from the id
-    for( i=Card::EICHEL; i <= Card::SCHELLEN; i++ )
+    for (int i = Card::Eichel; i <= Card::Schellen; i++ )
         if( (id - i - 1) % 4 == 0 )
         {
             t = (Card::Type)(id - i);
@@ -95,19 +94,19 @@ KCardInfo Card::kdeCardInfo() const
 
     switch(m_id.color)
     {
-    case EICHEL: suit = KCardInfo::Club; break;
-    case GRAS: suit = KCardInfo::Spade; break;
-    case HERZ: suit = KCardInfo::Heart; break;
-    case SCHELLEN: suit = KCardInfo::Diamond; break;
+    case Eichel: suit = KCardInfo::Club; break;
+    case Gras: suit = KCardInfo::Spade; break;
+    case Herz: suit = KCardInfo::Heart; break;
+    case Schellen: suit = KCardInfo::Diamond; break;
     default: suit = KCardInfo::None;
     }
 
     switch(m_id.type)
     {
-    case SAU: card = KCardInfo::Ace; break;
-    case KOENIG: card = KCardInfo::King; break;
-    case OBER: card = KCardInfo::Queen; break;
-    case UNTER: card = KCardInfo::Jack; break;
+    case Sau: card = KCardInfo::Ace; break;
+    case Koenig: card = KCardInfo::King; break;
+    case Ober: card = KCardInfo::Queen; break;
+    case Unter: card = KCardInfo::Jack; break;
     default: card = KCardInfo::Card( ( m_id.type / 4 ) + 1 );
     }
 
@@ -129,7 +128,7 @@ void Card::cardDeckChanged()
 bool Card::operator<(const Card* const c) const
 {
     // TODO: anyone a better idea?
-    int a[] = {Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN};
+    int a[] = {Card::Sau, Card::Zehn, Card::Koenig, Card::Ober, Card::Unter, Card::Neun, Card::Acht, Card::Sieben};
     uint i = 0;
     uint pos = 0;
     for( ;i<(sizeof(a)/sizeof(int));i++)
@@ -157,24 +156,24 @@ QString Card::toString() const
     QString res;
 
     switch (m_id.color) {
-    case EICHEL: res += "Eichel"; break;
-    case GRAS: res += "Gras"; break;
-    case HERZ: res += "Herz"; break;
-    case SCHELLEN: res += "Schellen"; break;
+    case Eichel: res += "Eichel"; break;
+    case Gras: res += "Gras"; break;
+    case Herz: res += "Herz"; break;
+    case Schellen: res += "Schellen"; break;
     default: res += "Nocolor"; break;
     }
 
     res += ' ';
 
     switch (m_id.type) {
-    case SAU: res += "Sau"; break;
-    case ZEHN: res += "Zehn"; break;
-    case KOENIG: res += "Koenig"; break;
-    case OBER: res += "Ober"; break;
-    case UNTER: res += "Unter"; break;
-    case NEUN: res += "Neun"; break;
-    case ACHT: res += "Acht"; break;
-    case SIEBEN: res += "Sieben"; break;
+    case Sau: res += "Sau"; break;
+    case Zehn: res += "Zehn"; break;
+    case Koenig: res += "Koenig"; break;
+    case Ober: res += "Ober"; break;
+    case Unter: res += "Unter"; break;
+    case Neun: res += "Neun"; break;
+    case Acht: res += "Acht"; break;
+    case Sieben: res += "Sieben"; break;
     default: res += "Unknown"; break;
     }
 

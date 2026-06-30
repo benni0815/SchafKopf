@@ -17,15 +17,13 @@ class QString;
 class Card
 {
 public:
-  // TODO: find better names, Edit bei lenz: done =;-)
-  // DS: renamed to avoid name clashes
-  enum Type { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
-  enum Color { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
+  enum Type { NoStich = -1, Sau = 1, Koenig = 5, Ober = 9, Unter = 13, Zehn = 17, Neun = 21, Acht = 25, Sieben = 29 };
+  enum Color { NoColor = -1, Eichel = 0, Gras = 1, Herz = 2, Schellen = 3 };
 
   struct Id
   {
-    Type type{NOSTICH};
-    Color color{NOCOLOR};
+    Type type{NoStich};
+    Color color{NoColor};
   };
 
   Card( const int id );
@@ -86,8 +84,7 @@ public:
 private:
   void init(const Type t, const Color c);
 
-  Id m_id{Type::NOSTICH, Color::NOCOLOR};
-
+  Id m_id{Type::NoStich, Color::NoColor};
   Player* m_owner{};
 
   QPixmap m_pixmap;

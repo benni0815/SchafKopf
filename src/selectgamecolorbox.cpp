@@ -40,17 +40,11 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     connect(labelHerz, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToHerz);
     connect(labelSchellen, &QPushButton::clicked, this, &SelectGameColorBox::colorChangedToSchellen);
 
-
     checkEichel = new QRadioButton(i18n("&Eichel"), this);
     checkGras = new QRadioButton(i18n("&Gras"), this);
     checkHerz = new QRadioButton(i18n("&Herz"), this);
     checkSchellen = new QRadioButton(i18n("&Schellen"), this);
     checkFarblos = new QRadioButton(i18n("&Farblos"), this);
-
-    const auto herz    = Card(Card::SAU, Card::HERZ);
-    const auto schelle = Card(Card::SAU, Card::SCHELLEN);
-    const auto eichel  = Card(Card::SAU, Card::EICHEL);
-    const auto gras    = Card(Card::SAU, Card::GRAS);
 
     QButtonGroup *myGroup = new QButtonGroup(this);
     myGroup->addButton( checkEichel );
@@ -60,14 +54,17 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkFarblos );
     connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameColorBox::colorChanged);
 
-    labelHerz->setIcon(herz.pixmap());
-    labelGras->setIcon(gras.pixmap());
-    labelEichel->setIcon(eichel.pixmap());
-    labelSchellen->setIcon(schelle.pixmap());
-    labelHerz->setIconSize(herz.pixmap().size());
-    labelGras->setIconSize(gras.pixmap().size());
-    labelEichel->setIconSize(eichel.pixmap().size() );
-    labelSchellen->setIconSize(schelle.pixmap().size());
+    auto setupSauButton = [&] (QPushButton* button, Card::Color color)
+    {
+      const auto pix = Card(Card::Sau, color).pixmap();
+      button->setIcon(pix);
+      button->setIconSize(pix.size());
+    };
+
+    setupSauButton(labelEichel,   Card::Eichel);
+    setupSauButton(labelGras,     Card::Gras);
+    setupSauButton(labelHerz,     Card::Herz);
+    setupSauButton(labelSchellen, Card::Schellen);
 
     QGroupBox* color_group = new QGroupBox(i18n("Color:"), this);
     QVBoxLayout* eichelLayout = new QVBoxLayout;
@@ -100,11 +97,11 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 
 Card::Color SelectGameColorBox::getColor()
 {
-    if(checkEichel->isChecked()) return (Card::EICHEL);
-    else if(checkGras->isChecked()) return (Card::GRAS);
-    else if(checkHerz->isChecked()) return (Card::HERZ);
-    else if(checkSchellen->isChecked()) return (Card::SCHELLEN);
-    return (Card::NOCOLOR);
+    if(checkEichel->isChecked()) return (Card::Eichel);
+    else if(checkGras->isChecked()) return (Card::Gras);
+    else if(checkHerz->isChecked()) return (Card::Herz);
+    else if(checkSchellen->isChecked()) return (Card::Schellen);
+    return (Card::NoColor);
 }
 
 
@@ -121,10 +118,10 @@ void SelectGameColorBox::statusChanged()
         {
                 case (GameInfo::RUFSPIEL):
                             setStatus(
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::EICHEL),
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::GRAS),
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Eichel),
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Gras),
                                 false,
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::SCHELLEN),
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Schellen),
                                 false
                             );
                 break;

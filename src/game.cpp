@@ -370,7 +370,7 @@ bool Game::setupGameInfo(Player *players[])
     // finde den mitspieler:
     if( m_gameinfo.mode()==GameInfo::RUFSPIEL ) 
     {
-        Card sau(Card::SAU, static_cast<Card::Color>(m_gameinfo.color()));
+        Card sau(Card::Sau, m_gameinfo.color());
         for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
         {
             for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
@@ -426,7 +426,7 @@ bool Game::setupGameInfoForced(Player *players[])
         // find player with eichel ober
         for( i=0;i<PLAYERS;i++ )
         {
-            if (players[i]->cards().contains(Card::EICHEL, Card::OBER))
+            if (players[i]->cards().contains(Card::Ober, Card::Eichel))
             {
                 emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
                 
@@ -442,7 +442,7 @@ bool Game::setupGameInfoForced(Player *players[])
         m_gameinfo.setSpieler(nullptr);
         m_gameinfo.setMitspieler(nullptr);
         m_gameinfo.setMode( GameInfo::RAMSCH );
-        m_gameinfo.setColor( Card::NOCOLOR );
+        m_gameinfo.setColor(Card::NoColor);
         return true;
     }
 

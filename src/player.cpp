@@ -102,7 +102,7 @@ bool Player::istTrumpf(Card* card)
 
 CardList Player::PlayerCards()
 {
-    return m_cards.FindCards(Card::NOCOLOR, Card::NOSTICH);
+    return m_cards.FindCards(Card::NoColor, Card::NoStich);
 }
 
 Card* Player::firstPlayedCard()
@@ -132,7 +132,7 @@ CardList Player::cardsOfSameType(Card* card)
         else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
         {
             removeTrumpf(SpielerKarten);
-            return SpielerKarten.FindCards(firstPlayedCard()->color(), Card::NOSTICH);
+            return SpielerKarten.FindCards(firstPlayedCard()->color(), Card::NoStich);
         }
     }
 }
@@ -147,8 +147,8 @@ CardList Player::allowedCards()
 
     if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL)
     {
-        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), Card::SAU);
-        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), Card::NOSTICH);
+        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), Card::Sau);
+        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), Card::NoStich);
 
         // entferne alle trümpfe aus Spielfarbe
         for (int i = 0; i < Spielfarbe.size(); ++i)

@@ -127,7 +127,7 @@ void SelectGameTypeBox::updatePreview()
             trumpf.push_back(list.at(i));
     trumpf.sort([&] (Card* card) { return info.evalCard(card); });
 
-    Card c( Card::SAU, Card::EICHEL );
+    Card c(Card::Sau, Card::Eichel);
     QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.size() / 4) + (trumpf.size() % 4)));
     int x = c.pixmap().width() / 2 * (trumpf.size() - 1);
     pix.fill( Qt::darkGreen );

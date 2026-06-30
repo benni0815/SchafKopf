@@ -23,7 +23,7 @@ void CardList::init()
         delete takeFirst();
 
     for( int i = 0; i < CARD_CNT ; i += 4  )
-        for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
+        for (int z = Card::Eichel; z <= Card::Schellen; z++)
             append(new Card((Card::Type)(i + 1), (Card::Color)z));
 }
 
@@ -84,7 +84,7 @@ CardList CardList::FindCards(Card::Color color, Card::Type type)
 
     for (int i = 0; i < this->count(); i++ )
     {
-        if ((color == Card::NOCOLOR || at(i)->color() == color) && (type == Card::NOSTICH || at(i)->card() == type))
+        if ((color == Card::NoColor || at(i)->color() == color) && (type == Card::NoStich || at(i)->card() == type))
             found.append(at(i));
     }
 
