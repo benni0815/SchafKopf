@@ -20,10 +20,6 @@ GameInfo::GameInfo()
     m_valid = false;
 }
 
-GameInfo::~GameInfo()
-{
-}
-
 const QString GameInfo::toString() const
 {
     QString s, c, g;

@@ -9,13 +9,13 @@ class HumanPlayer : public Player
 {
     public:
         HumanPlayer(unsigned int id, Game* game);
-        ~HumanPlayer();
+        ~HumanPlayer() override;
         
-        void klopfen();
-        Card *play();
-        GameInfo* gameInfo( bool force = false );
+        void klopfen() override;
+        Card *play() override;
+        GameInfo* gameInfo(bool force = false) override;
         
-        int rtti() const { return HUMAN; }        
+        int rtti() const override { return HUMAN; }
         
     private:
         Card* m_card{};

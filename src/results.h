@@ -21,7 +21,7 @@ or money who has to give to whom.
 class Results{
     public:
         Results();
-        ~Results() {}
+        ~Results() = default;
         
         void setLaufende( int l ) { m_laufende = l; }
         void setGame( Game* game );

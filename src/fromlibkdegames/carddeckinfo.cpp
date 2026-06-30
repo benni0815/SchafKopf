@@ -32,9 +32,7 @@ public:
     {
         readDecks();
     }
-    ~KCardThemeInfoStatic()
-    {
-    }
+    ~KCardThemeInfoStatic() = default;
 
     void readDecks()
     {

@@ -38,10 +38,6 @@ StichDlg::StichDlg(QWidget *parent )
     reset();
 }
 
-StichDlg::~StichDlg()
-{
-}
-
 void StichDlg::changed(const QString& name, int* list, QStringList* playerlist)
 {
     CardList stich( list );

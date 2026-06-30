@@ -15,7 +15,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
     public:
         CanvasCard();
-        ~CanvasCard();
+        ~CanvasCard() override = default;
 
         void setCard(Card* card);
         Card* card() const { return m_card; }
@@ -25,7 +25,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         void animatedMove();
         void setDestination( int x, int y );
 
-        int type() const { return CANVASCARD; }
+        int type() const override { return CANVASCARD; }
 
         /** mark this card as forbidden to play
           * in the UI

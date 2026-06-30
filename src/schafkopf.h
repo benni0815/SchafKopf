@@ -35,7 +35,7 @@ class SchafKopf : public KXmlGuiWindow
     Q_OBJECT
     public:
         SchafKopf(QWidget* parent = nullptr);
-        ~SchafKopf();
+        ~SchafKopf() override;
 
         static KAboutData aboutData();
 
@@ -84,7 +84,7 @@ class SchafKopf : public KXmlGuiWindow
     protected:
         /** Event handler to receive thread events
           */
-        void customEvent( QEvent* e );
+        void customEvent(QEvent* e) override;
 
     private:
         void setupActions();

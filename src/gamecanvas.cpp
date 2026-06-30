@@ -27,7 +27,7 @@ class CanvasText : public QGraphicsSimpleTextItem
             setBrush( QBrush( Qt::yellow ) );
         }
 
-        int type() const
+        int type() const override
         {
             return UserType + 1;
         }

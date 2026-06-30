@@ -18,7 +18,7 @@ class GameInfo{
     public:
         enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH, DACHS };
         GameInfo();
-        ~GameInfo();
+        ~GameInfo() = default;
 
         void setValid( bool b ) { m_valid = b; }
         bool isValid() const { return m_valid; }

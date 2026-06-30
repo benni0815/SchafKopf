@@ -23,7 +23,8 @@ class Game : public QThread
 
     public:
         Game(QSemaphore* semaphore, QObject *parent);
-        ~Game();
+        ~Game() override;
+
         void gameLoop();
         CardList *currStich();
         inline CardList *allCards() { return &m_allcards; }
@@ -95,7 +96,7 @@ class Game : public QThread
     protected:
         /** inherited from QThread, calls gameLoop();
           */
-        void run();
+        void run() override;
 
     private:
         static unsigned int def_id;

@@ -14,14 +14,14 @@ class ComputerPlayer : public Player
 {
     public:
         ComputerPlayer(unsigned int id,Game* game);
-        ~ComputerPlayer();
+        ~ComputerPlayer() override;
 
-        void init();
-        void klopfen();
-        Card *play();
-        GameInfo* gameInfo( bool force = false );
+        void init() override;
+        void klopfen() override;
+        Card *play() override;
+        GameInfo* gameInfo(bool force = false) override;
 
-        int rtti() const { return COMPUTER; }
+        int rtti() const override { return COMPUTER; }
 
         Card *findHighestCard(CardList *cards);
         Card *findSchmiere(CardList *cards);        // Nice name, isn't it? :)

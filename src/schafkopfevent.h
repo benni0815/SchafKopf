@@ -10,7 +10,7 @@ class SchafKopfEvent : public QObject, public QEvent
     Q_OBJECT
 public:
     SchafKopfEvent( t_EventData* data );
-    ~SchafKopfEvent();
+    ~SchafKopfEvent() override = default;
 
     t_EventData* data();
 

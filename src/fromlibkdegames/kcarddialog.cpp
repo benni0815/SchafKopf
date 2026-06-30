@@ -31,9 +31,7 @@ public:
     /**
      * Constructor
      */
-    KCardWidgetPrivate()
-    {
-    }
+    KCardWidgetPrivate() = default;
 
     /**
      * Currently chosen front side name.

@@ -23,13 +23,12 @@ class SelectGameWizard : public QWizard
     Q_OBJECT
 
 public:
-
     SelectGameWizard(bool force, CardList* list, QWidget* parent = nullptr);
-    ~SelectGameWizard();
+    ~SelectGameWizard() override;
     CardList* getCardList();
     GameInfo* gameInfo();
 
-    void reject();
+    void reject() override;
 
 public slots:
     void pageChanged( int id );

@@ -21,8 +21,8 @@ class SelectGameTypeBox : public QWizardPage
     Q_OBJECT
 public:
     SelectGameTypeBox(QWidget* parent = nullptr);
+    ~SelectGameTypeBox() override = default;
 
-    ~SelectGameTypeBox() = default;
     GameInfo* gameInfo() const;
 
 protected:

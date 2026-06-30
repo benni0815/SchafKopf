@@ -109,7 +109,7 @@ class Settings : public QObject
 
     private:
         Settings(QObject* parent = nullptr);
-        ~Settings();
+        ~Settings() override;
 
         KSharedConfig::Ptr m_config;
 

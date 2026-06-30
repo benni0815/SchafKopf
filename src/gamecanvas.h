@@ -23,7 +23,7 @@ class GameCanvas : public QGraphicsView
     
     public:
         GameCanvas(QGraphicsScene* gs, QWidget *parent = nullptr);
-        ~GameCanvas();
+        ~GameCanvas() override;
         
         /** the user has to click a card to play
           */
@@ -84,14 +84,14 @@ class GameCanvas : public QGraphicsView
         void yesNoClicked( QGraphicsItem* item );
         
     protected:
-        void resizeEvent( QResizeEvent *r );
+        void resizeEvent(QResizeEvent* r) override;
         void resizeBackground();
 
-        void mousePressEvent(QMouseEvent*);
-        void mouseReleaseEvent(QMouseEvent*);
-        void keyPressEvent(QKeyEvent*);
-        void focusInEvent(QFocusEvent*);
-        void focusOutEvent(QFocusEvent*);
+        void mousePressEvent(QMouseEvent*) override;
+        void mouseReleaseEvent(QMouseEvent*) override;
+        void keyPressEvent(QKeyEvent*) override;
+        void focusInEvent(QFocusEvent*) override;
+        void focusOutEvent(QFocusEvent*) override;
         QPoint getStichPosition( int player );
         int getStichRotation( int player );
         CanvasPlayer* humanPlayer() const;

@@ -27,10 +27,10 @@ class PreferencesDlg : public KPageDialog
     Q_OBJECT
     public:
         PreferencesDlg(QWidget* parent = nullptr);
-        ~PreferencesDlg();
+        ~PreferencesDlg() override = default;
 
     protected:
-        void accept();
+        void accept() override;
 
     private slots:
         void enableControls();

@@ -32,10 +32,6 @@ PreferencesDlg::PreferencesDlg( QWidget *parent )
     enableControls();
 }
 
-PreferencesDlg::~PreferencesDlg()
-{
-}
-
 void PreferencesDlg::accept()
 {
     ResultValues r;

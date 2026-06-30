@@ -25,9 +25,9 @@ class SelectGameColorBox : public QWizardPage
 
 public:
     SelectGameColorBox(QWidget* parent = nullptr);
-    void cleanGameInfo();
+    ~SelectGameColorBox() override = default;
 
-    ~SelectGameColorBox() = default;
+    void cleanGameInfo();
     void setGameInfo(GameInfo* info);
     GameInfo* getGameInfo();
     bool getFinish();

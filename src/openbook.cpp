@@ -93,11 +93,6 @@ RuleBook::RuleBook( ComputerPlayer* player, Game* game )
     m_player = (Player*)m_self->isPlayer();
 }
 
-RuleBook::~RuleBook()
-{
-
-}
-
 //////////////////////////////////
 // OpenBook
 //////////////////////////////////

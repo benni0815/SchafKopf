@@ -20,10 +20,6 @@ CanvasCard::CanvasCard()
     connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
-CanvasCard::~CanvasCard()
-{
-}
-
 void CanvasCard::setCard( Card* card )
 {
     m_card = card;

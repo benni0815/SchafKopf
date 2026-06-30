@@ -20,7 +20,7 @@ class StichDlg : public QDialog
     Q_OBJECT
     public:
         StichDlg(QWidget* parent = nullptr);
-        ~StichDlg();
+        ~StichDlg() override = default;
         
         void changed(const QString& name, int* list, QStringList* players);
         
