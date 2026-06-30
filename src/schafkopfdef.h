@@ -3,9 +3,6 @@
 
 #pragma once
 
-#include <QString>
-#include <QStringList>
-
 
 constexpr int PLAYERS{4};
 
@@ -25,22 +22,6 @@ constexpr int CARD_CNT{PLAYERS * NUMCARDS};
 constexpr int TURNS{NUMCARDS};
 
 enum { YES, NO };
-
-struct t_PlayerData {
-  unsigned int id1{};
-  int* cards1{};
-
-  unsigned int id2{};
-  int* cards2{};
-
-  unsigned int id3{};
-  int* cards3{};
-
-  unsigned int id4{};
-  int* cards4{};
-
-  unsigned int lastid{};
-};
 
 /// Uncomment this line to make all cards
 /// user visible, this is useful for debugging

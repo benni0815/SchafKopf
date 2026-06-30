@@ -323,13 +323,14 @@ bool Game::setupGameInfo(Player *players[])
         playerInstance=4-humanPlayer+i;
         if(playerInstance>3)
              playerInstance=playerInstance-4;
-        auto info = players[i]->gameInfo();
+        auto game = players[i]->gameInfo();
         if(terminated)
             return false;
-        if( info )
+        if (game)
         {
-            info->setSpieler( players[i] );
-            games.push_back(info.value());
+            auto gameInfo = GameInfo(game.value());
+            gameInfo.setSpieler(players[i]);
+            games.push_back(gameInfo);
             if (!isHuman(players[i]))
             {
                 emit bubble(playerInstance, i18n("%1: \"I want to play.\"", players[i]->name()));
