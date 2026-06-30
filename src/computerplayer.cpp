@@ -19,19 +19,11 @@ ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
 : Player(id,game)
 , m_openBook(this, game)
 {
-    int i;
-
-    for(i=0;i<PLAYERS;i++)
-        m_playedCards[i]=new CardList();
     m_angespielt=new CardList();
 }
 
 ComputerPlayer::~ComputerPlayer()
 {
-    int i;
-
-    for(i=0;i<PLAYERS;i++)
-        delete m_playedCards[i];
     delete m_angespielt;
 }
 
@@ -82,11 +74,6 @@ void ComputerPlayer::klopfen()
 
 void ComputerPlayer::init()
 {
-    int i;
-
-    for(i=0;i<PLAYERS;i++)
-        m_playedCards[i]->clear();
-
     m_angespielt->clear();
     if(m_game->gameInfo()->mitspieler()==this)
     {
@@ -467,7 +454,6 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
 
     // TODO: was called by signal before the thread change
     // has to be implemented in another way
-    m_playedCards[player]->append(c);
     if(mitspieler!=-1)
         return;
     if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL && c->card()==Card::SAU && c->color()==m_game->gameInfo()->color())

@@ -79,7 +79,6 @@ class ComputerPlayer : public Player
             GameInfo info;
         };
 
-        CardList *m_playedCards[4];
         CardList *m_angespielt;
         OpenBook m_openBook;
         int mitspieler{-1};
