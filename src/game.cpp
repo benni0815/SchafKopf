@@ -386,7 +386,6 @@ bool Game::setupGameInfo(Player *players[])
 bool Game::setupGameInfoForced(Player *players[])
 {
     int i;
-    GameInfo* info;
 
     if( Settings::instance()->doublerHasToPlay() )
     {
@@ -398,10 +397,8 @@ bool Game::setupGameInfoForced(Player *players[])
             {
                 emit infoMessage(i18n("%1 has doubled last\nand has to play now.", players[i]->name()));
 
-                info = players[i]->gameInfo( true );
-                info->setSpieler( players[i] );
-                m_gameinfo = *info;
-                delete info;
+                m_gameinfo = *players[i]->gameInfo(true);
+                m_gameinfo.setSpieler(players[i]);
                 return true;
             }
         }
@@ -424,10 +421,8 @@ bool Game::setupGameInfoForced(Player *players[])
             {
                 emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
                 
-                info = players[i]->gameInfo( true );
-                info->setSpieler( players[i] );
-                m_gameinfo = *info;
-                delete info;
+                m_gameinfo = *players[i]->gameInfo(true);
+                m_gameinfo.setSpieler(players[i]);
                 return true;
             }
         }
