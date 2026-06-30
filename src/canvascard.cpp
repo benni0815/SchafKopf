@@ -157,22 +157,22 @@ void CanvasCard::animatedMove()
 
 void CanvasCard::moveLoop()
 {
-    int speedx = 1, speedy = 1;
-    if( tox-x()>60 || x()-tox>60 ) speedx=20;
-    if( toy-y()>60 || y()-toy>60 ) speedy=20;
-    if(tox>x())
-        moveBy( speedx, 0 );
-    else if(tox!=x())
-        moveBy( -speedx, 0 );
-    if(toy>y())
-        moveBy( 0, speedy );
-    else if(toy!=y())
-        moveBy( 0, -speedy );
-    if(tox==x() && toy==y())
-    {
-        timer->stop();
-        disconnect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
-    }
+  if (tox == x() && toy == y())
+  {
+    timer->stop();
+    disconnect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
+    return;
+  }
+
+  auto getStep = [] (int dest, int pos) -> int
+  {
+    if (dest == pos) { return 0; }
+    const auto diff = dest - pos;
+    const auto absSpeed = std::abs(diff) > 60 ? 20 : 1;
+    return std::copysign(absSpeed, diff);
+  };
+
+  moveBy(getStep(tox, x()), getStep(toy, y()));
 }
 
 void CanvasCard::cardDeckChanged()
