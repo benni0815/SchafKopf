@@ -18,6 +18,23 @@ QPixmap& background()
   return pix;
 }
 
+int getPoints(Card::EType t)
+{
+  static const auto map = std::unordered_map<Card::EType, int>{
+    {Card::SAU,    11},
+    {Card::ZEHN,   10},
+    {Card::KOENIG, 4},
+    {Card::OBER,   3},
+    {Card::UNTER,  2}
+  };
+  const auto it = map.find(t);
+  if (it == std::end(map))
+  {
+    return 0;
+  }
+  return it->second;
+}
+
 } // namespace
 
 Card::Card( const int id )
@@ -46,26 +63,8 @@ Card::Card( const enum EType t, const enum EColor c )
 
 void Card::init( const enum EType t, const enum EColor c  )
 {
-    m_card = t;
-    m_color = c;
-    switch( m_card ) {
-        case SAU:
-            m_points = 11; break;
-        case ZEHN:
-            m_points = 10; break;
-        case KOENIG:
-            m_points = 4; break;
-        case OBER:
-            m_points = 3; break;
-        case UNTER:
-            m_points = 2; break;
-        case NEUN:
-        case ACHT:
-        case SIEBEN:
-        default:
-            m_points = 0;
-            break;
-    };
+  m_card = t;
+  m_color = c;
 }
 
 const QPixmap& Card::pixmap()
@@ -85,6 +84,11 @@ const QPixmap& Card::backgroundPixmap()
   }
 
   return background();
+}
+
+int Card::points() const
+{
+  return getPoints(m_card);
 }
 
 KCardInfo Card::kdeCardInfo()

@@ -34,7 +34,7 @@ public:
 
   /// return how much points the card has.
   /// e.g. king = 4 points
-  int points() const { return m_points; }
+  int points() const;
 
   /// return the color of the card.
   /// e.g. heart.
@@ -83,9 +83,8 @@ private:
 private:
   Player* m_owner{};
 
-  int m_points{0};
   int m_color{-1};
-  int m_card{-1};
+  EType m_card{EType::NOSTICH};
 
   QPixmap m_pixmap;
 };
