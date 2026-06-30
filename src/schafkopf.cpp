@@ -144,6 +144,7 @@ SchafKopf::SchafKopf(QWidget* parent)
   connect(btnLastTrick, &QPushButton::clicked, this, &SchafKopf::showStich);
   connect(Settings::instance(), &Settings::resultsTypeChanged, this, &SchafKopf::clearTable);
   connect(Settings::instance(), &Settings::playerNamesChanged, this, &SchafKopf::updateTableNames);
+  connect(Settings::instance(), &Settings::playerNamesChanged, m_game, &Game::updatePlayerNames);
   connect(Settings::instance(), &Settings::cardChanged, this, &SchafKopf::updateInfo);
 
   btnLastTrick->setToolTip(i18n("Show the last trick that was made."));

@@ -48,8 +48,6 @@ Game::Game(QObject* parent)
     }
   }
 
-  updatePlayerNames();
-
   // make sure that results get cleaned up, when the results type is changed
   /*
       connect( Settings::instance(), SIGNAL( resultsTypeChanged() ), this, SLOT( resetGameResults() ) );
@@ -64,6 +62,8 @@ void Game::run()
 
 void Game::startGame()
 {
+  updatePlayerNames();
+
   m_allcards = Cards::randomize();
 
   auto it = std::begin(m_allcards);

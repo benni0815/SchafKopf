@@ -44,6 +44,9 @@ public:
 public slots:
   void endGame(void);
 
+  /// Called on initialization and when the user changed the names of the players to represent the changes in the UI.
+  void updatePlayerNames();
+
 signals:
   void gameStarted();
   void gameEnded();
@@ -61,9 +64,6 @@ private:
   /// Sets the results of all players to 0. This is necessary if for example the class
   /// for the results calculation was changed or when a new game is started.
   void resetGameResults();
-
-  /// Called on initialization and when the user changed the names of the players to represent the changes in the UI.
-  void updatePlayerNames();
 
 private:
   /// Gives cards to the player and begins a new gameinfo.
