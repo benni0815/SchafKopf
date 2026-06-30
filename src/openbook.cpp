@@ -9,79 +9,71 @@
 #include "gameinfo.h"
 #include "computerplayer.h"
 
-/* A few macros which make it quite simple to build macros for openbook rules */
-#define RULE( function, description, condition, eval ) \
-    CardList* function ( CardList* allowed, Game* game ) \
-    { \
-        /* description */ \
-        qDebug("Executing Rule=" description ); \
-        const GameInfo* info = game->gameInfo(); \
-        if( !(condition) ) \
-            return 0; \
-        CardList* list = new CardList(); \
-        int i=0; \
-        for( i=0;i<allowed->count();i++ ) \
-        { \
-            Card* c = allowed->at( i ); \
-            if( (eval) ) \
-                list->append( allowed->at( i ) ); \
-        } \
-        return list; \
-    }
+#include <iostream>
 
 
-// Do not polute the global namespace
 namespace OpeningRules
 {
-    struct s_rule
-    {
-        CardList* (*rule)( CardList*, Game* );
-        bool player;
-    };
-    
-    RULE( player1, "davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon",
-        ( info->mode() == GameInfo::RUFSPIEL &&
-          !allowed->contains({Card::Sau, info->color()})),
-        (!info->istTrumpf(c) && c->color() == info->color() && c->card() != Card::Sau && c->card() != Card::Zehn)
-    )
-    
-    RULE( player2, "player plays trump",
-        ( true ),
-        ( info->istTrumpf( c ) )
-    )
 
-    RULE( rule1, "play an ace on a solo", 
-        ( info->mode() == GameInfo::STICHT || 
-          info->mode() == GameInfo::WENZ || 
-          info->mode() == GameInfo::GEIER ),
-        (!info->istTrumpf(c) && c->card() == Card::Sau)
-    )
-    
-    // TODO: nur suchen wenn noch niemand gesucht hat 
-    // bzw. davon gelaufen ist
-    RULE( rule2, "such die sau auf die gespielt wird", 
-        ( info->mode() == GameInfo::RUFSPIEL  ),
-        ( !info->istTrumpf( c ) && c->color() == info->color() )
-    )
-    
-    RULE( rule3, "nicht spieler spielt farbe", 
-        ( true ), // always execute this one
-        ( !info->istTrumpf( c ) )
-    )
-    
-    /** This list should contain all rules for the open book:
-      */
-      
-    s_rule rules[] =
-    {
-        { player1, true },
-        { player2, true },
-        { rule1, false },
-        { rule2, false },
-        { rule3, false }
-    };
+enum SpielerStatus : bool
+{
+  NichtSpieler = false,
+  Spieler = true
+};
 
-}
+struct Rule
+{
+  const std::string description;
+  const SpielerStatus player{NichtSpieler};
+  std::function<bool(GameInfo*, const CardList&)> condition;
+  std::function<bool(GameInfo*, Card*)> eval;
+
+  CardList execute(const CardList& allowed, Game* game) const
+  {
+    std::cout << "Executing Rule: " << description << std::endl;
+    const auto info = game->gameInfo();
+    if (!condition(info, allowed))
+    {
+      return {};
+    }
+    CardList list;
+    for (int i = 0; i < allowed.size(); i++)
+    {
+      Card* c = allowed.at(i);
+      if (eval(info, c)) { list.push_back(allowed.at(i)); }
+    }
+    return list;
+  }
+};
+
+const auto player1 = Rule{"davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", Spieler,
+  [] (auto info, auto allowed) { return info->mode() == GameInfo::RUFSPIEL && !allowed.contains({Card::Sau, info->color()}); },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c->color() == info->color() && c->card() != Card::Sau && c->card() != Card::Zehn; }
+};
+
+const auto player2 = Rule{"player plays trump", Spieler,
+  [] (auto, auto) { return true; },
+  [] (auto info, auto c) { return info->istTrumpf(c); }
+};
+
+const auto rule1 = Rule{"play an ace on a solo", NichtSpieler,
+  [] (auto info, auto) { return info->mode() == GameInfo::STICHT || info->mode() == GameInfo::WENZ || info->mode() == GameInfo::GEIER; },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c->card() == Card::Sau; }
+};
+
+const auto rule2 = Rule{"such die sau auf die gespielt wird", NichtSpieler,
+  [] (auto info, auto) { return info->mode() == GameInfo::RUFSPIEL; },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c->color() == info->color(); }
+};
+
+const auto rule3 = Rule{"nicht spieler spielt farbe", NichtSpieler,
+  [] (auto, auto) { return true; },
+  [] (auto info, auto c) {return !info->istTrumpf(c); }
+};
+
+const auto rules = std::vector<Rule>{player1, player2, rule1, rule2, rule3};
+
+} // namespace OpeningRules
 
 using namespace OpeningRules;
 
@@ -100,29 +92,20 @@ OpenBook::OpenBook( ComputerPlayer* player, Game* game )
 CardList OpenBook::possibleCards()
 {
     CardList allowed = m_self->allowedCards();
-    CardList list;
-    unsigned int i = 0;
 
-    for( i=0;i<sizeof(rules)/sizeof(s_rule);i++)
+    for (const auto& rule : rules)
     {
-        s_rule r = rules[i];
-        if (r.player == m_self->isPlayer())
+        if (rule.player == m_self->isPlayer())
         {
-            CardList* l = r.rule(&allowed, m_game);
-            if( l )
+            CardList l = rule.execute(allowed, m_game);
+            if (!l.empty())
             {
-                list.appendList(*l);
-                if( !l->isEmpty() )
-                {
-                    delete l;
-                    break;
-                } else
-                    delete l;
+               return l;
             }
-        } 
+        }
     }
-    
-    return list;
+
+    return {};
 }
 
 //////////////////////////////////
