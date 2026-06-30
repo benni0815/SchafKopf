@@ -310,7 +310,6 @@ bool Game::setupGameInfo(Player *players[])
 {
     // list of games the players want to playercards
     // maximum 4 entries
-    QList<GameInfo*> games;
     unsigned int i = 0;
     int humanPlayer = 0, playerInstance;
     for( i=0;i<PLAYERS;i++)
@@ -319,18 +318,19 @@ bool Game::setupGameInfo(Player *players[])
             humanPlayer=i;
     }
 
+    std::vector<GameInfo> games;
     for( i=0;i<PLAYERS;i++)
     {
         playerInstance=4-humanPlayer+i;
         if(playerInstance>3)
              playerInstance=playerInstance-4;
-        GameInfo* info = players[i]->gameInfo();
+        auto info = players[i]->gameInfo();
         if(terminated)
             return false;
         if( info )
         {
             info->setSpieler( players[i] );
-            games.append( info );
+            games.push_back(info.value());
             if (!isHuman(players[i]))
             {
                 emit bubble(playerInstance, i18n("%1: \"I want to play.\"", players[i]->name()));
@@ -350,7 +350,7 @@ bool Game::setupGameInfo(Player *players[])
     if(terminated)
         return false;
 
-    if( games.isEmpty() )
+    if (games.empty())
     {
         if( !setupGameInfoForced(players) )
             return false;
@@ -358,14 +358,14 @@ bool Game::setupGameInfo(Player *players[])
     else
     {
         // find the highest game in the list
-        GameInfo* best = games.first();
-        for( int t = 0; t < games.count(); t++ )
+        GameInfo& best = games.front();
+        for (size_t t = 0; t < games.size(); ++t)
         {
-            if( *games.at( t ) > *best )
-                best = games.at( t );
+            if (games.at(t) > best)
+                best = games.at(t);
         }
 
-        m_gameinfo = *best;
+        m_gameinfo = best;
     }
 
     // finde den mitspieler:

@@ -20,7 +20,7 @@ class ComputerPlayer : public Player
         void init() override;
         void klopfen() override;
         Card *play() override;
-        GameInfo* gameInfo(bool force = false) override;
+        std::optional<GameInfo> gameInfo(bool force = false) override;
 
         Card* findHighestCard(const CardList& cards) const;
         Card* findSchmiere(const CardList& cards) const;

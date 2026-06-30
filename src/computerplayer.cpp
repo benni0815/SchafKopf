@@ -132,7 +132,7 @@ Card *ComputerPlayer::play()
     return findCardToPlay(allowed);
 }
 
-GameInfo* ComputerPlayer::gameInfo( bool force )
+std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
 {
     QList<game_data> lst;
     
@@ -180,21 +180,19 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
                 continue;
             }
         
-        GameInfo* gi = new GameInfo;
-        *gi = lst[best].info;
-        return gi;
+        return lst[best].info;
     }
     
     if( force && lst.isEmpty() )
     {
         // Play eichel sticht for now. Optimize later
-        GameInfo* gi = new GameInfo;
-        gi->setColor( Card::EICHEL );
-        gi->setMode( GameInfo::STICHT );
+        GameInfo gi;
+        gi.setColor(Card::EICHEL);
+        gi.setMode(GameInfo::STICHT);
         return gi;
     }
     
-    return nullptr;
+    return {};
 }
 
 Card* ComputerPlayer::findCardToPlay(const CardList& cards)

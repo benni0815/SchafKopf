@@ -48,12 +48,12 @@ Card *HumanPlayer::play()
     return m_card;
 }
 
-GameInfo* HumanPlayer::gameInfo( bool force )
+std::optional<GameInfo> HumanPlayer::gameInfo(bool force)
 {
     if( force )
     {
-      GameInfo* gameInfo = new GameInfo();
-      emit selectGame(gameInfo, m_cards.toInts(), true);
+      GameInfo gameInfo;
+      emit selectGame(&gameInfo, m_cards.toInts(), true);
       return gameInfo;
     }
     else
@@ -62,11 +62,11 @@ GameInfo* HumanPlayer::gameInfo( bool force )
       emit questionYesNo(i18n("Do you want to play?"), &result);
       if (result == YES)
       {
-        GameInfo* gameInfo = new GameInfo();
-        emit selectGame(gameInfo, m_cards.toInts());
+        GameInfo gameInfo;
+        emit selectGame(&gameInfo, m_cards.toInts());
         return gameInfo;
       }
     }
 
-    return nullptr;
+    return {};
 }

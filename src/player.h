@@ -19,7 +19,7 @@ class Player : public QObject
     public:
         Player(unsigned int id, Game* game);
         
-        virtual ~Player() = default;
+        ~Player() override = default;
 
         virtual void init() {}
         /** set m_geklopft to true in this function if the player wants to double
@@ -30,7 +30,7 @@ class Player : public QObject
         /** if @p force is true the player has to play wether he wants or not
           * a valid GameInfo object has to be returned in this case!
           */
-        virtual GameInfo* gameInfo( bool force = false ) = 0;
+        virtual std::optional<GameInfo> gameInfo(bool force = false) = 0;
         
         void sortCards();
         

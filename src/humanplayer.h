@@ -15,7 +15,7 @@ class HumanPlayer : public Player
         
         void klopfen() override;
         Card *play() override;
-        GameInfo* gameInfo(bool force = false) override;
+        std::optional<GameInfo> gameInfo(bool force = false) override;
         
     signals:
         void forbiddenCard(unsigned int cardId);
