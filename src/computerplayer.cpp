@@ -195,7 +195,7 @@ Card ComputerPlayer::findCardToPlay(const CardList& cards)
             // -oder wenn der darauf folgende spieler der selben
             //  partei angehoert wie man selbst (wichtig fuer solos)
             if (m_game->currStich().size() == PLAYERS - 1
-                || (highestTrump.id != CardId{} && findHighestCard(m_game->currStich()).id == highestTrump.id)
+                || (highestTrump.id != CardId{} && m_game->highestCardInStich().id == highestTrump.id)
                 || (m_game->currStich().size() == PLAYERS - 2 && m_game->nextPlayer()->isPlayer() == this->isPlayer()))
             {
                 log("schmiere!");
@@ -242,7 +242,7 @@ Card ComputerPlayer::findCardToPlay(const CardList& cards)
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
             log("Versuche so niedrig wie möglich zu stechen.");
-            return findLowestPossibleCard(findHighestCard(stich), cards);
+            return findLowestPossibleCard(m_game->highestCardInStich(), cards);
         }
         else
         {
@@ -250,11 +250,11 @@ Card ComputerPlayer::findCardToPlay(const CardList& cards)
           // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
           if (m_game->currStich().size() == PLAYERS - 1)
           {
-            return findLowestPossibleCard(findHighestCard(stich), cards);
+            return findLowestPossibleCard(m_game->highestCardInStich(), cards);
           }
           else
           {
-            return findHighestCard(cards);
+            return m_game->gameInfo()->highestCard(cards);
           }
         }
     }
@@ -262,24 +262,13 @@ Card ComputerPlayer::findCardToPlay(const CardList& cards)
     return findCheapestCard(cards);
 }
 
-Card ComputerPlayer::findHighestCard(const CardList& cards) const
-{
-  auto compare = [this] (const Card& lhs, const Card& rhs) { return m_game->isHigher(lhs.id, rhs.id); };
-  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
-  if (it == std::end(cards))
-  {
-    return {};
-  }
-  return *it;
-}
-
 Card ComputerPlayer::findLowestPossibleCard(const Card& highest, const CardList& cards) const
 {
-    Card high = findHighestCard(cards);
+    Card high = m_game->gameInfo()->highestCard(cards);
 
     for (const auto& card : cards)
     {
-        if (m_game->isHigher(card.id, highest.id) && !m_game->isHigher(card.id, high.id))
+        if (m_game->gameInfo()->isHigher(card.id, highest.id) && !m_game->gameInfo()->isHigher(card.id, high.id))
             high = card;
     }
 
@@ -288,24 +277,14 @@ Card ComputerPlayer::findLowestPossibleCard(const Card& highest, const CardList&
 
 Card ComputerPlayer::findSchmiere(const CardList& cards) const
 {
-  auto compare = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) > Cards::getPoints(rhs); };
-  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
-  if (it == std::end(cards))
-  {
-    return {};
-  }
-  return *it;
+  auto less = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) < Cards::getPoints(rhs); };
+  return Cards::maxElement(cards, less);
 }
 
 Card ComputerPlayer::findCheapestCard(const CardList& cards) const
 {
-  auto compare = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) < Cards::getPoints(rhs); };
-  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
-  if (it == std::end(cards))
-  {
-    return {};
-  }
-  return *it;
+  auto more = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) > Cards::getPoints(rhs); };
+  return Cards::maxElement(cards, more);
 }
 
 bool ComputerPlayer::canMakeStich(const CardList& cards)
@@ -313,14 +292,14 @@ bool ComputerPlayer::canMakeStich(const CardList& cards)
     Card highestCard{};
     Card card{};
 
-    if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
+    if (!m_game->currStich().empty()) highestCard = m_game->highestCardInStich();
     if (!cards.empty()) { card = cards.front(); }
     if (highestCard.id == CardId{})
         return true;
     for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
-        if (m_game->isHigher(card.id, highestCard.id))
+        if (m_game->gameInfo()->isHigher(card.id, highestCard.id))
             return true;
     }
     return false;
@@ -329,7 +308,7 @@ bool ComputerPlayer::canMakeStich(const CardList& cards)
 bool ComputerPlayer::ownStich()
 {
     Card highestCard{};
-    if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
+    if (!m_game->currStich().empty()) highestCard = m_game->highestCardInStich();
 
     /* The stich cannot belong to us if we are to play
      * the first card! 

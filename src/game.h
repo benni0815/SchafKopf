@@ -42,8 +42,7 @@ class Game : public QThread
         std::array<std::shared_ptr<Player>, PLAYERS> players();
 
         bool isTerminated() const { return terminated; }
-        int highestCard(const CardList* list = nullptr);
-        bool isHigher(CardId card, CardId high);
+        Card highestCardInStich() const;
 
         /** returns how many players have doubled
           */

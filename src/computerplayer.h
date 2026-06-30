@@ -19,7 +19,6 @@ class ComputerPlayer : public Player
         Card play() override;
         std::optional<GameVariant> gameInfo(bool force = false) override;
 
-        Card findHighestCard(const CardList& cards) const;
         Card findSchmiere(const CardList& cards) const;
 
         Card findCheapestCard(const CardList& cards) const;

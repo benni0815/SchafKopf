@@ -124,7 +124,6 @@ CardList StrategyBook::possibleCards()
         
     const CardList allowed = m_self->allowedCards();
     CardList list;
-    Card highest{};
     bool unser_stich = false;
     bool abspatzen = false;
     
@@ -136,7 +135,7 @@ CardList StrategyBook::possibleCards()
      *    - stechen
      *    - abspatzen
      */
-    highest = stiche.at(m_game->highestCard());
+    Card highest = m_game->highestCardInStich();
     if (highest.owner->isPlayer())
     {
         // der stich gehört der spieler partei
@@ -162,8 +161,8 @@ CardList StrategyBook::possibleCards()
         // stich des gegners
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
-        Card c = allowed.at(m_game->highestCard(&allowed));
-        if (c.id != CardId{} && m_game->isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
+        Card c = m_game->gameInfo()->highestCard(allowed);
+        if (c.id != CardId{} && m_game->gameInfo()->isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
             list.push_back(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;

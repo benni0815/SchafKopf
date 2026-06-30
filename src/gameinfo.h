@@ -51,6 +51,9 @@ class GameInfo{
           */
         int evalCard(CardId card) const;
 
+        bool isHigher(CardId card, CardId high) const;
+        Card highestCard(const CardList& cards) const;
+
         /** calculate the number of "laufende" ticks
           */
         int laufende();

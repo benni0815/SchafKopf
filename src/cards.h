@@ -29,4 +29,15 @@ CardList findByColor(const CardList& cards, CardId::Color color);
 using EvalFunc = std::function<int(const Card&)>;
 void sort(CardList& cards, EvalFunc eval);
 
+template <typename T, typename TFunc>
+auto maxElement(const T& cards, TFunc less) -> typename T::value_type
+{
+  auto it = std::max_element(std::begin(cards), std::end(cards), less);
+  if (it == std::end(cards))
+  {
+    return {};
+  }
+  return *it;
+}
+
 } // namespace Cards

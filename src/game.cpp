@@ -168,14 +168,16 @@ void Game::gameLoop()
                 if( terminated )
                     return;
             }
-            index = highestCard();
-            tmp[index]->addStich( m_currstich );
+            auto highestCard = highestCardInStich();
+            highestCard.owner->addStich(m_currstich);
 
             QStringList playernames;
-            for( a = 0; a < PLAYERS; a++ )
-                playernames.append(m_currstich.at(a).owner->name());
+            for (const Card c : m_currstich)
+            {
+              playernames.append(c.owner->name());
+            }
 
-            emit playerMadeStich(tmp[index]->id(), Cards::toIds(m_currstich), tmp[index]->name(), playernames);
+            emit playerMadeStich(highestCard.owner->id(), Cards::toIds(m_currstich), highestCard.owner->name(), playernames);
 
             // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
@@ -228,60 +230,9 @@ std::array<std::shared_ptr<Player>, PLAYERS> Game::players()
   return m_players;
 }
 
-int Game::highestCard(const CardList* list)
+Card Game::highestCardInStich() const
 {
-    if( !list )
-        list = &m_currstich;
-
-    Card high{};
-    if (!list->empty()) { high = list->front(); }
-
-    for (int t = 0; t < list->size(); ++t)
-    {
-        const Card card = list->at(t);
-        if (isHigher(card.id, high.id))
-        {
-            high = card;
-            continue;
-        }
-    }
-    
-    for (int i = 0; i < (int)list->size(); ++i)
-    {
-        if (list->at(i).id == high.id)
-            return i;
-    }
-    return 0;
-}
-
-bool Game::isHigher(CardId card, CardId high)
-{
-    int colcnt{0};
-
-    const auto cardVal = m_gameinfo.evalCard(card);
-    const auto highVal = m_gameinfo.evalCard(high);
-    if (m_gameinfo.istTrumpf(card) || m_gameinfo.istTrumpf(high))
-        return highVal < cardVal;
-    else
-    {
-        switch( m_gameinfo.mode() )
-        {
-            case GameVariant::GEIER:
-            case GameVariant::WENZ:
-                colcnt=NUMCARDS-1;
-                break;
-            case GameVariant::RAMSCH:
-            case GameVariant::RUFSPIEL:
-            case GameVariant::STICHT:
-            case GameVariant::DACHS:
-            default:
-                colcnt=NUMCARDS-2;
-                break;
-        }
-        if( ( highVal - 1 ) / colcnt == ( cardVal - 1 ) / colcnt )
-            return highVal < cardVal;
-    }
-    return false;
+  return m_gameinfo.highestCard(m_currstich);
 }
 
 void Game::gameResults()

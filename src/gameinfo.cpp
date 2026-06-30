@@ -294,6 +294,42 @@ int GameInfo::evalCard(CardId card) const
     return CARD_CNT-(trumpf_cnt*NUMTRUMPF+colors_index*(NUMCARDS-trumpf_cnt)+cards_index);
 }
 
+bool GameInfo::isHigher(CardId card, CardId high) const
+{
+  int colcnt{0};
+
+  const auto cardVal = evalCard(card);
+  const auto highVal = evalCard(high);
+  if (istTrumpf(card) || istTrumpf(high))
+    return highVal < cardVal;
+  else
+  {
+    switch (mode())
+    {
+    case GameVariant::GEIER:
+    case GameVariant::WENZ:
+      colcnt = NUMCARDS - 1;
+      break;
+    case GameVariant::RAMSCH:
+    case GameVariant::RUFSPIEL:
+    case GameVariant::STICHT:
+    case GameVariant::DACHS:
+    default:
+      colcnt = NUMCARDS - 2;
+      break;
+    }
+    if ((highVal - 1) / colcnt == (cardVal - 1) / colcnt)
+      return highVal < cardVal;
+  }
+  return false;
+}
+
+Card GameInfo::highestCard(const CardList &cards) const
+{
+  auto less = [this] (const Card& lhs, const Card& rhs) { return isHigher(rhs.id, lhs.id); };
+  return Cards::maxElement(cards, less);
+}
+
 int GameInfo::laufende()
 {
   if (m_game.mode == GameVariant::RAMSCH)
