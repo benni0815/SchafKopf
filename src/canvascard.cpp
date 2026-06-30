@@ -7,6 +7,7 @@
 
 #include <QTimer>
 #include <QPainter>
+#include <QGraphicsDropShadowEffect>
 
 
 CanvasCard::CanvasCard()
@@ -14,7 +15,12 @@ CanvasCard::CanvasCard()
 {
     setFlag( QGraphicsItem::ItemIsSelectable );
     setTransformationMode( Qt::SmoothTransformation );
-    //setGraphicsEffect( new  QGraphicsDropShadowEffect() );
+
+    auto dropShadowEffect = new QGraphicsDropShadowEffect(this);
+    dropShadowEffect->setOffset(2, 2);
+    dropShadowEffect->setBlurRadius(5);
+    setGraphicsEffect(dropShadowEffect);
+
     timer = new QTimer( this );
     connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
