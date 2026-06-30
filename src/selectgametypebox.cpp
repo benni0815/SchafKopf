@@ -4,8 +4,7 @@
 #include "selectgametypebox.h"
 
 #include "canvascard.h"
-#include "card.h"
-#include "cardlist.h"
+#include "cards.h"
 #include "gameinfo.h"
 #include "settings.h"
 
@@ -120,14 +119,12 @@ void SelectGameTypeBox::updatePreview()
 {
     const auto info = GameInfo({gameMode(), CardId::NoColor});
 
-    CardList cards;
-    cards.init();
     std::vector<CardId> trumpf;
-    for (const Card* card : cards)
+    for (const auto card : Cards::initIds())
     {
-      if (info.istTrumpf(card->id()))
+      if (info.istTrumpf(card))
       {
-        trumpf.push_back(card->id());
+        trumpf.push_back(card);
       }
     }
 

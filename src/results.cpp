@@ -5,8 +5,7 @@
 
 #include "schafkopfdef.h"
 
-#include "card.h"
-#include "cardlist.h"
+#include "cards.h"
 #include "game.h"
 #include "gameinfo.h"
 #include "player.h"
@@ -76,10 +75,10 @@ void Results::parse()
         // oder wenn er alle stiche hat, dann hat er mit durchmarsch gewonnen
         int highest = 0;
         for( i=0;i<PLAYERS;i++ )
-            if (m_game->findIndex(i)->stiche().points() > m_game->findIndex(highest)->stiche().points())
+            if (Cards::calcPoints(m_game->findIndex(i)->stiche()) > Cards::calcPoints(m_game->findIndex(highest)->stiche()))
                 highest = i;
 
-        m_points = m_game->findIndex(highest)->stiche().points();
+        m_points = Cards::calcPoints(m_game->findIndex(highest)->stiche());
         if (m_game->findIndex(highest)->stiche().size() == TURNS)
         {
             m_winners.append( m_game->findIndex( highest ) );
@@ -99,9 +98,9 @@ void Results::parse()
     {
         auto stiche = m_gameinfo->spieler()->stiche();
         if( m_gameinfo->mitspieler() )
-            stiche.appendList( m_gameinfo->mitspieler()->stiche() );
+            stiche.append(m_gameinfo->mitspieler()->stiche());
        
-        m_points = stiche.points();
+        m_points = Cards::calcPoints(stiche);
         m_schwarz = (stiche.empty() || stiche.size() == NUMCARDS * PLAYERS);
         m_schneider = (m_points < 31 || m_points >= 91 );
     

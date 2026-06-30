@@ -16,7 +16,7 @@ class HumanPlayer : public Player
         ~HumanPlayer() override = default;
         
         void klopfen() override;
-        Card *play() override;
+        Card play() override;
         std::optional<GameVariant> gameInfo(bool force = false) override;
         
     signals:
@@ -24,7 +24,4 @@ class HumanPlayer : public Player
         void questionYesNo(const QString& question, int* result);
         void getCard(CardId* card);
         void selectGame(GameVariant* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
-
-    private:
-        Card* m_card{};
 };

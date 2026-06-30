@@ -3,8 +3,7 @@
 
 #include "openbook.h"
 
-#include "card.h"
-#include "cardlist.h"
+#include "cards.h"
 #include "game.h"
 #include "gameinfo.h"
 #include "computerplayer.h"
@@ -39,15 +38,15 @@ struct Rule
     CardList list;
     for (int i = 0; i < allowed.size(); i++)
     {
-      Card* c = allowed.at(i);
-      if (eval(info, c->id())) { list.push_back(allowed.at(i)); }
+      Card c = allowed.at(i);
+      if (eval(info, c.id)) { list.push_back(allowed.at(i)); }
     }
     return list;
   }
 };
 
 const auto player1 = Rule{"davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", Spieler,
-  [] (auto info, auto allowed) { return info->mode() == GameVariant::RUFSPIEL && !allowed.contains({CardId::Sau, info->color()}); },
+  [] (auto info, auto allowed) { return info->mode() == GameVariant::RUFSPIEL && !Cards::find(allowed, {CardId::Sau, info->color()}); },
   [] (auto info, auto c) { return !info->istTrumpf(c) && c.color == info->color() && c.type != CardId::Sau && c.type != CardId::Zehn; }
 };
 
@@ -123,9 +122,9 @@ CardList StrategyBook::possibleCards()
     if (stiche.size() != 3 )
       return {};
         
-    CardList allowed = m_self->allowedCards();
+    const CardList allowed = m_self->allowedCards();
     CardList list;
-    Card* highest{};
+    Card highest{};
     bool unser_stich = false;
     bool abspatzen = false;
     
@@ -138,7 +137,7 @@ CardList StrategyBook::possibleCards()
      *    - abspatzen
      */
     highest = stiche.at(m_game->highestCard());
-    if( highest->owner()->isPlayer() )
+    if (highest.owner->isPlayer())
     {
         // der stich gehört der spieler partei
         unser_stich = m_self->isPlayer();
@@ -151,9 +150,9 @@ CardList StrategyBook::possibleCards()
     if( unser_stich )
     {
         // unser stich: suche die karte mit den meisten punkten
-        Card* c = m_self->findSchmiere(allowed);
+        Card c = m_self->findSchmiere(allowed);
         // nur karten die hoeher als ein koenig sind schmieren
-        if( c && c->points() >= 4 )
+        if (c.id != CardId{} && Cards::getPoints(c) >= 4 )
             list.push_back(c);
         else
             abspatzen = true;
@@ -163,8 +162,8 @@ CardList StrategyBook::possibleCards()
         // stich des gegners
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
-        Card* c = allowed.at(m_game->highestCard(&allowed));
-        if (c && m_game->isHigher(c->id(), highest->id()) && stiche.points() > 6)
+        Card c = allowed.at(m_game->highestCard(&allowed));
+        if (c.id != CardId{} && m_game->isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
             list.push_back(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;
@@ -174,8 +173,8 @@ CardList StrategyBook::possibleCards()
     {
         // nichts zum schmieren gefunden
         // abspatzen:
-        Card* c = m_self->findCheapestCard(allowed);
-        if( c && c->points() == 0 )
+        Card c = m_self->findCheapestCard(allowed);
+        if (c.id != CardId{} && Cards::getPoints(c) == 0 )
             list.push_back(c);
     }
     

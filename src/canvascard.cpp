@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "canvascard.h"
-#include "card.h"
+
 #include "settings.h"
 
 #include <QTimer>
@@ -19,11 +19,41 @@ QPixmap& backside()
   return pix;
 }
 
+KCardInfo kdeCardInfo(CardId id)
+{
+  static const auto colorMap = std::unordered_map<CardId::Color, KCardInfo::Suit>{
+    {CardId::Eichel, KCardInfo::Club},
+    {CardId::Gras, KCardInfo::Spade},
+    {CardId::Herz, KCardInfo::Heart},
+    {CardId::Schellen, KCardInfo::Diamond}
+  };
+
+  static const auto typeMap = std::unordered_map<CardId::Type, KCardInfo::Card>{
+    {CardId::Sau,    KCardInfo::Ace},
+    {CardId::Koenig, KCardInfo::King},
+    {CardId::Ober,   KCardInfo::Queen},
+    {CardId::Unter,  KCardInfo::Jack},
+    {CardId::Zehn,   KCardInfo::Ten},
+    {CardId::Neun,   KCardInfo::Nine},
+    {CardId::Acht,   KCardInfo::Eight},
+    {CardId::Sieben, KCardInfo::Seven}
+  };
+
+  const auto colorIt = colorMap.find(id.color);
+  const auto color = (colorIt == std::end(colorMap)) ? KCardInfo::Suit::None
+                                                     : colorIt->second;
+  const auto typeIt = typeMap.find(id.type);
+  const auto type = (typeIt == std::end(typeMap)) ? KCardInfo::Card::Joker
+                                                  : typeIt->second;
+
+  return KCardInfo(color, type);
+}
+
 } // namespace
 
 QPixmap CanvasCard::frontsidePixmap(CardId id)
 {
-  return Settings::instance()->cardCache()->frontside(Card::kdeCardInfo(id));
+  return Settings::instance()->cardCache()->frontside(kdeCardInfo(id));
 }
 
 const QPixmap& CanvasCard::backsidePixmap()

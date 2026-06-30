@@ -5,10 +5,8 @@
 
 #include "player.h"
 #include "openbook.h"
+#include "types.h"
 
-
-class Card;
-class CardList;
 
 class ComputerPlayer : public Player
 {
@@ -18,17 +16,17 @@ class ComputerPlayer : public Player
 
         void init() override;
         void klopfen() override;
-        Card *play() override;
+        Card play() override;
         std::optional<GameVariant> gameInfo(bool force = false) override;
 
-        Card* findHighestCard(const CardList& cards) const;
-        Card* findSchmiere(const CardList& cards) const;
+        Card findHighestCard(const CardList& cards) const;
+        Card findSchmiere(const CardList& cards) const;
 
-        Card* findCheapestCard(const CardList& cards) const;
+        Card findCheapestCard(const CardList& cards) const;
 
         /** Finde die niedrigste Karte aus @p cards um @p highest zu stechen
           */
-        Card* findLowestPossibleCard(Card* highest, const CardList& cards) const;
+        Card findLowestPossibleCard(const Card& highest, const CardList& cards) const;
 
         /** gibt zurueck wievile karten eines typs noch im
           * spiel sind.
@@ -40,7 +38,7 @@ class ComputerPlayer : public Player
         int cardsStillInGame( int c );
 
     private:
-        Card* findCardToPlay(const CardList& cards);
+        Card findCardToPlay(const CardList& cards);
         bool canMakeStich(const CardList& cards);
 
         /** Prueft ob der aktuelle Stich der eigenen Spieler Partei
@@ -60,11 +58,11 @@ class ComputerPlayer : public Player
          *  NULL is returned if there is no trump in
          *  the game anymore.
          */
-        Card *highestTrumpfInGame();
+        Card highestTrumpfInGame();
 
         int myTrumpfs();
 
-        void cardPlayed(unsigned int player, Card *c);
+        void cardPlayed(unsigned int player, Card* c);
 
     private:
         void log(const QString& msg) const;

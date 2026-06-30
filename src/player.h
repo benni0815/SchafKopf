@@ -1,13 +1,12 @@
 #pragma once
 
-#include "cardlist.h"
 #include "types.h"
 
 #include <QObject>
 #include <QString>
 
 
-class Card;
+struct Card;
 class Game;
 
 class Player : public QObject
@@ -24,7 +23,7 @@ class Player : public QObject
           * and to false if not. 
           */
         virtual void klopfen();
-        virtual Card *play() = 0;
+        virtual Card play() = 0;
         /** if @p force is true the player has to play wether he wants or not
           * a valid GameInfo object has to be returned in this case!
           */
@@ -38,7 +37,7 @@ class Player : public QObject
         void setName(const QString& name);
         const CardList& cards() const;
         void setCards(const CardList& cards);
-        void removeCard(const Card* card);
+        void removeCard(const CardId& id);
         const CardList& stiche() const;
         void clearStiche();
         void addStich(const CardList& stich);
@@ -84,9 +83,9 @@ class Player : public QObject
         bool m_has_doubled{false};
         unsigned int m_id{0};
 
-        CardList cardsOfSameType(Card* card);
-        Card* firstPlayedCard();
-        bool istTrumpf(Card* card);
+        CardList cardsOfSameType(const std::optional<Card>& card);
+        std::optional<Card> firstPlayedCard();
+        bool istTrumpf(const Card& card);
 
     private:
         double m_points{0};

@@ -1,8 +1,7 @@
 #include "player.h"
 
-#include "card.h"
 #include "game.h"
-#include "cardlist.h"
+#include "cards.h"
 
 #include <QDebug>
 
@@ -38,15 +37,15 @@ void Player::setCards(const CardList& cards)
     // tell the card WHO owns them and WHOM they should serve! ;-)
     for (auto& card : m_cards)
     {
-      card->setOwner(this);
+      card.owner = this;
     }
 
-    emit gotCards(id(), m_cards.toIds());
+    emit gotCards(id(), Cards::toIds(m_cards));
 }
 
-void Player::removeCard(const Card* card)
+void Player::removeCard(const CardId& id)
 {
-  const auto it = std::find(std::begin(m_cards), std::end(m_cards), card);
+  const auto it = std::find_if(std::begin(m_cards), std::end(m_cards), [&] (const Card& card) { return card.id == id; });
   if (it == std::end(m_cards))
   {
     return;
@@ -56,8 +55,8 @@ void Player::removeCard(const Card* card)
 
 void Player::sortCards()
 {
-    m_cards.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card->id()); });
-    emit gotCards(id(), m_cards.toIds());
+  Cards::sort(m_cards, [this] (const Card& card) { return m_game->gameInfo()->evalCard(card.id); });
+  emit gotCards(id(), Cards::toIds(m_cards));
 }
 
 void Player::klopfen()
@@ -90,30 +89,30 @@ void Player::addStich(const CardList& stich)
 
 void Player::removeTrumpf(CardList& liste)
 {
-  auto eraseFrom = std::remove_if(std::begin(liste), std::end(liste), [this] (Card* card) { return istTrumpf(card); });
+  auto eraseFrom = std::remove_if(std::begin(liste), std::end(liste), [this] (const Card& card) { return istTrumpf(card); });
   liste.erase(eraseFrom, std::end(liste));
 }
 
-bool Player::istTrumpf(Card* card)
+bool Player::istTrumpf(const Card& card)
 {
-    return m_game->gameInfo()->istTrumpf(card->id());
+    return m_game->gameInfo()->istTrumpf(card.id);
 }
 
 CardList Player::PlayerCards()
 {
-    return m_cards.FindCards(CardId::NoColor, CardId::NoStich);
+  return m_cards;
 }
 
-Card* Player::firstPlayedCard()
+std::optional<Card> Player::firstPlayedCard()
 {
     const auto& currStich = m_game->currStich();
     if (currStich.empty())
-        return nullptr;
+      return {};
     else
         return currStich.front();
 }
 
-CardList Player::cardsOfSameType(Card* card)
+CardList Player::cardsOfSameType(const std::optional<Card>& card)
 {
     auto SpielerKarten = PlayerCards();
 
@@ -121,17 +120,17 @@ CardList Player::cardsOfSameType(Card* card)
         return SpielerKarten; // müssen alle Karten zurückgegeben werden
     else
     {
-        if(istTrumpf(card)) // müssen alle trümpfe zurückgegeben werden
+        if (istTrumpf(card.value())) // müssen alle trümpfe zurückgegeben werden
         {
             auto AntiMaske = PlayerCards();
             removeTrumpf(AntiMaske);
-            SpielerKarten.RemoveCards(AntiMaske);
+            Cards::remove(SpielerKarten, Cards::toIds(AntiMaske));
             return SpielerKarten;
         }
         else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
         {
             removeTrumpf(SpielerKarten);
-            return SpielerKarten.FindCards(firstPlayedCard()->color(), CardId::NoStich);
+            return Cards::findByColor(SpielerKarten, firstPlayedCard()->id.color);
         }
     }
 }
@@ -144,38 +143,39 @@ CardList Player::allowedCards()
         allowed = PlayerCards();
     }
 
-    if (m_game->gameInfo()->mode() == GameVariant::RUFSPIEL)
+    auto* gameInfo = m_game->gameInfo();
+    if (gameInfo->mode() == GameVariant::RUFSPIEL)
     {
-        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), CardId::Sau);
-        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), CardId::NoStich);
+        CardList Spielfarbe = Cards::findByColor(allowed, gameInfo->color());
 
         // entferne alle trümpfe aus Spielfarbe
         for (int i = 0; i < Spielfarbe.size(); ++i)
         {
             if (istTrumpf(Spielfarbe.at(i)))
             {
-                Spielfarbe.removeCard(Spielfarbe.at(i));
+                Cards::remove(Spielfarbe, Spielfarbe.at(i).id);
                 qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
             }
         }
 
-        if (!Sau.empty()) //muss nur was machen wenn ich die Sau habe
+        auto Sau = Cards::find(allowed, {CardId::Sau, gameInfo->color()});
+        if (Sau) //muss nur was machen wenn ich die Sau habe
         {
-            if(firstPlayedCard()&&!istTrumpf(firstPlayedCard())&&firstPlayedCard()->color()==m_game->gameInfo()->color())
+            if (firstPlayedCard() && !istTrumpf(firstPlayedCard().value()) && firstPlayedCard()->id.color == gameInfo->color())
             {
-                allowed=Sau;
+                allowed = {Sau.value()};
             }
             else if (m_game->currStich().empty())
             {
                 if (Spielfarbe.size() < 4)
                 {
-                    Spielfarbe.RemoveCards(Sau);
-                    allowed.RemoveCards(Spielfarbe);
+                    Cards::remove(Spielfarbe, Sau->id);
+                    Cards::remove(allowed, Cards::toIds(Spielfarbe));
                 }
             }
             else if (m_game->currStich().size() > 0 && m_cards.size() > 1)
             {
-                allowed.RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
+                Cards::remove(allowed, Sau->id);      // Rufsau darf nicht geschmiert werden
             }
         }
     }

@@ -3,7 +3,7 @@
 
 #include "humanplayer.h"
 
-#include "card.h"
+#include "cards.h"
 #include "schafkopfdef.h"
 
 #include <KLocalizedString>
@@ -22,29 +22,24 @@ void HumanPlayer::klopfen()
   Player::klopfen();
 }
 
-Card *HumanPlayer::play()
+Card HumanPlayer::play()
 {
-    auto allowed = allowedCards();
-    m_card = nullptr;
-
     CardId cpy;
     emit getCard(&cpy);
 
-    while( cpy != CardId{CardId::Type::NoStich} && !allowed.contains( cpy ) )
+    const auto allowed = allowedCards();
+    while (cpy != CardId{} && !Cards::find(allowed, cpy))
     {
         emit forbiddenCard(cpy);
         emit getCard(&cpy);
     }
 
-    for (int i = 0; i < allowed.size(); ++i)
+    const auto it = std::find_if(std::begin(allowed), std::end(allowed), [&] (const Card& c) { return c.id == cpy; });
+    if (it == std::end(allowed))
     {
-        if (allowed.at(i)->id() == cpy)
-        {
-            m_card = allowed.at(i);
-            break;
-        }
+      return {};
     }
-    return m_card;
+    return *it;
 }
 
 std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
@@ -52,7 +47,7 @@ std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
     if( force )
     {
       GameVariant game;
-      emit selectGame(&game, m_cards.toIds(), true);
+      emit selectGame(&game, Cards::toIds(m_cards), true);
       return game;
     }
     else
@@ -62,7 +57,7 @@ std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
       if (result == YES)
       {
         GameVariant game;
-        emit selectGame(&game, m_cards.toIds());
+        emit selectGame(&game, Cards::toIds(m_cards));
         return game;
       }
     }

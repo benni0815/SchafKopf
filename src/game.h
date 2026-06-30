@@ -5,7 +5,6 @@
 
 #include "schafkopfdef.h"
 
-#include "cardlist.h"
 #include "gameinfo.h"
 
 #include <QThread>
@@ -43,7 +42,7 @@ class Game : public QThread
         std::array<std::shared_ptr<Player>, PLAYERS> players();
 
         bool isTerminated() const { return terminated; }
-        int highestCard(CardList* list = nullptr);
+        int highestCard(const CardList* list = nullptr);
         bool isHigher(CardId card, CardId high);
 
         /** returns how many players have doubled
@@ -94,14 +93,14 @@ class Game : public QThread
           * and false when no one wants to playerPlayedCard
           * and a new game should be started
           */
-       bool setupGameInfo(Player *players[]);
+       bool setupGameInfo(const std::array<Player*, PLAYERS>& players);
 
        /** internal helper function for setupGameInfo().
          * handles all cases when no player wants to play.
          * It forces players in certain cases to play according
          * to the users settings.
          */
-       bool setupGameInfoForced(Player *players[]);
+       bool setupGameInfoForced(const std::array<Player*, PLAYERS>& players);
 
     protected:
         /** inherited from QThread, calls gameLoop();

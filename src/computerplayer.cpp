@@ -3,8 +3,7 @@
 
 #include "computerplayer.h"
 
-#include "card.h"
-#include "cardlist.h"
+#include "cards.h"
 #include "game.h"
 #include "gameinfo.h"
 #include "openbook.h"
@@ -35,7 +34,7 @@ void ComputerPlayer::klopfen()
 
     // are all cards in the same color?
     for (int i = start; i < ende; ++i)
-        if (m_cards.at(i)->color() == m_cards.at(start)->color())
+        if (m_cards.at(i).id.color == m_cards.at(start).id.color)
             count++;
 
     if( count == anz )
@@ -48,7 +47,7 @@ void ComputerPlayer::klopfen()
     // are all cards trump?
     count = 0;
     for (int i = start; i < ende; ++i)
-        if (m_cards.at(i)->card() == CardId::Sau || GameInfo({GameVariant::STICHT, CardId::Herz}).istTrumpf(m_cards.at(i)->id()))
+        if (m_cards.at(i).id.type == CardId::Sau || GameInfo({GameVariant::STICHT, CardId::Herz}).istTrumpf(m_cards.at(i).id))
             count++;
 
     if( count == anz )
@@ -77,7 +76,7 @@ void ComputerPlayer::init()
             mitspieler=-1;
 }
 
-Card *ComputerPlayer::play()
+Card ComputerPlayer::play()
 {
     CardList allowed;
 
@@ -91,8 +90,8 @@ Card *ComputerPlayer::play()
         {
             if (!(i < allowed.size() && allowed.size() > 1))
                 break;
-            if (allowed.at(i)->points() == 10)
-                allowed.removeCard(i);
+            if (Cards::getPoints(allowed.at(i)) == 10)
+                allowed.takeAt(i);
             else
                 i++;
         }
@@ -100,8 +99,8 @@ Card *ComputerPlayer::play()
         {
             if (!(i < allowed.size() && allowed.size() > 1))
                 break;
-            if (allowed.at(i)->points() == 4)
-                allowed.removeCard(i);
+            if (Cards::getPoints(allowed.at(i)) == 4)
+                allowed.takeAt(i);
             else
                 i++;
         }
@@ -134,21 +133,20 @@ std::optional<GameVariant> ComputerPlayer::gameInfo(bool force)
     {
         for (const auto color : {CardId::NoColor, CardId::Eichel, CardId::Gras, CardId::Herz, CardId::Schellen})
         {
-            if (!GameInfo::isAllowed(m_cards.toIds(), {mode, color}))
+            if (!GameInfo::isAllowed(Cards::toIds(m_cards), {mode, color}))
               continue;
          
             game_data d;
             d.game = GameVariant{mode, color};
             
-            for (Card* c : m_cards)
+            for (const auto& c : Cards::toIds(m_cards))
             {
-                d.weight += GameInfo::weight(c->id(), d.game);
-                if (GameInfo::istTrumpf(c->id(), d.game))
+                d.weight += GameInfo::weight(c, d.game);
+                if (GameInfo::istTrumpf(c, d.game))
                     d.trumpf++;
-                else if (!GameInfo::istTrumpf(c->id(), d.game) && c->id().type != CardId::Sau)
+                else if (!GameInfo::istTrumpf(c, d.game) && c.type != CardId::Sau)
                 {
-                    CardList list = m_cards.FindCards(c->id().color, CardId::Sau);
-                    if (list.empty())
+                    if (!Cards::find(m_cards, {CardId::Sau, c.color}))
                         d.fehlfarbe++;
                 }
             }
@@ -184,9 +182,9 @@ std::optional<GameVariant> ComputerPlayer::gameInfo(bool force)
     return {};
 }
 
-Card* ComputerPlayer::findCardToPlay(const CardList& cards)
+Card ComputerPlayer::findCardToPlay(const CardList& cards)
 {
-        Card* highestTrump = highestTrumpfInGame();
+    Card highestTrump = highestTrumpfInGame();
 
     if(ownStich())
     {
@@ -196,11 +194,9 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
             //  abzueglich der eigenen truempfe gestochen hat 
             // -oder wenn der darauf folgende spieler der selben
             //  partei angehoert wie man selbst (wichtig fuer solos)
-            if (m_game->currStich().size() == PLAYERS - 1 ||
-                ( highestTrump && 
-                  findHighestCard(m_game->currStich() )->id() == highestTrump->id() ) ||
-                (m_game->currStich().size() == PLAYERS - 2 &&
-                  m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
+            if (m_game->currStich().size() == PLAYERS - 1
+                || (highestTrump.id != CardId{} && findHighestCard(m_game->currStich()).id == highestTrump.id)
+                || (m_game->currStich().size() == PLAYERS - 2 && m_game->nextPlayer()->isPlayer() == this->isPlayer()))
             {
                 log("schmiere!");
                 return findSchmiere(cards);
@@ -232,16 +228,16 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
         bool gestochen = false;
 
         // sicher stellen das noch niemand gestochen hat
-        for (Card* card : stich)
+        for (const auto& card : stich)
         {
-          if (m_game->gameInfo()->istTrumpf(card->id()))
+          if (m_game->gameInfo()->istTrumpf(card.id))
           {
             gestochen = true;
             break;
           }
         }
 
-        if (!stich.empty() && !gestochen && cardsStillInGame(m_game->currStich().at(0)->color()) >= 3)
+        if (!stich.empty() && !gestochen && cardsStillInGame(m_game->currStich().at(0).id.color) >= 3)
         {
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
@@ -266,89 +262,65 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
     return findCheapestCard(cards);
 }
 
-Card* ComputerPlayer::findHighestCard(const CardList& cards) const
+Card ComputerPlayer::findHighestCard(const CardList& cards) const
 {
-  Card* high{};
-  if (!cards.empty()) { high = cards.front(); }
-
-  Card* card{};
-  for (int i = 0; i < cards.size(); ++i)
+  auto compare = [this] (const Card& lhs, const Card& rhs) { return m_game->isHigher(lhs.id, rhs.id); };
+  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
+  if (it == std::end(cards))
   {
-    card = cards.at(i);
-    if (m_game->isHigher(card->id(), high->id()))
-    {
-      high = card;
-      continue;
-    }
+    return {};
   }
-  return high;
+  return *it;
 }
 
-Card* ComputerPlayer::findLowestPossibleCard(Card* highest, const CardList& cards) const
+Card ComputerPlayer::findLowestPossibleCard(const Card& highest, const CardList& cards) const
 {
-    Card* high = findHighestCard(cards);
-    Card* card;
+    Card high = findHighestCard(cards);
 
-    for (int i = 0; i < cards.size(); ++i)
+    for (const auto& card : cards)
     {
-        card = cards.at(i);
-        if (m_game->isHigher(card->id(), highest->id()) && !m_game->isHigher(card->id(), high->id()))
+        if (m_game->isHigher(card.id, highest.id) && !m_game->isHigher(card.id, high.id))
             high = card;
     }
-    
+
     return high;
 }
 
-Card* ComputerPlayer::findSchmiere(const CardList& cards) const
+Card ComputerPlayer::findSchmiere(const CardList& cards) const
 {
-    Card* schmiere{};
-    if (!cards.empty()) { schmiere = cards.front(); }
-    Card* card{};
-
-    for (int i = 0; i < cards.size(); i++)
-    {
-        card = cards.at(i);
-        if( card->points() > schmiere->points() )
-        {
-            schmiere = card;
-            continue;
-        }
-    }
-    
-    return schmiere;
+  auto compare = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) > Cards::getPoints(rhs); };
+  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
+  if (it == std::end(cards))
+  {
+    return {};
+  }
+  return *it;
 }
 
-Card* ComputerPlayer::findCheapestCard(const CardList& cards) const
+Card ComputerPlayer::findCheapestCard(const CardList& cards) const
 {
-    Card* low{};
-    if (!cards.empty()) { low = cards.front(); }
-    Card* card{};
-
-    for (int i = 0; i < cards.size(); ++i)
-    {
-        card = cards.at(i);
-        if(card->points()<low->points() )
-        {
-            low = card;
-            continue;
-        }
-    }
-    return low;
+  auto compare = [] (const Card& lhs, const Card& rhs) { return Cards::getPoints(lhs) < Cards::getPoints(rhs); };
+  auto it = std::max_element(std::begin(cards), std::end(cards), compare);
+  if (it == std::end(cards))
+  {
+    return {};
+  }
+  return *it;
 }
 
 bool ComputerPlayer::canMakeStich(const CardList& cards)
 {
-    Card* highestCard{};
-    Card* card{};
+    Card highestCard{};
+    Card card{};
 
     if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
     if (!cards.empty()) { card = cards.front(); }
-    if(!highestCard)
+    if (highestCard.id == CardId{})
         return true;
     for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
-        if (m_game->isHigher(card->id(), highestCard->id()))
+        if (m_game->isHigher(card.id, highestCard.id))
             return true;
     }
     return false;
@@ -356,7 +328,7 @@ bool ComputerPlayer::canMakeStich(const CardList& cards)
 
 bool ComputerPlayer::ownStich()
 {
-    Card* highestCard{};
+    Card highestCard{};
     if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
 
     /* The stich cannot belong to us if we are to play
@@ -370,29 +342,30 @@ bool ComputerPlayer::ownStich()
      * if we are part of the player part!! Think about it... it does really work :)
      */
     std::cout << QString("%1 ist %2Spieler.").arg(name()).arg(this->isPlayer() ? "" : "Nicht-").toStdString() << std::endl;
-    if( highestCard->owner()->isPlayer() )
+    if (highestCard.owner->isPlayer())
         return ( this->isPlayer() ? true : false );
     else
         return ( this->isPlayer() ? false : true );
 }
 
-Card *ComputerPlayer::highestTrumpfInGame()
+Card ComputerPlayer::highestTrumpfInGame()
 {
     CardList trumpfs;
 
-    auto istTrumpf = [this] (Card* card) { return m_game->gameInfo()->istTrumpf(card->id()); };
+    auto istTrumpf = [this] (Card card) { return m_game->gameInfo()->istTrumpf(card.id); };
 
     const auto& allCards = m_game->allCards();
     std::copy_if(std::begin(allCards), std::end(allCards), std::back_inserter(trumpfs), istTrumpf);
 
-    auto removeCardsFromTrumpfs = [&] (Card* card) { trumpfs.removeCard(card); };
+    auto removeCardsFromTrumpfs = [&] (Card card) { Cards::remove(trumpfs, card.id); };
 
     const auto& played = m_game->playedCards();
     std::for_each(std::begin(played), std::end(played), removeCardsFromTrumpfs);
 
     std::for_each(std::begin(m_cards), std::end(m_cards), removeCardsFromTrumpfs);
 
-    trumpfs.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card->id()); });
+    auto eval = [this] (const Card& card) { return m_game->gameInfo()->evalCard(card.id); };
+    Cards::sort(trumpfs, eval);
     if (trumpfs.empty())
     {
       return {};
@@ -403,18 +376,18 @@ Card *ComputerPlayer::highestTrumpfInGame()
 
 int ComputerPlayer::myTrumpfs()
 {
-  return std::count_if(std::begin(m_cards), std::end(m_cards), [this] (Card* c) { return m_game->gameInfo()->istTrumpf(c->id()); });
+  return std::count_if(std::begin(m_cards), std::end(m_cards), [this] (const Card& c) { return m_game->gameInfo()->istTrumpf(c.id); });
 }
 
-void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
+void ComputerPlayer::cardPlayed(unsigned int player, Card* c)
 {
-    qDebug() << "********* cardPlayed (" << c->toString() << ")";
+    qDebug() << "********* cardPlayed (" << Cards::toString(*c) << ")";
 
     // TODO: was called by signal before the thread change
     // has to be implemented in another way
     if(mitspieler!=-1)
         return;
-    if (m_game->gameInfo()->mode() == GameVariant::RUFSPIEL && c->card() == CardId::Sau && c->color() == m_game->gameInfo()->color())
+    if (m_game->gameInfo()->mode() == GameVariant::RUFSPIEL && c->id.type == CardId::Sau && c->id.color == m_game->gameInfo()->color())
     {
         if(m_game->gameInfo()->spieler()==this)
             mitspieler=player;
@@ -429,11 +402,11 @@ int ComputerPlayer::cardsStillInGame(int c)
     const CardList all = m_game->allCards();
 
     CardList played;
-    played.appendList(m_game->playedCards());
-    played.appendList(m_game->currStich());
+    played.append(m_game->playedCards());
+    played.append(m_game->currStich());
 
-    auto istTrumpf = [this] (Card* card) { return m_game->gameInfo()->istTrumpf(card->id()); };
-    auto matches = [&] (Card* card) { return (istTrumpf(card) && CardId::NoColor == c) || card->color() == c; };
+    auto istTrumpf = [this] (const Card& card) { return m_game->gameInfo()->istTrumpf(card.id); };
+    auto matches = [&] (const Card& card) { return (istTrumpf(card) && CardId::NoColor == c) || card.id.color == c; };
 
     return std::count_if(std::begin(all), std::end(all), matches) -
            std::count_if(std::begin(played), std::end(played), matches);

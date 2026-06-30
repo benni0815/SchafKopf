@@ -3,10 +3,11 @@
 
 #pragma once
 
+#include "types.h"
+
 #include <QObject>
 
 
-class CardList;
 class Game;
 class ComputerPlayer;
 

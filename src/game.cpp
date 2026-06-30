@@ -3,10 +3,9 @@
 
 #include "game.h"
 
-#include "card.h"
+#include "cards.h"
 #include "humanplayer.h"
 #include "computerplayer.h"
-#include "cardlist.h"
 #include "gameinfo.h"
 #include "results.h"
 #include "settings.h"
@@ -65,7 +64,7 @@ void Game::run()
 
 void Game::startGame()
 {
-    m_allcards.randomize();
+    m_allcards = Cards::randomize();
 
     CardList playercards[PLAYERS];
     for (int i = 0; i < CARD_CNT; ++i)
@@ -88,8 +87,7 @@ void Game::startGame()
 void Game::gameLoop()
 {
     int i, a, index, realindex;
-    Player *tmp[PLAYERS];
-    Card* c{};
+    std::array<Player*, PLAYERS> tmp;
     int gamecnt=0;
 
     terminated = false;
@@ -149,20 +147,21 @@ void Game::gameLoop()
                 // TODO: if this check fails we have
                 //       a problem anyways so we should
                 //       maybe remove it
+                Card c;
                 if(tmp[a])
                 {
                     m_nextPlayer = (a + 1 < PLAYERS ? tmp[a + 1] : nullptr);
                     c = tmp[a]->play();
                 }
 
-                if(terminated || c == nullptr)
+                if (terminated || c.id == CardId{})
                     return;
 
-                tmp[a]->removeCard(c);
+                tmp[a]->removeCard(c.id);
                 m_currstich.push_back(c);
 
                 m_playedcards.push_back(c);
-                emit cardPlayed(tmp[a]->id(), c->id());
+                emit cardPlayed(tmp[a]->id(), c.id);
 
                 if constexpr (!SIMULATION_MODE) { sleep(1); }
 
@@ -174,9 +173,9 @@ void Game::gameLoop()
 
             QStringList playernames;
             for( a = 0; a < PLAYERS; a++ )
-                playernames.append(m_currstich.at(a)->owner()->name());
+                playernames.append(m_currstich.at(a).owner->name());
 
-            emit playerMadeStich(tmp[index]->id(), m_currstich.toIds(), tmp[index]->name(), playernames);
+            emit playerMadeStich(tmp[index]->id(), Cards::toIds(m_currstich), tmp[index]->name(), playernames);
 
             // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
@@ -229,18 +228,18 @@ std::array<std::shared_ptr<Player>, PLAYERS> Game::players()
   return m_players;
 }
 
-int Game::highestCard( CardList* list )
+int Game::highestCard(const CardList* list)
 {
     if( !list )
         list = &m_currstich;
 
-    Card* high{};
+    Card high{};
     if (!list->empty()) { high = list->front(); }
 
     for (int t = 0; t < list->size(); ++t)
     {
-        Card* card = list->at(t);
-        if (isHigher(card->id(), high->id()))
+        const Card card = list->at(t);
+        if (isHigher(card.id, high.id))
         {
             high = card;
             continue;
@@ -249,7 +248,7 @@ int Game::highestCard( CardList* list )
     
     for (int i = 0; i < (int)list->size(); ++i)
     {
-        if( list->at(i) == high )
+        if (list->at(i).id == high.id)
             return i;
     }
     return 0;
@@ -304,7 +303,7 @@ void Game::gameResults()
     gameInfo()->setValid( false );
 }
 
-bool Game::setupGameInfo(Player *players[])
+bool Game::setupGameInfo(const std::array<Player*, PLAYERS>& players)
 {
     // list of games the players want to playercards
     // maximum 4 entries
@@ -369,18 +368,15 @@ bool Game::setupGameInfo(Player *players[])
     // finde den mitspieler:
     if (m_gameinfo.mode() == GameVariant::RUFSPIEL)
     {
-        Card sau(CardId::Sau, m_gameinfo.color());
-        for (unsigned int i = 0; i < PLAYERS || !m_gameinfo.mitspieler(); ++i)
+      for (auto& player : players)
+      {
+        const CardId sau{CardId::Sau, m_gameinfo.color()};
+        if (Cards::find(player->cards(), sau))
         {
-            for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
-            {
-                if (players[i]->cards().at(z)->isEqual(&sau))
-                {
-                    m_gameinfo.setMitspieler(players[i]);
-                    break;
-                }
-            }
+          m_gameinfo.setMitspieler(player);
+          break;
         }
+      }
     }
 
     m_laufende = m_gameinfo.laufende();
@@ -391,7 +387,7 @@ bool Game::setupGameInfo(Player *players[])
     return true;
 }
 
-bool Game::setupGameInfoForced(Player *players[])
+bool Game::setupGameInfoForced(const std::array<Player*, PLAYERS>& players)
 {
     int i;
 
@@ -423,14 +419,15 @@ bool Game::setupGameInfoForced(Player *players[])
     else if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
     {
         // find player with eichel ober
-        for( i=0;i<PLAYERS;i++ )
+        for (auto& player : players)
         {
-            if (players[i]->cards().contains({CardId::Ober, CardId::Eichel}))
+            const auto eichelOber = CardId{CardId::Ober, CardId::Eichel};
+            if (Cards::find(player->cards(), eichelOber))
             {
-                emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
+                emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", player->name()));
                 
-                m_gameinfo = *players[i]->gameInfo(true);
-                m_gameinfo.setSpieler(players[i]);
+                m_gameinfo = *player->gameInfo(true);
+                m_gameinfo.setSpieler(player);
                 return true;
             }
         }

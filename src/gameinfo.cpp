@@ -3,8 +3,7 @@
 
 #include "gameinfo.h"
 
-#include "card.h"
-#include "cardlist.h"
+#include "cards.h"
 #include "player.h"
 #include "settings.h"
 #include "schafkopfdef.h"
@@ -305,24 +304,22 @@ int GameInfo::laufende()
     * danach können diese in results einfach addiert werden
     */
 
-  int l = 0;
-  CardList all;
-  CardList laufend = spieler()->cards();
+  auto laufend = spieler()->cards();
   if (mitspieler())
-    laufend.appendList(mitspieler()->cards());
-
-  all.init();
-  all.setAutoDelete(false);
-  all.sort([this] (Card* card) { return evalCard(card->id()); });
-  all.setAutoDelete(true);
-
-  for (int i = all.size() - 1; i >= 0; --i)
   {
-    Card* c = all.at(i);
-    CardList list = laufend.FindCards(c->color(), c->card());
-    if (!list.empty() && (l > 0 || i == all.size() - 1))
+    laufend.append(mitspieler()->cards());
+  }
+
+  auto all = Cards::initIds();
+  std::sort(std::begin(all), std::end(all), [this] (CardId lhs, CardId rhs) { return evalCard(lhs) < evalCard(rhs); });
+
+  int l{0};
+  for (auto it = std::rbegin(all); it != std::rend(all); ++it)
+  {
+    const auto card = Cards::find(laufend, *it);
+    if (card && (l > 0 || it == std::rbegin(all)))
       l++;
-    else if ((list.empty() && l < 0) || i == all.size() - 1)
+    else if ((!card && l < 0) || it == std::rbegin(all))
       l--;
     else
     {

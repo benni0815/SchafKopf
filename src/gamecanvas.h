@@ -12,7 +12,7 @@
 #include <QLabel>
 
 
-class Card;
+struct Card;
 class CanvasCard;
 class Game;
 class CanvasText;

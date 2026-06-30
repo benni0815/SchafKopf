@@ -1,5 +1,9 @@
 #pragma once
 
+#include <QList>
+
+
+class Player;
 
 struct CardId
 {
@@ -28,3 +32,11 @@ struct GameVariant
   Mode mode{STICHT};
   CardId::Color color{CardId::NoColor};
 };
+
+struct Card
+{
+  CardId id{CardId::NoStich, CardId::Color::NoColor};
+  Player* owner{};
+};
+
+using CardList = QList<Card>;

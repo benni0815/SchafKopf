@@ -4,8 +4,8 @@ add_executable(schafkopf)
 
 target_sources(schafkopf
   PRIVATE
-    card.cpp
-    card.h
+    cards.cpp
+    cards.h
     selectgamewizard.cpp
     selectgamewizard.h
     player.cpp
@@ -26,8 +26,6 @@ target_sources(schafkopf
     game.h
     humanplayer.cpp
     humanplayer.h
-    cardlist.cpp
-    cardlist.h
     computerplayer.cpp
     computerplayer.h
     stichdlg.cpp
