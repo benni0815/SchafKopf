@@ -27,7 +27,7 @@ public:
   ~Card() = default;
 
   /// return a pixmap of the card
-  const QPixmap& pixmap();
+  const QPixmap& pixmap() const;
 
   /// return a pixmap for the background of a card.
   static const QPixmap& backgroundPixmap();
@@ -43,7 +43,7 @@ public:
   /// return the type of the card, e.g. ASS
   int card() const { return m_card; }
 
-  KCardInfo kdeCardInfo();
+  KCardInfo kdeCardInfo() const;
 
   /// set the owner of the card.
   /// only do this when the cards are given,
@@ -61,9 +61,9 @@ public:
   /// for color or what is currently played.
   /// So it does not care for Wenz or Solo's.
   /// it is used in Game::highesCard
-  bool operator<( Card* c );
+  bool operator<(const Card* const c) const;
 
-  bool isEqual(Card* othercard);
+  bool isEqual(const Card* const othercard) const;
 
   /// a id(). Using this id the card can be quickly identified
   /// as the id() is calculated using color and type.

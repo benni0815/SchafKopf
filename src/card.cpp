@@ -65,14 +65,11 @@ void Card::init( const enum EType t, const enum EColor c  )
 {
   m_card = t;
   m_color = c;
+  cardDeckChanged();
 }
 
-const QPixmap& Card::pixmap()
+const QPixmap& Card::pixmap() const
 {
-  if (m_pixmap.isNull())
-  {
-     m_pixmap = QPixmap(Settings::instance()->cardCache()->frontside(kdeCardInfo()));
-  }
   return m_pixmap;
 }
 
@@ -91,7 +88,7 @@ int Card::points() const
   return getPoints(m_card);
 }
 
-KCardInfo Card::kdeCardInfo()
+KCardInfo Card::kdeCardInfo() const
 {
     KCardInfo::Suit suit;
     KCardInfo::Card card;
@@ -118,21 +115,18 @@ KCardInfo Card::kdeCardInfo()
     return cardInfo;
 }
 
-
-bool Card::isEqual(Card *othercard)
+bool Card::isEqual(const Card* const othercard) const
 {
-    if(othercard->card()==this->card()&&othercard->color()==this->color()) return true;
-    else
-        return false;
+  return (othercard->card() == card()) && (othercard->color() == color());
 }
 
 void Card::cardDeckChanged()
 {
-  m_pixmap = QPixmap();
+  m_pixmap = QPixmap(Settings::instance()->cardCache()->frontside(kdeCardInfo()));
   background() = QPixmap();
 }
 
-bool Card::operator< ( Card* c )
+bool Card::operator<(const Card* const c) const
 {
     // TODO: anyone a better idea?
     int a[] = {Card::SAU, Card::ZEHN, Card::KOENIG, Card::OBER, Card::UNTER, Card::NEUN, Card::ACHT, Card::SIEBEN};
