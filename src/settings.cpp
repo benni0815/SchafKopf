@@ -99,10 +99,9 @@ void Settings::setPlayerNames( const QStringList & names )
 {
     QMutexLocker locker(m_mutex.get());
 
-    int i;
     KConfigGroup config = m_config->group("PlayerNames");
     QStringList old = this->playerNames();
-    for( i=0;i<PLAYERS;i++ )
+    for (int i = 0; i < names.size(); ++i)
         config.writeEntry( QString("Player%1").arg(i+1), names[i] );
     config.sync();
     

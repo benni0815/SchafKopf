@@ -250,12 +250,7 @@ void GameCanvas::slotPlayerPlayedCard(unsigned int player, CardId cardid)
 
         // find out the correct z value of this card so that
         // a new card is always placed on top of the earlier ones
-        int z = 0;
-        for(unsigned int i=0;i<PLAYERS;i++)
-        {
-            if( m_stich[i]->isVisible() )        
-                z++;
-        }
+        const int z = std::count_if(std::begin(m_stich), std::end(m_stich), [] (CanvasCard* c) { return c->isVisible(); });
 
         stich->setZValue( z );
         stich->setFrontVisible( true );
@@ -469,9 +464,9 @@ void GameCanvas::yesNoClicked( QGraphicsItem* item )
         {
             m_result = NO;
             m_loop.exit();
-            for(int i=0;i<PLAYERS;i++)
+            for (auto& player : m_players)
             {
-                m_players[i].hideBubble();
+                player.hideBubble();
             }
         }
     }
@@ -514,24 +509,26 @@ void GameCanvas::Bubble(unsigned int playerid, const QString & message)
 
 void GameCanvas::playerHasDoubled( unsigned int id, bool value )
 {
-    int i;
-    for(i=0;i<PLAYERS;i++)
-        if (m_players[i].id() == id)
-        {
-            m_players[i].setHasDoubled( value );
-        }
+  for (auto& player : m_players)
+  {
+    if (player.id() == id)
+    {
+      player.setHasDoubled(value);
+    }
+  }
 }
 
 void GameCanvas::playerIsLast( unsigned int id )
 {
-    int i;
-    for(i=0;i<PLAYERS;i++)
-        if (m_players[i].id() == id)
-        {
-            m_players[i].setLast( true );
-            // TODO: init is not a good name for this function...
-            m_players[i].init();
-        }
+  for (auto& player : m_players)
+  {
+    if (player.id() == id)
+    {
+      player.setLast( true );
+      // TODO: init is not a good name for this function...
+      player.init();
+    }
+  }
 }
 
 void GameCanvas::setPlayerName( unsigned int id, const QString & name )

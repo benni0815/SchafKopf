@@ -86,7 +86,6 @@ void Game::startGame()
 // Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitte sofort erschießen :)
 void Game::gameLoop()
 {
-    int i, a, index, realindex;
     std::array<Player*, PLAYERS> tmp;
     int gamecnt=0;
 
@@ -101,22 +100,22 @@ void Game::gameLoop()
         // setLast() has to be done after startGame(),
         // so that CanvasPlayer draws cards correctly for
         // doubling when gameStarted is emited.
-        for(i=0;i<PLAYERS;i++)
+        for (int i = 0; i < PLAYERS; ++i)
         {
             tmp[i] = m_players[(i + gamecnt) % PLAYERS].get();
             if (i == PLAYERS - 1)
                 emit playerIsLast(tmp[i]->id());
         }
 
-        for(i=0;i<PLAYERS;i++)
+        for (auto& player : tmp)
         {
-            tmp[i]->klopfen();
-            tmp[i]->sortCards();
-            if (tmp[i]->geklopft() && !isHuman(tmp[i]))
+            player->klopfen();
+            player->sortCards();
+            if (player->geklopft() && !isHuman(player))
             {
               if constexpr (!SIMULATION_MODE)
               {
-                emit playerDoubled(i18n("%1 has doubled.", tmp[i]->name()));
+                emit playerDoubled(i18n("%1 has doubled.", player->name()));
               }
             }
             if(terminated)
@@ -130,38 +129,32 @@ void Game::gameLoop()
         if( !setupGameInfo(tmp) )
             continue;
 
-        for(i=0;i<PLAYERS;i++)
+        for (auto& player : tmp)
         {
-            tmp[i]->sortCards();
-            tmp[i]->init();
+            player->sortCards();
+            player->init();
         }
 
         emit redrawPlayers();
 
-        for( i = 0; i < TURNS; i++ )
+        for (int i = 0; i < TURNS; ++i)
         {
             m_currstich.clear();
 
-            for(a=0;a<PLAYERS;a++)
+            for (auto it = std::begin(tmp); it != std::end(tmp); ++it)
             {
-                // TODO: if this check fails we have
-                //       a problem anyways so we should
-                //       maybe remove it
-                Card c;
-                if(tmp[a])
-                {
-                    m_nextPlayer = (a + 1 < PLAYERS ? tmp[a + 1] : nullptr);
-                    c = tmp[a]->play();
-                }
+                Player* player = *it;
+                m_nextPlayer = (std::next(it) != std::end(tmp)) ? *std::next(it) : nullptr;
+                const Card c = player->play();
 
                 if (terminated || c.id == CardId{})
                     return;
 
-                tmp[a]->removeCard(c.id);
+                player->removeCard(c.id);
                 m_currstich.push_back(c);
 
                 m_playedcards.push_back(c);
-                emit cardPlayed(tmp[a]->id(), c.id);
+                emit cardPlayed(player->id(), c.id);
 
                 if constexpr (!SIMULATION_MODE) { sleep(1); }
 
@@ -180,12 +173,13 @@ void Game::gameLoop()
             emit playerMadeStich(highestCard.owner->id(), Cards::toIds(m_currstich), highestCard.owner->name(), playernames);
 
             // Sortiere so, dass der stecher nächste karte spielt
-            for( realindex = 0; realindex < PLAYERS; realindex++ )
+            int realindex{0};
+            for (; realindex < PLAYERS; ++realindex)
             {
-                if (m_players[realindex].get() == tmp[index])
+                if (m_players[realindex].get() == highestCard.owner)
                     break;
             }
-            for( a = 0; a < PLAYERS; a++ )
+            for (int a = 0; a < PLAYERS; a++)
                 tmp[a] = m_players[(a + realindex) % PLAYERS].get();
         }
 

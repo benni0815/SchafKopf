@@ -333,10 +333,9 @@ void SchafKopf::updateInfo()
 
 
     QString sDoubled;
-    for(unsigned int i=0;i<PLAYERS;i++)
+    for (const auto& player : m_game->players())
     {
-        Player* player = m_game->findIndex( i );
-        if( player->geklopft() )
+        if (player->geklopft())
         {
             sDoubled.append(i18n("<qt><b>%1</b> has doubled.</qt>", player->name()));
             timesDoubled++;
