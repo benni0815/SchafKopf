@@ -20,9 +20,9 @@ CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
     // TODO: get a correct id! especially important for networking!
     m_id = i;
 
-    m_bubbleLabel = std::make_unique<QLabel>();
+    m_bubbleLabel = new QLabel();
     m_bubbleLabel->setStyleSheet("background: lightgrey; font: 12pt; border: 1px solid black;");
-    m_bubble = m_scene->addWidget(m_bubbleLabel.get());
+    m_bubble = m_scene->addWidget(m_bubbleLabel);
     m_bubble->setParent(m_scene);
     m_bubble->hide();
 

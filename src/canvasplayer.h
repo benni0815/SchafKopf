@@ -8,8 +8,6 @@
 
 #include <QTimer>
 
-#include <memory>
-
 
 class Card;
 class CanvasCard;
@@ -59,7 +57,7 @@ class CanvasPlayer{
         
         QGraphicsScene* m_scene{};
         QGraphicsSimpleTextItem* m_name{};
-        std::unique_ptr<QLabel> m_bubbleLabel;
+        QLabel* m_bubbleLabel{};
         QGraphicsProxyWidget* m_bubble{};
         CanvasCard* m_items[NUMCARDS]{};
         std::vector<Card::Id> m_cards;
