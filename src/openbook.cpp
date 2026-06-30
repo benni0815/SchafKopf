@@ -85,22 +85,17 @@ namespace OpeningRules
 
 using namespace OpeningRules;
 
-RuleBook::RuleBook( ComputerPlayer* player, Game* game )
-{
-    m_self = player;
-    m_game = game;
-    
-    m_player = (Player*)m_self->isPlayer();
-}
+RuleBook::RuleBook(ComputerPlayer* player, Game* game)
+: m_game(game)
+, m_self(player)
+{}
 
 //////////////////////////////////
 // OpenBook
 //////////////////////////////////
 OpenBook::OpenBook( ComputerPlayer* player, Game* game )
     : RuleBook( player, game )
-{
-
-}
+{}
 
 CardList OpenBook::possibleCards()
 {
@@ -108,11 +103,10 @@ CardList OpenBook::possibleCards()
     CardList list;
     unsigned int i = 0;
 
-    m_player = (Player*)m_self->isPlayer();
     for( i=0;i<sizeof(rules)/sizeof(s_rule);i++)
     {
         s_rule r = rules[i];
-        if( r.player == m_player )
+        if (r.player == m_self->isPlayer())
         {
             CardList* l = r.rule(&allowed, m_game);
             if( l )
@@ -136,14 +130,12 @@ CardList OpenBook::possibleCards()
 //////////////////////////////////
 StrategyBook::StrategyBook( ComputerPlayer* player, Game* game )
     : RuleBook( player, game )
-{
+{}
 
-}
-        
 CardList StrategyBook::possibleCards()
 {
     // the strategy book works only when it is called
-    // for the last player    
+    // for the last player
     const auto& stiche = m_game->currStich();
     if (stiche.count() != 3 )
       return {};
@@ -166,11 +158,11 @@ CardList StrategyBook::possibleCards()
     if( highest->owner()->isPlayer() )
     {
         // der stich gehört der spieler partei
-        unser_stich = m_player;
+        unser_stich = m_self->isPlayer();
     }
     else
         // der stich gehört nicht der spieler partei
-        unser_stich = !m_player;
+        unser_stich = !m_self->isPlayer();
     
         
     if( unser_stich )

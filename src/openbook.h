@@ -22,7 +22,6 @@ class RuleBook : public QObject {
     protected:
         Game* m_game;
         ComputerPlayer* m_self;
-        bool m_player;
 };
 
 /**
