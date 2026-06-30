@@ -157,10 +157,7 @@ SchafKopf::~SchafKopf()
 {
     saveConfig();
     // make sure the thread is really not running
-    // and does not wait for the semaphore
     endGame();
-
-    delete m_stichdlg;
 }
 
 KAboutData SchafKopf::aboutData()
@@ -245,11 +242,11 @@ void SchafKopf::carddecks()
 
 void SchafKopf::newGame()
 {
-    newgamewizard* ng = new newgamewizard(this);
+    auto ng = newgamewizard();
 
-    if ( ng->exec() == QDialog::Accepted )
+    if (ng.exec() == QDialog::Accepted)
     {
-        int game=ng->getGame();
+        int game = ng.getGame();
         switch(game)
         {
         case newgamewizard::GAME_LOCAL:
@@ -257,10 +254,7 @@ void SchafKopf::newGame()
             QTimer::singleShot(0, this, &SchafKopf::realNewGame);
             break;
         }
-
     }
-
-    delete ng;
 }
 
 void SchafKopf::realNewGame()
