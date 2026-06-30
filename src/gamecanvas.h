@@ -27,8 +27,8 @@ class GameCanvas : public QGraphicsView
         
         /** the user has to click a card to play
           */
-        int getCard();
-        
+        void getCard(int* card);
+
         /** the user played card, which
           * is forbidden to play!
           */
@@ -36,7 +36,7 @@ class GameCanvas : public QGraphicsView
 
         /** ask the user a question and allow him to make a decision
           */
-        bool questionYesNo( const QString & message );
+        void questionYesNo(const QString& message, int* result);
         
         /** display an information message to the user
           */
@@ -44,7 +44,7 @@ class GameCanvas : public QGraphicsView
 
         /** displays a bubble with the text the computerplayers say
           */
-        void Bubble( const QString & message, unsigned int playerid );
+        void Bubble(unsigned int playerid, const QString& message);
         
         /** set the canvas player with the @p id to have doubled in this game
           */
@@ -59,14 +59,13 @@ class GameCanvas : public QGraphicsView
         void resetPlayerCards();
 
         void playerIsLast( unsigned int id );
-        void setPlayerName( unsigned int id, const QString & name );
-        void setPlayerCards(unsigned int id, const std::vector<int>& cards);
-
         void updateBackground();
 
         void exitLoop();
 
     public slots:
+        void setPlayerCards(unsigned int id, const std::vector<int>& cardIds);
+        void setPlayerName(unsigned int id, const QString& name);
         void redrawPlayers();
         void slotPlayerPlayedCard( unsigned int player, int cardid );
         void slotPlayerMadeStich(unsigned int);

@@ -191,7 +191,7 @@ int GameCanvas::getStichRotation( int player )
     return r;
 }
 
-int GameCanvas::getCard()
+void GameCanvas::getCard(int* card)
 {
     CanvasPlayer* human = humanPlayer();
     CanvasCard* c{};
@@ -213,7 +213,10 @@ int GameCanvas::getCard()
 
     m_loop.exec();
 
-    return m_result;
+    if (card)
+    {
+      *card = m_result;
+    }
 }
 
 void GameCanvas::cardClicked( QGraphicsItem* item )
@@ -437,7 +440,7 @@ void GameCanvas::focusOutEvent(QFocusEvent*)
         }
 }
 
-bool GameCanvas::questionYesNo( const QString & message )
+void GameCanvas::questionYesNo(const QString& message, int* result)
 {
     m_result = NO;
 
@@ -463,8 +466,11 @@ bool GameCanvas::questionYesNo( const QString & message )
     m_no->hide();
     
     scene()->update();
-        
-    return ( m_result == YES );
+
+    if (result)
+    {
+      *result = m_result;
+    }
 }
 
 void GameCanvas::yesNoClicked( QGraphicsItem* item )
@@ -498,6 +504,11 @@ void GameCanvas::yesNoClicked( QGraphicsItem* item )
 
 void GameCanvas::information( const QString & message )
 {
+    if constexpr (SIMULATION_MODE)
+    {
+      return;
+    }
+
     m_message->setText( message );
 
     m_message->setPos( scene()->sceneRect().center() - m_message->boundingRect().center() );
@@ -521,7 +532,7 @@ void GameCanvas::information( const QString & message )
     return;
 }
 
-void GameCanvas::Bubble( const QString & message, unsigned int playerid )
+void GameCanvas::Bubble(unsigned int playerid, const QString & message)
 {
     m_players[playerid]->say(message, playerid);
 }

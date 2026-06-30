@@ -1,5 +1,8 @@
 #pragma once
 
+#include "cardlist.h"
+
+#include <QObject>
 #include <QString>
 
 #include "cardlist.h"
@@ -9,8 +12,10 @@ class Card;
 class Game;
 class GameInfo;
 
-class Player
+class Player : public QObject
 {
+  Q_OBJECT
+
     public:
         enum { HUMAN = 0, COMPUTER, NETHUMAN };
 
@@ -18,7 +23,7 @@ class Player
         
         virtual ~Player() = default;
 
-        virtual void init() {};
+        virtual void init() {}
         /** set m_geklopft to true in this function if the player wants to double
           * and to false if not. 
           */
@@ -61,6 +66,10 @@ class Player
 
         CardList allowedCards();
         void removeTrumpf(CardList& liste);
+
+    signals:
+        void gotCards(unsigned int playerId, const std::vector<int>& cardIds);
+        void doubled(unsigned int playerId);
 
     protected:
         CardList m_cards;

@@ -22,7 +22,7 @@ class Game : public QThread
     Q_OBJECT
 
     public:
-        Game(QSemaphore* semaphore, QObject *parent);
+        Game(QObject *parent);
         ~Game() override = default;
 
         void gameLoop();
@@ -41,6 +41,8 @@ class Game : public QThread
          */
         inline Player* nextPlayer() const { return m_nextPlayer; };
 
+        std::array<std::shared_ptr<Player>, PLAYERS> players();
+
         bool isTerminated() const { return terminated; }
         int highestCard(CardList* list = nullptr);
         bool isHigher( Card* card, Card* high );
@@ -50,12 +52,22 @@ class Game : public QThread
         int timesDoubled();
         int timesThrownTogether();
 
-        /** post a event to the parent object
-          */
-        void* postEvent(EAction action, unsigned int playerid = 0, const std::vector<int>& cardids = {},
-                        const QString& data = QString(), bool wait = false, const QStringList& names = {});
-
+    public slots:
         void endGame(void);
+
+    signals:
+        void gameStarted();
+        void gameEnded();
+        void playerNameChanged(unsigned int playerId, const QString& name);
+        void playerDoubled(const QString& message);
+        void playerIsLast(unsigned int playerId);
+        void playerMadeStich(unsigned int playerId, std::vector<int> cardIds, const QString& playerName, const QStringList& playerNames);
+        void cardPlayed(unsigned int playerId, int cardId);
+        void redrawPlayers();
+        void gameInfoSetup();
+        void playerResults(unsigned int playerId, const QString& formattedPoints);
+        void infoMessage(const QString& message);
+        void bubble(unsigned int playerId, const QString& message);
 
     private:
         /** set the results of all players to 0. This is necessary
@@ -99,7 +111,6 @@ class Game : public QThread
         void run() override;
 
     private:
-        QSemaphore* m_semaphore{};
         bool terminated{true};
 
         std::array<std::shared_ptr<Player>, PLAYERS> m_players;

@@ -11,7 +11,6 @@
 #include <KAboutData>
 
 #include <QPointer>
-#include <QSemaphore>
 
 
 class CardList;
@@ -38,6 +37,9 @@ class SchafKopf : public KXmlGuiWindow
         ~SchafKopf() override;
 
         static KAboutData aboutData();
+
+    signals:
+        void terminate();
 
     private slots:
         /** Configure the carddeck to be used
@@ -81,17 +83,11 @@ class SchafKopf : public KXmlGuiWindow
           */
         void updateTableNames();
 
-    protected:
-        /** Event handler to receive thread events
-          */
-        void customEvent(QEvent* e) override;
-
     private:
         void setupActions();
-        GameInfo* selectGame(bool force, const std::vector<int>& cardids);
+        void selectGame(GameInfo* gameInfo, const std::vector<int>& cardids, bool force = false);
 
         bool m_terminated{true};
-        QSemaphore m_semaphore;
 
         Game* m_game{};
         QGraphicsScene* m_scene{};

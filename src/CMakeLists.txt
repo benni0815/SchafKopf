@@ -4,8 +4,6 @@ add_executable(schafkopf)
 
 target_sources(schafkopf
   PRIVATE
-    schafkopfevent.cpp
-    schafkopfevent.h
     card.cpp
     card.h
     selectgamewizard.cpp

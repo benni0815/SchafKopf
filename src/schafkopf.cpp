@@ -3,7 +3,6 @@
 
 #include "schafkopf.h"
 
-#include "schafkopfevent.h"
 #include "settings.h"
 #include "gamecanvas.h"
 #include "game.h"
@@ -12,6 +11,7 @@
 #include "newgamewizard.h"
 #include "preferencesdlg.h"
 #include "selectgamewizard.h"
+#include "humanplayer.h"
 
 #include <schafkopf_version.h>
 
@@ -50,11 +50,60 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 
     m_scene = new QGraphicsScene( this );
     m_view = new GameCanvas( m_scene, split );
-
-    m_game = new Game( &m_semaphore, this );
     m_view->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
     m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-    
+
+    m_game = new Game(this);
+    for (auto& p : m_game->players())
+    {
+      connect(p.get(), &Player::gotCards, m_view, &GameCanvas::setPlayerCards);
+      connect(p.get(), &Player::doubled, m_view, [this] (unsigned int playerId) { m_view->playerHasDoubled(playerId, true ); });
+      if (auto* human = dynamic_cast<HumanPlayer*>(p.get()))
+      {
+        connect(human, &HumanPlayer::forbiddenCard, m_view, &GameCanvas::cardForbidden, Qt::BlockingQueuedConnection);
+        connect(human, &HumanPlayer::questionYesNo, m_view, &GameCanvas::questionYesNo, Qt::BlockingQueuedConnection);
+        connect(human, &HumanPlayer::getCard, m_view, &GameCanvas::getCard, Qt::BlockingQueuedConnection);
+        connect(human, &HumanPlayer::selectGame, this, &SchafKopf::selectGame, Qt::BlockingQueuedConnection);
+      }
+    }
+    connect(m_game, &Game::playerNameChanged, m_view, &GameCanvas::setPlayerName);
+    connect(m_game, &Game::redrawPlayers, m_view, [this]
+      {
+        m_view->redrawPlayers();
+        enableControls();
+      });
+    connect(m_game, &Game::gameInfoSetup, this, &SchafKopf::updateInfo);
+    connect(m_game, &Game::gameStarted, m_view, [this]
+      {
+        m_view->resetPlayers();
+        m_view->redrawPlayers();
+        enableControls();
+      });
+    connect(m_game, &Game::gameEnded, m_view, [this]
+      {
+        m_view->resetPlayerCards();
+        m_view->resetPlayers();
+        m_view->redrawPlayers();
+        enableControls();
+      });
+    connect(m_game, &Game::playerIsLast, m_view, &GameCanvas::playerIsLast);
+    connect(m_game, &Game::playerMadeStich, m_view, [this] (unsigned int playerId, const std::vector<int>& cardIds, const QString& playerName, const QStringList& playerNames)
+      {
+        m_view->slotPlayerMadeStich(playerId);
+        m_stichdlg->changed(playerName, cardIds, playerNames);
+      });
+    connect(m_game, &Game::playerDoubled, m_view, [this] (const QString& message)
+      {
+        updateInfo();
+        m_view->information(message);
+      }, Qt::BlockingQueuedConnection);
+    connect(m_game, &Game::cardPlayed, m_view, &GameCanvas::slotPlayerPlayedCard, Qt::BlockingQueuedConnection);
+    connect(m_game, &Game::infoMessage, m_view, &GameCanvas::information, Qt::BlockingQueuedConnection);
+    connect(m_game, &Game::bubble, m_view, &GameCanvas::Bubble, Qt::BlockingQueuedConnection);
+    connect(m_game, &Game::playerResults, this, &SchafKopf::slotPlayerResult, Qt::BlockingQueuedConnection);
+
+    connect(this, &SchafKopf::terminate, m_game, &Game::terminate);
+
     QLabel* label = new QLabel(i18n("Results:"));
     label->setAlignment( Qt::AlignHCenter );
 
@@ -128,141 +177,6 @@ KAboutData SchafKopf::aboutData()
   about.setDesktopFileName("org.schafkopf.SchafKopf");
 
   return about;
-}
-
-void SchafKopf::customEvent( QEvent* e )
-{
-    if( e->type() == QEvent::Type( QEvent::User + SCHAFKOPF_EVENT ) )
-    {
-        int* a;
-        bool force_select = false;
-
-        t_EventData* data = ((SchafKopfEvent*) e)->data();
-        switch( data->type )
-        {
-            case GameEnded:
-                //EXIT_LOOP();
-                m_view->resetPlayerCards();
-                // fall through!
-
-            case RedrawPlayers:
-                m_view->redrawPlayers();
-                enableControls();
-                break;
-            
-            case GameStarted:
-                m_view->resetPlayers();
-                m_view->redrawPlayers();
-                enableControls();
-                break;
-                        
-            case GameInfoSetup:
-                updateInfo();
-                break;
-                
-            case PlayerIsLast:
-                m_view->playerIsLast( data->playerid );
-                break;
-                
-            case PlayerDoubled:
-                updateInfo();
-                m_view->information( data->data );
-                break;
-                
-            case PlayerHasDoubled:
-                m_view->playerHasDoubled( data->playerid, true );
-                break;
-                
-            case CardPlayed:
-                m_view->slotPlayerPlayedCard(data->playerid, data->cardids.front());
-                break;
-            
-            case PlayerMadeStich:
-                m_view->slotPlayerMadeStich( data->playerid );
-                m_stichdlg->changed( data->data, data->cardids, data->playernames );
-                break;
-            
-            case PlayerResults:
-                this->slotPlayerResult( data->playerid, data->data );
-                break;
-                
-            case InfoMessage:
-                m_view->information( data->data );
-                break;
-                
-            case Bubble:
-                m_view->Bubble( data->data, data->playerid );
-                break;
-                
-            case QuestionYesNo:
-                a = new int;
-                *a = m_view->questionYesNo( data->data ) ? YES : NO;
-                data->returncode = (void*)a;
-                break;
-            
-            case HumanPlayerGetCard:
-                a = new int;
-                *a = m_view->getCard();
-                data->returncode = (void*)a;
-                break;
-            
-            case ForbiddenCard:
-                m_view->cardForbidden(data->cardids.front());
-                break;
-            
-            case ForcedSelectGame:
-                force_select = true;
-                // fall through!
-            case SelectGame:
-                data->returncode = (void*)selectGame( force_select, data->cardids );
-                break;
-                
-            case PlayerNameChanged:
-                m_view->setPlayerName( data->playerid, data->data );
-                break;
-                
-            case PlayerGotCards:
-                m_view->setPlayerCards( data->playerid, data->cardids );
-                break;
-                
-            default:
-                break;
-        }
-        
-        data->quitgame = m_terminated;
-        
-        if( data->wait )
-        {
-            m_semaphore.release();
-        }
-        else        
-        {
-            // compiler warns that deleting void is undefined....
-            // data->returncode should be NULL anyways...
-            // so why is it there???
-            // stupid comments...
-            // Benni: tried to fix this warning by casting the pointer back to what it was
-            if( data->returncode )
-            {
-                switch( data->type )
-                {
-                case QuestionYesNo:
-                case HumanPlayerGetCard:
-                    delete static_cast<int*>(data->returncode);
-                    break;
-
-                case SelectGame:
-                    delete static_cast<GameInfo*>(data->returncode);
-                    break;
-
-                default:
-                    break;
-                }
-            }
-
-            delete data;
-        }
-    }
 }
 
 void SchafKopf::saveConfig()
@@ -367,9 +281,9 @@ void SchafKopf::endGame()
     //m_game->endGame();
     if( !m_terminated )
     {
+        emit terminate();
         m_terminated = true;
         m_view->exitLoop();
-        //KApplication::postEvent( m_game, new QCustomEvent( (QEvent::Type)SCHAFKOPF_EVENT_QUIT ) );
     }
     
     clearTable();
@@ -463,14 +377,12 @@ void SchafKopf::updateTableNames()
     m_table->setHorizontalHeaderLabels( Settings::instance()->playerNames() );
 }
 
-GameInfo* SchafKopf::selectGame(bool force, const std::vector<int>& cardids)
+void SchafKopf::selectGame(GameInfo* gameInfo, const std::vector<int>& cardids, bool force)
 {
-    CardList list( cardids );
+    CardList list(cardids);
     list.setAutoDelete( true );
     
     SelectGameWizard sgw( force, list );
-    if( sgw.exec() == QDialog::Accepted )
-        return sgw.gameInfo();
-    else
-        return nullptr;
+    if (sgw.exec() == QDialog::Accepted)
+      *gameInfo = *sgw.gameInfo();
 }

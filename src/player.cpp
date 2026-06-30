@@ -39,7 +39,7 @@ void Player::setCards(const CardList& cards)
     for (int i = 0; i < m_cards.count(); ++i)
         m_cards.at(i)->setOwner(this);
 
-    m_game->postEvent(PlayerGotCards, id(), m_cards.toInts());
+    emit gotCards(id(), m_cards.toInts());
 }
 
 void Player::removeCard(const Card* card)
@@ -57,12 +57,12 @@ void Player::removeCard(const Card* card)
 void Player::sortCards()
 {
     m_cards.sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-    m_game->postEvent(PlayerGotCards, id(), m_cards.toInts());
+    emit gotCards(id(), m_cards.toInts());
 }
 
 void Player::klopfen()
 {
-    m_game->postEvent( PlayerHasDoubled, id() );
+  emit doubled(id());
 }
 
 bool Player::isPlayer() const

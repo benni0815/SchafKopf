@@ -3,7 +3,6 @@
 
 #include "game.h"
 
-#include "schafkopfevent.h"
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "cardlist.h"
@@ -15,32 +14,31 @@
 
 #include <QCoreApplication>
 #include <QEvent>
-#include <QSemaphore>
-
-#include <string.h>
 
 
-Game::Game(QSemaphore* semaphore, QObject *parent )
+Game::Game(QObject* parent)
     : QThread(parent)
-    , m_semaphore(semaphore)
 {
-    int playerId{0};
+  int playerId{0};
 
-#ifndef SIMULATION_MODE
+  if constexpr (SIMULATION_MODE)
+  {
+    for (auto& player : m_players)
+    {
+      player = std::make_shared<ComputerPlayer>(playerId++, this);
+    }
+  }
+  else
+  {
     m_players[0] = std::make_shared<HumanPlayer>(playerId++, this);
 
     for (size_t i = 1; i < m_players.size(); ++i)
     {
       m_players[i] = std::make_shared<ComputerPlayer>(playerId++, this);
     }
-#else
-    for (auto& player : m_players)
-    {
-      player = std::make_shared<ComputerPlayer>(playerId++, this);
-    }
-#endif // SIMULATION_MODE
+  }
 
-    updatePlayerNames();
+  updatePlayerNames();
     
     // make sure that results get cleaned up, when the results type is changed
     /*
@@ -72,8 +70,7 @@ void Game::startGame()
 
     m_playedcards.clear();
 
-    postEvent( GameStarted );
-    //emit gameStarted();
+    emit gameStarted();
 }
 
 // Wer hat den ganzen rekursiven code in gameLoop zu veantworten? Bitte sofort erschießen :)
@@ -99,7 +96,7 @@ void Game::gameLoop()
         {
             tmp[i] = m_players[(i + gamecnt) % PLAYERS].get();
             if (i == PLAYERS - 1)
-                postEvent( PlayerIsLast, tmp[i]->id() );
+                emit playerIsLast(tmp[i]->id());
         }
 
         for(i=0;i<PLAYERS;i++)
@@ -108,14 +105,16 @@ void Game::gameLoop()
             tmp[i]->sortCards();
             if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
             {
-                postEvent(PlayerDoubled, tmp[i]->id(), {}, i18n("%1 has doubled.", tmp[i]->name()), true);
-                // emit signalDoubled();
+              if constexpr (!SIMULATION_MODE)
+              {
+                emit playerDoubled(i18n("%1 has doubled.", tmp[i]->name()));
+              }
             }
             if(terminated)
                 return;
         }
 
-        postEvent( RedrawPlayers );
+        emit redrawPlayers();
 
         // find a player you can playercards
         // and setup m_gameinfo
@@ -128,7 +127,7 @@ void Game::gameLoop()
             tmp[i]->init();
         }
 
-        postEvent( RedrawPlayers );
+        emit redrawPlayers();
 
         for( i = 0; i < TURNS; i++ )
         {
@@ -149,15 +148,12 @@ void Game::gameLoop()
                     return;
 
                 tmp[a]->removeCard(c);
-
                 m_currstich.append(c);
-                m_playedcards.append(c);
-                postEvent( CardPlayed, tmp[a]->id(), {c->id()}, QString(), true );
-                //emit playerPlayedCard(tmp[a]->id(),c);
 
-#ifndef SIMULATION_MODE
-               sleep( 1 );
-#endif // SIMULATION_MODE
+                m_playedcards.append(c);
+                emit cardPlayed(tmp[a]->id(), c->id());
+
+                if constexpr (!SIMULATION_MODE) { sleep(1); }
 
                 if( terminated )
                     return;
@@ -169,9 +165,8 @@ void Game::gameLoop()
             for( a = 0; a < PLAYERS; a++ )
                 playernames.append(m_currstich.at(a)->owner()->name());
 
-            postEvent( PlayerMadeStich, tmp[index]->id(), m_currstich.toInts(), tmp[index]->name(), false, playernames );
+            emit playerMadeStich(tmp[index]->id(), m_currstich.toInts(), tmp[index]->name(), playernames);
 
-            //emit playerMadeStich(tmp[index]->id());
             // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
             {
@@ -186,13 +181,14 @@ void Game::gameLoop()
             gameResults();
         gamecnt++;
 
-#ifdef SIMULATION_MODE
-        if( gamecnt >= SIMULATION_MODE_MAX )
+        if constexpr (SIMULATION_MODE)
         {
+          if (gamecnt >= SIMULATION_MODE_MAX)
+          {
             terminated = true;
             qDebug("Terminating Simulation after %i games.", SIMULATION_MODE_MAX );
+          }
         }
-#endif // SIMULATION_MODE
     }
 }
 
@@ -201,13 +197,10 @@ const CardList& Game::currStich() const
   return m_currstich;
 }
 
-void Game::endGame(void)
+void Game::endGame()
 {
-    terminated=true;
-    postEvent( GameEnded );
-
-    //emit gameEnded();
-    //EXIT_LOOP();
+  terminated = true;
+  emit gameEnded();
 }
 
 /*const*/ GameInfo *Game::gameInfo() //const
@@ -228,6 +221,11 @@ Player* Game::findId( unsigned int id ) const
 Player* Game::findIndex( unsigned int index ) const
 {
     return (index < PLAYERS ? m_players[index].get() : nullptr);
+}
+
+std::array<std::shared_ptr<Player>, PLAYERS> Game::players()
+{
+  return m_players;
 }
 
 int Game::highestCard( CardList* list )
@@ -297,12 +295,10 @@ void Game::gameResults()
 
     for( unsigned int i=0;i<PLAYERS;i++)
     {
-        postEvent(PlayerResults, m_players[i]->id(), {}, r.formatedPoints(m_players[i].get()), true);
-        // emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
+      emit playerResults(m_players[i]->id(), r.formatedPoints(m_players[i].get()));
     }
 
-    postEvent(InfoMessage, 0, {}, r.result(), true);
-    //m_canvas->information( r->result() );
+    emit infoMessage(r.result());
     m_timesThrownTogether = 0;
 
     // the game is over, so the GameInfo structure is not
@@ -337,16 +333,16 @@ bool Game::setupGameInfo(Player *players[])
             games.append( info );
             if( players[i]->rtti() != Player::HUMAN )
             {
-                postEvent(Bubble, playerInstance, {}, i18n("%1: \"I want to play.\"", players[i]->name()), true);
-                sleep ( 1 );
+                emit bubble(playerInstance, i18n("%1: \"I want to play.\"", players[i]->name()));
+                sleep (1);
             }
         }
         else
         {
             if( players[i]->rtti() != Player::HUMAN )
             {
-                postEvent(Bubble, playerInstance, {}, i18n("%1: \"I don't want to play.\"", players[i]->name()), true);
-                sleep ( 1 );
+              emit bubble(playerInstance, i18n("%1: \"I don't want to play.\"", players[i]->name()));
+              sleep(1);
             }
         }
     }
@@ -390,12 +386,10 @@ bool Game::setupGameInfo(Player *players[])
     }
 
     m_laufende = m_gameinfo.laufende();
-    postEvent(InfoMessage, 0, {}, m_gameinfo.toString(), true);
-    //m_canvas->information( m_gameinfo.toString() );
+    emit infoMessage(m_gameinfo.toString());
 
     m_gameinfo.setValid( true );
-    postEvent( GameInfoSetup );
-    //emit signalSetupGameInfo();
+    emit gameInfoSetup();
     return true;
 }
 
@@ -412,7 +406,7 @@ bool Game::setupGameInfoForced(Player *players[])
         {
             if( players[i]->geklopft() )
             {
-                postEvent(InfoMessage, 0, {}, i18n("%1 has doubled last\nand has to play now.", players[i]->name()), true);
+                emit infoMessage(i18n("%1 has doubled last\nand has to play now.", players[i]->name()));
 
                 info = players[i]->gameInfo( true );
                 info->setSpieler( players[i] );
@@ -425,11 +419,10 @@ bool Game::setupGameInfoForced(Player *players[])
 
     if( Settings::instance()->noGame() == Settings::NOGAME_NEUGEBEN )
     {
-        postEvent(InfoMessage, 0, {}, i18n("No one wants to play.\nCards will be thrown together."), true);
+        emit infoMessage(i18n("No one wants to play.\nCards will be thrown together."));
         m_timesThrownTogether++;
         m_gameinfo.setValid( false );
-        postEvent( GameInfoSetup );
-        //emit signalSetupGameInfo();
+        emit gameInfoSetup();
         return false;
     }
     else if( Settings::instance()->noGame() == Settings::NOGAME_ALTERSPIELT )
@@ -439,7 +432,7 @@ bool Game::setupGameInfoForced(Player *players[])
         {
             if (players[i]->cards().contains(Card::EICHEL, Card::OBER))
             {
-                postEvent(InfoMessage, 0, {}, i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()), true);
+                emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
                 
                 info = players[i]->gameInfo( true );
                 info->setSpieler( players[i] );
@@ -451,7 +444,7 @@ bool Game::setupGameInfoForced(Player *players[])
     }
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
     {
-        postEvent(InfoMessage, 0, {}, i18n("No one wants to play.\nRamsch will be played."), true);
+        emit infoMessage(i18n("No one wants to play.\nRamsch will be played."));
         m_gameinfo.setSpieler(nullptr);
         m_gameinfo.setMitspieler(nullptr);
         m_gameinfo.setMode( GameInfo::RAMSCH );
@@ -493,61 +486,13 @@ void Game::updatePlayerNames()
     int i;
     QStringList list = Settings::instance()->playerNames();
     m_players[0]->setName( list[0] );
-    postEvent(PlayerNameChanged, m_players[0]->id(), {}, list[0]);
+    emit playerNameChanged(m_players[0]->id(), list[0]);
 
     for( i=1;i<PLAYERS;i++)
     {
         m_players[i]->setName( list[i] );
-        postEvent(PlayerNameChanged, m_players[i]->id(), {}, list[i]);
+        emit playerNameChanged(m_players[i]->id(), list[i]);
     }
 
-    postEvent( RedrawPlayers );
-    //m_canvas->redrawPlayers();
-}
-
-void* Game::postEvent(EAction action, unsigned int playerid, const std::vector<int>& cardids, const QString& d, bool wait, const QStringList& names)
-{
-    t_EventData* data = new t_EventData;
-    void* ret{};
-
-#ifdef SIMULATION_MODE
-    // ignore all actions that require user 
-    // interaction in simulation mode
-    if( action == InfoMessage ||
-        action == PlayerDoubled )
-    {
-        if( cardids )
-            delete [] cardids;
-
-        if( names )
-            delete names;
-
-        delete data;
-        return NULL;
-    }
-#endif // SIMULATION_MODE
-
-    data->type = action;
-    data->playerid = playerid;
-    data->cardids = cardids;
-    data->data = d;
-    data->wait = wait;
-    data->playernames = names;
-    data->returncode = nullptr;
-    data->quitgame = false;
-
-    QCoreApplication::postEvent(parent(), new SchafKopfEvent(data));
-    if( wait )
-    {
-        m_semaphore->acquire();
-
-        if( data->quitgame )
-            endGame();
-
-        ret = data->returncode;
-
-        delete data;
-    }
-
-    return ret;
+    emit redrawPlayers();
 }

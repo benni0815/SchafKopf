@@ -7,6 +7,8 @@
 
 class HumanPlayer : public Player
 {
+  Q_OBJECT
+
     public:
         HumanPlayer(unsigned int id, Game* game);
         ~HumanPlayer() override = default;
@@ -16,7 +18,13 @@ class HumanPlayer : public Player
         GameInfo* gameInfo(bool force = false) override;
         
         int rtti() const override { return HUMAN; }
-        
+
+    signals:
+        void forbiddenCard(unsigned int cardId);
+        void questionYesNo(const QString& question, int* result);
+        void getCard(int* card);
+        void selectGame(GameInfo* gameInfo, const std::vector<int> cardIds, bool force = false);
+
     private:
         Card* m_card{};
 };

@@ -24,35 +24,7 @@ constexpr int NUMTRUMPF{4};
 constexpr int CARD_CNT{PLAYERS * NUMCARDS};
 constexpr int TURNS{NUMCARDS};
 
-/// Identify events from schafkopf in the Qt event loop
-/// using this ID.
-constexpr int SCHAFKOPF_EVENT{1984};
-
-class Card;
-class QSemaphore;
-
 enum { YES, NO };
-    
-enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled,
-                       PlayerHasDoubled, PlayerIsLast, PlayerNameChanged, PlayerGotCards,
-                       CardPlayed, PlayerMadeStich, PlayerResults, GameInfoSetup,
-                       RedrawPlayers, InfoMessage, Bubble, QuestionYesNo, 
-                       HumanPlayerGetCard, ForbiddenCard, SelectGame,
-                       ForcedSelectGame };
-
-struct t_EventData {
-  EAction type{};
-
-  unsigned int playerid{};
-  void* returncode{};
-  std::vector<int> cardids;
-
-  bool wait{};
-  bool quitgame{};
-
-  QStringList playernames;
-  QString data{};
-};
 
 struct t_PlayerData {
   unsigned int id1{};
@@ -82,7 +54,7 @@ struct t_PlayerData {
 
 /// Enable the simulation mode, might be useful for training
 /// the neuro-net we will surely get soon.
-//#define SIMULATION_MODE
+constexpr bool SIMULATION_MODE{false};
 
 /// How many games should be simulated in SIMULATION_MODE?
 constexpr int SIMULATION_MODE_MAX{10000};

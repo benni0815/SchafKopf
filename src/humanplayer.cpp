@@ -16,34 +16,27 @@ HumanPlayer::HumanPlayer(unsigned int id, Game* game)
 
 void HumanPlayer::klopfen()
 {
-    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), {}, i18n("Do you want to double?"), true);
-    m_geklopft = ( *ret == YES );
-    delete ret;
-    
-    Player::klopfen();
+  int result{};
+  emit questionYesNo(i18n("Do you want to double?"), &result);
+  m_geklopft = ( result == YES );
+
+  Player::klopfen();
 }
 
 Card *HumanPlayer::play()
 {
-    int* ret;
-    int cpy;
-    
     auto allowed = allowedCards();
     m_card = nullptr;
-    
-    ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), {}, QString(), true);
-    cpy = *ret;
-    delete ret;
-    
-    while (cpy != -1 && !allowed.contains(cpy))
-    {
-        m_game->postEvent( ForbiddenCard, id(), {cpy}, QString(), true );
 
-        ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), {}, QString(), true);
-        cpy = *ret;
-        delete ret;
+    int cpy{};
+    emit getCard(&cpy);
+
+    while( cpy != -1 && !allowed.contains( cpy ) )
+    {
+        emit forbiddenCard(cpy);
+        emit getCard(&cpy);
     }
-    
+
     for (int i = 0; i < allowed.count(); ++i)
     {
         if (allowed.at(i)->id() == cpy)
@@ -59,19 +52,21 @@ GameInfo* HumanPlayer::gameInfo( bool force )
 {
     if( force )
     {
-        return (GameInfo*)m_game->postEvent(ForcedSelectGame, id(), m_cards.toInts(), QString(), true);
+      GameInfo* gameInfo = new GameInfo();
+      emit selectGame(gameInfo, m_cards.toInts(), true);
+      return gameInfo;
     }
     else
     {
-        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), {}, i18n("Do you want to play?"), true);
-        if( *ret == YES )
-        {
-            delete ret;
-            return (GameInfo*)m_game->postEvent(SelectGame, id(), m_cards.toInts(), QString(), true);
-        }
-        else
-            delete ret;
+      int result{};
+      emit questionYesNo(i18n("Do you want to play?"), &result);
+      if (result == YES)
+      {
+        GameInfo* gameInfo = new GameInfo();
+        emit selectGame(gameInfo, m_cards.toInts());
+        return gameInfo;
+      }
     }
-    
+
     return nullptr;
 }
