@@ -17,8 +17,6 @@ class Player : public QObject
   Q_OBJECT
 
     public:
-        enum { HUMAN = 0, COMPUTER, NETHUMAN };
-
         Player(unsigned int id, Game* game);
         
         virtual ~Player() = default;
@@ -52,7 +50,6 @@ class Player : public QObject
         double points() const { return m_points; }
         void setPoints( double p ) { m_points = p; }
         
-        virtual int rtti() const = 0;
         unsigned int id() const { return m_id; }
 
         /** returns wether this player want this game to

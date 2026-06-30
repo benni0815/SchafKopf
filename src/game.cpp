@@ -16,6 +16,16 @@
 #include <QEvent>
 
 
+namespace
+{
+
+bool isHuman(const Player* player)
+{
+  return dynamic_cast<const HumanPlayer*>(player);
+}
+
+} // namespace
+
 Game::Game(QObject* parent)
     : QThread(parent)
 {
@@ -103,7 +113,7 @@ void Game::gameLoop()
         {
             tmp[i]->klopfen();
             tmp[i]->sortCards();
-            if( tmp[i]->geklopft() && tmp[i]->rtti() != Player::HUMAN )
+            if (tmp[i]->geklopft() && !isHuman(tmp[i]))
             {
               if constexpr (!SIMULATION_MODE)
               {
@@ -305,7 +315,7 @@ bool Game::setupGameInfo(Player *players[])
     int humanPlayer = 0, playerInstance;
     for( i=0;i<PLAYERS;i++)
     {
-        if( players[i]->rtti() == Player::HUMAN )
+        if (isHuman(players[i]))
             humanPlayer=i;
     }
 
@@ -321,7 +331,7 @@ bool Game::setupGameInfo(Player *players[])
         {
             info->setSpieler( players[i] );
             games.append( info );
-            if( players[i]->rtti() != Player::HUMAN )
+            if (!isHuman(players[i]))
             {
                 emit bubble(playerInstance, i18n("%1: \"I want to play.\"", players[i]->name()));
                 sleep (1);
@@ -329,7 +339,7 @@ bool Game::setupGameInfo(Player *players[])
         }
         else
         {
-            if( players[i]->rtti() != Player::HUMAN )
+            if (!isHuman(players[i]))
             {
               emit bubble(playerInstance, i18n("%1: \"I don't want to play.\"", players[i]->name()));
               sleep(1);

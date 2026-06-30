@@ -17,8 +17,6 @@ class HumanPlayer : public Player
         Card *play() override;
         GameInfo* gameInfo(bool force = false) override;
         
-        int rtti() const override { return HUMAN; }
-
     signals:
         void forbiddenCard(unsigned int cardId);
         void questionYesNo(const QString& question, int* result);

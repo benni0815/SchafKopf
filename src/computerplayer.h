@@ -22,8 +22,6 @@ class ComputerPlayer : public Player
         Card *play() override;
         GameInfo* gameInfo(bool force = false) override;
 
-        int rtti() const override { return COMPUTER; }
-
         Card* findHighestCard(const CardList& cards) const;
         Card* findSchmiere(const CardList& cards) const;
 
