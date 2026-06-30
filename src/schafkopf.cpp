@@ -55,12 +55,12 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     m_view->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
 
     m_game = new Game(this);
-    for (auto& p : m_game->players())
+    for (auto* p : m_game->players())
     {
-      connect(p.get(), &Player::gotCards, m_view, &GameCanvas::setPlayerCards);
-      connect(p.get(), &Player::doubled, m_view, [this] (unsigned int playerId) { m_view->playerHasDoubled(playerId, true ); });
-      connect(p.get(), &Player::nameChanged, m_view, &GameCanvas::setPlayerName);
-      if (auto* human = dynamic_cast<HumanPlayer*>(p.get()))
+      connect(p, &Player::gotCards, m_view, &GameCanvas::setPlayerCards);
+      connect(p, &Player::doubled, m_view, [this] (unsigned int playerId) { m_view->playerHasDoubled(playerId, true ); });
+      connect(p, &Player::nameChanged, m_view, &GameCanvas::setPlayerName);
+      if (auto* human = dynamic_cast<HumanPlayer*>(p))
       {
         connect(human, &HumanPlayer::forbiddenCard, m_view, &GameCanvas::cardForbidden, Qt::BlockingQueuedConnection);
         connect(human, &HumanPlayer::questionYesNo, m_view, &GameCanvas::questionYesNo, Qt::BlockingQueuedConnection);
@@ -333,7 +333,7 @@ void SchafKopf::updateInfo()
 
 
     QString sDoubled;
-    for (const auto& player : m_game->players())
+    for (const auto* player : m_game->players())
     {
         if (player->geklopft())
         {

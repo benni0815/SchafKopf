@@ -219,9 +219,11 @@ Player* Game::findIndex( unsigned int index ) const
     return (index < PLAYERS ? m_players[index].get() : nullptr);
 }
 
-std::array<std::shared_ptr<Player>, PLAYERS> Game::players()
+std::vector<Player*> Game::players() const
 {
-  return m_players;
+  std::vector<Player*> ps;
+  std::transform(std::begin(m_players), std::end(m_players), std::back_inserter(ps), [] (const auto& p) { return p.get(); });
+  return ps;
 }
 
 Card Game::highestCardInStich() const

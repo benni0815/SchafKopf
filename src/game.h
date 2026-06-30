@@ -39,7 +39,7 @@ class Game : public QThread
          */
         inline Player* nextPlayer() const { return m_nextPlayer; };
 
-        std::array<std::shared_ptr<Player>, PLAYERS> players();
+        std::vector<Player*> players() const;
 
         bool isTerminated() const { return terminated; }
         Card highestCardInStich() const;
