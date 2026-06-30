@@ -40,28 +40,14 @@ CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
       // TODO: This should be passed as flag depending on Player::isHuman();
       m_is_human = (m_id == 0);
     }
-
-}
-
-CanvasPlayer::~CanvasPlayer()
-{
-    unsigned int i = 0;
-    // delete m_items before m_cards
-    // as m_items has references to cards in
-    // m_cards.
-    for(i=0;i<NUMCARDS;i++)
-        delete m_items[i];
-
-    delete m_name;
 }
 
 void CanvasPlayer::create()
 {
-    unsigned int z = 0;
-    for(z=0;z<NUMCARDS;z++)
+    for (auto& card : m_items)
     {
-        m_items[z] = new CanvasCard();
-        m_scene->addItem( m_items[z] );
+      card = new CanvasCard();
+      m_scene->addItem(card);
     }
 
     m_cards.clear();
