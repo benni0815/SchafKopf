@@ -5,6 +5,8 @@
 
 #include "schafkopfdef.h"
 
+#include <KLocalizedString>
+
 #include <QRandomGenerator>
 
 #include <unordered_map>
@@ -13,33 +15,35 @@
 namespace Cards
 {
 
+QString toString(CardId::Color color)
+{
+  const auto colorMap = QMap<CardId::Color, QString>{
+    {CardId::Eichel,   i18n("Eichel")},
+    {CardId::Gras,     i18n("Gras")},
+    {CardId::Herz,     i18n("Heart")},
+    {CardId::Schellen, i18n("Schellen")},
+  };
+  return colorMap.value(color, {});
+}
+
+QString toString(CardId::Type type)
+{
+  const auto typeMap = QMap<CardId::Type, QString>{
+    {CardId::Sau,    i18n("Sau")},
+    {CardId::Zehn,   i18n("Zehn")},
+    {CardId::Koenig, i18n("Koenig")},
+    {CardId::Ober,   i18n("Ober")},
+    {CardId::Unter,  i18n("Unter")},
+    {CardId::Neun,   i18n("Neun")},
+    {CardId::Acht,   i18n("Acht")},
+    {CardId::Sieben, i18n("Sieben")},
+  };
+  return typeMap.value(type, i18n("Unknown"));
+}
+
 QString toString(const Card& card)
 {
-  QString res;
-
-  switch (card.id.color) {
-  case CardId::Eichel: res += "Eichel"; break;
-  case CardId::Gras: res += "Gras"; break;
-  case CardId::Herz: res += "Herz"; break;
-  case CardId::Schellen: res += "Schellen"; break;
-  default: res += "Nocolor"; break;
-  }
-
-  res += ' ';
-
-  switch (card.id.type) {
-  case CardId::Sau: res += "Sau"; break;
-  case CardId::Zehn: res += "Zehn"; break;
-  case CardId::Koenig: res += "Koenig"; break;
-  case CardId::Ober: res += "Ober"; break;
-  case CardId::Unter: res += "Unter"; break;
-  case CardId::Neun: res += "Neun"; break;
-  case CardId::Acht: res += "Acht"; break;
-  case CardId::Sieben: res += "Sieben"; break;
-  default: res += "Unknown"; break;
-  }
-
-  return res;
+  return QString("%1 %2").arg(toString(card.id.color)).arg(toString(card.id.type));
 }
 
 int getPoints(const Card& card)

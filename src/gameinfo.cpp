@@ -13,71 +13,45 @@
 #include <QString>
 
 
+namespace
+{
+
+QString toString(GameVariant::Mode gameMode)
+{
+  const auto gameMap = QMap<GameVariant::Mode, QString>{
+    {GameVariant::STICHT, i18n("Sticht")},
+    {GameVariant::WENZ, i18n("Wenz")},
+    {GameVariant::GEIER, i18n("Geier")},
+    {GameVariant::DACHS, i18n("Badger")},
+  };
+  return gameMap.value(gameMode, "");
+}
+
+} // namespace
+
 GameInfo::GameInfo(GameVariant game)
 : m_game(game)
 {}
 
 const QString GameInfo::toString() const
 {
-  QString s, c, g;
-  switch (m_game.color)
+  if (m_game.mode == GameVariant::RAMSCH)
   {
-  case CardId::NoColor:
-    c = i18n("colorless");
-    break;
-  case CardId::Eichel:
-    c = i18n("Eichel");
-    break;
-  case CardId::Gras:
-    c = i18n("Gras");
-    break;
-  case CardId::Herz:
-    c = i18n("Heart");
-    break;
-  case CardId::Schellen:
-    c = i18n("Schellen");
-    break;
-  default:
-    c = QString();
-    break;
+    return i18n("Ramsch is played.");
   }
 
-  switch (m_game.mode)
+  auto color = Cards::toString(m_game.color);
+  if (color.isEmpty())
   {
-  case GameVariant::STICHT:
-    g = i18n("Sticht");
-    break;
-  case GameVariant::GEIER:
-    g = i18n("Geier");
-    break;
-  case GameVariant::WENZ:
-    g = i18n("Wenz");
-    break;
-  case GameVariant::RAMSCH:
-    g = i18n("Ramsch");
-    break;
-  case GameVariant::DACHS:
-    g = i18n("Badger");
-    break;
-  case GameVariant::RUFSPIEL:
-  default:
-    g = QString();
+    color = i18n("colorless");
   }
 
   if (m_game.mode == GameVariant::RUFSPIEL)
   {
-    s = i18n("%1 plays on the %2 Ace.", m_spieler ? m_spieler->name() : QString(), c);
-  }
-  else if (m_game.mode == GameVariant::RAMSCH)
-  {
-    s = i18n("Ramsch is played.");
-  }
-  else
-  {
-    s = i18n("%1 plays %2 %3.", m_spieler ? m_spieler->name() : QString(), c, g);
+    return i18n("%1 plays on the %2 Ace.", m_spieler ? m_spieler->name() : QString(), color);
   }
 
-  return s;
+  return i18n("%1 plays %2 %3.", m_spieler ? m_spieler->name() : QString(), color, ::toString(m_game.mode));
 }
 
 int GameInfo::weight(CardId card, GameVariant game)
