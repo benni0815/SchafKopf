@@ -84,8 +84,6 @@ class SchafKopf : public KXmlGuiWindow
         void setupActions();
         void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardids, bool force = false);
 
-        bool m_terminated{true};
-
         Game* m_game{};
         QGraphicsScene* m_scene{};
         GameCanvas* m_view{};

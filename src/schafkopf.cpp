@@ -258,25 +258,16 @@ void SchafKopf::newGame()
 
 void SchafKopf::realNewGame()
 {
-    //connect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
-
     // entering the game loop is the last thing
     // we want to do!
-    m_terminated = false;
     m_game->start();
-    //m_game->gameLoop();
-    //endGame();    
 }
 
 void SchafKopf::endGame()
 {
-    //disconnect(m_game,SIGNAL(playerResult(const QString &,const QString &)),this,SLOT(slotPlayerResult(const QString &,const QString &)));
-
-    //m_game->endGame();
-    if( !m_terminated )
+    if (m_game->isRunning())
     {
         m_game->endGame();
-        m_terminated = true;
         m_view->exitLoop();
     }
     
@@ -286,7 +277,7 @@ void SchafKopf::endGame()
 
 void SchafKopf::showStich()
 {
-    if( m_terminated )
+    if (m_game->isTerminated())
         return;
 
     m_stichdlg->show();
@@ -321,7 +312,7 @@ void SchafKopf::updateInfo()
     btnLastTrick->setIconSize(pix.size());
     btnLastTrick->setIcon(QIcon(pix));
 
-    if( !m_terminated && m_game->gameInfo().isValid() )
+    if( !m_game->isTerminated() && m_game->gameInfo().isValid() )
         lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo().toString() + "</b></qt>");
     else
     {
