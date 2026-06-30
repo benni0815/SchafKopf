@@ -187,7 +187,7 @@ void CanvasPlayer::init()
     {
       CanvasCard* c = m_items[z];
       c->setCard(m_cards.at(z));
-      c->setZValue(double(-1 - z));
+      c->setZValue(-1 - static_cast<int>(z));
       c->show();
 
       if (m_position == 1)
