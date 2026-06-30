@@ -33,7 +33,7 @@ void CardList::init()
             append( new Card( (Card::EType)(i+1), (Card::EColor)z ) );
 }
 
-int CardList::points()
+int CardList::points() const
 {
     int tmp = 0;
     for( int i = 0; i < this->count(); i++ )
@@ -95,12 +95,12 @@ CardList* CardList::FindCards(int color, int type)
     return found;
 }
 
-bool CardList::contains( int color, int type )
+bool CardList::contains(int color, int type) const
 {
     return contains( color + type );
 }
 
-bool CardList::contains( int cardid )
+bool CardList::contains(int cardid) const
 {
     for( int i = 0; i < this->count(); i++ )
     {

@@ -36,7 +36,7 @@ class CardList : public QList<Card*>
 
         /** Evaluate the all cards in this list
         */
-        int points();
+        int points() const;
 
         /** append CardList @p list to this CardList
           */
@@ -45,8 +45,8 @@ class CardList : public QList<Card*>
         /** returns wether the card color and typedef
           * is in the list
           */
-        bool contains( int color, int type );
-        bool contains( int cardid );
+        bool contains(int color, int type) const;
+        bool contains(int cardid) const;
 
         void removeCard( uint index );
         void removeCard( Card* card );
