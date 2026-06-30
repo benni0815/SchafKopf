@@ -38,7 +38,7 @@ StichDlg::StichDlg(QWidget *parent )
     reset();
 }
 
-void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, QStringList* playerlist)
+void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, const QStringList& playerlist)
 {
     CardList stich(cardIds);
     stich.setAutoDelete(true);
@@ -55,7 +55,7 @@ void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, QSt
         Card* c = stich.at( stich.count() - PLAYERS + i );
         if( c )
         cards[i]->setPixmap(c->pixmap());
-            players[i]->setText( "<qt><b>"+(*playerlist)[i]+"</b></qt>" );
+            players[i]->setText("<qt><b>" + playerlist.at(i) + "</b></qt>");
         }
         else
         {
@@ -67,5 +67,5 @@ void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, QSt
 
 void StichDlg::reset()
 {
-  changed({}, {}, nullptr);
+  changed({}, {}, {});
 }

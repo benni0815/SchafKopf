@@ -22,7 +22,7 @@ class StichDlg : public QDialog
         StichDlg(QWidget* parent = nullptr);
         ~StichDlg() override = default;
 
-        void changed(const QString& name, const std::vector<int>& cardIds, QStringList* players);
+        void changed(const QString& name, const std::vector<int>& cardIds, const QStringList& players);
 
     private:
         void reset();

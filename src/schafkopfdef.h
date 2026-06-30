@@ -50,7 +50,7 @@ struct t_EventData {
   bool wait{};
   bool quitgame{};
 
-  QStringList* playernames{};
+  QStringList playernames;
   QString data{};
 };
 

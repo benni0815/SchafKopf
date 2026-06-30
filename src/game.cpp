@@ -98,8 +98,7 @@ void Game::gameLoop()
     Player *tmp[PLAYERS];
     Card* c{};
     int gamecnt=0;
-    QStringList* playernames{};
-    
+
     terminated = false;
 
     resetGameResults();
@@ -188,9 +187,9 @@ void Game::gameLoop()
             index = highestCard();
             tmp[index]->addStich( m_currstich );
 
-            playernames = new QStringList();
+            QStringList playernames;
             for( a = 0; a < PLAYERS; a++ )
-                playernames->append( m_currstich.at(a)->owner()->name() );
+                playernames.append(m_currstich.at(a)->owner()->name());
 
             postEvent( PlayerMadeStich, tmp[index]->id(), m_currstich.toInts(), tmp[index]->name(), false, playernames );
 
@@ -528,7 +527,7 @@ void Game::updatePlayerNames()
     //m_canvas->redrawPlayers();
 }
 
-void* Game::postEvent(EAction action, unsigned int playerid, const std::vector<int>& cardids, const QString& d, bool wait, QStringList* names)
+void* Game::postEvent(EAction action, unsigned int playerid, const std::vector<int>& cardids, const QString& d, bool wait, const QStringList& names)
 {
     t_EventData* data = new t_EventData;
     void* ret{};
@@ -568,9 +567,6 @@ void* Game::postEvent(EAction action, unsigned int playerid, const std::vector<i
             endGame();
 
         ret = data->returncode;
-
-        if( data->playernames )
-            delete data->playernames;
 
         delete data;
     }

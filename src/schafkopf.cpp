@@ -260,9 +260,6 @@ void SchafKopf::customEvent( QEvent* e )
                 }
             }
 
-            if( data->playernames )
-                delete data->playernames;
-                
             delete data;
         }
     }
