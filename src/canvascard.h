@@ -3,22 +3,27 @@
 
 #pragma once
 
+#include "card.h"
+
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 
 #define CANVASCARD 1000
 
-class Card;
-
 class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
     public:
+        static QPixmap frontsidePixmap(Card::Id id);
+
+        /// return a pixmap for the background of a card.
+        static const QPixmap& backsidePixmap();
+
         CanvasCard();
         ~CanvasCard() override = default;
 
-        void setCard(Card* card);
-        Card* card() const { return m_card; }
+        void setCard(Card::Id cardId);
+        Card::Id card() const { return m_card; }
 
         void setFrontVisible( bool b );
 
@@ -38,7 +43,6 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
 
         QPixmap frontPixmap;
         QPixmap forbiddenFrontPixmap;
-        QPixmap backPixmap;
 
         bool m_visible{false};
         bool m_forbidden{false};
@@ -47,7 +51,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         int toy{0};
         QTimer* timer{};
 
-        Card* m_card{};
+        Card::Id m_card{Card::NoStich, Card::NoColor};
 
     private slots:
         void disableForbidden();

@@ -52,7 +52,6 @@ CanvasPlayer::~CanvasPlayer()
     for(i=0;i<NUMCARDS;i++)
         delete m_items[i];
 
-    delete m_cards;
     delete m_name;
 }
 
@@ -65,8 +64,7 @@ void CanvasPlayer::create()
         m_scene->addItem( m_items[z] );
     }
 
-    m_cards = new CardList;
-    m_cards->setAutoDelete( true );
+    m_cards.clear();
 
     m_name = new QGraphicsSimpleTextItem();
     m_name->setBrush( QBrush( Qt::white ) );
@@ -85,8 +83,9 @@ void CanvasPlayer::position()
     int h = m_scene->height();
     int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fuer z.B. ein Bild des Spielers (Netzwerkmodus).
     int availw = m_scene->width() - 2*DIST - offsetl;
-    int cardw = Card::backgroundPixmap().width();
-    int cardh = Card::backgroundPixmap().height();
+    const auto& pix = CanvasCard::backsidePixmap();
+    int cardw = pix.width();
+    int cardh = pix.height();
     float cardoverlap = 1./8.; //Ueberlapp der Karten im Verhaeltnis zur Kartenbreite
 
     for( unsigned int z = 0; z < NUMCARDS; z++ )
@@ -176,12 +175,12 @@ void CanvasPlayer::init()
 {
     m_name->setText( m_player_name );
 
-    if( m_cards->count() )
+    if (!m_cards.empty())
     {
-        for( int z = 0; z < m_cards->count(); z++ )
+        for (size_t z = 0; z < m_cards.size(); ++z)
         {
             CanvasCard *c = m_items[z];
-            c->setCard( m_cards->at( z ) );
+            c->setCard(m_cards.at(z));
             c->setZValue( double(-1 - z) );
             c->show();
 
@@ -236,31 +235,29 @@ CanvasCard* CanvasPlayer::hasCard(Card::Id cardid) const
     for(unsigned int i=0;i<NUMCARDS;i++)
     {
         CanvasCard* card = m_items[i];
-        if(card->card()->id() == cardid )
+        if(card->card() == cardid )
             return card;
     }
     return nullptr;
 }
         
-void CanvasPlayer::cardPlayed( Card* c )
+void CanvasPlayer::cardPlayed(Card::Id id)
 {
-    CanvasCard* card = hasCard( c->id() );
+    CanvasCard* card = hasCard(id);
     if( card )
     {
         card->hide();
     }
 }
 
-void CanvasPlayer::setCards( CardList* cards )
+void CanvasPlayer::setCards(const std::vector<Card::Id>& cards)
 {
-    int i;
-    for( i = 0; i < NUMCARDS; i++ ) 
+    for(int i = 0; i < NUMCARDS; i++ )
     {
-        m_items[i]->setCard(nullptr);
+      m_items[i]->setCard({});
     }
 
-    m_cards->clear();
-    m_cards->appendList(*cards);
+    m_cards = cards;
 }
 
 void CanvasPlayer::say( const QString & message, unsigned int )

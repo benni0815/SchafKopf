@@ -3,13 +3,10 @@
 
 #pragma once
 
-#include <QPixmap>
-
 #include <cardcache.h>
 
-class QPixmap;
+
 class Player;
-class QString;
 
 ///This class represents one card.
 ///
@@ -26,15 +23,11 @@ public:
     Color color{NoColor};
   };
 
+  static KCardInfo kdeCardInfo(Id id);
+
   Card(const Id& id);
   Card(const Type t, const Color c);
   ~Card() = default;
-
-  /// return a pixmap of the card
-  const QPixmap& pixmap() const;
-
-  /// return a pixmap for the background of a card.
-  static const QPixmap& backgroundPixmap();
 
   /// return how much points the card has.
   /// e.g. king = 4 points
@@ -48,8 +41,6 @@ public:
 
   /// return the type of the card, e.g. ASS
   Type card() const { return m_id.type; }
-
-  KCardInfo kdeCardInfo() const;
 
   /// set the owner of the card.
   /// only do this when the cards are given,
@@ -71,10 +62,6 @@ public:
 
   bool isEqual(const Card* const othercard) const;
 
-  /// Call this whenever the carddeck has changed and
-  /// the internal pixmap should be reloaded.
-  void cardDeckChanged();
-
   /// Returns a non-localized textual representation of the card,
   ///  for example "Herz Ass"
   QString toString() const;
@@ -82,8 +69,6 @@ public:
 private:
   Id m_id{Type::NoStich, Color::NoColor};
   Player* m_owner{};
-
-  QPixmap m_pixmap;
 };
 
 inline bool operator==(const Card::Id& lhs, const Card::Id& rhs)

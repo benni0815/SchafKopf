@@ -94,9 +94,6 @@ GameCanvas::~GameCanvas()
 {
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
-        if( m_stich[i]->card() )
-            delete m_stich[i]->card();
-            
         delete m_stich[i];
         delete m_players[i];
     }
@@ -134,8 +131,9 @@ QPoint GameCanvas::getStichPosition( int player )
     QPoint p;
     int w = scene()->width();//-DIST;
     int h = scene()->height();//-DIST;
-    int cardw = Card::backgroundPixmap().width();
-    int cardh = Card::backgroundPixmap().height();
+    const auto& pix = CanvasCard::backsidePixmap();
+    int cardw = pix.width();
+    int cardh = pix.height();
     int stichcanvasw = scene()->width() - (2*DIST) - (2*cardh) - 50;
     int stichcanvash = scene()->height() - (2*DIST) - (2*cardh) - 50;
     int cx = w/2;
@@ -230,9 +228,9 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
 
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
-            if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
+            if (m_players[i]->isHuman() && m_players[i]->hasCard(card->card()))
             {
-                m_resultCard = card->card()->id();
+                m_resultCard = card->card();
                 disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
 
                 // be sure that focusOutEvent does not use its parameter
@@ -257,14 +255,12 @@ void GameCanvas::slotPlayerPlayedCard(unsigned int player, Card::Id cardid)
 
     if( card )
     {
-        m_players[player]->cardPlayed( card->card() );
+        m_players[player]->cardPlayed(card->card());
         if(Settings::instance()->rearrangeCards())
             m_players[player]->position();
 
         CanvasCard* stich = m_stich[player];
-        if( stich->card() )
-            delete stich->card();
-        stich->setCard( new Card( card->card()->id() ) );
+        stich->setCard(card->card());
 
         int r = getStichRotation(player);
         stich->setRotation( r );
@@ -581,22 +577,21 @@ void GameCanvas::resetPlayers()
 
 void GameCanvas::resetPlayerCards()
 {
-    int i;
-    CardList list;
-        
-    for(i=0;i<PLAYERS;i++)    
-        m_players[i]->setCards( &list );
+  for (auto& p : m_players)
+  {
+    p->setCards({});
+  }
 }
 
-void GameCanvas::setPlayerCards(unsigned int id, const std::vector<Card::Id>& cards)
+void GameCanvas::setPlayerCards(unsigned int id, const std::vector<Card::Id>& cardIds)
 {
-    int i;
-    CardList list( cards );
-    list.setAutoDelete( false );
-    
-    for(i=0;i<PLAYERS;i++)
-        if( m_players[i]->id() == id )
-            m_players[i]->setCards( &list );
+  for (auto& p : m_players)
+  {
+    if (p->id() == id)
+    {
+      p->setCards(cardIds);
+    }
+  }
 }
 
 CanvasPlayer* GameCanvas::humanPlayer() const

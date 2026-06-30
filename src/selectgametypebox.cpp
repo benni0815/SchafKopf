@@ -3,6 +3,7 @@
 
 #include "selectgametypebox.h"
 
+#include "canvascard.h"
 #include "card.h"
 #include "cardlist.h"
 #include "gameinfo.h"
@@ -127,15 +128,15 @@ void SelectGameTypeBox::updatePreview()
             trumpf.push_back(list.at(i));
     trumpf.sort([&] (Card* card) { return info.evalCard(card); });
 
-    Card c(Card::Sau, Card::Eichel);
-    QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.size() / 4) + (trumpf.size() % 4)));
-    int x = c.pixmap().width() / 2 * (trumpf.size() - 1);
+    const auto cardSize = CanvasCard::frontsidePixmap({Card::Sau, Card::Eichel}).size();
+    QPixmap pix(cardSize.width() + (cardSize.width() / 2) * 7, cardSize.height() * (int(trumpf.size() / 4) + (trumpf.size() % 4)));
+    int x = cardSize.width() / 2 * (trumpf.size() - 1);
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
     int y = 0;
     for (int i = 0; i <= trumpf.size() - 1; ++i)
     {
-        const auto& pixmap = trumpf.at(i)->pixmap();
+        const auto pixmap = CanvasCard::frontsidePixmap(trumpf.at(i)->id());
         p.drawPixmap(x, y, pixmap);
         x -= pixmap.width()/2;
 
@@ -148,7 +149,7 @@ void SelectGameTypeBox::updatePreview()
     }
 
     p.end();
-    pix = pix.copy(0, 0, pix.width(), y + ( x == 0 ? 0 : c.pixmap().height()));
+    pix = pix.copy(0, 0, pix.width(), y + ( x == 0 ? 0 : cardSize.height()));
     preview->setPixmap( pix );
     preview->setMinimumWidth(pix.width()+10);
 }

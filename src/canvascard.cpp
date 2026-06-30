@@ -2,13 +2,33 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "canvascard.h"
-#include "card.h"
 #include "settings.h"
 
 #include <QTimer>
 #include <QPainter>
 #include <QGraphicsDropShadowEffect>
 
+
+namespace
+{
+
+QPixmap& backside()
+{
+  static QPixmap pix;
+  return pix;
+}
+
+} // namespace
+
+QPixmap CanvasCard::frontsidePixmap(Card::Id id)
+{
+  return Settings::instance()->cardCache()->frontside(Card::kdeCardInfo(id));
+}
+
+const QPixmap& CanvasCard::backsidePixmap()
+{
+  return backside();
+}
 
 CanvasCard::CanvasCard()
  :  QGraphicsPixmapItem()
@@ -25,18 +45,18 @@ CanvasCard::CanvasCard()
     connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
-void CanvasCard::setCard( Card* card )
+void CanvasCard::setCard(Card::Id cardId)
 {
-    m_card = card;
-    if( m_card )
-    {
-        reloadPixmaps();
-    }
+  m_card = cardId;
+  if (m_card != Card::Id{})
+  {
+    reloadPixmaps();
+  }
 }
 
 void CanvasCard::reloadPixmaps()
 {
-    frontPixmap = m_card->pixmap();
+    frontPixmap = frontsidePixmap(m_card);
 
     QImage forbiddenFrontImage = frontPixmap.toImage();
 
@@ -48,7 +68,7 @@ void CanvasCard::reloadPixmaps()
 
     forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
 
-    backPixmap = Card::backgroundPixmap();
+    backside() = QPixmap(Settings::instance()->cardCache()->backside());
 
     float height = frontPixmap.height();
     float width = frontPixmap.width();
@@ -61,8 +81,8 @@ void CanvasCard::updatePixmap()
 {
     if( !m_visible )
     {
-        setPixmap( backPixmap );
-        return;
+      setPixmap(backsidePixmap());
+      return;
     }
     if( m_forbidden )
     {
@@ -126,9 +146,8 @@ void CanvasCard::moveLoop()
 
 void CanvasCard::cardDeckChanged()
 {
-    if( m_card )
-    {
-        m_card->cardDeckChanged();
-        reloadPixmaps();
-    }
+  if (m_card != Card::Id{})
+  {
+    reloadPixmaps();
+  }
 }

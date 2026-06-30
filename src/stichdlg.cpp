@@ -3,7 +3,7 @@
 
 #include "stichdlg.h"
 
-#include "cardlist.h"
+#include "canvascard.h"
 
 #include <KLocalizedString>
 
@@ -39,26 +39,22 @@ StichDlg::StichDlg(QWidget *parent )
 
 void StichDlg::changed(const QString& name, const std::vector<Card::Id>& cardIds, const QStringList& playerlist)
 {
-    CardList stich(cardIds);
-    stich.setAutoDelete(true);
-
-    if (stich.empty())
+    if (cardIds.empty())
         trick->setText(i18n("No trick was made."));
     else
       trick->setText(i18n("Trick was made by: <b>") + name + "</b>");
 
-    for( int i = 0; i < PLAYERS; i++ )
+    for (size_t i = 0; i < PLAYERS; i++ )
     {
-        if (stich.size() > i)
+        if (cardIds.size() > i)
         {
-        Card* c = stich.at(stich.size() - PLAYERS + i);
-        if( c )
-        cards[i]->setPixmap(c->pixmap());
+            const auto id = cardIds.at(cardIds.size() - PLAYERS + i);
+            cards[i]->setPixmap(CanvasCard::frontsidePixmap(id));
             players[i]->setText("<qt><b>" + playerlist.at(i) + "</b></qt>");
         }
         else
         {
-            cards[i]->setPixmap(Card::backgroundPixmap());
+            cards[i]->setPixmap(CanvasCard::backsidePixmap());
             players[i]->setText( QString() );
         }
     }

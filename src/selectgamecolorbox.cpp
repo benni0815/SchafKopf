@@ -3,6 +3,7 @@
 
 #include "selectgamecolorbox.h"
 
+#include "canvascard.h"
 #include "card.h"
 #include "cardlist.h"
 #include "gameinfo.h"
@@ -56,7 +57,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 
     auto setupSauButton = [&] (QPushButton* button, Card::Color color)
     {
-      const auto pix = Card(Card::Sau, color).pixmap();
+      const auto pix = CanvasCard::frontsidePixmap({Card::Sau, color});
       button->setIcon(pix);
       button->setIconSize(pix.size());
     };

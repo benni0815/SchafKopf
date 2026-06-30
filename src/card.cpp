@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "card.h"
-#include "settings.h"
 #include "player.h"
 
 #include <kcarddialog.h>
@@ -11,12 +10,6 @@
 
 namespace
 {
-
-QPixmap& background()
-{
-  static QPixmap pix;
-  return pix;
-}
 
 int getPoints(Card::Type t)
 {
@@ -45,62 +38,44 @@ Card::Card(const Type t, const Color c)
 : m_id({t, c})
 {}
 
-const QPixmap& Card::pixmap() const
-{
-  return m_pixmap;
-}
-
-const QPixmap& Card::backgroundPixmap()
-{
-  if (background().isNull())
-  {
-    background() = QPixmap(Settings::instance()->cardCache()->backside());
-  }
-
-  return background();
-}
-
 int Card::points() const
 {
   return getPoints(m_id.type);
 }
 
-KCardInfo Card::kdeCardInfo() const
+KCardInfo Card::kdeCardInfo(Id id)
 {
-    KCardInfo::Suit suit;
-    KCardInfo::Card card;
+  static const auto colorMap = std::unordered_map<Color, KCardInfo::Suit>{
+    {Eichel, KCardInfo::Club},
+    {Gras, KCardInfo::Spade},
+    {Herz, KCardInfo::Heart},
+    {Schellen, KCardInfo::Diamond}
+  };
 
-    switch(m_id.color)
-    {
-    case Eichel: suit = KCardInfo::Club; break;
-    case Gras: suit = KCardInfo::Spade; break;
-    case Herz: suit = KCardInfo::Heart; break;
-    case Schellen: suit = KCardInfo::Diamond; break;
-    default: suit = KCardInfo::None;
-    }
+  static const auto typeMap = std::unordered_map<Type, KCardInfo::Card>{
+    {Sau,    KCardInfo::Ace},
+    {Koenig, KCardInfo::King},
+    {Ober,   KCardInfo::Queen},
+    {Unter,  KCardInfo::Jack},
+    {Zehn,   KCardInfo::Ten},
+    {Neun,   KCardInfo::Nine},
+    {Acht,   KCardInfo::Eight},
+    {Sieben, KCardInfo::Seven}
+  };
 
-    switch(m_id.type)
-    {
-    case Sau: card = KCardInfo::Ace; break;
-    case Koenig: card = KCardInfo::King; break;
-    case Ober: card = KCardInfo::Queen; break;
-    case Unter: card = KCardInfo::Jack; break;
-    default: card = KCardInfo::Card( ( m_id.type / 4 ) + 1 );
-    }
+  const auto colorIt = colorMap.find(id.color);
+  const auto color = (colorIt == std::end(colorMap)) ? KCardInfo::Suit::None
+                                                     : colorIt->second;
+  const auto typeIt = typeMap.find(id.type);
+  const auto type = (typeIt == std::end(typeMap)) ? KCardInfo::Card::Joker
+                                                  : typeIt->second;
 
-    KCardInfo cardInfo = KCardInfo( suit, card );
-    return cardInfo;
+  return KCardInfo(color, type);
 }
 
 bool Card::isEqual(const Card* const othercard) const
 {
-  return (othercard->card() == card()) && (othercard->color() == color());
-}
-
-void Card::cardDeckChanged()
-{
-  m_pixmap = QPixmap(Settings::instance()->cardCache()->frontside(kdeCardInfo()));
-  background() = QPixmap();
+  return (othercard->id() == id());
 }
 
 bool Card::operator<(const Card* const c) const

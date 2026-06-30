@@ -3,6 +3,7 @@
 
 #include "schafkopf.h"
 
+#include "canvascard.h"
 #include "settings.h"
 #include "gamecanvas.h"
 #include "game.h"
@@ -322,9 +323,10 @@ void SchafKopf::updateInfo()
 {
     int timesDoubled = 0, timesThrownTogether = 0;
     int valuation;
-    
-    btnLastTrick->setIconSize( Card::backgroundPixmap().size() );
-    btnLastTrick->setIcon(QIcon(Card::backgroundPixmap()));
+
+    const auto& pix = CanvasCard::backsidePixmap();
+    btnLastTrick->setIconSize(pix.size());
+    btnLastTrick->setIcon(QIcon(pix));
 
     if( !m_terminated && m_game->gameInfo()->isValid() )
         lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>");

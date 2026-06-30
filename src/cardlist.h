@@ -5,6 +5,10 @@
 
 #include "card.h"
 
+#include <QList>
+
+#include <functional>
+
 
 using EvalFunc = std::function<int(Card*)>;
 

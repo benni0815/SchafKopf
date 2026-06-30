@@ -12,7 +12,6 @@
 
 
 class Card;
-class CardList;
 class CanvasCard;
 class Player;
 class QLabel;
@@ -40,12 +39,12 @@ class CanvasPlayer{
         void setHasDoubled( bool h );
         void setLast( bool l );
         void setName( const QString & name );
-        void setCards( CardList* cards );
+        void setCards(const std::vector<Card::Id>& cards);
         void say( const QString & message, unsigned int playerid );
         void hideBubble();
         
         CanvasCard* canvasCard( int index );
-        void cardPlayed( Card* c );
+        void cardPlayed(Card::Id id);
         CanvasCard* hasCard(Card::Id cardid) const;
 
     private:
@@ -64,5 +63,5 @@ class CanvasPlayer{
         QGraphicsProxyWidget* m_bubble{};
         QTimer m_bubbleTimer;
         CanvasCard* m_items[NUMCARDS]{};
-        CardList* m_cards;
+        std::vector<Card::Id> m_cards;
 };
