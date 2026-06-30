@@ -60,8 +60,8 @@ class GameCanvas : public QGraphicsView
 
         void playerIsLast( unsigned int id );
         void setPlayerName( unsigned int id, const QString & name );
-        void setPlayerCards( unsigned int id, int* cards );
-        
+        void setPlayerCards(unsigned int id, const std::vector<int>& cards);
+
         void updateBackground();
 
         void exitLoop();

@@ -45,7 +45,7 @@ struct t_EventData {
 
   unsigned int playerid{};
   void* returncode{};
-  int* cardids{};
+  std::vector<int> cardids;
 
   bool wait{};
   bool quitgame{};

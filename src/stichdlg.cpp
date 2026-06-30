@@ -38,10 +38,10 @@ StichDlg::StichDlg(QWidget *parent )
     reset();
 }
 
-void StichDlg::changed(const QString& name, int* list, QStringList* playerlist)
+void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, QStringList* playerlist)
 {
-    CardList stich( list );
-    stich.setAutoDelete( true );
+    CardList stich(cardIds);
+    stich.setAutoDelete(true);
 
     if( stich.count() )
         trick->setText(i18n("Trick was made by: <b>") + name + "</b>");
@@ -67,5 +67,5 @@ void StichDlg::changed(const QString& name, int* list, QStringList* playerlist)
 
 void StichDlg::reset()
 {
-  changed({}, nullptr, nullptr);
+  changed({}, {}, nullptr);
 }

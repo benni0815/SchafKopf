@@ -174,7 +174,7 @@ void SchafKopf::customEvent( QEvent* e )
                 break;
                 
             case CardPlayed:
-                m_view->slotPlayerPlayedCard( data->playerid, *(data->cardids) );
+                m_view->slotPlayerPlayedCard(data->playerid, data->cardids.front());
                 break;
             
             case PlayerMadeStich:
@@ -207,7 +207,7 @@ void SchafKopf::customEvent( QEvent* e )
                 break;
             
             case ForbiddenCard:
-                m_view->cardForbidden( *(data->cardids) );
+                m_view->cardForbidden(data->cardids.front());
                 break;
             
             case ForcedSelectGame:
@@ -259,9 +259,6 @@ void SchafKopf::customEvent( QEvent* e )
                     break;
                 }
             }
-
-            if( data->cardids )
-                delete [] data->cardids;
 
             if( data->playernames )
                 delete data->playernames;
@@ -469,7 +466,7 @@ void SchafKopf::updateTableNames()
     m_table->setHorizontalHeaderLabels( Settings::instance()->playerNames() );
 }
 
-GameInfo* SchafKopf::selectGame( bool force, int* cardids )
+GameInfo* SchafKopf::selectGame(bool force, const std::vector<int>& cardids)
 {
     CardList list( cardids );
     list.setAutoDelete( true );

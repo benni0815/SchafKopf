@@ -48,13 +48,13 @@ void Player::setCards( CardList *cards )
     for(i=0;i<m_cards->count();i++)
         m_cards->at(i)->setOwner( this );
 
-    m_game->postEvent( PlayerGotCards, id(), m_cards->toIntList() );
+    m_game->postEvent(PlayerGotCards, id(), m_cards->toInts());
 }
 
 void Player::sortCards()
 {
     m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-    m_game->postEvent( PlayerGotCards, id(), m_cards->toIntList() );
+    m_game->postEvent(PlayerGotCards, id(), m_cards->toInts());
 }
 
 void Player::klopfen()

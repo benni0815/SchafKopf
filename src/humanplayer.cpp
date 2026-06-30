@@ -21,7 +21,7 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), nullptr, i18n("Do you want to double?"), true);
+    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), {}, i18n("Do you want to double?"), true);
     m_geklopft = ( *ret == YES );
     delete ret;
     
@@ -32,24 +32,20 @@ Card *HumanPlayer::play()
 {
     int* ret;
     int cpy;
-    int* cpylist;
     int i;
     
     m_allowed = allowedCards();
     m_card = nullptr;
     
-    ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), nullptr, QString(), true);
+    ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), {}, QString(), true);
     cpy = *ret;
     delete ret;
     
     while( cpy != -1 && !m_allowed->contains( cpy ) )
     {
-        cpylist = new int[2];
-        cpylist[0] = cpy;
-        cpylist[1] = 0;
-        m_game->postEvent( ForbiddenCard, id(), cpylist, QString(), true );
+        m_game->postEvent( ForbiddenCard, id(), {cpy}, QString(), true );
 
-        ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), nullptr, QString(), true);
+        ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), {}, QString(), true);
         cpy = *ret;
         delete ret;
     }
@@ -70,15 +66,15 @@ GameInfo* HumanPlayer::gameInfo( bool force )
 {
     if( force )
     {
-        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toIntList(), QString(), true );
+        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toInts(), QString(), true );
     }
     else
     {
-        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), nullptr, i18n("Do you want to play?"), true);
+        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), {}, i18n("Do you want to play?"), true);
         if( *ret == YES )
         {
             delete ret;
-            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toIntList(), QString(), true );
+            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toInts(), QString(), true );
         }
         else
             delete ret;

@@ -21,7 +21,7 @@ class CardList : public QList<Card*>
         /** Creates a card list from a zero terminated list of integers
           * as you can create it using toIntList()
           */
-        CardList( int* cards );
+        CardList(const std::vector<int>& cardIds);
 
         /** initialize this card list with a default card
           * deck of 32 cards.
@@ -56,10 +56,7 @@ class CardList : public QList<Card*>
 
         void sort(eval_func eval, void *param);
 
-        /** creates a zero terminated list of integers, every
-          * int has the id of one card assigned.
-          */
-        int* toIntList();
+        std::vector<int> toInts() const;
 
         void setAutoDelete( bool autoDelete ) { m_autoDelete = autoDelete; }
 

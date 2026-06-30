@@ -577,7 +577,7 @@ void GameCanvas::resetPlayerCards()
         m_players[i]->setCards( &list );
 }
 
-void GameCanvas::setPlayerCards( unsigned int id, int* cards )
+void GameCanvas::setPlayerCards(unsigned int id, const std::vector<int>& cards)
 {
     int i;
     CardList list( cards );

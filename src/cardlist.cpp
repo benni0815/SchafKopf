@@ -10,16 +10,12 @@
 #include <iostream>
 
 
-CardList::CardList( int* cards )
+CardList::CardList(const std::vector<int>& cardIds)
 {
-    m_autoDelete = false;
-
-    if( cards )
-        while( *cards != 0 )
-        {
-            append( new Card( *cards ) );
-            ++cards;
-        }
+  for (const auto id : cardIds)
+  {
+    append(new Card(id));
+  }
 }
 
 void CardList::init()
@@ -153,16 +149,14 @@ void CardList::sort(eval_func eval, void *param)
     }
 }
 
-int* CardList::toIntList()
+std::vector<int> CardList::toInts() const
 {
-    int* list = new int[count()+1];
-    int i;
-
-    for( i=0; i<count(); i++ )
-        list[i] = at(i)->id();
-    list[i] = 0;
-
-    return list;
+  std::vector<int> ints;
+  for (int i = 0; i < count(); ++i)
+  {
+    ints.push_back(at(i)->id());
+  }
+  return ints;
 }
 
 void CardList::removeCard( uint index )

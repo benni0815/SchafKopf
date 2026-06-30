@@ -52,7 +52,7 @@ class Game : public QThread
 
         /** post a event to the parent object
           */
-        void* postEvent(EAction action, unsigned int playerid = 0, int* cardids = nullptr,
+        void* postEvent(EAction action, unsigned int playerid = 0, const std::vector<int>& cardids = {},
                         const QString& data = QString(), bool wait = false, QStringList* names = nullptr);
 
         void endGame(void);

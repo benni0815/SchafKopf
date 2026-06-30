@@ -88,7 +88,7 @@ class SchafKopf : public KXmlGuiWindow
 
     private:
         void setupActions();
-        GameInfo* selectGame( bool force, int* cardids );
+        GameInfo* selectGame(bool force, const std::vector<int>& cardids);
 
         bool m_terminated{true};
         QSemaphore m_semaphore;
