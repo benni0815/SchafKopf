@@ -134,7 +134,7 @@ std::optional<GameVariant> ComputerPlayer::gameInfo(bool force)
     {
         for (const auto color : {CardId::NoColor, CardId::Eichel, CardId::Gras, CardId::Herz, CardId::Schellen})
         {
-            if (!GameInfo::isAllowed(m_cards, {mode, color}))
+            if (!GameInfo::isAllowed(m_cards.toIds(), {mode, color}))
               continue;
          
             game_data d;

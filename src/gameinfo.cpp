@@ -133,11 +133,6 @@ bool GameInfo::istTrumpf(CardId card) const
   * 1. is it allowed to play this game with this cards (needed for callgames)
   * 2. is it allowed to play this game according to the users preferences
   */
-bool GameInfo::isAllowed(const CardList& cards, GameVariant game)
-{
-  return isAllowed(cards.toIds(), game);
-}
-
 bool GameInfo::isAllowed(const std::vector<CardId>& cards, GameVariant game)
 {
   // it is never allowed to decide to play Ramsch
