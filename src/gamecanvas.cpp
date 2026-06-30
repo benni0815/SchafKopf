@@ -235,9 +235,9 @@ void GameCanvas::cardClicked(QGraphicsItem* item)
   {
     for (unsigned int i = 0; i < PLAYERS; i++)
     {
-      if (m_players[i].isHuman() && m_players[i].hasCard(card->card()))
+      if (m_players[i].isHuman() && m_players[i].hasCard(card->cardId()))
       {
-        m_resultCard = card->card();
+        m_resultCard = card->cardId();
         disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
 
         // be sure that focusOutEvent does not use its parameter
@@ -256,14 +256,14 @@ void GameCanvas::slotPlayerPlayedCard(unsigned int player, CardId cardid)
 
   if (card)
   {
-    m_players[player].cardPlayed(card->card());
+    m_players[player].cardPlayed(card->cardId());
     if (Settings::instance()->rearrangeCards())
     {
       m_players[player].position();
     }
 
     CanvasCard* stich = m_stich[player];
-    stich->setCard(card->card());
+    stich->setCardId(card->cardId());
 
     int r = getStichRotation(player);
     stich->setRotation(r);

@@ -186,7 +186,7 @@ void CanvasPlayer::init()
     for (size_t z = 0; z < m_cards.size(); ++z)
     {
       CanvasCard* c = m_items[z];
-      c->setCard(m_cards.at(z));
+      c->setCardId(m_cards.at(z));
       c->setZValue(-1 - static_cast<int>(z));
       c->show();
 
@@ -246,7 +246,7 @@ CanvasCard* CanvasPlayer::hasCard(CardId cardid) const
   for (unsigned int i = 0; i < NUMCARDS; i++)
   {
     CanvasCard* card = m_items[i];
-    if (card->card() == cardid)
+    if (card->cardId() == cardid)
     {
       return card;
     }
@@ -266,7 +266,7 @@ void CanvasPlayer::setCards(const std::vector<CardId>& cards)
 {
   for (int i = 0; i < NUMCARDS; i++)
   {
-    m_items[i]->setCard({});
+    m_items[i]->setCardId({});
   }
 
   m_cards = cards;

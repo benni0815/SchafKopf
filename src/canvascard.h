@@ -22,8 +22,8 @@ public:
   CanvasCard();
   ~CanvasCard() override = default;
 
-  void setCard(CardId cardId);
-  CardId card() const { return m_card; }
+  void setCardId(CardId cardId);
+  CardId cardId() const { return m_cardId; }
 
   void setFrontVisible(bool b);
 
@@ -47,7 +47,7 @@ private:
   int toy{0};
   QTimer* timer{};
 
-  CardId m_card{CardId::NoStich, CardId::NoColor};
+  CardId m_cardId{CardId::NoStich, CardId::NoColor};
 
 private slots:
   void disableForbidden();

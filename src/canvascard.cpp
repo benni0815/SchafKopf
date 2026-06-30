@@ -70,10 +70,10 @@ CanvasCard::CanvasCard()
   connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
-void CanvasCard::setCard(CardId cardId)
+void CanvasCard::setCardId(CardId cardId)
 {
-  m_card = cardId;
-  if (m_card != CardId{})
+  m_cardId = cardId;
+  if (m_cardId != CardId{})
   {
     reloadPixmaps();
   }
@@ -81,7 +81,7 @@ void CanvasCard::setCard(CardId cardId)
 
 void CanvasCard::reloadPixmaps()
 {
-  frontPixmap = frontsidePixmap(m_card);
+  frontPixmap = frontsidePixmap(m_cardId);
 
   QImage forbiddenFrontImage = frontPixmap.toImage();
 
@@ -171,7 +171,7 @@ void CanvasCard::moveLoop()
 
 void CanvasCard::cardDeckChanged()
 {
-  if (m_card != CardId{})
+  if (m_cardId != CardId{})
   {
     reloadPixmaps();
   }
