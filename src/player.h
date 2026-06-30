@@ -61,7 +61,6 @@ class Player
 
         CardList allowedCards();
         void removeTrumpf(CardList& liste);
-        bool hasTrumpf(CardList* liste);
 
     protected:
         CardList m_cards;

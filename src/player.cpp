@@ -100,17 +100,6 @@ void Player::removeTrumpf(CardList& liste)
     liste.RemoveCards(entfernen);
 }
 
-bool Player::hasTrumpf(CardList* liste)
-{
-    Card* card;
-    for( int i = 0; i < liste->count(); i++ )
-    {
-        card = liste->at( i );
-        if(m_game->gameInfo()->istTrumpf(card)) return true;
-    }
-    return false;
-}
-
 bool Player::istTrumpf(Card* card)
 {
     return m_game->gameInfo()->istTrumpf(card);
