@@ -44,7 +44,6 @@ Card::~Card()
 void Card::init( const enum EType t, const enum EColor c  )
 {
     m_pixmap = nullptr;
-    m_owner = nullptr;
     
     m_card = t;
     m_color = c;

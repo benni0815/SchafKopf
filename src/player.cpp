@@ -11,15 +11,10 @@
 
 
 Player::Player(unsigned int id, Game* game)
-    : m_game( game )
+  : m_game(game)
+  , m_id(id)
 {
     m_stiche = new CardList();
-    m_points = 0.0;
-    m_id=id;
-
-    m_has_doubled = false;
-    m_geklopft = false;
-    m_last = false;
 }
 
 Player::~ Player()

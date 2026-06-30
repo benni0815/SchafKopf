@@ -42,33 +42,33 @@ enum EAction { NoAction, GameStarted, GameEnded, PlayerDoubled,
                        ForcedSelectGame };
 
 struct t_EventData {
-    EAction type;
+  EAction type{};
 
-    unsigned int playerid;
-    void* returncode;
-    int* cardids;
+  unsigned int playerid{};
+  void* returncode{};
+  int* cardids{};
 
-    bool wait;
-    bool quitgame;
+  bool wait{};
+  bool quitgame{};
 
-    QStringList* playernames;
-    QString data;
+  QStringList* playernames{};
+  QString data{};
 };
 
 struct t_PlayerData {
-    unsigned int id1;
-    int* cards1;
-    
-    unsigned int id2;
-    int* cards2;
+  unsigned int id1{};
+  int* cards1{};
 
-    unsigned int id3;
-    int* cards3;
+  unsigned int id2{};
+  int* cards2{};
 
-    unsigned int id4;
-    int* cards4;
+  unsigned int id3{};
+  int* cards3{};
 
-    unsigned int lastid;
+  unsigned int id4{};
+  int* cards4{};
+
+  unsigned int lastid{};
 };
 
 /** Uncomment this line to make all cards

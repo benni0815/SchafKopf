@@ -113,7 +113,7 @@ class Settings : public QObject
 
         KSharedConfig::Ptr m_config;
 
-        QMutex* m_mutex;
+        QMutex* m_mutex{};
 
         KCardCache m_cardCache;
 };

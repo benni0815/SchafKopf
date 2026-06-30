@@ -18,8 +18,6 @@
 
 Results::Results()
 {
-    m_laufende = 0;
-    
     init();
 }
 

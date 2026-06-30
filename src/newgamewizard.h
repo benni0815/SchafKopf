@@ -24,10 +24,12 @@ public:
 
 protected:
     void setup_page_selectgame();
-    QWizardPage *page_selectgame;
-    QRadioButton *checkLocalGame, *checkNetworkServer, *checkNetworkClient;
+    QWizardPage* page_selectgame{};
+    QRadioButton* checkLocalGame{};
+    QRadioButton* checkNetworkServer{};
+    QRadioButton* checkNetworkClient{};
     QString getGameInfoString(int gameType);
-    QLabel *info;
+    QLabel *info{};
     void setInfoText(int gameType);
 
 protected:

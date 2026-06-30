@@ -101,18 +101,19 @@ class Game : public QThread
     private:
         static unsigned int def_id;
 
-        QSemaphore* m_semaphore;
-        bool terminated;
+        QSemaphore* m_semaphore{};
+        bool terminated{true};
 
         Player *m_players[PLAYERS];
-        Player *m_nextPlayer; // player who is the next to play a card (for nextPlayer() )
+        // player who is the next to play a card (for nextPlayer() )
+        Player *m_nextPlayer{};
 
         CardList m_allcards;
         CardList m_playedcards;
         CardList m_currstich;
         GameInfo m_gameinfo;
-        int m_laufende;
-        int m_timesThrownTogether;
+        int m_laufende{0};
+        int m_timesThrownTogether{0};
 
-        QObject* m_parent;
+        QObject* m_parent{};
 };

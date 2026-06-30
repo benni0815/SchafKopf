@@ -69,7 +69,6 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     m_ok->setZ( 100 );
     */
     
-    m_result = 0;
     setFocusPolicy( Qt::StrongFocus );
     
     setBackgroundBrush( QBrush( Qt::darkGreen ) );

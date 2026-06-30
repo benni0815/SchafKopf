@@ -73,19 +73,19 @@ class Player
         // is this the last player in the current round
         // needed to make sure that this player sees the last
         // four cards to double
-        bool m_last;
-        bool m_geklopft;
+        bool m_last{false};
+        bool m_geklopft{false};
         // is set to true as soon as klopfed()
         // was called
-        bool m_has_doubled;
-        unsigned int m_id;
+        bool m_has_doubled{false};
+        unsigned int m_id{0};
 
         CardList* cardsOfSameType(Card* card);
         Card* firstPlayedCard();
         bool istTrumpf(Card* card);
 
     private:
-        double m_points;
+        double m_points{0};
 
         CardList* PlayerCards();
 };

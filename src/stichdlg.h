@@ -28,7 +28,7 @@ class StichDlg : public QDialog
         void reset();
         
     private:
-        QLabel* trick;
-        QLabel* cards[PLAYERS];
-        QLabel* players[PLAYERS];
+        QLabel* trick{};
+        QLabel* cards[PLAYERS]{};
+        QLabel* players[PLAYERS]{};
 };

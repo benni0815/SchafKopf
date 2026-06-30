@@ -15,10 +15,10 @@
 
 
 CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
-    : m_scene( scene )
+: m_position(i)
+, m_scene(scene)
 {
     create();
-    m_position = i;
     // TODO: get a correct id! especially important for networking!
     m_id = i;
 
@@ -72,8 +72,6 @@ void CanvasPlayer::create()
     m_name->hide();
     m_scene->addItem( m_name );
 
-    m_is_last = false;
-    m_has_doubled = false;
     m_player_name = QString();
 }
 

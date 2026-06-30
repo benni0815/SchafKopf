@@ -79,5 +79,5 @@ class ComputerPlayer : public Player
         CardList *m_playedCards[4];
         CardList *m_angespielt;
         OpenBook* book;
-        int mitspieler;
+        int mitspieler{-1};
 };

@@ -9,10 +9,6 @@
 
 #include <iostream>
 
-CardList::CardList()
-{
-    m_autoDelete = false;
-}
 
 CardList::CardList( int* cards )
 {

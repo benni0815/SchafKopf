@@ -15,6 +15,6 @@ public:
     t_EventData* data();
 
 private:
-    t_EventData *m_data;
+    t_EventData *m_data{};
 };
 

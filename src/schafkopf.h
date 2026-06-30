@@ -90,21 +90,21 @@ class SchafKopf : public KXmlGuiWindow
         void setupActions();
         GameInfo* selectGame( bool force, int* cardids );
 
-        bool m_terminated;
+        bool m_terminated{true};
         QSemaphore m_semaphore;
 
-        Game* m_game;
-        QGraphicsScene* m_scene;
-        GameCanvas* m_view;
-        QTableWidget* m_table;
-        QSplitter* split;
+        Game* m_game{};
+        QGraphicsScene* m_scene{};
+        GameCanvas* m_view{};
+        QTableWidget* m_table{};
+        QSplitter* split{};
 
-        QLabel* lblCurGame;
-        QLabel* lblDoubled;
-        QPushButton* btnLastTrick;
+        QLabel* lblCurGame{};
+        QLabel* lblDoubled{};
+        QPushButton* btnLastTrick{};
 
-        QAction* m_actStich;
-        QAction* m_actEnd;
+        QAction* m_actStich{};
+        QAction* m_actEnd{};
 
         QPointer<StichDlg> m_stichdlg;
 };

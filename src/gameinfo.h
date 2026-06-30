@@ -3,7 +3,8 @@
 
 #pragma once
 
-class Card;
+#include "card.h"
+
 class CardList;
 class Player;
 class QString;
@@ -16,8 +17,8 @@ Keeps all information on the current game (e.g. wenz or rufspiel)
 
 class GameInfo{
     public:
-        enum __mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH, DACHS };
-        GameInfo();
+        enum Mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH, DACHS };
+        GameInfo() = default;
         ~GameInfo() = default;
 
         void setValid( bool b ) { m_valid = b; }
@@ -26,8 +27,8 @@ class GameInfo{
         int color() const { return m_color; }
         void setColor( int c ) { m_color = c; }
 
-        __mode mode() const { return m_mode; }
-        void setMode( int m ) { m_mode = (__mode)m; }
+        Mode mode() const { return m_mode; }
+        void setMode( int m ) { m_mode = static_cast<Mode>(m); }
 
         Player* spieler() const { return m_spieler; }
         void setSpieler( Player* p ) { m_spieler = p; }
@@ -58,9 +59,9 @@ class GameInfo{
         bool operator>(const GameInfo& info);
 
     private:
-        bool m_valid;
-        int m_color;
-        __mode m_mode;
+        bool m_valid{false};
+        int m_color{Card::NOCOLOR};
+        Mode m_mode{GameInfo::STICHT};
         Player* m_spieler{};
         Player* m_mitspieler{};
 };

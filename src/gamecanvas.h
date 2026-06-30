@@ -96,8 +96,8 @@ class GameCanvas : public QGraphicsView
         int getStichRotation( int player );
         CanvasPlayer* humanPlayer() const;
         
-    private:        
-        int m_result;
+    private:
+        int m_result{0};
         
         QList<QGraphicsItem*> m_focus_list;
         CanvasPlayer* m_players[PLAYERS];
@@ -106,13 +106,13 @@ class GameCanvas : public QGraphicsView
         // currently clicked item
         QGraphicsItem* m_item{};
 
-        QGraphicsSimpleTextItem* m_message;
-        CanvasText* m_yes;
-        CanvasText* m_no;
-        CanvasText* m_ok;
+        QGraphicsSimpleTextItem* m_message{};
+        CanvasText* m_yes{};
+        CanvasText* m_no{};
+        CanvasText* m_ok{};
 
         QImage ImgBack;
-        bool loadOK;
+        bool loadOK{false};
 
         QEventLoop m_loop;
 };

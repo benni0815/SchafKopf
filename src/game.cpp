@@ -24,15 +24,11 @@ unsigned int Game::def_id=0;
 
 Game::Game(QSemaphore* semaphore, QObject *parent )
     : QThread()
+    , m_semaphore(semaphore)
+    , m_parent(parent)
 {
     unsigned int i;
-    terminated = true;
-    m_semaphore = semaphore;
     
-    m_parent = parent;
-    m_laufende = 0;
-    m_timesThrownTogether = 0;
-
 #ifndef SIMULATION_MODE
     // Create our player objects
     // delete these only in the destructor    

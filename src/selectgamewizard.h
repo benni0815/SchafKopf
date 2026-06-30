@@ -35,8 +35,8 @@ public slots:
 
 protected:
     CardList* m_list;
-    bool m_closing;
-    bool m_force;
-    SelectGameTypeBox *box1;
-    SelectGameColorBox *box2;
+    bool m_closing{false};
+    bool m_force{false};
+    SelectGameTypeBox *box1{};
+    SelectGameColorBox *box2{};
 };

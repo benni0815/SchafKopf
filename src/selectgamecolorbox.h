@@ -34,15 +34,15 @@ public:
 
 protected:
     GameInfo* m_gameinfo{};
-    QRadioButton* checkFarblos;
-    QRadioButton* checkEichel;
-    QRadioButton* checkGras;
-    QRadioButton* checkHerz;
-    QRadioButton* checkSchellen;
-    QPushButton* labelEichel;
-    QPushButton* labelGras;
-    QPushButton* labelHerz;
-    QPushButton* labelSchellen;
+    QRadioButton* checkFarblos{};
+    QRadioButton* checkEichel{};
+    QRadioButton* checkGras{};
+    QRadioButton* checkHerz{};
+    QRadioButton* checkSchellen{};
+    QPushButton* labelEichel{};
+    QPushButton* labelGras{};
+    QPushButton* labelHerz{};
+    QPushButton* labelSchellen{};
 
     SelectGameWizard* m_parent{};
 

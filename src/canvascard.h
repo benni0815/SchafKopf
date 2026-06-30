@@ -40,12 +40,12 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         QPixmap forbiddenFrontPixmap;
         QPixmap backPixmap;
 
-        bool m_visible;
-        bool m_forbidden;
+        bool m_visible{false};
+        bool m_forbidden{false};
 
-        int tox;
-        int toy;
-        QTimer *timer;
+        int tox{0};
+        int toy{0};
+        QTimer* timer{};
 
         Card* m_card{};
 

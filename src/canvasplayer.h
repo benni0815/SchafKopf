@@ -49,19 +49,19 @@ class CanvasPlayer{
         
     private:
         void create();
-        
-        unsigned int m_id;
-        int m_position;
-        bool m_has_doubled;
-        bool m_is_last;
-        bool m_is_human;
+
+        unsigned int m_id{0};
+        int m_position{0};
+        bool m_has_doubled{false};
+        bool m_is_last{false};
+        bool m_is_human{false};
         QString m_player_name;
         
-        QGraphicsScene* m_scene;
-        QGraphicsSimpleTextItem* m_name;
+        QGraphicsScene* m_scene{};
+        QGraphicsSimpleTextItem* m_name{};
         std::unique_ptr<QLabel> m_bubbleLabel;
-        QGraphicsProxyWidget* m_bubble;
+        QGraphicsProxyWidget* m_bubble{};
         QTimer m_bubbleTimer;
-        CanvasCard* m_items[NUMCARDS];
+        CanvasCard* m_items[NUMCARDS]{};
         CardList* m_cards;
 };

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "gameinfo.h"
-#include "card.h"
 #include "cardlist.h"
 #include "player.h"
 #include "settings.h"
@@ -12,13 +11,6 @@
 
 #include <QString>
 
-
-GameInfo::GameInfo()
-{
-    m_color=Card::NOCOLOR;
-    m_mode=GameInfo::STICHT;
-    m_valid = false;
-}
 
 const QString GameInfo::toString() const
 {

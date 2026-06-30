@@ -27,7 +27,7 @@ Settings::Settings( QObject *parent )
     m_config = KSharedConfig::openConfig("SchafKopf");
 
     // the mutex causes more problems right now than be useful...
-    m_mutex = nullptr; // new QMutex();
+    // m_mutex = new QMutex();
 
     loadCardDeck();
 }

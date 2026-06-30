@@ -11,11 +11,10 @@
 
 
 SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent )
-    : QWizard( parent )
+: QWizard(parent)
+, m_list(list)
+, m_force(force)
 {
-    m_force = force;
-    m_list=list;
-    m_closing=false;
     box1 = new SelectGameTypeBox( this );
     box2 = new SelectGameColorBox( this );
     addPage( box1 );

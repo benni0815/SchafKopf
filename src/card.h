@@ -82,11 +82,11 @@ private:
   void init( const enum EType t, const enum EColor c  );
 
 private:
-  Player* m_owner;
+  Player* m_owner{};
 
-  int m_points;
-  int m_color;
-  int m_card;
+  int m_points{0};
+  int m_color{-1};
+  int m_card{-1};
 
   QPixmap* m_pixmap;
   static QPixmap* m_background;

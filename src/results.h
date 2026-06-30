@@ -47,9 +47,9 @@ class Results{
         GameInfo* m_gameinfo{};
         Game* m_game{};
         
-        int m_laufende;
+        int m_laufende{0};
         
-        int m_points;
-        bool m_schneider;
-        bool m_schwarz;
+        int m_points{0};
+        bool m_schneider{false};
+        bool m_schwarz{false};
 };

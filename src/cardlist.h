@@ -16,7 +16,7 @@ typedef int (*eval_func)(Card *card, void *param);
 class CardList : public QList<Card*>
 {
     public:
-        CardList();
+        CardList() = default;
 
         /** Creates a card list from a zero terminated list of integers
           * as you can create it using toIntList()
@@ -64,5 +64,5 @@ class CardList : public QList<Card*>
         void setAutoDelete( bool autoDelete ) { m_autoDelete = autoDelete; }
 
     private:
-        bool m_autoDelete;
+        bool m_autoDelete{false};
 };

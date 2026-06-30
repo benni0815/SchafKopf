@@ -26,13 +26,13 @@ public:
     GameInfo* gameInfo() const;
 
 protected:
-    QRadioButton* checkRufspiel;
-    QRadioButton* checkSolo;
-    QRadioButton* checkGeier;
-    QRadioButton* checkWenz;
-    QRadioButton* checkDachs;
-    QLabel* preview;
-    QLabel* infoLabel;
+    QRadioButton* checkRufspiel{};
+    QRadioButton* checkSolo{};
+    QRadioButton* checkGeier{};
+    QRadioButton* checkWenz{};
+    QRadioButton* checkDachs{};
+    QLabel* preview{};
+    QLabel* infoLabel{};
 
     void setInfoText(const QString& Text);
 

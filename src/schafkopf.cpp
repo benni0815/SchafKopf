@@ -100,8 +100,6 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
 
     m_stichdlg = new StichDlg( this );
 
-    m_terminated = true;
-
     updateInfo();
 }
 
