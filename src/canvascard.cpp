@@ -20,14 +20,14 @@ QPixmap& backside()
 
 KCardInfo kdeCardInfo(CardId id)
 {
-  static const auto colorMap = std::unordered_map<CardId::Color, KCardInfo::Suit>{
+  static const auto colorMap = QMap<CardId::Color, KCardInfo::Suit>{
     {CardId::Eichel, KCardInfo::Club},
     {CardId::Gras, KCardInfo::Spade},
     {CardId::Herz, KCardInfo::Heart},
     {CardId::Schellen, KCardInfo::Diamond}
   };
 
-  static const auto typeMap = std::unordered_map<CardId::Type, KCardInfo::Card>{
+  static const auto typeMap = QMap<CardId::Type, KCardInfo::Card>{
     {CardId::Sau,    KCardInfo::Ace},
     {CardId::Koenig, KCardInfo::King},
     {CardId::Ober,   KCardInfo::Queen},
@@ -38,13 +38,8 @@ KCardInfo kdeCardInfo(CardId id)
     {CardId::Sieben, KCardInfo::Seven}
   };
 
-  const auto colorIt = colorMap.find(id.color);
-  const auto color = (colorIt == std::end(colorMap)) ? KCardInfo::Suit::None
-                                                     : colorIt->second;
-  const auto typeIt = typeMap.find(id.type);
-  const auto type = (typeIt == std::end(typeMap)) ? KCardInfo::Card::Joker
-                                                  : typeIt->second;
-
+  const auto color = colorMap.value(id.color, KCardInfo::Suit::None);
+  const auto type = typeMap.value(id.type, KCardInfo::Card::Joker);
   return KCardInfo(color, type);
 }
 

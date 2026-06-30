@@ -44,7 +44,7 @@ QString toString(const Card& card)
 
 int getPoints(const Card& card)
 {
-  static const auto map = std::unordered_map<CardId::Type, int>{
+  static const auto map = QMap<CardId::Type, int>{
     {CardId::Sau,    11},
     {CardId::Zehn,   10},
     {CardId::Koenig, 4},
@@ -52,12 +52,7 @@ int getPoints(const Card& card)
     {CardId::Unter,  2}
   };
 
-  const auto it = map.find(card.id.type);
-  if (it == std::end(map))
-  {
-    return 0;
-  }
-  return it->second;
+  return map.value(card.id.type, 0);
 }
 
 std::vector<CardId> initIds()
