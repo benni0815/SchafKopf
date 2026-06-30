@@ -6,8 +6,9 @@
 #include "player.h"
 #include "card.h"
 #include "gameinfo.h"
+#include "openbook.h"
 
-class OpenBook;
+
 class CardList;
 
 class ComputerPlayer : public Player
@@ -80,6 +81,6 @@ class ComputerPlayer : public Player
 
         CardList *m_playedCards[4];
         CardList *m_angespielt;
-        OpenBook* book;
+        OpenBook m_openBook;
         int mitspieler{-1};
 };

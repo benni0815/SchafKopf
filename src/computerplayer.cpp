@@ -16,11 +16,11 @@
 
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
-    : Player(id,game)
+: Player(id,game)
+, m_openBook(this, game)
 {
     int i;
 
-    book = new OpenBook( this, game );
     for(i=0;i<PLAYERS;i++)
         m_playedCards[i]=new CardList();
     m_angespielt=new CardList();
@@ -33,7 +33,6 @@ ComputerPlayer::~ComputerPlayer()
     for(i=0;i<PLAYERS;i++)
         delete m_playedCards[i];
     delete m_angespielt;
-    delete book;
 }
 
 void ComputerPlayer::klopfen()
@@ -110,7 +109,7 @@ Card *ComputerPlayer::play()
 
     if (m_game->currStich().isEmpty())
     {
-        allowed = book->possibleCards();
+        allowed = m_openBook.possibleCards();
         if (allowed.empty())
             allowed = allowedCards();
         i=0;
