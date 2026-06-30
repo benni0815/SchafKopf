@@ -25,7 +25,7 @@ class GameCanvas : public QGraphicsView
     
     public:
         GameCanvas(QGraphicsScene* gs, QWidget *parent = nullptr);
-        ~GameCanvas() override;
+        ~GameCanvas() override = default;
         
         /** the user has to click a card to play
           */
@@ -71,7 +71,7 @@ class GameCanvas : public QGraphicsView
         void redrawPlayers();
         void slotPlayerPlayedCard(unsigned int player, CardId cardid);
         void slotPlayerMadeStich(unsigned int);
-                
+
     signals:
         void clicked( QGraphicsItem* item );
         void playCard( Card* card );
@@ -103,7 +103,7 @@ class GameCanvas : public QGraphicsView
         
         QList<QGraphicsItem*> m_focus_list;
         std::array<CanvasPlayer, PLAYERS> m_players;
-        CanvasCard* m_stich[PLAYERS];
+        std::array<CanvasCard*, PLAYERS> m_stich;
         
         // currently clicked item
         QGraphicsItem* m_item{};

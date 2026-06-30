@@ -88,14 +88,6 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     }
 }
 
-GameCanvas::~GameCanvas()
-{
-    for( unsigned int i = 0; i < PLAYERS; i++ )
-    {
-        delete m_stich[i];
-    }
-}
-
 void GameCanvas::cardForbidden(CardId cardid)
 {
     for(unsigned int z=0;z<PLAYERS;z++)
