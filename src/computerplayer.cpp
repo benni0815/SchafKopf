@@ -395,7 +395,7 @@ Card *ComputerPlayer::highestTrumpfInGame()
 
     std::for_each(std::begin(m_cards), std::end(m_cards), removeCardsFromTrumpfs);
 
-    trumpfs.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card); });
+    trumpfs.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card->id()); });
     if (trumpfs.empty())
     {
       return {};

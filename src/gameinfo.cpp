@@ -203,11 +203,6 @@ bool GameInfo::operator>(const GameInfo& info)
         return this->mode() < info.mode();
 }
 
-int GameInfo::evalCard(Card* card) const
-{
-  return evalCard(card->id());
-}
-
 int GameInfo::evalCard(CardId card) const
 {
     /* Not very nice. Try to find a better way */
@@ -323,7 +318,7 @@ int GameInfo::laufende()
 
   all.init();
   all.setAutoDelete(false);
-  all.sort([this] (Card* card) { return evalCard(card); });
+  all.sort([this] (Card* card) { return evalCard(card->id()); });
   all.setAutoDelete(true);
 
   for (int i = all.size() - 1; i >= 0; --i)

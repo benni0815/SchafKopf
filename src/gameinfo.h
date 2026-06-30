@@ -8,7 +8,6 @@
 #include <vector>
 
 
-class Card;
 class CardList;
 class Player;
 class QString;
@@ -51,7 +50,6 @@ class GameInfo{
           *I.e. the highest card will get a value of 32 assigned
           * be sure that autodelete is turned of when using this function!
           */
-        int evalCard(Card* card) const;
         int evalCard(CardId card) const;
 
         /** calculate the number of "laufende" ticks

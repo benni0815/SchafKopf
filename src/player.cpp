@@ -56,7 +56,7 @@ void Player::removeCard(const Card* card)
 
 void Player::sortCards()
 {
-    m_cards.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card); });
+    m_cards.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card->id()); });
     emit gotCards(id(), m_cards.toIds());
 }
 
