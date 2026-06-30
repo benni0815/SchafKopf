@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "card.h"
+#include "types.h"
 
 #include <QWizardPage>
 
@@ -12,7 +12,6 @@ class QWidget;
 class QLineEdit;
 class QPushButton;
 class QRadioButton;
-class GameInfo;
 class SelectGameWizard;
 class GameInfo;
 
@@ -25,16 +24,14 @@ class SelectGameColorBox : public QWizardPage
     Q_OBJECT
 
 public:
-    SelectGameColorBox(QWidget* parent = nullptr);
+    SelectGameColorBox(GameVariant& game, QWidget* parent = nullptr);
     ~SelectGameColorBox() override = default;
 
-    void cleanGameInfo();
-    void setGameInfo(GameInfo* info);
-    GameInfo* getGameInfo();
+    void statusChanged();
     bool getFinish();
 
 protected:
-    GameInfo* m_gameinfo{};
+    GameVariant& m_game;
     QRadioButton* checkFarblos{};
     QRadioButton* checkEichel{};
     QRadioButton* checkGras{};
@@ -50,8 +47,7 @@ protected:
     void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
     void checkFirstVisible();
     bool m_finish;
-    void statusChanged();
-    Card::Color getColor();
+    CardId::Color getColor();
 
 protected slots:
     void colorChanged();

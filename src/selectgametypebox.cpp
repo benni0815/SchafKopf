@@ -86,23 +86,23 @@ void SelectGameTypeBox::typeChanged()
     const auto HelpGametypeWenz = i18n("When you play a \"Wenz\", you can choose a color. If you don't choose a color, only all \"Unter\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
     const auto HelpGametypeGeier = i18n("When you play a \"Geier\", you can choose a color. If you don't choose a color, only all \"Ober\" will be trumps. If you do, the cards of the chosen color will also be trumps. You will play alone against the other three players.");
 
-    auto info = std::unique_ptr<GameInfo>(gameInfo());
+    const auto mode = gameMode();
     updatePreview();
-    switch(info->mode())
+    switch (mode)
     {
-    case (GameInfo::RUFSPIEL):
+    case (GameVariant::RUFSPIEL):
         setInfoText(HelpGametypeRufspiel);
         break;
-    case (GameInfo::WENZ):
+    case (GameVariant::WENZ):
         setInfoText(HelpGametypeWenz);
         break;
-    case (GameInfo::STICHT):
+    case (GameVariant::STICHT):
         setInfoText(HelpGametypeSolo);
         break;
-    case (GameInfo::GEIER):
+    case (GameVariant::GEIER):
         setInfoText(HelpGametypeGeier);
         break;
-    case (GameInfo::DACHS):
+    case (GameVariant::DACHS):
         setInfoText(HelpGametypeDachs);
         break;
     // DS: Fix a compiler warning
@@ -118,25 +118,31 @@ void SelectGameTypeBox::setInfoText(const QString& Text)
 
 void SelectGameTypeBox::updatePreview()
 {
-    GameInfo info = *gameInfo();
+    const auto info = GameInfo({gameMode(), CardId::NoColor});
 
-    CardList list;
-    list.init();
-    CardList trumpf;
-    for (int i = 0; i < list.size(); i++)
-        if (info.istTrumpf(list.at(i)))
-            trumpf.push_back(list.at(i));
-    trumpf.sort([&] (Card* card) { return info.evalCard(card); });
+    CardList cards;
+    cards.init();
+    std::vector<CardId> trumpf;
+    for (const Card* card : cards)
+    {
+      if (info.istTrumpf(card->id()))
+      {
+        trumpf.push_back(card->id());
+      }
+    }
 
-    const auto cardSize = CanvasCard::frontsidePixmap({Card::Sau, Card::Eichel}).size();
+    std::sort(std::begin(trumpf), std::end(trumpf), [&] (CardId lhs, CardId rhs)
+              { return info.evalCard(lhs) < info.evalCard(rhs); });
+
+    const auto cardSize = CanvasCard::frontsidePixmap({CardId::Sau, CardId::Eichel}).size();
     QPixmap pix(cardSize.width() + (cardSize.width() / 2) * 7, cardSize.height() * (int(trumpf.size() / 4) + (trumpf.size() % 4)));
     int x = cardSize.width() / 2 * (trumpf.size() - 1);
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
     int y = 0;
-    for (int i = 0; i <= trumpf.size() - 1; ++i)
+    for (size_t i = 0; i <= trumpf.size() - 1; ++i)
     {
-        const auto pixmap = CanvasCard::frontsidePixmap(trumpf.at(i)->id());
+        const auto pixmap = CanvasCard::frontsidePixmap(trumpf.at(i));
         p.drawPixmap(x, y, pixmap);
         x -= pixmap.width()/2;
 
@@ -154,21 +160,18 @@ void SelectGameTypeBox::updatePreview()
     preview->setMinimumWidth(pix.width()+10);
 }
 
-
-GameInfo* SelectGameTypeBox::gameInfo() const
+GameVariant::Mode SelectGameTypeBox::gameMode() const
 {
-    GameInfo* info = new GameInfo();
+  if (checkRufspiel->isChecked())
+    return GameVariant::Mode::RUFSPIEL;
+  else if (checkSolo->isChecked())
+    return GameVariant::Mode::STICHT;
+  else if (checkGeier->isChecked())
+    return GameVariant::Mode::GEIER;
+  else if (checkWenz->isChecked())
+    return GameVariant::Mode::WENZ;
+  else if (checkDachs->isChecked())
+    return GameVariant::Mode::DACHS;
 
-    if( checkRufspiel->isChecked() )
-        info->setMode(GameInfo::RUFSPIEL);
-    else if( checkSolo->isChecked() )
-        info->setMode(GameInfo::STICHT);
-    else if( checkGeier->isChecked() )
-        info->setMode(GameInfo::GEIER);
-    else if( checkWenz->isChecked() )
-        info->setMode(GameInfo::WENZ);
-    else if( checkDachs->isChecked() )
-        info->setMode(GameInfo::DACHS);
-
-    return info;
+  return GameVariant::Mode::RAMSCH;
 }

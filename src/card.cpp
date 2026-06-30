@@ -11,14 +11,14 @@
 namespace
 {
 
-int getPoints(Card::Type t)
+int getPoints(CardId::Type t)
 {
-  static const auto map = std::unordered_map<Card::Type, int>{
-    {Card::Sau,    11},
-    {Card::Zehn,   10},
-    {Card::Koenig, 4},
-    {Card::Ober,   3},
-    {Card::Unter,  2}
+  static const auto map = std::unordered_map<CardId::Type, int>{
+    {CardId::Sau,    11},
+    {CardId::Zehn,   10},
+    {CardId::Koenig, 4},
+    {CardId::Ober,   3},
+    {CardId::Unter,  2}
   };
   const auto it = map.find(t);
   if (it == std::end(map))
@@ -30,11 +30,11 @@ int getPoints(Card::Type t)
 
 } // namespace
 
-Card::Card(const Id& id)
+Card::Card(const CardId& id)
 : m_id(id)
 {}
 
-Card::Card(const Type t, const Color c)
+Card::Card(const CardId::Type t, const CardId::Color c)
 : m_id({t, c})
 {}
 
@@ -43,24 +43,24 @@ int Card::points() const
   return getPoints(m_id.type);
 }
 
-KCardInfo Card::kdeCardInfo(Id id)
+KCardInfo Card::kdeCardInfo(CardId id)
 {
-  static const auto colorMap = std::unordered_map<Color, KCardInfo::Suit>{
-    {Eichel, KCardInfo::Club},
-    {Gras, KCardInfo::Spade},
-    {Herz, KCardInfo::Heart},
-    {Schellen, KCardInfo::Diamond}
+  static const auto colorMap = std::unordered_map<CardId::Color, KCardInfo::Suit>{
+    {CardId::Eichel, KCardInfo::Club},
+    {CardId::Gras, KCardInfo::Spade},
+    {CardId::Herz, KCardInfo::Heart},
+    {CardId::Schellen, KCardInfo::Diamond}
   };
 
-  static const auto typeMap = std::unordered_map<Type, KCardInfo::Card>{
-    {Sau,    KCardInfo::Ace},
-    {Koenig, KCardInfo::King},
-    {Ober,   KCardInfo::Queen},
-    {Unter,  KCardInfo::Jack},
-    {Zehn,   KCardInfo::Ten},
-    {Neun,   KCardInfo::Nine},
-    {Acht,   KCardInfo::Eight},
-    {Sieben, KCardInfo::Seven}
+  static const auto typeMap = std::unordered_map<CardId::Type, KCardInfo::Card>{
+    {CardId::Sau,    KCardInfo::Ace},
+    {CardId::Koenig, KCardInfo::King},
+    {CardId::Ober,   KCardInfo::Queen},
+    {CardId::Unter,  KCardInfo::Jack},
+    {CardId::Zehn,   KCardInfo::Ten},
+    {CardId::Neun,   KCardInfo::Nine},
+    {CardId::Acht,   KCardInfo::Eight},
+    {CardId::Sieben, KCardInfo::Seven}
   };
 
   const auto colorIt = colorMap.find(id.color);
@@ -81,7 +81,7 @@ bool Card::isEqual(const Card* const othercard) const
 bool Card::operator<(const Card* const c) const
 {
     // TODO: anyone a better idea?
-    int a[] = {Card::Sau, Card::Zehn, Card::Koenig, Card::Ober, Card::Unter, Card::Neun, Card::Acht, Card::Sieben};
+    int a[] = {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Ober, CardId::Unter, CardId::Neun, CardId::Acht, CardId::Sieben};
     uint i = 0;
     uint pos = 0;
     for( ;i<(sizeof(a)/sizeof(int));i++)
@@ -98,7 +98,7 @@ bool Card::operator<(const Card* const c) const
     return false;
 }
 
-Card::Id Card::id() const
+CardId Card::id() const
 {
   return m_id;
 }
@@ -109,24 +109,24 @@ QString Card::toString() const
     QString res;
 
     switch (m_id.color) {
-    case Eichel: res += "Eichel"; break;
-    case Gras: res += "Gras"; break;
-    case Herz: res += "Herz"; break;
-    case Schellen: res += "Schellen"; break;
+    case CardId::Eichel: res += "Eichel"; break;
+    case CardId::Gras: res += "Gras"; break;
+    case CardId::Herz: res += "Herz"; break;
+    case CardId::Schellen: res += "Schellen"; break;
     default: res += "Nocolor"; break;
     }
 
     res += ' ';
 
     switch (m_id.type) {
-    case Sau: res += "Sau"; break;
-    case Zehn: res += "Zehn"; break;
-    case Koenig: res += "Koenig"; break;
-    case Ober: res += "Ober"; break;
-    case Unter: res += "Unter"; break;
-    case Neun: res += "Neun"; break;
-    case Acht: res += "Acht"; break;
-    case Sieben: res += "Sieben"; break;
+    case CardId::Sau: res += "Sau"; break;
+    case CardId::Zehn: res += "Zehn"; break;
+    case CardId::Koenig: res += "Koenig"; break;
+    case CardId::Ober: res += "Ober"; break;
+    case CardId::Unter: res += "Unter"; break;
+    case CardId::Neun: res += "Neun"; break;
+    case CardId::Acht: res += "Acht"; break;
+    case CardId::Sieben: res += "Sieben"; break;
     default: res += "Unknown"; break;
     }
 

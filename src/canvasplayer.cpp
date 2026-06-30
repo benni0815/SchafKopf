@@ -211,7 +211,7 @@ CanvasCard* CanvasPlayer::canvasCard( int index )
         return nullptr;
 }
 
-CanvasCard* CanvasPlayer::hasCard(Card::Id cardid) const
+CanvasCard* CanvasPlayer::hasCard(CardId cardid) const
 {
     for(unsigned int i=0;i<NUMCARDS;i++)
     {
@@ -222,7 +222,7 @@ CanvasCard* CanvasPlayer::hasCard(Card::Id cardid) const
     return nullptr;
 }
         
-void CanvasPlayer::cardPlayed(Card::Id id)
+void CanvasPlayer::cardPlayed(CardId id)
 {
     CanvasCard* card = hasCard(id);
     if( card )
@@ -231,7 +231,7 @@ void CanvasPlayer::cardPlayed(Card::Id id)
     }
 }
 
-void CanvasPlayer::setCards(const std::vector<Card::Id>& cards)
+void CanvasPlayer::setCards(const std::vector<CardId>& cards)
 {
     for(int i = 0; i < NUMCARDS; i++ )
     {

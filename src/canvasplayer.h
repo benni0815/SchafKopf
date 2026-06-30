@@ -3,13 +3,12 @@
 
 #pragma once
 
-#include "card.h"
 #include "schafkopfdef.h"
+#include "types.h"
 
 #include <QTimer>
 
 
-class Card;
 class CanvasCard;
 class Player;
 class QLabel;
@@ -37,13 +36,13 @@ class CanvasPlayer{
         void setHasDoubled( bool h );
         void setLast( bool l );
         void setName( const QString & name );
-        void setCards(const std::vector<Card::Id>& cards);
+        void setCards(const std::vector<CardId>& cards);
         void say( const QString & message, unsigned int playerid );
         void hideBubble();
         
         CanvasCard* canvasCard( int index );
-        void cardPlayed(Card::Id id);
-        CanvasCard* hasCard(Card::Id cardid) const;
+        void cardPlayed(CardId id);
+        CanvasCard* hasCard(CardId cardid) const;
 
     private:
         void create();
@@ -60,5 +59,5 @@ class CanvasPlayer{
         QLabel* m_bubbleLabel{};
         QGraphicsProxyWidget* m_bubble{};
         CanvasCard* m_items[NUMCARDS]{};
-        std::vector<Card::Id> m_cards;
+        std::vector<CardId> m_cards;
 };

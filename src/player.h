@@ -1,16 +1,14 @@
 #pragma once
 
 #include "cardlist.h"
+#include "types.h"
 
 #include <QObject>
 #include <QString>
 
-#include "cardlist.h"
-
 
 class Card;
 class Game;
-class GameInfo;
 
 class Player : public QObject
 {
@@ -30,7 +28,7 @@ class Player : public QObject
         /** if @p force is true the player has to play wether he wants or not
           * a valid GameInfo object has to be returned in this case!
           */
-        virtual std::optional<GameInfo> gameInfo(bool force = false) = 0;
+        virtual std::optional<GameVariant> gameInfo(bool force = false) = 0;
         
         void sortCards();
         
@@ -65,7 +63,7 @@ class Player : public QObject
         void removeTrumpf(CardList& liste);
 
     signals:
-        void gotCards(unsigned int playerId, const std::vector<Card::Id>& cardIds);
+        void gotCards(unsigned int playerId, const std::vector<CardId>& cardIds);
         void doubled(unsigned int playerId);
         void nameChanged(unsigned int playerId, const QString& name);
 

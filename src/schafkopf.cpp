@@ -88,7 +88,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
         enableControls();
       });
     connect(m_game, &Game::playerIsLast, m_view, &GameCanvas::playerIsLast);
-    connect(m_game, &Game::playerMadeStich, m_view, [this] (unsigned int playerId, const std::vector<Card::Id>& cardIds, const QString& playerName, const QStringList& playerNames)
+    connect(m_game, &Game::playerMadeStich, m_view, [this] (unsigned int playerId, const std::vector<CardId>& cardIds, const QString& playerName, const QStringList& playerNames)
       {
         m_view->slotPlayerMadeStich(playerId);
         m_stichdlg->changed(playerName, cardIds, playerNames);
@@ -379,12 +379,9 @@ void SchafKopf::updateTableNames()
     m_table->setHorizontalHeaderLabels( Settings::instance()->playerNames() );
 }
 
-void SchafKopf::selectGame(GameInfo* gameInfo, const std::vector<Card::Id>& cardids, bool force)
+void SchafKopf::selectGame(GameVariant* gameInfo, const std::vector<CardId>& cardids, bool force)
 {
-    CardList list(cardids);
-    list.setAutoDelete( true );
-    
-    SelectGameWizard sgw( force, list );
-    if (sgw.exec() == QDialog::Accepted)
-      *gameInfo = *sgw.gameInfo();
+    SelectGameWizard sgw(force, cardids);
+    if (sgw.exec() != QDialog::Accepted) { return; }
+    *gameInfo = sgw.game();
 }

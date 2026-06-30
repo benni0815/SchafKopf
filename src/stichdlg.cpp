@@ -37,7 +37,7 @@ StichDlg::StichDlg(QWidget *parent )
     reset();
 }
 
-void StichDlg::changed(const QString& name, const std::vector<Card::Id>& cardIds, const QStringList& playerlist)
+void StichDlg::changed(const QString& name, const std::vector<CardId>& cardIds, const QStringList& playerlist)
 {
     if (cardIds.empty())
         trick->setText(i18n("No trick was made."));

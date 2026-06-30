@@ -26,7 +26,7 @@ struct Rule
   const std::string description;
   const SpielerStatus player{NichtSpieler};
   std::function<bool(GameInfo*, const CardList&)> condition;
-  std::function<bool(GameInfo*, Card*)> eval;
+  std::function<bool(GameInfo*, CardId)> eval;
 
   CardList execute(const CardList& allowed, Game* game) const
   {
@@ -40,15 +40,15 @@ struct Rule
     for (int i = 0; i < allowed.size(); i++)
     {
       Card* c = allowed.at(i);
-      if (eval(info, c)) { list.push_back(allowed.at(i)); }
+      if (eval(info, c->id())) { list.push_back(allowed.at(i)); }
     }
     return list;
   }
 };
 
 const auto player1 = Rule{"davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", Spieler,
-  [] (auto info, auto allowed) { return info->mode() == GameInfo::RUFSPIEL && !allowed.contains({Card::Sau, info->color()}); },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c->color() == info->color() && c->card() != Card::Sau && c->card() != Card::Zehn; }
+  [] (auto info, auto allowed) { return info->mode() == GameVariant::RUFSPIEL && !allowed.contains({CardId::Sau, info->color()}); },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c.color == info->color() && c.type != CardId::Sau && c.type != CardId::Zehn; }
 };
 
 const auto player2 = Rule{"player plays trump", Spieler,
@@ -57,13 +57,13 @@ const auto player2 = Rule{"player plays trump", Spieler,
 };
 
 const auto rule1 = Rule{"play an ace on a solo", NichtSpieler,
-  [] (auto info, auto) { return info->mode() == GameInfo::STICHT || info->mode() == GameInfo::WENZ || info->mode() == GameInfo::GEIER; },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c->card() == Card::Sau; }
+  [] (auto info, auto) { return info->mode() == GameVariant::STICHT || info->mode() == GameVariant::WENZ || info->mode() == GameVariant::GEIER; },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c.type == CardId::Sau; }
 };
 
 const auto rule2 = Rule{"such die sau auf die gespielt wird", NichtSpieler,
-  [] (auto info, auto) { return info->mode() == GameInfo::RUFSPIEL; },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c->color() == info->color(); }
+  [] (auto info, auto) { return info->mode() == GameVariant::RUFSPIEL; },
+  [] (auto info, auto c) { return !info->istTrumpf(c) && c.color == info->color(); }
 };
 
 const auto rule3 = Rule{"nicht spieler spielt farbe", NichtSpieler,
@@ -164,7 +164,7 @@ CardList StrategyBook::possibleCards()
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
         Card* c = allowed.at(m_game->highestCard(&allowed));
-        if (c && m_game->isHigher(c, highest) && stiche.points() > 6)
+        if (c && m_game->isHigher(c->id(), highest->id()) && stiche.points() > 6)
             list.push_back(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;

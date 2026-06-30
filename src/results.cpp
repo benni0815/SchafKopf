@@ -5,6 +5,7 @@
 
 #include "schafkopfdef.h"
 
+#include "card.h"
 #include "cardlist.h"
 #include "game.h"
 #include "gameinfo.h"
@@ -69,7 +70,7 @@ void Results::parse()
 
     init();
         
-    if( m_gameinfo->mode() == GameInfo::RAMSCH )
+    if (m_gameinfo->mode() == GameVariant::RAMSCH)
     {
         // suche den spieler mit den meisten punkten, denn er hat verloren
         // oder wenn er alle stiche hat, dann hat er mit durchmarsch gewonnen
@@ -128,11 +129,11 @@ void Results::parse()
         }
                 
         // ab 2 laufende bei wenz und geier
-        if( m_gameinfo->mode() == GameInfo::GEIER || m_gameinfo->mode() == GameInfo::WENZ )
+        if (m_gameinfo->mode() == GameVariant::GEIER || m_gameinfo->mode() == GameVariant::WENZ)
             m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
         // sonst ab 3 laufenden
-        else if( m_gameinfo->mode() == GameInfo::STICHT || m_gameinfo->mode() == GameInfo::RAMSCH 
-                || m_gameinfo->mode() == GameInfo::DACHS || m_gameinfo->mode() == GameInfo::RUFSPIEL )
+        else if (m_gameinfo->mode() == GameVariant::STICHT || m_gameinfo->mode() == GameVariant::RAMSCH
+                || m_gameinfo->mode() == GameVariant::DACHS || m_gameinfo->mode() == GameVariant::RUFSPIEL)
             m_laufende = ( m_laufende >= 3 || m_laufende <= -3 ) ? m_laufende : 0;
 
         m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
@@ -161,11 +162,11 @@ double Results::points( Player* player )
     
     parse();
         
-    if( m_gameinfo->mode() != GameInfo::RUFSPIEL && m_gameinfo->mode() != GameInfo::RAMSCH )
+    if (m_gameinfo->mode() != GameVariant::RUFSPIEL && m_gameinfo->mode() != GameVariant::RAMSCH)
         m = r.solo; // SOLO = 20cent
-    else if( m_gameinfo->mode() == GameInfo::RUFSPIEL )
+    else if (m_gameinfo->mode() == GameVariant::RUFSPIEL)
         m = r.rufspiel;
-    else if( m_gameinfo->mode() == GameInfo::RAMSCH )
+    else if (m_gameinfo->mode() == GameVariant::RAMSCH)
         m = r.ramsch;
         
     m += m_schneider ? r.schneider : 0.0;

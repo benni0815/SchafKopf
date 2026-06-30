@@ -3,12 +3,14 @@
 
 #include "cardlist.h"
 
+#include "card.h"
+
 #include "schafkopfdef.h"
 
 #include <QRandomGenerator>
 
 
-CardList::CardList(const std::vector<Card::Id>& cardIds)
+CardList::CardList(const std::vector<CardId>& cardIds)
 {
   for (const auto id : cardIds)
   {
@@ -22,9 +24,12 @@ void CardList::init()
     while( !isEmpty() )
         delete takeFirst();
 
-    for( int i = 0; i < CARD_CNT ; i += 4  )
-        for (int z = Card::Eichel; z <= Card::Schellen; z++)
-            append(new Card((Card::Type)(i + 1), (Card::Color)z));
+    using Type = CardId::Type;
+    using Color = CardId::Color;
+
+    for (const auto type : {Type::Sau, Type::Koenig, Type::Ober, Type::Unter, Type::Zehn, Type::Neun, Type::Acht, Type::Sieben})
+      for (const auto color : {Color::Eichel, Color::Gras, Color::Herz, Color::Schellen})
+        append(new Card(type, color));
 }
 
 int CardList::points() const
@@ -78,20 +83,18 @@ void CardList::randomize()
     typedef bool (*__isTrumpf)(Card* Karte);
     CardList* FindCards(int color, int type, __isTrumpf _trumpf_func);*/
 
-CardList CardList::FindCards(Card::Color color, Card::Type type)
+CardList CardList::FindCards(CardId::Color color, CardId::Type type)
 {
-    CardList found;
-
-    for (int i = 0; i < this->count(); i++ )
-    {
-        if ((color == Card::NoColor || at(i)->color() == color) && (type == Card::NoStich || at(i)->card() == type))
-            found.append(at(i));
-    }
-
-    return found;
+  auto match = [&] (Card* card)
+  {
+    return (color == CardId::NoColor || card->color() == color) && (type == CardId::NoStich || card->card() == type);
+  };
+  CardList found;
+  std::copy_if(begin(), end(), std::back_inserter(found), match);
+  return found;
 }
 
-bool CardList::contains(Card::Id cardid) const
+bool CardList::contains(CardId cardid) const
 {
   return std::any_of(begin(), end(),
                      [&] (Card* c) { return c->id() == cardid; });
@@ -138,9 +141,9 @@ void CardList::sort(EvalFunc eval)
     }
 }
 
-std::vector<Card::Id> CardList::toIds() const
+std::vector<CardId> CardList::toIds() const
 {
-  std::vector<Card::Id> ids;
+  std::vector<CardId> ids;
   std::transform(std::begin(*this), std::end(*this), std::back_inserter(ids), [] (Card* card) { return card->id(); });
   return ids;
 }

@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "card.h"
 #include "schafkopfdef.h"
+#include "types.h"
 
 #include <QDialog>
 
@@ -23,7 +23,7 @@ class StichDlg : public QDialog
         StichDlg(QWidget* parent = nullptr);
         ~StichDlg() override = default;
 
-        void changed(const QString& name, const std::vector<Card::Id>& cardIds, const QStringList& players);
+        void changed(const QString& name, const std::vector<CardId>& cardIds, const QStringList& players);
 
     private:
         void reset();

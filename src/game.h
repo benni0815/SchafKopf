@@ -44,7 +44,7 @@ class Game : public QThread
 
         bool isTerminated() const { return terminated; }
         int highestCard(CardList* list = nullptr);
-        bool isHigher( Card* card, Card* high );
+        bool isHigher(CardId card, CardId high);
 
         /** returns how many players have doubled
           */
@@ -59,8 +59,8 @@ class Game : public QThread
         void gameEnded();
         void playerDoubled(const QString& message);
         void playerIsLast(unsigned int playerId);
-        void playerMadeStich(unsigned int playerId, std::vector<Card::Id> cardIds, const QString& playerName, const QStringList& playerNames);
-        void cardPlayed(unsigned int playerId, Card::Id cardId);
+        void playerMadeStich(unsigned int playerId, std::vector<CardId> cardIds, const QString& playerName, const QStringList& playerNames);
+        void cardPlayed(unsigned int playerId, CardId cardId);
         void redrawPlayers();
         void gameInfoSetup();
         void playerResults(unsigned int playerId, const QString& formattedPoints);

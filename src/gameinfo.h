@@ -3,8 +3,12 @@
 
 #pragma once
 
-#include "card.h"
+#include "types.h"
 
+#include <vector>
+
+
+class Card;
 class CardList;
 class Player;
 class QString;
@@ -17,18 +21,20 @@ Keeps all information on the current game (e.g. wenz or rufspiel)
 
 class GameInfo{
     public:
-        enum Mode { STICHT, WENZ, GEIER, RUFSPIEL, RAMSCH, DACHS };
+        static bool istTrumpf(CardId card, GameVariant game);
+
         GameInfo() = default;
+        GameInfo(GameVariant game);
         ~GameInfo() = default;
 
         void setValid( bool b ) { m_valid = b; }
         bool isValid() const { return m_valid; }
 
-        Card::Color color() const { return m_color; }
-        void setColor(Card::Color c) { m_color = c; }
+        CardId::Color color() const { return m_game.color; }
+        void setColor(CardId::Color c) { m_game.color = c; }
 
-        Mode mode() const { return m_mode; }
-        void setMode( int m ) { m_mode = static_cast<Mode>(m); }
+        GameVariant::Mode mode() const { return m_game.mode; }
+        void setMode(GameVariant::Mode m) { m_game.mode = m; }
 
         Player* spieler() const { return m_spieler; }
         void setSpieler( Player* p ) { m_spieler = p; }
@@ -37,15 +43,16 @@ class GameInfo{
         void setMitspieler( Player* p ) { m_mitspieler = p; }
 
         const QString toString() const;
-        int weight( Card* card ) const;
-        bool istTrumpf(Card *card ) const;     
+        static int weight(CardId card, GameVariant game);
 
-        /** returns a number between 1 and 32 according to the worth of the card. 
+        bool istTrumpf(CardId card) const;
+
+        /** returns a number between 1 and 32 according to the worth of the card.
           *I.e. the highest card will get a value of 32 assigned
           * be sure that autodelete is turned of when using this function!
           */
-        int evalCard(Card *card);
-
+        int evalCard(Card* card) const;
+        int evalCard(CardId card) const;
 
         /** calculate the number of "laufende" ticks
           */
@@ -54,14 +61,14 @@ class GameInfo{
         /** Is a player with the cards @p cards allowed to playe
           * the game @p mode with the color @p color.
           */
-        static bool isAllowed(const CardList& cards, int mode, Card::Color color);
+        static bool isAllowed(const CardList& cards, GameVariant game);
+        static bool isAllowed(const std::vector<CardId>& cards, GameVariant game);
 
         bool operator>(const GameInfo& info);
 
     private:
         bool m_valid{false};
-        Card::Color m_color{Card::NoColor};
-        Mode m_mode{GameInfo::STICHT};
+        GameVariant m_game{GameVariant::STICHT, CardId::NoColor};
         Player* m_spieler{};
         Player* m_mitspieler{};
 };

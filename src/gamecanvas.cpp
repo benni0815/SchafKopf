@@ -3,10 +3,7 @@
 
 #include "gamecanvas.h"
 
-#include "card.h"
 #include "canvascard.h"
-#include "canvasplayer.h"
-#include "cardlist.h"
 #include "settings.h"
 
 #include <KLocalizedString>
@@ -99,7 +96,7 @@ GameCanvas::~GameCanvas()
     }
 }
 
-void GameCanvas::cardForbidden(Card::Id cardid)
+void GameCanvas::cardForbidden(CardId cardid)
 {
     for(unsigned int z=0;z<PLAYERS;z++)
     {
@@ -189,14 +186,14 @@ int GameCanvas::getStichRotation( int player )
     return r;
 }
 
-void GameCanvas::getCard(Card::Id* card)
+void GameCanvas::getCard(CardId* card)
 {
     CanvasPlayer* human = humanPlayer();
     CanvasCard* c{};
     unsigned int i;
 
     connect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
-    m_resultCard = Card::Id{};
+    m_resultCard = CardId{};
 
     if( hasFocus() && human )
         for( i=0;i<NUMCARDS;i++)
@@ -241,7 +238,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
     }
 }
 
-void GameCanvas::slotPlayerPlayedCard(unsigned int player, Card::Id cardid)
+void GameCanvas::slotPlayerPlayedCard(unsigned int player, CardId cardid)
 {
     unsigned int i=0;
     CanvasCard* card{};
@@ -583,7 +580,7 @@ void GameCanvas::resetPlayerCards()
   }
 }
 
-void GameCanvas::setPlayerCards(unsigned int id, const std::vector<Card::Id>& cardIds)
+void GameCanvas::setPlayerCards(unsigned int id, const std::vector<CardId>& cardIds)
 {
   for (auto& p : m_players)
   {

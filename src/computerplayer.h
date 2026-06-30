@@ -4,11 +4,10 @@
 #pragma once
 
 #include "player.h"
-#include "card.h"
-#include "gameinfo.h"
 #include "openbook.h"
 
 
+class Card;
 class CardList;
 
 class ComputerPlayer : public Player
@@ -20,7 +19,7 @@ class ComputerPlayer : public Player
         void init() override;
         void klopfen() override;
         Card *play() override;
-        std::optional<GameInfo> gameInfo(bool force = false) override;
+        std::optional<GameVariant> gameInfo(bool force = false) override;
 
         Card* findHighestCard(const CardList& cards) const;
         Card* findSchmiere(const CardList& cards) const;
@@ -71,10 +70,10 @@ class ComputerPlayer : public Player
         void log(const QString& msg) const;
 
         struct game_data {
-            int trumpf;
-            int fehlfarbe;
-            int weight;
-            GameInfo info;
+            int trumpf{0};
+            int fehlfarbe{0};
+            int weight{0};
+            GameVariant game;
         };
 
         OpenBook m_openBook;

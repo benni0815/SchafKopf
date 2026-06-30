@@ -47,12 +47,9 @@ void ComputerPlayer::klopfen()
     }
 
     // are all cards trump?
-    GameInfo info;
-    info.setMode(GameInfo::STICHT);
-    info.setColor(Card::Herz);
     count = 0;
     for (int i = start; i < ende; ++i)
-        if (m_cards.at(i)->card() == Card::Sau || info.istTrumpf(m_cards.at(i)))
+        if (m_cards.at(i)->card() == CardId::Sau || GameInfo({GameVariant::STICHT, CardId::Herz}).istTrumpf(m_cards.at(i)->id()))
             count++;
 
     if( count == anz )
@@ -73,9 +70,9 @@ void ComputerPlayer::init()
             if(m_game->findIndex(mitspieler)==m_game->gameInfo()->spieler())
                 break;
     }
-    else if(m_game->gameInfo()->mode()!=GameInfo::RUFSPIEL &&
-            m_game->gameInfo()->mode()!=GameInfo::RAMSCH &&
-            m_game->gameInfo()->spieler()!=this)
+    else if (m_game->gameInfo()->mode() != GameVariant::RUFSPIEL &&
+             m_game->gameInfo()->mode() != GameVariant::RAMSCH &&
+             m_game->gameInfo()->spieler()!=this)
             mitspieler=m_game->gameInfo()->spieler()->id();
         else
             mitspieler=-1;
@@ -132,38 +129,36 @@ Card *ComputerPlayer::play()
     return findCardToPlay(allowed);
 }
 
-std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
+std::optional<GameVariant> ComputerPlayer::gameInfo(bool force)
 {
     QList<game_data> lst;
     
-    for(int i=GameInfo::STICHT;i<=GameInfo::RUFSPIEL;i++)
+    for (const auto mode : {GameVariant::STICHT, GameVariant::WENZ, GameVariant::GEIER, GameVariant::RUFSPIEL, GameVariant::RAMSCH, GameVariant::DACHS})
     {
-        for (int z = Card::NoColor; z <= Card::Schellen; z++)
+        for (const auto color : {CardId::NoColor, CardId::Eichel, CardId::Gras, CardId::Herz, CardId::Schellen})
         {
-            if (!GameInfo::isAllowed(m_cards, i, Card::Color(z)))
+            if (!GameInfo::isAllowed(m_cards, {mode, color}))
               continue;
          
             game_data d;
-            d.trumpf = d.fehlfarbe = d.weight = 0;
-            d.info.setMode( i );
-            d.info.setColor(Card::Color(z));
+            d.game = GameVariant{mode, color};
             
-            for (int c = 0; c < m_cards.size(); ++c)
+            for (Card* c : m_cards)
             {
-                d.weight += d.info.weight(m_cards.at(c));
-                if (d.info.istTrumpf(m_cards.at(c)))
+                d.weight += GameInfo::weight(c->id(), d.game);
+                if (GameInfo::istTrumpf(c->id(), d.game))
                     d.trumpf++;
-                else if (!d.info.istTrumpf(m_cards.at(c)) && m_cards.at(c)->card() != Card::Sau)
+                else if (!GameInfo::istTrumpf(c->id(), d.game) && c->id().type != CardId::Sau)
                 {
-                    CardList list = m_cards.FindCards(m_cards.at(c)->color(), Card::Sau);
+                    CardList list = m_cards.FindCards(c->id().color, CardId::Sau);
                     if (list.empty())
                         d.fehlfarbe++;
                 }
             }
 
-            if( i==GameInfo::RUFSPIEL && d.weight>=8 && ((d.fehlfarbe<=2 && d.trumpf>=5) || d.fehlfarbe<=1) )
+            if (mode == GameVariant::RUFSPIEL && d.weight>=8 && ((d.fehlfarbe<=2 && d.trumpf>=5) || d.fehlfarbe<=1))
                 lst.append( d );
-            else if( i!=GameInfo::RUFSPIEL && d.weight>=9 && d.fehlfarbe<=1 && d.trumpf>=5 )
+            else if (mode != GameVariant::RUFSPIEL && d.weight>=9 && d.fehlfarbe<=1 && d.trumpf>=5)
                 lst.append( d );
         }
     }
@@ -180,16 +175,13 @@ std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
                 continue;
             }
         
-        return lst[best].info;
+        return lst[best].game;
     }
     
     if( force && lst.isEmpty() )
     {
         // Play eichel sticht for now. Optimize later
-        GameInfo gi;
-        gi.setColor(Card::Eichel);
-        gi.setMode(GameInfo::STICHT);
-        return gi;
+      return GameVariant{GameVariant::STICHT, CardId::Eichel};
     }
     
     return {};
@@ -243,9 +235,9 @@ Card* ComputerPlayer::findCardToPlay(const CardList& cards)
         bool gestochen = false;
 
         // sicher stellen das noch niemand gestochen hat
-        for (int i = 0; i < stich.size(); ++i)
+        for (Card* card : stich)
         {
-          if (m_game->gameInfo()->istTrumpf(stich.at(i)))
+          if (m_game->gameInfo()->istTrumpf(card->id()))
           {
             gestochen = true;
             break;
@@ -286,7 +278,7 @@ Card* ComputerPlayer::findHighestCard(const CardList& cards) const
   for (int i = 0; i < cards.size(); ++i)
   {
     card = cards.at(i);
-    if (m_game->isHigher(card, high))
+    if (m_game->isHigher(card->id(), high->id()))
     {
       high = card;
       continue;
@@ -303,7 +295,7 @@ Card* ComputerPlayer::findLowestPossibleCard(Card* highest, const CardList& card
     for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
-        if( m_game->isHigher( card, highest ) && !m_game->isHigher( card, high ) )
+        if (m_game->isHigher(card->id(), highest->id()) && !m_game->isHigher(card->id(), high->id()))
             high = card;
     }
     
@@ -359,7 +351,7 @@ bool ComputerPlayer::canMakeStich(const CardList& cards)
     for (int i = 0; i < cards.size(); ++i)
     {
         card = cards.at(i);
-        if(m_game->isHigher(card, highestCard))
+        if (m_game->isHigher(card->id(), highestCard->id()))
             return true;
     }
     return false;
@@ -391,7 +383,7 @@ Card *ComputerPlayer::highestTrumpfInGame()
 {
     CardList trumpfs;
 
-    auto istTrumpf = [this] (auto card) { return m_game->gameInfo()->istTrumpf(card); };
+    auto istTrumpf = [this] (Card* card) { return m_game->gameInfo()->istTrumpf(card->id()); };
 
     const auto& allCards = m_game->allCards();
     std::copy_if(std::begin(allCards), std::end(allCards), std::back_inserter(trumpfs), istTrumpf);
@@ -420,7 +412,7 @@ int ComputerPlayer::myTrumpfs()
     for (int i = 0; i < m_cards.size(); ++i)
     {
         c = m_cards.at( i );
-        if( m_game->gameInfo()->istTrumpf( c ) )
+        if (m_game->gameInfo()->istTrumpf(c->id()))
             trumpfs++;
     }
     return trumpfs;
@@ -434,7 +426,7 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
     // has to be implemented in another way
     if(mitspieler!=-1)
         return;
-    if (m_game->gameInfo()->mode() == GameInfo::RUFSPIEL && c->card() == Card::Sau && c->color() == m_game->gameInfo()->color())
+    if (m_game->gameInfo()->mode() == GameVariant::RUFSPIEL && c->card() == CardId::Sau && c->color() == m_game->gameInfo()->color())
     {
         if(m_game->gameInfo()->spieler()==this)
             mitspieler=player;
@@ -452,8 +444,8 @@ int ComputerPlayer::cardsStillInGame(int c)
     played.appendList(m_game->playedCards());
     played.appendList(m_game->currStich());
 
-    auto istTrumpf = [this] (auto card) { return m_game->gameInfo()->istTrumpf(card); };
-    auto matches = [&] (auto card) { return (istTrumpf(card) && Card::NoColor == c) || card->color() == c; };
+    auto istTrumpf = [this] (Card* card) { return m_game->gameInfo()->istTrumpf(card->id()); };
+    auto matches = [&] (Card* card) { return (istTrumpf(card) && CardId::NoColor == c) || card->color() == c; };
 
     return std::count_if(std::begin(all), std::end(all), matches) -
            std::count_if(std::begin(played), std::end(played), matches);

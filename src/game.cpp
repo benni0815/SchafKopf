@@ -3,6 +3,7 @@
 
 #include "game.h"
 
+#include "card.h"
 #include "humanplayer.h"
 #include "computerplayer.h"
 #include "cardlist.h"
@@ -240,7 +241,7 @@ int Game::highestCard( CardList* list )
     for (int t = 0; t < list->size(); ++t)
     {
         card = list->at( t );
-        if( isHigher( card, high ) )
+        if (isHigher(card->id(), high->id()))
         {
             high = card;
             continue;
@@ -255,27 +256,26 @@ int Game::highestCard( CardList* list )
     return 0;
 }
 
-bool Game::isHigher( Card* card, Card* high )
+bool Game::isHigher(CardId card, CardId high)
 {
-    int cardVal, highVal;
-    int colcnt;
+    int colcnt{0};
 
-    cardVal = m_gameinfo.evalCard(card);
-    highVal = m_gameinfo.evalCard(high);
-    if( m_gameinfo.istTrumpf( card ) || m_gameinfo.istTrumpf( high ) )
+    const auto cardVal = m_gameinfo.evalCard(card);
+    const auto highVal = m_gameinfo.evalCard(high);
+    if (m_gameinfo.istTrumpf(card) || m_gameinfo.istTrumpf(high))
         return highVal < cardVal;
     else
     {
         switch( m_gameinfo.mode() )
         {
-            case GameInfo::GEIER:
-            case GameInfo::WENZ:
+            case GameVariant::GEIER:
+            case GameVariant::WENZ:
                 colcnt=NUMCARDS-1;
                 break;
-            case GameInfo::RAMSCH:
-            case GameInfo::RUFSPIEL:
-            case GameInfo::STICHT:
-            case GameInfo::DACHS:
+            case GameVariant::RAMSCH:
+            case GameVariant::RUFSPIEL:
+            case GameVariant::STICHT:
+            case GameVariant::DACHS:
             default:
                 colcnt=NUMCARDS-2;
                 break;
@@ -368,9 +368,9 @@ bool Game::setupGameInfo(Player *players[])
     }
 
     // finde den mitspieler:
-    if( m_gameinfo.mode()==GameInfo::RUFSPIEL ) 
+    if (m_gameinfo.mode() == GameVariant::RUFSPIEL)
     {
-        Card sau(Card::Sau, m_gameinfo.color());
+        Card sau(CardId::Sau, m_gameinfo.color());
         for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
         {
             for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
@@ -426,7 +426,7 @@ bool Game::setupGameInfoForced(Player *players[])
         // find player with eichel ober
         for( i=0;i<PLAYERS;i++ )
         {
-            if (players[i]->cards().contains({Card::Ober, Card::Eichel}))
+            if (players[i]->cards().contains({CardId::Ober, CardId::Eichel}))
             {
                 emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
                 
@@ -439,10 +439,7 @@ bool Game::setupGameInfoForced(Player *players[])
     else if( Settings::instance()->noGame() == Settings::NOGAME_RAMSCH )
     {
         emit infoMessage(i18n("No one wants to play.\nRamsch will be played."));
-        m_gameinfo.setSpieler(nullptr);
-        m_gameinfo.setMitspieler(nullptr);
-        m_gameinfo.setMode( GameInfo::RAMSCH );
-        m_gameinfo.setColor(Card::NoColor);
+        m_gameinfo = GameInfo({GameVariant::RAMSCH, CardId::NoColor});
         return true;
     }
 

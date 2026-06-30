@@ -1,13 +1,12 @@
-
 #include "player.h"
+
+#include "card.h"
 #include "game.h"
 #include "cardlist.h"
 
 #include <QDebug>
 
 #include <string>
-#include <iostream>
-#include <cstdlib>
 
 
 Player::Player(unsigned int id, Game* game)
@@ -97,12 +96,12 @@ void Player::removeTrumpf(CardList& liste)
 
 bool Player::istTrumpf(Card* card)
 {
-    return m_game->gameInfo()->istTrumpf(card);
+    return m_game->gameInfo()->istTrumpf(card->id());
 }
 
 CardList Player::PlayerCards()
 {
-    return m_cards.FindCards(Card::NoColor, Card::NoStich);
+    return m_cards.FindCards(CardId::NoColor, CardId::NoStich);
 }
 
 Card* Player::firstPlayedCard()
@@ -132,7 +131,7 @@ CardList Player::cardsOfSameType(Card* card)
         else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
         {
             removeTrumpf(SpielerKarten);
-            return SpielerKarten.FindCards(firstPlayedCard()->color(), Card::NoStich);
+            return SpielerKarten.FindCards(firstPlayedCard()->color(), CardId::NoStich);
         }
     }
 }
@@ -145,10 +144,10 @@ CardList Player::allowedCards()
         allowed = PlayerCards();
     }
 
-    if(m_game->gameInfo()->mode()==GameInfo::RUFSPIEL)
+    if (m_game->gameInfo()->mode() == GameVariant::RUFSPIEL)
     {
-        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), Card::Sau);
-        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), Card::NoStich);
+        CardList Sau = allowed.FindCards(m_game->gameInfo()->color(), CardId::Sau);
+        CardList Spielfarbe = allowed.FindCards(m_game->gameInfo()->color(), CardId::NoStich);
 
         // entferne alle trümpfe aus Spielfarbe
         for (int i = 0; i < Spielfarbe.size(); ++i)

@@ -8,37 +8,36 @@
 
 #include <QAbstractButton>
 
-SelectGameWizard::SelectGameWizard(bool force, const CardList &list, QWidget *parent)
+
+SelectGameWizard::SelectGameWizard(bool force, const std::vector<CardId>& cards, QWidget* parent)
 : QWizard(parent)
-, m_list(list)
+, m_cards(cards)
 , m_force(force)
 {
     box1 = new SelectGameTypeBox( this );
-    box2 = new SelectGameColorBox( this );
+    box2 = new SelectGameColorBox(m_game, this);
     addPage( box1 );
     addPage( box2 );
     button( QWizard::CancelButton )->setEnabled( !m_force );
     connect(this, &SelectGameWizard::currentIdChanged, this, &SelectGameWizard::pageChanged);
 }
 
-const CardList& SelectGameWizard::getCardList()
+const std::vector<CardId>& SelectGameWizard::getCardIds()
 {
-    return m_list;
+  return m_cards;
 }
 
-GameInfo* SelectGameWizard::gameInfo()
+GameVariant SelectGameWizard::game()
 {
-    if(box2)
-       return(box2->getGameInfo());
-    return nullptr;
+  return m_game;
 }
 
 void SelectGameWizard::pageChanged( int id )
 {
     if( id == 1 && !m_closing )
     {
-        box2->cleanGameInfo();
-        box2->setGameInfo( box1->gameInfo() );
+        m_game.mode = box1->gameMode();
+        box2->statusChanged();
         button( QWizard::FinishButton )->setEnabled( box2->getFinish() );
     }
 }

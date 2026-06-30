@@ -3,9 +3,8 @@
 
 #include "humanplayer.h"
 
-#include "cardlist.h"
-#include "game.h"
-#include "gameinfo.h"
+#include "card.h"
+#include "schafkopfdef.h"
 
 #include <KLocalizedString>
 
@@ -28,10 +27,10 @@ Card *HumanPlayer::play()
     auto allowed = allowedCards();
     m_card = nullptr;
 
-    Card::Id cpy;
+    CardId cpy;
     emit getCard(&cpy);
 
-    while( cpy != Card::Id{Card::Type::NoStich} && !allowed.contains( cpy ) )
+    while( cpy != CardId{CardId::Type::NoStich} && !allowed.contains( cpy ) )
     {
         emit forbiddenCard(cpy);
         emit getCard(&cpy);
@@ -48,13 +47,13 @@ Card *HumanPlayer::play()
     return m_card;
 }
 
-std::optional<GameInfo> HumanPlayer::gameInfo(bool force)
+std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
 {
     if( force )
     {
-      GameInfo gameInfo;
-      emit selectGame(&gameInfo, m_cards.toIds(), true);
-      return gameInfo;
+      GameVariant game;
+      emit selectGame(&game, m_cards.toIds(), true);
+      return game;
     }
     else
     {
@@ -62,9 +61,9 @@ std::optional<GameInfo> HumanPlayer::gameInfo(bool force)
       emit questionYesNo(i18n("Do you want to play?"), &result);
       if (result == YES)
       {
-        GameInfo gameInfo;
-        emit selectGame(&gameInfo, m_cards.toIds());
-        return gameInfo;
+        GameVariant game;
+        emit selectGame(&game, m_cards.toIds());
+        return game;
       }
     }
 

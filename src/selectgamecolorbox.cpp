@@ -4,11 +4,8 @@
 #include "selectgamecolorbox.h"
 
 #include "canvascard.h"
-#include "card.h"
-#include "cardlist.h"
 #include "gameinfo.h"
 #include "settings.h"
-#include "card.h"
 #include "selectgamewizard.h"
 
 #include <KLocalizedString>
@@ -19,9 +16,9 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 
-
-SelectGameColorBox::SelectGameColorBox( QWidget *parent )
-    : QWizardPage( parent )
+SelectGameColorBox::SelectGameColorBox(GameVariant& game, QWidget* parent)
+: QWizardPage(parent)
+, m_game(game)
 {
     setTitle(i18n("Step 2/2: Select Color"));
 
@@ -55,17 +52,17 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkFarblos );
     connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameColorBox::colorChanged);
 
-    auto setupSauButton = [&] (QPushButton* button, Card::Color color)
+    auto setupSauButton = [&] (QPushButton* button, CardId::Color color)
     {
-      const auto pix = CanvasCard::frontsidePixmap({Card::Sau, color});
+      const auto pix = CanvasCard::frontsidePixmap({CardId::Sau, color});
       button->setIcon(pix);
       button->setIconSize(pix.size());
     };
 
-    setupSauButton(labelEichel,   Card::Eichel);
-    setupSauButton(labelGras,     Card::Gras);
-    setupSauButton(labelHerz,     Card::Herz);
-    setupSauButton(labelSchellen, Card::Schellen);
+    setupSauButton(labelEichel,   CardId::Eichel);
+    setupSauButton(labelGras,     CardId::Gras);
+    setupSauButton(labelHerz,     CardId::Herz);
+    setupSauButton(labelSchellen, CardId::Schellen);
 
     QGroupBox* color_group = new QGroupBox(i18n("Color:"), this);
     QVBoxLayout* eichelLayout = new QVBoxLayout;
@@ -96,37 +93,35 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     this->setLayout( layout );
 }
 
-Card::Color SelectGameColorBox::getColor()
+CardId::Color SelectGameColorBox::getColor()
 {
-    if(checkEichel->isChecked()) return (Card::Eichel);
-    else if(checkGras->isChecked()) return (Card::Gras);
-    else if(checkHerz->isChecked()) return (Card::Herz);
-    else if(checkSchellen->isChecked()) return (Card::Schellen);
-    return (Card::NoColor);
+    if(checkEichel->isChecked()) return (CardId::Eichel);
+    else if(checkGras->isChecked()) return (CardId::Gras);
+    else if(checkHerz->isChecked()) return (CardId::Herz);
+    else if(checkSchellen->isChecked()) return (CardId::Schellen);
+    return (CardId::NoColor);
 }
 
 
 void SelectGameColorBox::colorChanged()
 {
-    m_gameinfo->setColor(getColor());
+    m_game.color = getColor();
 }
 
 void SelectGameColorBox::statusChanged()
 {
-    if (m_gameinfo)
-    {
-        switch(m_gameinfo->mode())
+        switch (m_game.mode)
         {
-                case (GameInfo::RUFSPIEL):
+                case (GameVariant::RUFSPIEL):
                             setStatus(
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Eichel),
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Gras),
+                                GameInfo::isAllowed(m_parent->getCardIds(), {GameVariant::RUFSPIEL, CardId::Eichel}),
+                                GameInfo::isAllowed(m_parent->getCardIds(), {GameVariant::RUFSPIEL, CardId::Gras}),
                                 false,
-                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::Schellen),
+                                GameInfo::isAllowed(m_parent->getCardIds(), {GameVariant::RUFSPIEL, CardId::Schellen}),
                                 false
                             );
                 break;
-                case (GameInfo::WENZ):
+                case (GameVariant::WENZ):
                             setStatus(
                                 true,
                                 true,
@@ -135,7 +130,7 @@ void SelectGameColorBox::statusChanged()
                                 true
                             );
                 break;
-                case (GameInfo::STICHT):
+                case (GameVariant::STICHT):
                             setStatus(
                                 true,
                                 true,
@@ -144,7 +139,7 @@ void SelectGameColorBox::statusChanged()
                                 false
                             );
                 break;
-                case (GameInfo::GEIER):
+                case (GameVariant::GEIER):
                             setStatus(
                                 true,
                                 true,
@@ -153,7 +148,7 @@ void SelectGameColorBox::statusChanged()
                                 true
                             );
                 break;
-                case (GameInfo::DACHS):
+                case (GameVariant::DACHS):
                             setStatus(
                                 false,
                                 false,
@@ -162,10 +157,9 @@ void SelectGameColorBox::statusChanged()
                                 true
                             );
                 break;
-                case (GameInfo::RAMSCH):
+                case (GameVariant::RAMSCH):
                 break;
         }
-    }
     checkFirstVisible();
     colorChanged();
 }
@@ -185,10 +179,10 @@ void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schel
 
     const AllowedGames allowed = Settings::instance()->allowedGames();
 
-    if( m_gameinfo->mode() == GameInfo::WENZ )
+    if (m_game.mode == GameVariant::WENZ)
         allow_colors = allow_colors & allowed.farb_wenz;
 
-    if( m_gameinfo->mode() == GameInfo::GEIER )
+    if (m_game.mode == GameVariant::GEIER)
         allow_colors = allow_colors & allowed.farb_geier;
 
     checkEichel->setVisible(allow_colors&&Eichel==true);
@@ -217,26 +211,6 @@ void SelectGameColorBox::setStatus(bool Eichel, bool Gras, bool Herz, bool Schel
 bool SelectGameColorBox::getFinish()
 {
     return m_finish;
-}
-
-void SelectGameColorBox::setGameInfo(GameInfo* info)
-{
-    m_gameinfo=info;
-    statusChanged();
-}
-
-GameInfo* SelectGameColorBox::getGameInfo()
-{
-    return m_gameinfo;
-}
-
-void SelectGameColorBox::cleanGameInfo()
-{
-    if (m_gameinfo)
-    {
-        delete m_gameinfo;
-        m_gameinfo = nullptr;
-    }
 }
 
 void SelectGameColorBox::colorChangedToEichel()

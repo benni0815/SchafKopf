@@ -4,6 +4,8 @@
 #pragma once
 
 #include "player.h"
+#include "types.h"
+
 
 class HumanPlayer : public Player
 {
@@ -15,13 +17,13 @@ class HumanPlayer : public Player
         
         void klopfen() override;
         Card *play() override;
-        std::optional<GameInfo> gameInfo(bool force = false) override;
+        std::optional<GameVariant> gameInfo(bool force = false) override;
         
     signals:
-        void forbiddenCard(Card::Id cardId);
+        void forbiddenCard(CardId cardId);
         void questionYesNo(const QString& question, int* result);
-        void getCard(Card::Id* card);
-        void selectGame(GameInfo* gameInfo, const std::vector<Card::Id>& cardIds, bool force = false);
+        void getCard(CardId* card);
+        void selectGame(GameVariant* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
 
     private:
         Card* m_card{};

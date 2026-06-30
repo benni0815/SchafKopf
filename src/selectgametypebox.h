@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "types.h"
+
 #include <QWizardPage>
 
 
@@ -10,8 +12,6 @@ class QWidget;
 class QLineEdit;
 class QLabel;
 class QRadioButton;
-class GameInfo;
-
 
 /**
 @author Christian Kern
@@ -23,7 +23,7 @@ public:
     SelectGameTypeBox(QWidget* parent = nullptr);
     ~SelectGameTypeBox() override = default;
 
-    GameInfo* gameInfo() const;
+    GameVariant::Mode gameMode() const;
 
 protected:
     QRadioButton* checkRufspiel{};
@@ -39,5 +39,4 @@ protected:
 protected slots:
     void updatePreview();
     void typeChanged();
-
 };

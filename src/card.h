@@ -3,7 +3,12 @@
 
 #pragma once
 
+#include "types.h"
+
 #include <cardcache.h>
+
+#include <numeric>
+#include <vector>
 
 
 class Player;
@@ -14,33 +19,24 @@ class Player;
 class Card
 {
 public:
-  enum Type { NoStich = -1, Sau = 1, Koenig = 5, Ober = 9, Unter = 13, Zehn = 17, Neun = 21, Acht = 25, Sieben = 29 };
-  enum Color { NoColor = -1, Eichel = 0, Gras = 1, Herz = 2, Schellen = 3 };
+  static KCardInfo kdeCardInfo(CardId id);
 
-  struct Id
-  {
-    Type type{NoStich};
-    Color color{NoColor};
-  };
-
-  static KCardInfo kdeCardInfo(Id id);
-
-  Card(const Id& id);
-  Card(const Type t, const Color c);
+  Card(const CardId& id);
+  Card(const CardId::Type t, const CardId::Color c);
   ~Card() = default;
 
   /// return how much points the card has.
   /// e.g. king = 4 points
   int points() const;
 
-  Id id() const;
+  CardId id() const;
 
   /// return the color of the card.
   /// e.g. heart.
-  Color color() const { return m_id.color; }
+  CardId::Color color() const { return m_id.color; }
 
   /// return the type of the card, e.g. ASS
-  Type card() const { return m_id.type; }
+  CardId::Type card() const { return m_id.type; }
 
   /// set the owner of the card.
   /// only do this when the cards are given,
@@ -67,16 +63,7 @@ public:
   QString toString() const;
 
 private:
-  Id m_id{Type::NoStich, Color::NoColor};
+  CardId m_id{CardId::NoStich, CardId::Color::NoColor};
   Player* m_owner{};
 };
 
-inline bool operator==(const Card::Id& lhs, const Card::Id& rhs)
-{
-  return lhs.type == rhs.type && lhs.color == rhs.color;
-}
-
-inline bool operator!=(const Card::Id& lhs, const Card::Id& rhs)
-{
-  return !(lhs == rhs);
-}

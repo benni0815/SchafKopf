@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include "canvascard.h"
+#include "card.h"
 #include "settings.h"
 
 #include <QTimer>
@@ -20,7 +21,7 @@ QPixmap& backside()
 
 } // namespace
 
-QPixmap CanvasCard::frontsidePixmap(Card::Id id)
+QPixmap CanvasCard::frontsidePixmap(CardId id)
 {
   return Settings::instance()->cardCache()->frontside(Card::kdeCardInfo(id));
 }
@@ -45,10 +46,10 @@ CanvasCard::CanvasCard()
     connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
-void CanvasCard::setCard(Card::Id cardId)
+void CanvasCard::setCard(CardId cardId)
 {
   m_card = cardId;
-  if (m_card != Card::Id{})
+  if (m_card != CardId{})
   {
     reloadPixmaps();
   }
@@ -146,7 +147,7 @@ void CanvasCard::moveLoop()
 
 void CanvasCard::cardDeckChanged()
 {
-  if (m_card != Card::Id{})
+  if (m_card != CardId{})
   {
     reloadPixmaps();
   }

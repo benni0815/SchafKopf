@@ -3,12 +3,14 @@
 
 #pragma once
 
-#include "card.h"
+#include "types.h"
 
 #include <QList>
 
 #include <functional>
 
+
+class Card;
 
 using EvalFunc = std::function<int(Card*)>;
 
@@ -23,7 +25,7 @@ class CardList : public QList<Card*>
     public:
         CardList() = default;
 
-        CardList(const std::vector<Card::Id>& cardIds);
+        CardList(const std::vector<CardId>& cardIds);
 
         /** initialize this card list with a default card
           * deck of 32 cards.
@@ -44,17 +46,17 @@ class CardList : public QList<Card*>
           */
         void appendList(const CardList& list);
 
-        bool contains(Card::Id cardid) const;
+        bool contains(CardId cardid) const;
 
         void removeCard( uint index );
         void removeCard( Card* card );
 
-        CardList FindCards(Card::Color color, Card::Type type);
+        CardList FindCards(CardId::Color color, CardId::Type type);
         void RemoveCards(const CardList& itemsToRem);
 
         void sort(EvalFunc eval);
 
-        std::vector<Card::Id> toIds() const;
+        std::vector<CardId> toIds() const;
 
         void setAutoDelete( bool autoDelete ) { m_autoDelete = autoDelete; }
 

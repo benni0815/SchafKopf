@@ -46,6 +46,7 @@ target_sources(schafkopf
     openbook.h
     canvascard.cpp
     canvascard.h
+    types.h
 )
 
 target_link_libraries(schafkopf
