@@ -55,7 +55,7 @@ class GameInfo{
           */
         static bool isAllowed( CardList* cards, int mode, int color );
 
-        bool operator>( GameInfo info );
+        bool operator>(const GameInfo& info);
 
     private:
         bool m_valid;

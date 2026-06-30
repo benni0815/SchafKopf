@@ -176,7 +176,7 @@ bool GameInfo::isAllowed( CardList* cards, int mode, int color )
     return true;
 }
 
-bool GameInfo::operator>( GameInfo info )
+bool GameInfo::operator>(const GameInfo& info)
 {
 /*
   2.2.3. Hat ein Teilnehmer einen Wenz oder ein Solo und vorher schon ein Spiel angesagt worden, so muss der Einzelspieler erklären

@@ -40,7 +40,7 @@ class Player
         CardList *cards() const;
         void setCards( CardList *cards);
         CardList* stiche() const;
-        void addStich( CardList stich );
+        void addStich(const CardList& stich);
         inline bool isLast() const { return m_last; }
         inline void setLast( bool b ) { m_last = b; }
         

@@ -132,7 +132,7 @@ QList<int> Settings::splitterSizes( int width )
     return list;
 }
 
-void Settings::setSplitterSizes( QList<int> list )
+void Settings::setSplitterSizes(const QList<int>& list)
 {
     QMutexLocker locker( m_mutex );
 
@@ -295,7 +295,7 @@ bool Settings::rearrangeCards() const
     return b;
 }
 
-void Settings::setBackgroundImage( QString b)
+void Settings::setBackgroundImage(const QString& b)
 {
     QMutexLocker locker( m_mutex );
 

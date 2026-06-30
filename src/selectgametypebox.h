@@ -34,7 +34,7 @@ protected:
     QLabel* preview;
     QLabel* infoLabel;
 
-    void setInfoText(QString Text);
+    void setInfoText(const QString& Text);
 
 protected slots:
     void updatePreview();

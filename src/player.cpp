@@ -83,7 +83,7 @@ CardList* Player::stiche() const
     return m_stiche;
 }
 
-void Player::addStich( CardList stich )
+void Player::addStich(const CardList& stich)
 {
     for( int i = 0; i < stich.count(); i++ )
         m_stiche->append( stich.at( i ) );

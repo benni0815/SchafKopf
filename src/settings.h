@@ -71,7 +71,7 @@ class Settings : public QObject
         void configureCardDecks(QWidget* parent = nullptr);
 
         QList<int> splitterSizes( int width );
-        void setSplitterSizes( QList<int> list );
+        void setSplitterSizes(const QList<int>& list);
 
         void setResultsType( int r );
         int resultsType() const;
@@ -90,7 +90,7 @@ class Settings : public QObject
         void setMoneyResults(const ResultValues& r);
         void setPointResults(const ResultValues& r);
 
-        void setBackgroundImage( QString b);
+        void setBackgroundImage(const QString& b);
         QString backgroundImage() const;
 
         void setRearrangeCards( bool b);

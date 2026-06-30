@@ -110,7 +110,7 @@ void SelectGameTypeBox::typeChanged()
     }
 }
 
-void SelectGameTypeBox::setInfoText(QString Text)
+void SelectGameTypeBox::setInfoText(const QString& Text)
 {
     infoLabel->setText(Text);
 }
