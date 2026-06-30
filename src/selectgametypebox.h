@@ -13,30 +13,29 @@ class QLineEdit;
 class QLabel;
 class QRadioButton;
 
-/**
-@author Christian Kern
-*/
+/// @author Christian Kern
 class SelectGameTypeBox : public QWizardPage
 {
-    Q_OBJECT
-public:
-    SelectGameTypeBox(QWidget* parent = nullptr);
-    ~SelectGameTypeBox() override = default;
+  Q_OBJECT
 
-    GameVariant::Mode gameMode() const;
+public:
+  SelectGameTypeBox(QWidget* parent = nullptr);
+  ~SelectGameTypeBox() override = default;
+
+  GameVariant::Mode gameMode() const;
 
 protected:
-    QRadioButton* checkRufspiel{};
-    QRadioButton* checkSolo{};
-    QRadioButton* checkGeier{};
-    QRadioButton* checkWenz{};
-    QRadioButton* checkDachs{};
-    QLabel* preview{};
-    QLabel* infoLabel{};
+  QRadioButton* checkRufspiel{};
+  QRadioButton* checkSolo{};
+  QRadioButton* checkGeier{};
+  QRadioButton* checkWenz{};
+  QRadioButton* checkDachs{};
+  QLabel* preview{};
+  QLabel* infoLabel{};
 
-    void setInfoText(const QString& Text);
+  void setInfoText(const QString& Text);
 
 protected slots:
-    void updatePreview();
-    void typeChanged();
+  void updatePreview();
+  void typeChanged();
 };

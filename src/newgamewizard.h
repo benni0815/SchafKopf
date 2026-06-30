@@ -10,31 +10,26 @@ class QLineEdit;
 class QLabel;
 class QRadioButton;
 
-/**
-@author Christian Kern
-*/
+/// @author Christian Kern
 class newgamewizard : public QWizard
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    enum __gameType {GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER};
-    newgamewizard(QWidget* parent = nullptr);
-    int getGame();
+  enum __gameType { GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER };
+  newgamewizard(QWidget* parent = nullptr);
+  int getGame();
 
 protected:
-    void setup_page_selectgame();
-    QWizardPage* page_selectgame{};
-    QRadioButton* checkLocalGame{};
-    QRadioButton* checkNetworkServer{};
-    QRadioButton* checkNetworkClient{};
-    QString getGameInfoString(int gameType);
-    QLabel *info{};
-    void setInfoText(int gameType);
-
-protected:
+  void setup_page_selectgame();
+  QWizardPage* page_selectgame{};
+  QRadioButton* checkLocalGame{};
+  QRadioButton* checkNetworkServer{};
+  QRadioButton* checkNetworkClient{};
+  QString getGameInfoString(int gameType);
+  QLabel* info{};
+  void setInfoText(int gameType);
 
 protected slots:
-    void dataChanged(  );
-
+  void dataChanged();
 };

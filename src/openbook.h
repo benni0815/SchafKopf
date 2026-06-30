@@ -11,44 +11,41 @@
 class Game;
 class ComputerPlayer;
 
-class RuleBook : public QObject {
-    Q_OBJECT
-    public:
-        RuleBook(ComputerPlayer* player, const Game& game);
-        ~RuleBook() override = default;
+class RuleBook : public QObject
+{
+  Q_OBJECT
 
-        virtual CardList possibleCards() = 0;
+public:
+  RuleBook(ComputerPlayer* player, const Game& game);
+  ~RuleBook() override = default;
 
-    protected:
-        const Game& m_game;
-        ComputerPlayer* m_self;
+  virtual CardList possibleCards() = 0;
+
+protected:
+  const Game& m_game;
+  ComputerPlayer* m_self;
 };
 
-/**
- * Our OpenBook implementation.
- * Finds a card which can be played as a first card.
- *
- * @author Dominik Seichter
- */
+/// Our OpenBook implementation.
+/// Finds a card which can be played as a first card.
+///
+/// @author Dominik Seichter
+class OpenBook : public RuleBook
+{
+public:
+  OpenBook(ComputerPlayer* player, const Game& game);
 
-class OpenBook : public RuleBook {    
-    public:
-        OpenBook(ComputerPlayer* player, const Game& game);
-        
-        CardList possibleCards() override;
+  CardList possibleCards() override;
 };
 
-/**
- * Contains strategies when we are the last player
- * to a play a card
- * If this class finds a good card to player
- * it is really safe to play it.
- *
- * @author Dominik Seichter
- */
-class StrategyBook : public RuleBook {
-    public:
-        StrategyBook( ComputerPlayer* player, const Game& game );
-        
-        CardList possibleCards() override;
+/// Contains strategies when we are the last player to a play a card.
+/// If this class finds a good card to play it is really safe to play it.
+///
+/// @author Dominik Seichter
+class StrategyBook : public RuleBook
+{
+public:
+  StrategyBook(ComputerPlayer* player, const Game& game);
+
+  CardList possibleCards() override;
 };

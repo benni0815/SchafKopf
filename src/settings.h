@@ -7,33 +7,33 @@
 
 #include <KSharedConfig>
 
-#include <QObject>
 #include <QMutex>
+#include <QObject>
 
 
-/** a small datatype which contains configureable 
-  * values to calculate how much a game was.
-  */
-struct ResultValues {
-    double solo;
-    double rufspiel;
-    double laufende;
-    double schwarz;
-    double schneider;
-    double ramsch;
+/// A small datatype which contains configureable
+/// values to calculate how much a game was.
+struct ResultValues
+{
+  double solo;
+  double rufspiel;
+  double laufende;
+  double schwarz;
+  double schneider;
+  double ramsch;
 };
 
-/** a datatype defining which games are allowed to be 
-  * played in this game according to the users preferences
-  */
-struct AllowedGames {
-    bool wenz;
-    bool farb_wenz;
-    
-    bool geier;
-    bool farb_geier;
-    
-    bool dachs;
+/// A datatype defining which games are allowed to be
+/// played in this game according to the users preferences
+struct AllowedGames
+{
+  bool wenz;
+  bool farb_wenz;
+
+  bool geier;
+  bool farb_geier;
+
+  bool dachs;
 };
 
 /* 
@@ -44,76 +44,74 @@ struct t_Players {
 };
 */
 
-
 class Results;
 class QWidget;
 
-/**
-@author Dominik Seichter
-*/
+/// @author Dominik Seichter
 class Settings : public QObject
 {
-    Q_OBJECT
-    public:
-        enum { MONEY, POINTS };
-        enum { NOGAME_NEUGEBEN, NOGAME_ALTERSPIELT, NOGAME_RAMSCH };
+  Q_OBJECT
 
-        static Settings* instance();
+public:
+  enum { MONEY, POINTS };
+  enum { NOGAME_NEUGEBEN, NOGAME_ALTERSPIELT, NOGAME_RAMSCH };
 
-        KCardCache* cardCache();
+  static Settings* instance();
 
-        const QString cardDeck() const;
+  KCardCache* cardCache();
 
-        const QStringList playerNames() const;
-        void setPlayerNames( const QStringList & names );
+  const QString cardDeck() const;
 
-        void loadCardDeck();
-        void configureCardDecks(QWidget* parent = nullptr);
+  const QStringList playerNames() const;
+  void setPlayerNames(const QStringList& names);
 
-        QList<int> splitterSizes( int width );
-        void setSplitterSizes(const QList<int>& list);
+  void loadCardDeck();
+  void configureCardDecks(QWidget* parent = nullptr);
 
-        void setResultsType( int r );
-        int resultsType() const;
+  QList<int> splitterSizes(int width);
+  void setSplitterSizes(const QList<int>& list);
 
-        void setNoGame( int e );
-        /** returns what has to happen when no player wants to play
-          */
-        int noGame() const;
+  void setResultsType(int r);
+  int resultsType() const;
 
-        void setDoublerHasToPlay( bool b );
-        bool doublerHasToPlay() const;
+  void setNoGame(int e);
 
-        void setDoubleNextGame( bool b );
-        bool doubleNextGame() const;
+  /// Returns what has to happen when no player wants to play.
+  int noGame() const;
 
-        void setMoneyResults(const ResultValues& r);
-        void setPointResults(const ResultValues& r);
+  void setDoublerHasToPlay(bool b);
+  bool doublerHasToPlay() const;
 
-        void setBackgroundImage(const QString& b);
-        QString backgroundImage() const;
+  void setDoubleNextGame(bool b);
+  bool doubleNextGame() const;
 
-        void setRearrangeCards( bool b);
-        bool rearrangeCards() const;
+  void setMoneyResults(const ResultValues& r);
+  void setPointResults(const ResultValues& r);
 
-        ResultValues moneyResults() const;
-        ResultValues pointResults() const;
+  void setBackgroundImage(const QString& b);
+  QString backgroundImage() const;
 
-        AllowedGames allowedGames() const;
-        void setAllowedGames(const AllowedGames& allowed);
+  void setRearrangeCards(bool b);
+  bool rearrangeCards() const;
 
-    signals:
-        void cardChanged();
-        void resultsTypeChanged();
-        void playerNamesChanged();
+  ResultValues moneyResults() const;
+  ResultValues pointResults() const;
 
-    private:
-        Settings(QObject* parent = nullptr);
-        ~Settings() override = default;
+  AllowedGames allowedGames() const;
+  void setAllowedGames(const AllowedGames& allowed);
 
-        KSharedConfig::Ptr m_config;
+signals:
+  void cardChanged();
+  void resultsTypeChanged();
+  void playerNamesChanged();
 
-        std::unique_ptr<QMutex> m_mutex;
+private:
+  Settings(QObject* parent = nullptr);
+  ~Settings() override = default;
 
-        KCardCache m_cardCache;
+  KSharedConfig::Ptr m_config;
+
+  std::unique_ptr<QMutex> m_mutex;
+
+  KCardCache m_cardCache;
 };

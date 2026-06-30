@@ -17,73 +17,72 @@ class QPushButton;
 class QLineEdit;
 class KUrlRequester;
 
-/**
-Preferences dialog for schafkopf
-
-@author Dominik Seichter
-*/
+/// Preferences dialog for schafkopf
+///
+/// @author Dominik Seichter
 class PreferencesDlg : public KPageDialog
 {
-    Q_OBJECT
-    public:
-        PreferencesDlg(QWidget* parent = nullptr);
-        ~PreferencesDlg() override = default;
+  Q_OBJECT
 
-    protected:
-        void accept() override;
+public:
+  PreferencesDlg(QWidget* parent = nullptr);
+  ~PreferencesDlg() override = default;
 
-    private slots:
-        void enableControls();
-        void disableClearButton(const QString & url);
+protected:
+  void accept() override;
 
-    private:
-        void addPagePlayer();
-        void addPageResults();
-        void addPageRules();
-        void addPageView();
-        void addPageGames();
+private slots:
+  void enableControls();
+  void disableClearButton(const QString& url);
 
-    private:
-        QWidget* stackMoney{};
-        QWidget* stackPoints{};
-        QStackedWidget* stack{};
+private:
+  void addPagePlayer();
+  void addPageResults();
+  void addPageRules();
+  void addPageView();
+  void addPageGames();
 
-        QRadioButton* m_radioMoney{};
-        QRadioButton* m_radioPoints{};
-        QRadioButton* m_radioThrowAway{};
-        QRadioButton* m_radioForcedGame{};
-        QRadioButton* m_radioRamsch{};
+private:
+  QWidget* stackMoney{};
+  QWidget* stackPoints{};
+  QStackedWidget* stack{};
 
-        QCheckBox* m_checkDoublerPlays{};
-        QCheckBox* m_checkDoubleNextGame{};
-        QCheckBox* m_checkRearrangeCards{};
+  QRadioButton* m_radioMoney{};
+  QRadioButton* m_radioPoints{};
+  QRadioButton* m_radioThrowAway{};
+  QRadioButton* m_radioForcedGame{};
+  QRadioButton* m_radioRamsch{};
 
-        QCheckBox* m_games_wenz{};
-        QCheckBox* m_games_farbwenz{};
-        QCheckBox* m_games_geier{};
-        QCheckBox* m_games_farbgeier{};
-        QCheckBox* m_games_dachs{};
+  QCheckBox* m_checkDoublerPlays{};
+  QCheckBox* m_checkDoubleNextGame{};
+  QCheckBox* m_checkRearrangeCards{};
 
-        QLineEdit* m_p1_name{};
-        QLineEdit* m_p2_name{};
-        QLineEdit* m_p3_name{};
-        QLineEdit* m_p4_name{};
+  QCheckBox* m_games_wenz{};
+  QCheckBox* m_games_farbwenz{};
+  QCheckBox* m_games_geier{};
+  QCheckBox* m_games_farbgeier{};
+  QCheckBox* m_games_dachs{};
 
-        KUrlRequester* m_linePathBackground{};
+  QLineEdit* m_p1_name{};
+  QLineEdit* m_p2_name{};
+  QLineEdit* m_p3_name{};
+  QLineEdit* m_p4_name{};
 
-        QPushButton* m_pushURLClear{};
+  KUrlRequester* m_linePathBackground{};
 
-        QDoubleSpinBox* m_money_solo{};
-        QDoubleSpinBox* m_money_call{};
-        QDoubleSpinBox* m_money_lauf{};
-        QDoubleSpinBox* m_money_notrick{};
-        QDoubleSpinBox* m_money_schneider{};
-        QDoubleSpinBox* m_money_ramsch{};
+  QPushButton* m_pushURLClear{};
 
-        QSpinBox* m_point_solo{};
-        QSpinBox* m_point_call{};
-        QSpinBox* m_point_lauf{};
-        QSpinBox* m_point_notrick{};
-        QSpinBox* m_point_schneider{};
-        QSpinBox* m_point_ramsch{};
+  QDoubleSpinBox* m_money_solo{};
+  QDoubleSpinBox* m_money_call{};
+  QDoubleSpinBox* m_money_lauf{};
+  QDoubleSpinBox* m_money_notrick{};
+  QDoubleSpinBox* m_money_schneider{};
+  QDoubleSpinBox* m_money_ramsch{};
+
+  QSpinBox* m_point_solo{};
+  QSpinBox* m_point_call{};
+  QSpinBox* m_point_lauf{};
+  QSpinBox* m_point_notrick{};
+  QSpinBox* m_point_schneider{};
+  QSpinBox* m_point_ramsch{};
 };

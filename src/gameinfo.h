@@ -11,63 +11,56 @@
 class Player;
 class QString;
 
-/**
-Keeps all information on the current game (e.g. wenz or rufspiel)
+/// Keeps all information on the current game (e.g. wenz or rufspiel)
+/// @author Dominik Seichter
+class GameInfo
+{
+public:
+  static bool istTrumpf(CardId card, GameVariant game);
 
-@author Dominik Seichter
-*/
+  GameInfo() = default;
+  GameInfo(GameVariant game);
+  ~GameInfo() = default;
 
-class GameInfo{
-    public:
-        static bool istTrumpf(CardId card, GameVariant game);
+  void setValid(bool b) { m_valid = b; }
+  bool isValid() const { return m_valid; }
 
-        GameInfo() = default;
-        GameInfo(GameVariant game);
-        ~GameInfo() = default;
+  CardId::Color color() const { return m_game.color; }
+  void setColor(CardId::Color c) { m_game.color = c; }
 
-        void setValid( bool b ) { m_valid = b; }
-        bool isValid() const { return m_valid; }
+  GameVariant::Mode mode() const { return m_game.mode; }
+  void setMode(GameVariant::Mode m) { m_game.mode = m; }
 
-        CardId::Color color() const { return m_game.color; }
-        void setColor(CardId::Color c) { m_game.color = c; }
+  Player* spieler() const { return m_spieler; }
+  void setSpieler(Player* p) { m_spieler = p; }
 
-        GameVariant::Mode mode() const { return m_game.mode; }
-        void setMode(GameVariant::Mode m) { m_game.mode = m; }
+  Player* mitspieler() const { return m_mitspieler; }
+  void setMitspieler(Player* p) { m_mitspieler = p; }
 
-        Player* spieler() const { return m_spieler; }
-        void setSpieler( Player* p ) { m_spieler = p; }
+  const QString toString() const;
+  static int weight(CardId card, GameVariant game);
 
-        Player* mitspieler() const { return m_mitspieler; }
-        void setMitspieler( Player* p ) { m_mitspieler = p; }
+  bool istTrumpf(CardId card) const;
 
-        const QString toString() const;
-        static int weight(CardId card, GameVariant game);
+  /// Returns a number between 1 and 32 according to the worth of the card.
+  /// I.e. the highest card will get a value of 32 assigned
+  /// be sure that autodelete is turned of when using this function!
+  int evalCard(CardId card) const;
 
-        bool istTrumpf(CardId card) const;
+  bool isHigher(CardId card, CardId high) const;
+  Card highestCard(const CardList& cards) const;
 
-        /** returns a number between 1 and 32 according to the worth of the card.
-          *I.e. the highest card will get a value of 32 assigned
-          * be sure that autodelete is turned of when using this function!
-          */
-        int evalCard(CardId card) const;
+  /// Calculates the number of "laufende" ticks
+  int laufende(const CardList& cards) const;
 
-        bool isHigher(CardId card, CardId high) const;
-        Card highestCard(const CardList& cards) const;
+  /// Is a player with the cards @p cards allowed to play the GameVariant @game.
+  static bool isAllowed(const std::vector<CardId>& cards, GameVariant game);
 
-        /** calculate the number of "laufende" ticks
-          */
-        int laufende(const CardList& cards) const;
+  bool operator>(const GameInfo& info);
 
-        /** Is a player with the cards @p cards allowed to playe
-          * the game @p mode with the color @p color.
-          */
-        static bool isAllowed(const std::vector<CardId>& cards, GameVariant game);
-
-        bool operator>(const GameInfo& info);
-
-    private:
-        bool m_valid{false};
-        GameVariant m_game{GameVariant::STICHT, CardId::NoColor};
-        Player* m_spieler{};
-        Player* m_mitspieler{};
+private:
+  bool m_valid{false};
+  GameVariant m_game{GameVariant::STICHT, CardId::NoColor};
+  Player* m_spieler{};
+  Player* m_mitspieler{};
 };

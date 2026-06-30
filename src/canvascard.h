@@ -11,47 +11,46 @@
 
 class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
-    Q_OBJECT
-    public:
-        static QPixmap frontsidePixmap(CardId id);
+  Q_OBJECT
 
-        /// return a pixmap for the background of a card.
-        static const QPixmap& backsidePixmap();
+public:
+  static QPixmap frontsidePixmap(CardId id);
 
-        CanvasCard();
-        ~CanvasCard() override = default;
+  /// Returns a pixmap for the background of a card.
+  static const QPixmap& backsidePixmap();
 
-        void setCard(CardId cardId);
-        CardId card() const { return m_card; }
+  CanvasCard();
+  ~CanvasCard() override = default;
 
-        void setFrontVisible( bool b );
+  void setCard(CardId cardId);
+  CardId card() const { return m_card; }
 
-        void animatedMove();
-        void setDestination( int x, int y );
+  void setFrontVisible(bool b);
 
-        /** mark this card as forbidden to play
-          * in the UI
-          */
-        void forbidden();
+  void animatedMove();
+  void setDestination(int x, int y);
 
-    private:
-        void updatePixmap();
-        void reloadPixmaps();
+  /// Marks this card as forbidden to play in the UI.
+  void forbidden();
 
-        QPixmap frontPixmap;
-        QPixmap forbiddenFrontPixmap;
+private:
+  void updatePixmap();
+  void reloadPixmaps();
 
-        bool m_visible{false};
-        bool m_forbidden{false};
+  QPixmap frontPixmap;
+  QPixmap forbiddenFrontPixmap;
 
-        int tox{0};
-        int toy{0};
-        QTimer* timer{};
+  bool m_visible{false};
+  bool m_forbidden{false};
 
-        CardId m_card{CardId::NoStich, CardId::NoColor};
+  int tox{0};
+  int toy{0};
+  QTimer* timer{};
 
-    private slots:
-        void disableForbidden();
-        void moveLoop();
-        void cardDeckChanged();
+  CardId m_card{CardId::NoStich, CardId::NoColor};
+
+private slots:
+  void disableForbidden();
+  void moveLoop();
+  void cardDeckChanged();
 };

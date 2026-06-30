@@ -10,12 +10,12 @@
 
 int main(int argc, char **argv)
 {
-    QApplication app(argc, argv);
-    KLocalizedString::setApplicationDomain(QByteArrayLiteral("schafkopf"));
-    app.setQuitOnLastWindowClosed(true);
+  QApplication app(argc, argv);
+  KLocalizedString::setApplicationDomain(QByteArrayLiteral("schafkopf"));
+  app.setQuitOnLastWindowClosed(true);
 
-    auto mainWin = new SchafKopf();
-    mainWin->show();
+  auto mainWin = new SchafKopf();
+  mainWin->show();
 
-    return app.exec();
+  return app.exec();
 }

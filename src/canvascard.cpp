@@ -5,10 +5,9 @@
 
 #include "settings.h"
 
-#include <QTimer>
-#include <QPainter>
 #include <QGraphicsDropShadowEffect>
-
+#include <QPainter>
+#include <QTimer>
 
 namespace
 {
@@ -62,18 +61,18 @@ const QPixmap& CanvasCard::backsidePixmap()
 }
 
 CanvasCard::CanvasCard()
- :  QGraphicsPixmapItem()
+: QGraphicsPixmapItem()
 {
-    setFlag( QGraphicsItem::ItemIsSelectable );
-    setTransformationMode( Qt::SmoothTransformation );
+  setFlag(QGraphicsItem::ItemIsSelectable);
+  setTransformationMode(Qt::SmoothTransformation);
 
-    auto dropShadowEffect = new QGraphicsDropShadowEffect(this);
-    dropShadowEffect->setOffset(2, 2);
-    dropShadowEffect->setBlurRadius(5);
-    setGraphicsEffect(dropShadowEffect);
+  auto dropShadowEffect = new QGraphicsDropShadowEffect(this);
+  dropShadowEffect->setOffset(2, 2);
+  dropShadowEffect->setBlurRadius(5);
+  setGraphicsEffect(dropShadowEffect);
 
-    timer = new QTimer( this );
-    connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
+  timer = new QTimer(this);
+  connect(Settings::instance(), &Settings::cardChanged, this, &CanvasCard::cardDeckChanged);
 }
 
 void CanvasCard::setCard(CardId cardId)
@@ -87,72 +86,72 @@ void CanvasCard::setCard(CardId cardId)
 
 void CanvasCard::reloadPixmaps()
 {
-    frontPixmap = frontsidePixmap(m_card);
+  frontPixmap = frontsidePixmap(m_card);
 
-    QImage forbiddenFrontImage = frontPixmap.toImage();
+  QImage forbiddenFrontImage = frontPixmap.toImage();
 
-    {
-      QPainter p(&forbiddenFrontImage);
-      p.setBrush(QBrush(QColor::fromRgbF(1, 1, 1, 0.5)));
-      p.drawRect(QRect(QPoint(0, 0), forbiddenFrontImage.size()));
-    }
+  {
+    QPainter p(&forbiddenFrontImage);
+    p.setBrush(QBrush(QColor::fromRgbF(1, 1, 1, 0.5)));
+    p.drawRect(QRect(QPoint(0, 0), forbiddenFrontImage.size()));
+  }
 
-    forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
+  forbiddenFrontPixmap.convertFromImage(forbiddenFrontImage);
 
-    backside() = QPixmap(Settings::instance()->cardCache()->backside());
+  backside() = QPixmap(Settings::instance()->cardCache()->backside());
 
-    float height = frontPixmap.height();
-    float width = frontPixmap.width();
-    setTransformOriginPoint(height/2, width/2);
+  float height = frontPixmap.height();
+  float width = frontPixmap.width();
+  setTransformOriginPoint(height / 2, width / 2);
 
-    updatePixmap();
+  updatePixmap();
 }
 
 void CanvasCard::updatePixmap()
 {
-    if( !m_visible )
-    {
-      setPixmap(backsidePixmap());
-      return;
-    }
-    if( m_forbidden )
-    {
-        setPixmap( forbiddenFrontPixmap );
-        return;
-    }
-    setPixmap( frontPixmap );
-    QGraphicsPixmapItem::update();
+  if (!m_visible)
+  {
+    setPixmap(backsidePixmap());
+    return;
+  }
+  if (m_forbidden)
+  {
+    setPixmap(forbiddenFrontPixmap);
+    return;
+  }
+  setPixmap(frontPixmap);
+  QGraphicsPixmapItem::update();
 }
 
-void CanvasCard::setFrontVisible( bool b )
+void CanvasCard::setFrontVisible(bool b)
 {
-    m_visible = b;
-    updatePixmap();
+  m_visible = b;
+  updatePixmap();
 }
 
 void CanvasCard::forbidden()
 {
-    m_forbidden = true;
-    QTimer::singleShot(std::chrono::seconds(1), this, &CanvasCard::disableForbidden);
-    updatePixmap();
+  m_forbidden = true;
+  QTimer::singleShot(std::chrono::seconds(1), this, &CanvasCard::disableForbidden);
+  updatePixmap();
 }
 
 void CanvasCard::disableForbidden()
 {
-    m_forbidden = false;
-    updatePixmap();
+  m_forbidden = false;
+  updatePixmap();
 }
 
-void CanvasCard::setDestination( int x, int y )
+void CanvasCard::setDestination(int x, int y)
 {
-    tox = x;
-    toy = y;
+  tox = x;
+  toy = y;
 }
 
 void CanvasCard::animatedMove()
 {
-    connect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
-    timer->start( 2 );
+  connect(timer, &QTimer::timeout, this, &CanvasCard::moveLoop);
+  timer->start(2);
 }
 
 void CanvasCard::moveLoop()

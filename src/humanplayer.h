@@ -11,17 +11,17 @@ class HumanPlayer : public Player
 {
   Q_OBJECT
 
-    public:
-        HumanPlayer(unsigned int id, const Game& game);
-        ~HumanPlayer() override = default;
+public:
+  HumanPlayer(unsigned int id, const Game& game);
+  ~HumanPlayer() override = default;
 
-        void klopfen() override;
-        Card play() override;
-        std::optional<GameVariant> gameInfo(bool force = false) override;
-        
-    signals:
-        void forbiddenCard(CardId cardId);
-        void questionYesNo(const QString& question, int* result);
-        void getCard(CardId* card);
-        void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
+  void klopfen() override;
+  Card play() override;
+  std::optional<GameVariant> gameInfo(bool force = false) override;
+
+signals:
+  void forbiddenCard(CardId cardId);
+  void questionYesNo(const QString& question, int* result);
+  void getCard(CardId* card);
+  void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
 };

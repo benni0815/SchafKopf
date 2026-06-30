@@ -13,107 +13,88 @@
 class Player;
 class GameCanvas;
 
-/**
-@author Dominik Seichter
-*/
+/// @author Dominik Seichter
 class Game : public QThread
 {
-    Q_OBJECT
+  Q_OBJECT
 
-    public:
-        Game(QObject *parent);
-        ~Game() override = default;
+public:
+  Game(QObject* parent);
+  ~Game() override = default;
 
-        void gameLoop();
-        const CardList& currStich() const;
-        const CardList& allCards() const { return m_allcards; }
-        const CardList& playedCards() const { return m_playedcards; }
-        const GameInfo& gameInfo() const;
+  void gameLoop();
+  const CardList& currStich() const;
+  const CardList& allCards() const { return m_allcards; }
+  const CardList& playedCards() const { return m_playedcards; }
+  const GameInfo& gameInfo() const;
 
-        /** @returns the player who is the next to play
-         *  a card in this turn or NULL if there is no player left.
-         *
-         *  This should only be called from Player::play()
-         */
-        inline Player* nextPlayer() const { return m_nextPlayer; };
+  /// Returns the player who is the next to play a card in this turn or NULL if there is no player left.
+  /// This should only be called from Player::play()
+  Player* nextPlayer() const { return m_nextPlayer; };
 
-        std::vector<Player*> players() const;
+  std::vector<Player*> players() const;
 
-        bool isTerminated() const { return terminated; }
-        Card highestCardInStich() const;
+  bool isTerminated() const { return terminated; }
+  Card highestCardInStich() const;
 
-        /** returns how many players have doubled
-          */
-        int timesDoubled() const;
-        int timesThrownTogether() const;
+  /// returns how many players have doubled
+  int timesDoubled() const;
+  int timesThrownTogether() const;
 
-    public slots:
-        void endGame(void);
+public slots:
+  void endGame(void);
 
-    signals:
-        void gameStarted();
-        void gameEnded();
-        void playerDoubled(const QString& message);
-        void playerIsLast(unsigned int playerId);
-        void playerMadeStich(unsigned int playerId, std::vector<CardId> cardIds, const QString& playerName, const QStringList& playerNames);
-        void cardPlayed(unsigned int playerId, CardId cardId);
-        void redrawPlayers();
-        void gameInfoSetup();
-        void playerResults(unsigned int playerId, const QString& formattedPoints);
-        void infoMessage(const QString& message);
-        void bubble(unsigned int playerId, const QString& message);
+signals:
+  void gameStarted();
+  void gameEnded();
+  void playerDoubled(const QString& message);
+  void playerIsLast(unsigned int playerId);
+  void playerMadeStich(unsigned int playerId, std::vector<CardId> cardIds, const QString& playerName, const QStringList& playerNames);
+  void cardPlayed(unsigned int playerId, CardId cardId);
+  void redrawPlayers();
+  void gameInfoSetup();
+  void playerResults(unsigned int playerId, const QString& formattedPoints);
+  void infoMessage(const QString& message);
+  void bubble(unsigned int playerId, const QString& message);
 
-    private:
-        /** set the results of all players to 0. This is necessary
-          * if for example the class for the results calculation was changed
-          * or when a new game is started.
-          */
-        void resetGameResults();
+private:
+  /// Sets the results of all players to 0. This is necessary if for example the class
+  /// for the results calculation was changed or when a new game is started.
+  void resetGameResults();
 
-        /** Called on initialization and when the user changed the names
-          * of the players to represent the changes in the UI
-          */
-        void updatePlayerNames();
+  /// Called on initialization and when the user changed the names of the players to represent the changes in the UI.
+  void updatePlayerNames();
 
-    private:
-        /** give cards to the player and begin a new gameinfo
-         */
-        void startGame();
-        /** Display the results of the game (winner/loser)
-          * to the user. Called after each game.
-          */
-        void gameResults();
+private:
+  /// Gives cards to the player and begins a new gameinfo.
+  void startGame();
 
-        /** find a player who wants to playerPlayedCard
-          * and setup m_gameinfo according to this
-          * returns true on succes
-          * and false when no one wants to playerPlayedCard
-          * and a new game should be started
-          */
-       bool setupGameInfo(const std::array<Player*, PLAYERS>& players);
+  /// Displays the results of the game (winner/loser) to the user. Called after each game.
+  void gameResults();
 
-       /** internal helper function for setupGameInfo().
-         * handles all cases when no player wants to play.
-         * It forces players in certain cases to play according
-         * to the users settings.
-         */
-       bool setupGameInfoForced(const std::array<Player*, PLAYERS>& players);
+  /// Finds a player who wants to playerPlayedCard and sets-up m_gameinfo according to this.
+  /// Returns true on succes and false when no one wants to playerPlayedCard and a new game should be started.
+  bool setupGameInfo(const std::array<Player*, PLAYERS>& players);
 
-    protected:
-        /** inherited from QThread, calls gameLoop();
-          */
-        void run() override;
+  /// Internal helper function for setupGameInfo(). Handles all cases when no player wants to play.
+  /// It forces players in certain cases to play according to the users settings.
+  bool setupGameInfoForced(const std::array<Player*, PLAYERS>& players);
 
-    private:
-        std::atomic<bool> terminated{true};
+protected:
+  /// Inherited from QThread, calls gameLoop().
+  void run() override;
 
-        std::array<std::shared_ptr<Player>, PLAYERS> m_players;
-        // player who is the next to play a card (for nextPlayer() )
-        Player *m_nextPlayer{};
+private:
+  std::atomic<bool> terminated{true};
 
-        CardList m_allcards;
-        CardList m_playedcards;
-        CardList m_currstich;
-        GameInfo m_gameinfo;
-        int m_timesThrownTogether{0};
+  std::array<std::shared_ptr<Player>, PLAYERS> m_players;
+
+  /// Player who is the next to play a card (for nextPlayer())
+  Player* m_nextPlayer{};
+
+  CardList m_allcards;
+  CardList m_playedcards;
+  CardList m_currstich;
+  GameInfo m_gameinfo;
+  int m_timesThrownTogether{0};
 };

@@ -9,8 +9,8 @@
 #include <config.h>
 #endif
 
-#include <KXmlGuiWindow>
 #include <KAboutData>
+#include <KXmlGuiWindow>
 
 #include <QPointer>
 
@@ -24,78 +24,67 @@ class QPushButton;
 class QGraphicsScene;
 class StichDlg;
 
-/**
- * @short Application Main Window
- * @author Dominik Seichter <domseichter@web.de>
- * @version 0.1
- */
+/// @short Application Main Window
+/// @author Dominik Seichter <domseichter@web.de>
 class SchafKopf : public KXmlGuiWindow
 {
-    Q_OBJECT
-    public:
-        SchafKopf(QWidget* parent = nullptr);
-        ~SchafKopf() override;
+  Q_OBJECT
 
-        static KAboutData aboutData();
+public:
+  SchafKopf(QWidget* parent = nullptr);
+  ~SchafKopf() override;
 
-    private slots:
-        /** Configure the carddeck to be used
-          */
-        void carddecks();
+  static KAboutData aboutData();
 
-        /** Start a new game
-          */
-        void newGame();
+private slots:
+  /// Configures the carddeck to be used.
+  void carddecks();
 
-        /** abort current game
-          */
-        void endGame();
+  /// Starts a new game.
+  void newGame();
 
-        /** show the last stich
-          */
-        void showStich();
+  /// Aborts the current game.
+  void endGame();
 
-        /** takes care of enabling and disabling actions
-          */
-        void enableControls();
+  /// Shows the last stich.
+  void showStich();
 
-        /** guess what? shows the preferences dialog to the user
-          */
-        void configure();
+  /// Takes care of enabling and disabling actions.
+  void enableControls();
 
-        void realNewGame();
+  /// Shows the preferences dialog to the user.
+  void configure();
 
-        void slotPlayerResult( unsigned int id, const QString & result );
+  void realNewGame();
 
-        void saveConfig();
+  void slotPlayerResult(unsigned int id, const QString& result);
 
-        void updateInfo();
+  void saveConfig();
 
-        /** remove all items from the table displaying the results
-          */
-        void clearTable();
+  void updateInfo();
 
-        /** update table headings when the user changes the player names
-          * in the preferences
-          */
-        void updateTableNames();
+  /// Removes all items from the table displaying the results.
+  void clearTable();
 
-    private:
-        void setupActions();
-        void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardids, bool force = false);
+  /// Updates table headings when the user changes the player names in the preferences.
+  void updateTableNames();
 
-        Game* m_game{};
-        QGraphicsScene* m_scene{};
-        GameCanvas* m_view{};
-        QTableWidget* m_table{};
-        QSplitter* split{};
+private:
+  void setupActions();
+  void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardids, bool force = false);
 
-        QLabel* lblCurGame{};
-        QLabel* lblDoubled{};
-        QPushButton* btnLastTrick{};
+  Game* m_game{};
+  QGraphicsScene* m_scene{};
+  GameCanvas* m_view{};
+  QTableWidget* m_table{};
+  QSplitter* split{};
 
-        QAction* m_actStich{};
-        QAction* m_actEnd{};
+  QLabel* lblCurGame{};
+  QLabel* lblDoubled{};
+  QPushButton* btnLastTrick{};
 
-        QPointer<StichDlg> m_stichdlg;
+  QAction* m_actStich{};
+  QAction* m_actEnd{};
+
+  QPointer<StichDlg> m_stichdlg;
 };

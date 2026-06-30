@@ -1,7 +1,7 @@
 #include "player.h"
 
-#include "game.h"
 #include "cards.h"
+#include "game.h"
 
 #include <QDebug>
 
@@ -12,9 +12,9 @@ Player::Player(unsigned int id, const Game& game)
 , m_id(id)
 {}
 
-const QString & Player::name() const
+const QString& Player::name() const
 {
-    return m_name;
+  return m_name;
 }
 
 void Player::setName(const QString& name)
@@ -25,20 +25,20 @@ void Player::setName(const QString& name)
 
 const CardList& Player::cards() const
 {
-    return m_cards;
+  return m_cards;
 }
 
 void Player::setCards(const CardList& cards)
 {
-    m_geklopft = false;
-    m_cards = cards;
+  m_geklopft = false;
+  m_cards = cards;
 
-    emit gotCards(id(), Cards::toIds(m_cards));
+  emit gotCards(id(), Cards::toIds(m_cards));
 }
 
 void Player::removeCard(const CardId& id)
 {
-  const auto it = std::find_if(std::begin(m_cards), std::end(m_cards), [&] (const Card& card) { return card.id == id; });
+  const auto it = std::find_if(std::begin(m_cards), std::end(m_cards), [&](const Card& card) { return card.id == id; });
   if (it == std::end(m_cards))
   {
     return;
@@ -48,7 +48,7 @@ void Player::removeCard(const CardId& id)
 
 void Player::sortCards()
 {
-  Cards::sort(m_cards, [this] (const Card& card) { return m_game.gameInfo().evalCard(card.id); });
+  Cards::sort(m_cards, [this](const Card& card) { return m_game.gameInfo().evalCard(card.id); });
   emit gotCards(id(), Cards::toIds(m_cards));
 }
 
@@ -59,7 +59,7 @@ bool Player::isPlayer() const
 
 const CardList& Player::stiche() const
 {
-    return m_stiche;
+  return m_stiche;
 }
 
 void Player::clearStiche()
@@ -80,7 +80,7 @@ void Player::removeTrumpf(CardList& liste)
 
 bool Player::istTrumpf(const Card& card)
 {
-    return m_game.gameInfo().istTrumpf(card.id);
+  return m_game.gameInfo().istTrumpf(card.id);
 }
 
 CardList Player::PlayerCards()
@@ -90,79 +90,85 @@ CardList Player::PlayerCards()
 
 std::optional<Card> Player::firstPlayedCard()
 {
-    const auto& currStich = m_game.currStich();
-    if (currStich.empty())
-      return {};
-    else
-        return currStich.front();
+  const auto& currStich = m_game.currStich();
+  if (currStich.empty())
+  {
+    return {};
+  }
+  else
+  {
+    return currStich.front();
+  }
 }
 
 CardList Player::cardsOfSameType(const std::optional<Card>& card)
 {
-    auto SpielerKarten = PlayerCards();
+  auto SpielerKarten = PlayerCards();
 
-    if (!card)
-        return SpielerKarten; // müssen alle Karten zurückgegeben werden
-    else
+  if (!card)
+  {
+    return SpielerKarten; // müssen alle Karten zurückgegeben werden
+  }
+  else
+  {
+    if (istTrumpf(card.value())) // müssen alle trümpfe zurückgegeben werden
     {
-        if (istTrumpf(card.value())) // müssen alle trümpfe zurückgegeben werden
-        {
-            auto AntiMaske = PlayerCards();
-            removeTrumpf(AntiMaske);
-            Cards::remove(SpielerKarten, Cards::toIds(AntiMaske));
-            return SpielerKarten;
-        }
-        else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
-        {
-            removeTrumpf(SpielerKarten);
-            return Cards::findByColor(SpielerKarten, firstPlayedCard()->id.color);
-        }
+      auto AntiMaske = PlayerCards();
+      removeTrumpf(AntiMaske);
+      Cards::remove(SpielerKarten, Cards::toIds(AntiMaske));
+      return SpielerKarten;
     }
+    else // muss die gleiche Farbe ohne Trümpfe zurückgegeben werden
+    {
+      removeTrumpf(SpielerKarten);
+      return Cards::findByColor(SpielerKarten, firstPlayedCard()->id.color);
+    }
+  }
 }
 
 CardList Player::allowedCards()
 {
-    CardList allowed = cardsOfSameType(firstPlayedCard());
-    if (allowed.empty())
+  CardList allowed = cardsOfSameType(firstPlayedCard());
+  if (allowed.empty())
+  {
+    allowed = PlayerCards();
+  }
+
+  const auto& gameInfo = m_game.gameInfo();
+  if (gameInfo.mode() == GameVariant::RUFSPIEL)
+  {
+    CardList Spielfarbe = Cards::findByColor(allowed, gameInfo.color());
+
+    // entferne alle trümpfe aus Spielfarbe
+    for (int i = 0; i < Spielfarbe.size(); ++i)
     {
-        allowed = PlayerCards();
+      if (istTrumpf(Spielfarbe.at(i)))
+      {
+        Cards::remove(Spielfarbe, Spielfarbe.at(i).id);
+        qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
+      }
     }
 
-    const auto& gameInfo = m_game.gameInfo();
-    if (gameInfo.mode() == GameVariant::RUFSPIEL)
+    auto Sau = Cards::find(allowed, {CardId::Sau, gameInfo.color()});
+    if (Sau) //muss nur was machen wenn ich die Sau habe
     {
-        CardList Spielfarbe = Cards::findByColor(allowed, gameInfo.color());
-
-        // entferne alle trümpfe aus Spielfarbe
-        for (int i = 0; i < Spielfarbe.size(); ++i)
+      if (firstPlayedCard() && !istTrumpf(firstPlayedCard().value()) && firstPlayedCard()->id.color == gameInfo.color())
+      {
+        allowed = {Sau.value()};
+      }
+      else if (m_game.currStich().empty())
+      {
+        if (Spielfarbe.size() < 4)
         {
-            if (istTrumpf(Spielfarbe.at(i)))
-            {
-                Cards::remove(Spielfarbe, Spielfarbe.at(i).id);
-                qDebug() << name() << ": Entferne trumpf aus Spielfarbe";
-            }
+          Cards::remove(Spielfarbe, Sau->id);
+          Cards::remove(allowed, Cards::toIds(Spielfarbe));
         }
-
-        auto Sau = Cards::find(allowed, {CardId::Sau, gameInfo.color()});
-        if (Sau) //muss nur was machen wenn ich die Sau habe
-        {
-            if (firstPlayedCard() && !istTrumpf(firstPlayedCard().value()) && firstPlayedCard()->id.color == gameInfo.color())
-            {
-                allowed = {Sau.value()};
-            }
-            else if (m_game.currStich().empty())
-            {
-                if (Spielfarbe.size() < 4)
-                {
-                    Cards::remove(Spielfarbe, Sau->id);
-                    Cards::remove(allowed, Cards::toIds(Spielfarbe));
-                }
-            }
-            else if (m_game.currStich().size() > 0 && m_cards.size() > 1)
-            {
-                Cards::remove(allowed, Sau->id);      // Rufsau darf nicht geschmiert werden
-            }
-        }
+      }
+      else if (m_game.currStich().size() > 0 && m_cards.size() > 1)
+      {
+        Cards::remove(allowed, Sau->id); // Rufsau darf nicht geschmiert werden
+      }
     }
-    return allowed;
+  }
+  return allowed;
 }

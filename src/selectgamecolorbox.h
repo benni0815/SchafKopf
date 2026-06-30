@@ -14,44 +14,41 @@ class QPushButton;
 class QRadioButton;
 class SelectGameWizard;
 
-
-/**
-@author Christian Kern
-*/
+/// @author Christian Kern
 class SelectGameColorBox : public QWizardPage
 {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    SelectGameColorBox(GameVariant& game, QWidget* parent = nullptr);
-    ~SelectGameColorBox() override = default;
+  SelectGameColorBox(GameVariant& game, QWidget* parent = nullptr);
+  ~SelectGameColorBox() override = default;
 
-    void statusChanged();
-    bool getFinish();
+  void statusChanged();
+  bool getFinish();
 
 protected:
-    GameVariant& m_game;
-    QRadioButton* checkFarblos{};
-    QRadioButton* checkEichel{};
-    QRadioButton* checkGras{};
-    QRadioButton* checkHerz{};
-    QRadioButton* checkSchellen{};
-    QPushButton* labelEichel{};
-    QPushButton* labelGras{};
-    QPushButton* labelHerz{};
-    QPushButton* labelSchellen{};
+  GameVariant& m_game;
+  QRadioButton* checkFarblos{};
+  QRadioButton* checkEichel{};
+  QRadioButton* checkGras{};
+  QRadioButton* checkHerz{};
+  QRadioButton* checkSchellen{};
+  QPushButton* labelEichel{};
+  QPushButton* labelGras{};
+  QPushButton* labelHerz{};
+  QPushButton* labelSchellen{};
 
-    SelectGameWizard* m_parent{};
+  SelectGameWizard* m_parent{};
 
-    void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
-    void checkFirstVisible();
-    bool m_finish;
-    CardId::Color getColor();
+  void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
+  void checkFirstVisible();
+  bool m_finish;
+  CardId::Color getColor();
 
 protected slots:
-    void colorChanged();
-    void colorChangedToEichel();
-    void colorChangedToGras();
-    void colorChangedToHerz();
-    void colorChangedToSchellen();
+  void colorChanged();
+  void colorChangedToEichel();
+  void colorChangedToGras();
+  void colorChangedToHerz();
+  void colorChangedToSchellen();
 };

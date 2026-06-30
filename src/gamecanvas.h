@@ -3,12 +3,12 @@
 
 #pragma once
 
-#include "schafkopfdef.h"
 #include "canvasplayer.h"
+#include "schafkopfdef.h"
 #include "types.h"
 
-#include <QGraphicsView>
 #include <QEventLoop>
+#include <QGraphicsView>
 #include <QLabel>
 
 
@@ -21,100 +21,90 @@ class QResizeEvent;
 
 class GameCanvas : public QGraphicsView
 {
-    Q_OBJECT
-    
-    public:
-        GameCanvas(QGraphicsScene* gs, QWidget *parent = nullptr);
-        ~GameCanvas() override = default;
-        
-        /** the user has to click a card to play
-          */
-        void getCard(CardId* card);
+  Q_OBJECT
 
-        /** the user played card, which
-          * is forbidden to play!
-          */
-        void cardForbidden(CardId cardid);
+public:
+  GameCanvas(QGraphicsScene* gs, QWidget* parent = nullptr);
+  ~GameCanvas() override = default;
 
-        /** ask the user a question and allow him to make a decision
-          */
-        void questionYesNo(const QString& message, int* result);
-        
-        /** display an information message to the user
-          */
-        void information( const QString & message );
+  /// The user has to click a card to play.
+  void getCard(CardId* card);
 
-        /** displays a bubble with the text the computerplayers say
-          */
-        void Bubble(unsigned int playerid, const QString& message);
-        
-        /** set the canvas player with the @p id to have doubled in this game
-          */
-        void playerHasDoubled( unsigned int id, bool value );
-        
-        /** Reset all data of the canvas players to default values 
-          */
-        void resetPlayers();
-        /** remove all cards from the canvas player cardlists
-          * so that they are going to hide themselves
-          */
-        void resetPlayerCards();
+  /// The user played a card, which is forbidden to play.
+  void cardForbidden(CardId cardid);
 
-        void playerIsLast( unsigned int id );
-        void updateBackground();
+  /// Asks the user a question and allows him to make a decision.
+  void questionYesNo(const QString& message, int* result);
 
-        void exitLoop();
+  /// Displays an information message to the user.
+  void information(const QString& message);
 
-    public slots:
-        void setPlayerCards(unsigned int id, const std::vector<CardId>& cardIds);
-        void setPlayerName(unsigned int id, const QString& name);
-        void redrawPlayers();
-        void slotPlayerPlayedCard(unsigned int player, CardId cardid);
-        void slotPlayerMadeStich(unsigned int);
+  /// Displays a bubble with the text the computerplayers say.
+  void Bubble(unsigned int playerid, const QString& message);
 
-    signals:
-        void clicked( QGraphicsItem* item );
-        void playCard( Card* card );
-        
-    private slots:
-        /** Position the cards on the screen correctly
-          */
-        void positionObjects();
-        
-        void cardClicked( QGraphicsItem* item );
-        void yesNoClicked( QGraphicsItem* item );
-        
-    protected:
-        void resizeEvent(QResizeEvent* r) override;
-        void resizeBackground();
+  /// Sets the canvas player with the @p id to have doubled in this game.
+  void playerHasDoubled(unsigned int id, bool value);
 
-        void mousePressEvent(QMouseEvent*) override;
-        void mouseReleaseEvent(QMouseEvent*) override;
-        void keyPressEvent(QKeyEvent*) override;
-        void focusInEvent(QFocusEvent*) override;
-        void focusOutEvent(QFocusEvent*) override;
-        QPoint getStichPosition( int player );
-        int getStichRotation( int player );
-        CanvasPlayer* humanPlayer();
-        
-    private:
-        int m_result{0};
-        CardId m_resultCard{};
-        
-        QList<QGraphicsItem*> m_focus_list;
-        std::array<CanvasPlayer, PLAYERS> m_players;
-        std::array<CanvasCard*, PLAYERS> m_stich;
-        
-        // currently clicked item
-        QGraphicsItem* m_item{};
+  /// Resets all data of the canvas players to default values.
+  void resetPlayers();
 
-        QGraphicsSimpleTextItem* m_message{};
-        CanvasText* m_yes{};
-        CanvasText* m_no{};
-        CanvasText* m_ok{};
+  /// Removes all cards from the canvas player cardlists so that they are going to hide themselves.
+  void resetPlayerCards();
 
-        QImage ImgBack;
-        bool loadOK{false};
+  void playerIsLast(unsigned int id);
+  void updateBackground();
 
-        QEventLoop m_loop;
+  void exitLoop();
+
+public slots:
+  void setPlayerCards(unsigned int id, const std::vector<CardId>& cardIds);
+  void setPlayerName(unsigned int id, const QString& name);
+  void redrawPlayers();
+  void slotPlayerPlayedCard(unsigned int player, CardId cardid);
+  void slotPlayerMadeStich(unsigned int);
+
+signals:
+  void clicked(QGraphicsItem* item);
+  void playCard(Card* card);
+
+private slots:
+  /// Position the cards on the screen correctly.
+  void positionObjects();
+
+  void cardClicked(QGraphicsItem* item);
+  void yesNoClicked(QGraphicsItem* item);
+
+protected:
+  void resizeEvent(QResizeEvent* r) override;
+  void resizeBackground();
+
+  void mousePressEvent(QMouseEvent*) override;
+  void mouseReleaseEvent(QMouseEvent*) override;
+  void keyPressEvent(QKeyEvent*) override;
+  void focusInEvent(QFocusEvent*) override;
+  void focusOutEvent(QFocusEvent*) override;
+  QPoint getStichPosition(int player);
+  int getStichRotation(int player);
+  CanvasPlayer* humanPlayer();
+
+private:
+  int m_result{0};
+  CardId m_resultCard{};
+
+  QList<QGraphicsItem*> m_focus_list;
+  std::array<CanvasPlayer, PLAYERS> m_players;
+  std::array<CanvasCard*, PLAYERS> m_stich;
+
+  /// Currently clicked item
+  QGraphicsItem* m_item{};
+
+  QGraphicsSimpleTextItem* m_message{};
+  CanvasText* m_yes{};
+  CanvasText* m_no{};
+  CanvasText* m_ok{};
+
+  QImage ImgBack;
+  bool loadOK{false};
+
+  QEventLoop m_loop;
 };

@@ -4,9 +4,9 @@
 #include "openbook.h"
 
 #include "cards.h"
+#include "computerplayer.h"
 #include "game.h"
 #include "gameinfo.h"
-#include "computerplayer.h"
 
 #include <iostream>
 
@@ -39,7 +39,10 @@ struct Rule
     for (int i = 0; i < allowed.size(); i++)
     {
       Card c = allowed.at(i);
-      if (eval(info, c.id)) { list.push_back(allowed.at(i)); }
+      if (eval(info, c.id))
+      {
+        list.push_back(allowed.at(i));
+      }
     }
     return list;
   }
@@ -67,7 +70,7 @@ const auto rule2 = Rule{"such die sau auf die gespielt wird", NichtSpieler,
 
 const auto rule3 = Rule{"nicht spieler spielt farbe", NichtSpieler,
   [] (auto, auto) { return true; },
-  [] (auto info, auto c) {return !info.istTrumpf(c); }
+  [] (auto info, auto c) { return !info.istTrumpf(c); }
 };
 
 const auto rules = std::vector<Rule>{player1, player2, rule1, rule2, rule3};
@@ -90,39 +93,41 @@ OpenBook::OpenBook(ComputerPlayer* player, const Game& game)
 
 CardList OpenBook::possibleCards()
 {
-    CardList allowed = m_self->allowedCards();
+  CardList allowed = m_self->allowedCards();
 
-    for (const auto& rule : rules)
+  for (const auto& rule : rules)
+  {
+    if (rule.player == m_self->isPlayer())
     {
-        if (rule.player == m_self->isPlayer())
-        {
-            CardList l = rule.execute(allowed, m_game);
-            if (!l.empty())
-            {
-               return l;
-            }
-        }
+      CardList l = rule.execute(allowed, m_game);
+      if (!l.empty())
+      {
+        return l;
+      }
     }
+  }
 
-    return {};
+  return {};
 }
 
 //////////////////////////////////
-// StrategyBook 
+// StrategyBook
 //////////////////////////////////
-StrategyBook::StrategyBook( ComputerPlayer* player, const Game& game )
-    : RuleBook( player, game )
+StrategyBook::StrategyBook(ComputerPlayer* player, const Game& game)
+: RuleBook(player, game)
 {}
 
 CardList StrategyBook::possibleCards()
 {
-    // the strategy book works only when it is called
-    // for the last player
-    const auto& stiche = m_game.currStich();
-    if (stiche.size() != 3 )
-      return {};
-        
-    /* Moeglichkeiten:
+  // the strategy book works only when it is called
+  // for the last player
+  const auto& stiche = m_game.currStich();
+  if (stiche.size() != 3)
+  {
+    return {};
+  }
+
+  /* Moeglichkeiten:
      * 1. Der stich gehoert dem mitspieler 
      *    - schmieren
      *    - abspatzen
@@ -130,52 +135,62 @@ CardList StrategyBook::possibleCards()
      *    - stechen
      *    - abspatzen
      */
-    bool unser_stich{false};
-    const Card highest = m_game.highestCardInStich();
-    if (highest.owner->isPlayer())
+  bool unser_stich{false};
+  const Card highest = m_game.highestCardInStich();
+  if (highest.owner->isPlayer())
+  {
+    // der stich gehört der spieler partei
+    unser_stich = m_self->isPlayer();
+  }
+  else
+  {
+    // der stich gehört nicht der spieler partei
+    unser_stich = !m_self->isPlayer();
+  }
+
+  const CardList allowed = m_self->allowedCards();
+  CardList list;
+  bool abspatzen{false};
+  if (unser_stich)
+  {
+    // unser stich: suche die karte mit den meisten punkten
+    Card c = m_self->findSchmiere(allowed);
+    // nur karten die hoeher als ein koenig sind schmieren
+    if (c.id != CardId{} && Cards::getPoints(c) >= 4)
     {
-        // der stich gehört der spieler partei
-        unser_stich = m_self->isPlayer();
+      list.push_back(c);
     }
     else
     {
-        // der stich gehört nicht der spieler partei
-        unser_stich = !m_self->isPlayer();
+      abspatzen = true;
     }
-
-    const CardList allowed = m_self->allowedCards();
-    CardList list;
-    bool abspatzen{false};
-    if( unser_stich )
+  }
+  else
+  {
+    // stich des gegners
+    // 1. feststellen ob wir den stich ueberhaupt machen koennen
+    // 2. feststellen ob sich der stich lohnen wuerde
+    Card c = m_game.gameInfo().highestCard(allowed);
+    if (c.id != CardId{} && m_game.gameInfo().isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
     {
-        // unser stich: suche die karte mit den meisten punkten
-        Card c = m_self->findSchmiere(allowed);
-        // nur karten die hoeher als ein koenig sind schmieren
-        if (c.id != CardId{} && Cards::getPoints(c) >= 4 )
-            list.push_back(c);
-        else
-            abspatzen = true;
+      list.push_back(m_self->findLowestPossibleCard(highest, allowed));
     }
     else
     {
-        // stich des gegners
-        // 1. feststellen ob wir den stich ueberhaupt machen koennen
-        // 2. feststellen ob sich der stich lohnen wuerde
-        Card c = m_game.gameInfo().highestCard(allowed);
-        if (c.id != CardId{} && m_game.gameInfo().isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
-            list.push_back(m_self->findLowestPossibleCard(highest, allowed));
-        else
-            abspatzen = true;
+      abspatzen = true;
     }
+  }
 
-    if( abspatzen )
+  if (abspatzen)
+  {
+    // nichts zum schmieren gefunden
+    // abspatzen:
+    Card c = m_self->findCheapestCard(allowed);
+    if (c.id != CardId{} && Cards::getPoints(c) == 0)
     {
-        // nichts zum schmieren gefunden
-        // abspatzen:
-        Card c = m_self->findCheapestCard(allowed);
-        if (c.id != CardId{} && Cards::getPoints(c) == 0 )
-            list.push_back(c);
+      list.push_back(c);
     }
-    
-    return list;
+  }
+
+  return list;
 }

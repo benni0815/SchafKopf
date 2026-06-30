@@ -11,25 +11,24 @@
 
 class QLabel;
 
-/**
-Show the last trick which was made
-
-@author Dominik Seichter
-*/
+/// Shows the last trick which was made.
+///
+/// @author Dominik Seichter
 class StichDlg : public QDialog
 {
-    Q_OBJECT
-    public:
-        StichDlg(QWidget* parent = nullptr);
-        ~StichDlg() override = default;
+  Q_OBJECT
 
-        void changed(const QString& name, const std::vector<CardId>& cardIds, const QStringList& players);
+public:
+  StichDlg(QWidget* parent = nullptr);
+  ~StichDlg() override = default;
 
-    private:
-        void reset();
-        
-    private:
-        QLabel* trick{};
-        QLabel* cards[PLAYERS]{};
-        QLabel* players[PLAYERS]{};
+  void changed(const QString& name, const std::vector<CardId>& cardIds, const QStringList& players);
+
+private:
+  void reset();
+
+private:
+  QLabel* trick{};
+  QLabel* cards[PLAYERS]{};
+  QLabel* players[PLAYERS]{};
 };
