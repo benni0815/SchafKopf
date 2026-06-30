@@ -52,7 +52,7 @@ class CardList : public QList<Card*>
         void removeCard( uint index );
         void removeCard( Card* card );
 
-        CardList FindCards(int color, int type);
+        CardList FindCards(Card::Color color, Card::Type type);
         void RemoveCards(const CardList& itemsToRem);
 
         void sort(EvalFunc eval);

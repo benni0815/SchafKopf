@@ -24,7 +24,7 @@ void CardList::init()
 
     for( int i = 0; i < CARD_CNT ; i += 4  )
         for( int z = Card::EICHEL; z <= Card::SCHELLEN; z++ )
-            append( new Card( (Card::EType)(i+1), (Card::EColor)z ) );
+            append(new Card((Card::Type)(i + 1), (Card::Color)z));
 }
 
 int CardList::points() const
@@ -78,7 +78,7 @@ void CardList::randomize()
     typedef bool (*__isTrumpf)(Card* Karte);
     CardList* FindCards(int color, int type, __isTrumpf _trumpf_func);*/
 
-CardList CardList::FindCards(int color, int type)
+CardList CardList::FindCards(Card::Color color, Card::Type type)
 {
     CardList found;
 

@@ -370,7 +370,7 @@ bool Game::setupGameInfo(Player *players[])
     // finde den mitspieler:
     if( m_gameinfo.mode()==GameInfo::RUFSPIEL ) 
     {
-        Card sau( Card::SAU, static_cast<Card::EColor>(m_gameinfo.color()) );
+        Card sau(Card::SAU, static_cast<Card::Color>(m_gameinfo.color()));
         for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
         {
             for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )

@@ -19,11 +19,17 @@ class Card
 public:
   // TODO: find better names, Edit bei lenz: done =;-)
   // DS: renamed to avoid name clashes
-  enum EType { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
-  enum EColor { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
+  enum Type { /*ASS*/NOSTICH=-1, SAU = 1, ZEHN = 17, KOENIG = 5, OBER = 9, UNTER = 13, NEUN = 21, ACHT = 25, SIEBEN = 29 };
+  enum Color { NOCOLOR = -1, EICHEL = 0, GRAS = 1, HERZ = 2, SCHELLEN = 3 };
+
+  struct Id
+  {
+    Type type{NOSTICH};
+    Color color{NOCOLOR};
+  };
 
   Card( const int id );
-  Card( const enum EType t, const enum EColor c );
+  Card(const Type t, const Color c);
   ~Card() = default;
 
   /// return a pixmap of the card
@@ -38,10 +44,10 @@ public:
 
   /// return the color of the card.
   /// e.g. heart.
-  int color() const { return m_color; }
+  Color color() const { return m_id.color; }
 
   /// return the type of the card, e.g. ASS
-  int card() const { return m_card; }
+  Type card() const { return m_id.type; }
 
   KCardInfo kdeCardInfo() const;
 
@@ -78,13 +84,11 @@ public:
   QString toString() const;
 
 private:
-  void init( const enum EType t, const enum EColor c  );
+  void init(const Type t, const Color c);
 
-private:
+  Id m_id{Type::NOSTICH, Color::NOCOLOR};
+
   Player* m_owner{};
-
-  int m_color{-1};
-  EType m_card{EType::NOSTICH};
 
   QPixmap m_pixmap;
 };

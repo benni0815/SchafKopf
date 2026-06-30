@@ -18,9 +18,9 @@ QPixmap& background()
   return pix;
 }
 
-int getPoints(Card::EType t)
+int getPoints(Card::Type t)
 {
-  static const auto map = std::unordered_map<Card::EType, int>{
+  static const auto map = std::unordered_map<Card::Type, int>{
     {Card::SAU,    11},
     {Card::ZEHN,   10},
     {Card::KOENIG, 4},
@@ -39,16 +39,16 @@ int getPoints(Card::EType t)
 
 Card::Card( const int id )
 {
-    enum EType t = NOSTICH;
-    enum EColor c = NOCOLOR;
+    Type t = NOSTICH;
+    Color c = NOCOLOR;
     int i;
     
     // try to calculate the type and color from the id
     for( i=Card::EICHEL; i <= Card::SCHELLEN; i++ )
         if( (id - i - 1) % 4 == 0 )
         {
-            t = (Card::EType)(id - i);
-            c = (Card::EColor)i;
+            t = (Card::Type)(id - i);
+            c = (Card::Color)i;
             
             break;
         }
@@ -56,15 +56,15 @@ Card::Card( const int id )
     init( t, c );
 }
 
-Card::Card( const enum EType t, const enum EColor c )
+Card::Card(const Type t, const Color c)
 {
     init( t, c );
 }
 
-void Card::init( const enum EType t, const enum EColor c  )
+void Card::init(const Type t, const Color c)
 {
-  m_card = t;
-  m_color = c;
+  m_id.type = t;
+  m_id.color = c;
   cardDeckChanged();
 }
 
@@ -85,7 +85,7 @@ const QPixmap& Card::backgroundPixmap()
 
 int Card::points() const
 {
-  return getPoints(m_card);
+  return getPoints(m_id.type);
 }
 
 KCardInfo Card::kdeCardInfo() const
@@ -93,7 +93,7 @@ KCardInfo Card::kdeCardInfo() const
     KCardInfo::Suit suit;
     KCardInfo::Card card;
 
-    switch( m_color )
+    switch(m_id.color)
     {
     case EICHEL: suit = KCardInfo::Club; break;
     case GRAS: suit = KCardInfo::Spade; break;
@@ -102,13 +102,13 @@ KCardInfo Card::kdeCardInfo() const
     default: suit = KCardInfo::None;
     }
 
-    switch( m_card )
+    switch(m_id.type)
     {
     case SAU: card = KCardInfo::Ace; break;
     case KOENIG: card = KCardInfo::King; break;
     case OBER: card = KCardInfo::Queen; break;
     case UNTER: card = KCardInfo::Jack; break;
-    default: card = KCardInfo::Card( ( m_card/4 ) + 1 );
+    default: card = KCardInfo::Card( ( m_id.type / 4 ) + 1 );
     }
 
     KCardInfo cardInfo = KCardInfo( suit, card );
@@ -148,7 +148,7 @@ bool Card::operator<(const Card* const c) const
 
 int Card::id() const
 {
-    return m_card + m_color;
+    return m_id.type + m_id.color;
 }
 
 
@@ -156,7 +156,7 @@ QString Card::toString() const
 {
     QString res;
 
-    switch (m_color) {
+    switch (m_id.color) {
     case EICHEL: res += "Eichel"; break;
     case GRAS: res += "Gras"; break;
     case HERZ: res += "Herz"; break;
@@ -166,7 +166,7 @@ QString Card::toString() const
 
     res += ' ';
 
-    switch (m_card) {
+    switch (m_id.type) {
     case SAU: res += "Sau"; break;
     case ZEHN: res += "Zehn"; break;
     case KOENIG: res += "Koenig"; break;

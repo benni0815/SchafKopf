@@ -24,8 +24,8 @@ class GameInfo{
         void setValid( bool b ) { m_valid = b; }
         bool isValid() const { return m_valid; }
 
-        int color() const { return m_color; }
-        void setColor( int c ) { m_color = c; }
+        Card::Color color() const { return m_color; }
+        void setColor(Card::Color c) { m_color = c; }
 
         Mode mode() const { return m_mode; }
         void setMode( int m ) { m_mode = static_cast<Mode>(m); }
@@ -60,7 +60,7 @@ class GameInfo{
 
     private:
         bool m_valid{false};
-        int m_color{Card::NOCOLOR};
+        Card::Color m_color{Card::NOCOLOR};
         Mode m_mode{GameInfo::STICHT};
         Player* m_spieler{};
         Player* m_mitspieler{};

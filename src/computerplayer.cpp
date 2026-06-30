@@ -146,7 +146,7 @@ std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
             game_data d;
             d.trumpf = d.fehlfarbe = d.weight = 0;
             d.info.setMode( i );
-            d.info.setColor( z );        
+            d.info.setColor(Card::Color(z));
             
             for (int c = 0; c < m_cards.size(); ++c)
             {

@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "card.h"
+
 #include <QWizardPage>
 
 
@@ -11,7 +13,6 @@ class QLineEdit;
 class QPushButton;
 class QRadioButton;
 class GameInfo;
-class Card;
 class SelectGameWizard;
 class GameInfo;
 
@@ -50,7 +51,7 @@ protected:
     void checkFirstVisible();
     bool m_finish;
     void statusChanged();
-    int getColor();
+    Card::Color getColor();
 
 protected slots:
     void colorChanged();

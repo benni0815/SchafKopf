@@ -98,7 +98,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     this->setLayout( layout );
 }
 
-int SelectGameColorBox::getColor()
+Card::Color SelectGameColorBox::getColor()
 {
     if(checkEichel->isChecked()) return (Card::EICHEL);
     else if(checkGras->isChecked()) return (Card::GRAS);
