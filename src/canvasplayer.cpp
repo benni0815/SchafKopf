@@ -4,7 +4,6 @@
 #include "canvasplayer.h"
 
 #include "canvascard.h"
-#include "cardlist.h"
 #include "settings.h"
 
 #include <QGraphicsView>
@@ -26,10 +25,6 @@ CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
     m_bubble = m_scene->addWidget(m_bubbleLabel.get());
     m_bubble->setParent(m_scene);
     m_bubble->hide();
-
-    m_bubbleTimer.setSingleShot(true);
-    m_bubbleTimer.setInterval(std::chrono::seconds(1));
-    QObject::connect(&m_bubbleTimer, &QTimer::timeout, [this]() { m_bubble->hide(); });
 
     if constexpr (SIMULATION_MODE)
     {
@@ -266,7 +261,7 @@ void CanvasPlayer::say( const QString & message, unsigned int )
         break;
     }
     m_bubble->setPos(p);
-    m_bubbleTimer.start();
+    QTimer::singleShot(std::chrono::seconds(1), m_scene, [this] { m_bubble->hide(); });
 }
 
 void CanvasPlayer::hideBubble()

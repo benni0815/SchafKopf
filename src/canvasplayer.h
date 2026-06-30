@@ -61,7 +61,6 @@ class CanvasPlayer{
         QGraphicsSimpleTextItem* m_name{};
         std::unique_ptr<QLabel> m_bubbleLabel;
         QGraphicsProxyWidget* m_bubble{};
-        QTimer m_bubbleTimer;
         CanvasCard* m_items[NUMCARDS]{};
         std::vector<Card::Id> m_cards;
 };
