@@ -24,7 +24,7 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 {
     setTitle(i18n("Step 2/2: Select Color"));
 
-    this->parent=(SelectGameWizard*)parent;
+    m_parent = reinterpret_cast<SelectGameWizard*>(parent);
 
     labelEichel = new QPushButton( this );
     labelGras = new QPushButton( this );
@@ -121,10 +121,10 @@ void SelectGameColorBox::statusChanged()
         {
                 case (GameInfo::RUFSPIEL):
                             setStatus(
-                                GameInfo::isAllowed( parent->getCardList(),GameInfo::RUFSPIEL, Card::EICHEL ),
-                                GameInfo::isAllowed( parent->getCardList(),GameInfo::RUFSPIEL, Card::GRAS ),
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::EICHEL),
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::GRAS),
                                 false,
-                                GameInfo::isAllowed( parent->getCardList(),GameInfo::RUFSPIEL, Card::SCHELLEN ) ,
+                                GameInfo::isAllowed(m_parent->getCardList(), GameInfo::RUFSPIEL, Card::SCHELLEN),
                                 false
                             );
                 break;

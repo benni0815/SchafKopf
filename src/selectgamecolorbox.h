@@ -44,7 +44,8 @@ protected:
     QPushButton* labelHerz;
     QPushButton* labelSchellen;
 
-    SelectGameWizard* parent;
+    SelectGameWizard* m_parent{};
+
     void setStatus(bool Eichel, bool Gras, bool Herz, bool Schellen, bool Farblos);
     void checkFirstVisible();
     bool m_finish;
