@@ -34,19 +34,13 @@ void CardList::init()
 
 int CardList::points() const
 {
-    int tmp = 0;
-    for( int i = 0; i < this->count(); i++ )
-        tmp += at( i )->points();
-        
-    return tmp;
+  auto add = [] (int points, Card* card) { return points + card->points(); };
+  return std::accumulate(begin(), end(), 0, add);
 }
 
 void CardList::appendList(const CardList& list)
 {
-  for (int i = 0; i < list.size(); ++i)
-  {
-    append(list.at(i));
-  }
+  append(list);
 }
 
 void CardList::randomize()
@@ -118,27 +112,8 @@ void CardList::RemoveCards(const CardList& itemsToRem)
 
 void CardList::sort(EvalFunc eval)
 {
-    int i, n;
-    int x, y;
-    Card *tmp;
-
-    for(n=count()-1;n>0;n--)
-    {
-        for(i=0;i<n;i++)
-        {
-            //cmp=compareItems( at(i), at(i+1) );
-            //if(cmp>0)
-            x = eval(at(i));
-            y = eval(at(i+1));
-//          qDebug("%d, %d: %d, %d\n", i, i+1, x, y);
-            if(x>y)
-            {
-                tmp=at(i);
-                replace(i, at(i+1));
-                replace(i+1, tmp);
-            }
-        }
-    }
+  auto compare = [eval] (Card* lhs, Card* rhs) { return eval(lhs) < eval(rhs); };
+  std::sort(begin(), end(), compare);
 }
 
 std::vector<CardId> CardList::toIds() const

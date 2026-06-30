@@ -65,17 +65,17 @@ void Game::run()
 
 void Game::startGame()
 {
-    unsigned int i = 0;
-    CardList playercards[PLAYERS];
-
     m_allcards.randomize();
 
-    for( i=0; i<CARD_CNT; i++)
-        playercards[i%PLAYERS].append(m_allcards.at(i));
-
-    for( i=0;i<PLAYERS;i++)
+    CardList playercards[PLAYERS];
+    for (int i = 0; i < CARD_CNT; ++i)
     {
-        m_players[i]->setCards( playercards[i] );
+      playercards[i % PLAYERS].push_back(m_allcards.at(i));
+    }
+
+    for (int i = 0; i < PLAYERS; ++i)
+    {
+        m_players[i]->setCards(playercards[i]);
         m_players[i]->clearStiche();
     }
 
@@ -236,11 +236,10 @@ int Game::highestCard( CardList* list )
 
     Card* high{};
     if (!list->empty()) { high = list->front(); }
-    Card* card{};
 
     for (int t = 0; t < list->size(); ++t)
     {
-        card = list->at( t );
+        Card* card = list->at(t);
         if (isHigher(card->id(), high->id()))
         {
             high = card;
@@ -292,9 +291,9 @@ void Game::gameResults()
     r.setLaufende( m_laufende );
     r.setGame( this );
 
-    for( unsigned int i=0;i<PLAYERS;i++)
+    for (const auto& player : m_players)
     {
-      emit playerResults(m_players[i]->id(), r.formatedPoints(m_players[i].get()));
+      emit playerResults(player->id(), r.formatedPoints(player.get()));
     }
 
     emit infoMessage(r.result());
@@ -309,18 +308,17 @@ bool Game::setupGameInfo(Player *players[])
 {
     // list of games the players want to playercards
     // maximum 4 entries
-    unsigned int i = 0;
-    int humanPlayer = 0, playerInstance;
-    for( i=0;i<PLAYERS;i++)
+    int humanPlayer = 0;
+    for (unsigned int i = 0; i < PLAYERS; ++i)
     {
         if (isHuman(players[i]))
             humanPlayer=i;
     }
 
     std::vector<GameInfo> games;
-    for( i=0;i<PLAYERS;i++)
+    for (unsigned int i = 0; i < PLAYERS; ++i)
     {
-        playerInstance=4-humanPlayer+i;
+        int playerInstance = 4 - humanPlayer + i;
         if(playerInstance>3)
              playerInstance=playerInstance-4;
         auto game = players[i]->gameInfo();
@@ -372,7 +370,7 @@ bool Game::setupGameInfo(Player *players[])
     if (m_gameinfo.mode() == GameVariant::RUFSPIEL)
     {
         Card sau(CardId::Sau, m_gameinfo.color());
-        for( i=0;i<PLAYERS || !m_gameinfo.mitspieler();i++ )
+        for (unsigned int i = 0; i < PLAYERS || !m_gameinfo.mitspieler(); ++i)
         {
             for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
             {
@@ -449,23 +447,21 @@ bool Game::setupGameInfoForced(Player *players[])
 
 void Game::resetGameResults()
 {
-    int i;
-    // reset points (i.e. results) from a previous game
-    for(i=0;i<PLAYERS;i++)
-        m_players[i]->setPoints( 0.0 );    
-    m_timesThrownTogether = 0;
+  // reset points (i.e. results) from a previous game
+  for (auto& player : m_players)
+  {
+    player->setPoints(0);
+  }
+  m_timesThrownTogether = 0;
 }
 
 int Game::timesDoubled()
 {
-    int i, d = 0;
+  int d = std::count_if(std::begin(m_players), std::end(m_players), [] (const auto& p) { return p->geklopft(); });
 
-    for( i=0;i<PLAYERS;i++)
-        if( m_players[i]->geklopft() )
-            d++;
-    if( Settings::instance()->doubleNextGame() )
-        d = d + m_timesThrownTogether;
-    return d;
+  if (Settings::instance()->doubleNextGame())
+      d = d + m_timesThrownTogether;
+  return d;
 }
 
 int Game::timesThrownTogether()

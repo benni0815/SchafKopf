@@ -22,10 +22,9 @@ ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
 
 void ComputerPlayer::klopfen()
 {
-    int i;
-    const int anz = NUMCARDS/2;
-    int start = ( isLast() ? anz : 0 );
-    int ende = start + anz;
+    const int anz = NUMCARDS / 2;
+    const int start = isLast() ? anz : 0;
+    const int ende = start + anz;
     int count = 0;
     m_geklopft = false;
     
@@ -35,7 +34,7 @@ void ComputerPlayer::klopfen()
       */
 
     // are all cards in the same color?
-    for( i=start;i<ende;i++ )
+    for (int i = start; i < ende; ++i)
         if (m_cards.at(i)->color() == m_cards.at(start)->color())
             count++;
 
@@ -81,15 +80,14 @@ void ComputerPlayer::init()
 Card *ComputerPlayer::play()
 {
     CardList allowed;
-    int i;
 
     if (m_game->currStich().empty())
     {
         allowed = m_openBook.possibleCards();
         if (allowed.empty())
             allowed = allowedCards();
-        i=0;
-        for(;;)
+
+        for (int i=0;;)
         {
             if (!(i < allowed.size() && allowed.size() > 1))
                 break;
@@ -98,8 +96,7 @@ Card *ComputerPlayer::play()
             else
                 i++;
         }
-        i=0;
-        for(;;)
+        for (int i = 0;;)
         {
             if (!(i < allowed.size() && allowed.size() > 1))
                 break;
@@ -406,16 +403,7 @@ Card *ComputerPlayer::highestTrumpfInGame()
 
 int ComputerPlayer::myTrumpfs()
 {
-    int trumpfs=0;
-    Card *c;
-
-    for (int i = 0; i < m_cards.size(); ++i)
-    {
-        c = m_cards.at( i );
-        if (m_game->gameInfo()->istTrumpf(c->id()))
-            trumpfs++;
-    }
-    return trumpfs;
+  return std::count_if(std::begin(m_cards), std::end(m_cards), [this] (Card* c) { return m_game->gameInfo()->istTrumpf(c->id()); });
 }
 
 void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
