@@ -9,7 +9,7 @@
 #include <KLocalizedString>
 
 
-HumanPlayer::HumanPlayer(unsigned int id, Game* game)
+HumanPlayer::HumanPlayer(unsigned int id, const Game& game)
  : Player(id,game)
 {}
 

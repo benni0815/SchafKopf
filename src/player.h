@@ -14,7 +14,7 @@ class Player : public QObject
   Q_OBJECT
 
     public:
-        Player(unsigned int id, Game* game);
+        Player(unsigned int id, const Game& game);
         
         ~Player() override = default;
 
@@ -30,8 +30,6 @@ class Player : public QObject
         virtual std::optional<GameVariant> gameInfo(bool force = false) = 0;
         
         void sortCards();
-        
-        Game* game() const { return m_game; }
 
         const QString & name() const;
         void setName(const QString& name);
@@ -69,7 +67,7 @@ class Player : public QObject
     protected:
         CardList m_cards;
         CardList m_stiche;
-        Game* m_game{};
+        const Game& m_game;
 
         QString m_name;
 

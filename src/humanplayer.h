@@ -12,9 +12,9 @@ class HumanPlayer : public Player
   Q_OBJECT
 
     public:
-        HumanPlayer(unsigned int id, Game* game);
+        HumanPlayer(unsigned int id, const Game& game);
         ~HumanPlayer() override = default;
-        
+
         void klopfen() override;
         Card play() override;
         std::optional<GameVariant> gameInfo(bool force = false) override;

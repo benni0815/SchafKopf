@@ -35,16 +35,16 @@ Game::Game(QObject* parent)
   {
     for (auto& player : m_players)
     {
-      player = std::make_shared<ComputerPlayer>(playerId++, this);
+      player = std::make_shared<ComputerPlayer>(playerId++, *this);
     }
   }
   else
   {
-    m_players[0] = std::make_shared<HumanPlayer>(playerId++, this);
+    m_players[0] = std::make_shared<HumanPlayer>(playerId++, *this);
 
     for (size_t i = 1; i < m_players.size(); ++i)
     {
-      m_players[i] = std::make_shared<ComputerPlayer>(playerId++, this);
+      m_players[i] = std::make_shared<ComputerPlayer>(playerId++, *this);
     }
   }
 
@@ -209,9 +209,9 @@ void Game::endGame()
   emit gameEnded();
 }
 
-/*const*/ GameInfo *Game::gameInfo() //const
+const GameInfo& Game::gameInfo() const
 {
-    return &m_gameinfo;
+  return m_gameinfo;
 }
 
 Player* Game::findIndex( unsigned int index ) const
@@ -247,7 +247,7 @@ void Game::gameResults()
 
     // the game is over, so the GameInfo structure is not
     // valid. Results in a cleared updateInfo() field in the UI
-    gameInfo()->setValid( false );
+    m_gameinfo.setValid(false);
 }
 
 bool Game::setupGameInfo(const std::array<Player*, PLAYERS>& players)
@@ -399,7 +399,7 @@ void Game::resetGameResults()
   m_timesThrownTogether = 0;
 }
 
-int Game::timesDoubled()
+int Game::timesDoubled() const
 {
   int d = std::count_if(std::begin(m_players), std::end(m_players), [] (const auto& p) { return p->geklopft(); });
 
@@ -408,7 +408,7 @@ int Game::timesDoubled()
   return d;
 }
 
-int Game::timesThrownTogether()
+int Game::timesThrownTogether() const
 {
     return m_timesThrownTogether;
 }

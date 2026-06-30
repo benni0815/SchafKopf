@@ -11,7 +11,7 @@
 class ComputerPlayer : public Player
 {
     public:
-        ComputerPlayer(unsigned int id,Game* game);
+        ComputerPlayer(unsigned int id, const Game& game);
         ~ComputerPlayer() override = default;
 
         void init() override;

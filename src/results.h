@@ -32,8 +32,6 @@ class Results{
         QString result();
         double points( Player* player );
         QString formatedPoints( Player* player );
-        
-        double klopfen(int anzahl, double betrag);
 
     private:
         void init();
@@ -44,7 +42,7 @@ class Results{
         QList<Player*> m_winners;
         QList<Player*> m_losers;
         
-        GameInfo* m_gameinfo{};
+        const GameInfo* m_gameinfo{};
         Game* m_game{};
         
         int m_laufende{0};

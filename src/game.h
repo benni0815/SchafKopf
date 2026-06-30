@@ -28,7 +28,7 @@ class Game : public QThread
         const CardList& currStich() const;
         const CardList& allCards() const { return m_allcards; }
         const CardList& playedCards() const { return m_playedcards; }
-        GameInfo *gameInfo();
+        const GameInfo& gameInfo() const;
 
         Player* findIndex( unsigned int index ) const;
 
@@ -46,8 +46,8 @@ class Game : public QThread
 
         /** returns how many players have doubled
           */
-        int timesDoubled();
-        int timesThrownTogether();
+        int timesDoubled() const;
+        int timesThrownTogether() const;
 
     public slots:
         void endGame(void);

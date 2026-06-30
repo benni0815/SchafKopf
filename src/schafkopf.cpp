@@ -322,8 +322,8 @@ void SchafKopf::updateInfo()
     btnLastTrick->setIconSize(pix.size());
     btnLastTrick->setIcon(QIcon(pix));
 
-    if( !m_terminated && m_game->gameInfo()->isValid() )
-        lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>");
+    if( !m_terminated && m_game->gameInfo().isValid() )
+        lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo().toString() + "</b></qt>");
     else
     {
         lblCurGame->setText( QString() );

@@ -14,13 +14,13 @@ class ComputerPlayer;
 class RuleBook : public QObject {
     Q_OBJECT
     public:
-        RuleBook( ComputerPlayer* player, Game* game );
+        RuleBook(ComputerPlayer* player, const Game& game);
         ~RuleBook() override = default;
 
         virtual CardList possibleCards() = 0;
 
     protected:
-        Game* m_game;
+        const Game& m_game;
         ComputerPlayer* m_self;
 };
 
@@ -33,7 +33,7 @@ class RuleBook : public QObject {
 
 class OpenBook : public RuleBook {    
     public:
-        OpenBook( ComputerPlayer* player, Game* game );
+        OpenBook(ComputerPlayer* player, const Game& game);
         
         CardList possibleCards() override;
 };
@@ -48,7 +48,7 @@ class OpenBook : public RuleBook {
  */
 class StrategyBook : public RuleBook {
     public:
-        StrategyBook( ComputerPlayer* player, Game* game );
+        StrategyBook( ComputerPlayer* player, const Game& game );
         
         CardList possibleCards() override;
 };

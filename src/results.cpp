@@ -139,18 +139,10 @@ void Results::parse()
     }
 }
 
-double Results::klopfen(int anzahl, double betrag)
-{
-    if(anzahl==0) 
-        return betrag; 
-    else 
-        return klopfen(anzahl-1, betrag)*2.0; 
-}
-
 void Results::setGame( Game* game )
 { 
-    m_game = game; 
-    m_gameinfo = game->gameInfo();
+    m_game = game;
+    m_gameinfo = &game->gameInfo();
 }
 
 double Results::points( Player* player )
@@ -171,7 +163,7 @@ double Results::points( Player* player )
     m += m_schneider ? r.schneider : 0.0;
     m += m_schwarz ? r.schwarz : 0.0;
     m += m_laufende * r.laufende;
-    m = klopfen( player->game()->timesDoubled(), m );
+    m *= pow(2, m_game->timesDoubled());
     
     //if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
     if( !m_winners.contains( player ) )

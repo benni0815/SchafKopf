@@ -24,13 +24,13 @@ struct Rule
 {
   const std::string description;
   const SpielerStatus player{NichtSpieler};
-  std::function<bool(GameInfo*, const CardList&)> condition;
-  std::function<bool(GameInfo*, CardId)> eval;
+  std::function<bool(const GameInfo&, const CardList&)> condition;
+  std::function<bool(const GameInfo&, CardId)> eval;
 
-  CardList execute(const CardList& allowed, Game* game) const
+  CardList execute(const CardList& allowed, const Game& game) const
   {
     std::cout << "Executing Rule: " << description << std::endl;
-    const auto info = game->gameInfo();
+    const auto info = game.gameInfo();
     if (!condition(info, allowed))
     {
       return {};
@@ -46,28 +46,28 @@ struct Rule
 };
 
 const auto player1 = Rule{"davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon", Spieler,
-  [] (auto info, auto allowed) { return info->mode() == GameVariant::RUFSPIEL && !Cards::find(allowed, {CardId::Sau, info->color()}); },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c.color == info->color() && c.type != CardId::Sau && c.type != CardId::Zehn; }
+  [] (auto info, auto allowed) { return info.mode() == GameVariant::RUFSPIEL && !Cards::find(allowed, {CardId::Sau, info.color()}); },
+  [] (auto info, auto c) { return !info.istTrumpf(c) && c.color == info.color() && c.type != CardId::Sau && c.type != CardId::Zehn; }
 };
 
 const auto player2 = Rule{"player plays trump", Spieler,
   [] (auto, auto) { return true; },
-  [] (auto info, auto c) { return info->istTrumpf(c); }
+  [] (auto info, auto c) { return info.istTrumpf(c); }
 };
 
 const auto rule1 = Rule{"play an ace on a solo", NichtSpieler,
-  [] (auto info, auto) { return info->mode() == GameVariant::STICHT || info->mode() == GameVariant::WENZ || info->mode() == GameVariant::GEIER; },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c.type == CardId::Sau; }
+  [] (auto info, auto) { return info.mode() == GameVariant::STICHT || info.mode() == GameVariant::WENZ || info.mode() == GameVariant::GEIER; },
+  [] (auto info, auto c) { return !info.istTrumpf(c) && c.type == CardId::Sau; }
 };
 
 const auto rule2 = Rule{"such die sau auf die gespielt wird", NichtSpieler,
-  [] (auto info, auto) { return info->mode() == GameVariant::RUFSPIEL; },
-  [] (auto info, auto c) { return !info->istTrumpf(c) && c.color == info->color(); }
+  [] (auto info, auto) { return info.mode() == GameVariant::RUFSPIEL; },
+  [] (auto info, auto c) { return !info.istTrumpf(c) && c.color == info.color(); }
 };
 
 const auto rule3 = Rule{"nicht spieler spielt farbe", NichtSpieler,
   [] (auto, auto) { return true; },
-  [] (auto info, auto c) {return !info->istTrumpf(c); }
+  [] (auto info, auto c) {return !info.istTrumpf(c); }
 };
 
 const auto rules = std::vector<Rule>{player1, player2, rule1, rule2, rule3};
@@ -76,7 +76,7 @@ const auto rules = std::vector<Rule>{player1, player2, rule1, rule2, rule3};
 
 using namespace OpeningRules;
 
-RuleBook::RuleBook(ComputerPlayer* player, Game* game)
+RuleBook::RuleBook(ComputerPlayer* player, const Game& game)
 : m_game(game)
 , m_self(player)
 {}
@@ -84,8 +84,8 @@ RuleBook::RuleBook(ComputerPlayer* player, Game* game)
 //////////////////////////////////
 // OpenBook
 //////////////////////////////////
-OpenBook::OpenBook( ComputerPlayer* player, Game* game )
-    : RuleBook( player, game )
+OpenBook::OpenBook(ComputerPlayer* player, const Game& game)
+: RuleBook(player, game)
 {}
 
 CardList OpenBook::possibleCards()
@@ -110,7 +110,7 @@ CardList OpenBook::possibleCards()
 //////////////////////////////////
 // StrategyBook 
 //////////////////////////////////
-StrategyBook::StrategyBook( ComputerPlayer* player, Game* game )
+StrategyBook::StrategyBook( ComputerPlayer* player, const Game& game )
     : RuleBook( player, game )
 {}
 
@@ -118,15 +118,10 @@ CardList StrategyBook::possibleCards()
 {
     // the strategy book works only when it is called
     // for the last player
-    const auto& stiche = m_game->currStich();
+    const auto& stiche = m_game.currStich();
     if (stiche.size() != 3 )
       return {};
         
-    const CardList allowed = m_self->allowedCards();
-    CardList list;
-    bool unser_stich = false;
-    bool abspatzen = false;
-    
     /* Moeglichkeiten:
      * 1. Der stich gehoert dem mitspieler 
      *    - schmieren
@@ -135,17 +130,22 @@ CardList StrategyBook::possibleCards()
      *    - stechen
      *    - abspatzen
      */
-    Card highest = m_game->highestCardInStich();
+    bool unser_stich{false};
+    const Card highest = m_game.highestCardInStich();
     if (highest.owner->isPlayer())
     {
         // der stich gehört der spieler partei
         unser_stich = m_self->isPlayer();
     }
     else
+    {
         // der stich gehört nicht der spieler partei
         unser_stich = !m_self->isPlayer();
-    
-        
+    }
+
+    const CardList allowed = m_self->allowedCards();
+    CardList list;
+    bool abspatzen{false};
     if( unser_stich )
     {
         // unser stich: suche die karte mit den meisten punkten
@@ -161,8 +161,8 @@ CardList StrategyBook::possibleCards()
         // stich des gegners
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
-        Card c = m_game->gameInfo()->highestCard(allowed);
-        if (c.id != CardId{} && m_game->gameInfo()->isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
+        Card c = m_game.gameInfo().highestCard(allowed);
+        if (c.id != CardId{} && m_game.gameInfo().isHigher(c.id, highest.id) && Cards::calcPoints(stiche) > 6)
             list.push_back(m_self->findLowestPossibleCard(highest, allowed));
         else
             abspatzen = true;
