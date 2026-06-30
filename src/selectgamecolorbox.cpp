@@ -60,14 +60,14 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkFarblos );
     connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameColorBox::colorChanged);
 
-    labelHerz->setIcon( ( *herz->pixmap() ) );
-    labelGras->setIcon( ( *gras->pixmap() ) );
-    labelEichel->setIcon( ( *eichel->pixmap() ) );
-    labelSchellen->setIcon( ( *schelle->pixmap() ) );
-    labelHerz->setIconSize( herz->pixmap()->size() );
-    labelGras->setIconSize( gras->pixmap()->size() );
-    labelEichel->setIconSize( eichel->pixmap()->size() );
-    labelSchellen->setIconSize( schelle->pixmap()->size() );
+    labelHerz->setIcon(herz->pixmap());
+    labelGras->setIcon(gras->pixmap());
+    labelEichel->setIcon(eichel->pixmap());
+    labelSchellen->setIcon(schelle->pixmap());
+    labelHerz->setIconSize(herz->pixmap().size());
+    labelGras->setIconSize(gras->pixmap().size());
+    labelEichel->setIconSize(eichel->pixmap().size() );
+    labelSchellen->setIconSize(schelle->pixmap().size());
 
     QGroupBox* color_group = new QGroupBox(i18n("Color:"), this);
     QVBoxLayout* eichelLayout = new QVBoxLayout;

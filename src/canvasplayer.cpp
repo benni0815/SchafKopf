@@ -83,8 +83,8 @@ void CanvasPlayer::position()
     int h = m_scene->height();
     int offsetl = 0; //Hiermit kann man am linken Rand Platz schaffen fuer z.B. ein Bild des Spielers (Netzwerkmodus).
     int availw = m_scene->width() - 2*DIST - offsetl;
-    int cardw = Card::backgroundPixmap()->width();
-    int cardh = Card::backgroundPixmap()->height();
+    int cardw = Card::backgroundPixmap().width();
+    int cardh = Card::backgroundPixmap().height();
     float cardoverlap = 1./8.; //Ueberlapp der Karten im Verhaeltnis zur Kartenbreite
 
     for( unsigned int z = 0; z < NUMCARDS; z++ )

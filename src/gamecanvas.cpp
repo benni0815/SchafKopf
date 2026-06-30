@@ -134,8 +134,8 @@ QPoint GameCanvas::getStichPosition( int player )
     QPoint p;
     int w = scene()->width();//-DIST;
     int h = scene()->height();//-DIST;
-    int cardw = Card::backgroundPixmap()->width();
-    int cardh = Card::backgroundPixmap()->height();
+    int cardw = Card::backgroundPixmap().width();
+    int cardh = Card::backgroundPixmap().height();
     int stichcanvasw = scene()->width() - (2*DIST) - (2*cardh) - 50;
     int stichcanvash = scene()->height() - (2*DIST) - (2*cardh) - 50;
     int cx = w/2;

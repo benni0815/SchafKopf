@@ -415,8 +415,8 @@ void SchafKopf::updateInfo()
     int timesDoubled = 0, timesThrownTogether = 0;
     int valuation;
     
-    btnLastTrick->setIconSize( Card::backgroundPixmap()->size() );
-    btnLastTrick->setIcon( QIcon( *(Card::backgroundPixmap()) ) );
+    btnLastTrick->setIconSize( Card::backgroundPixmap().size() );
+    btnLastTrick->setIcon(QIcon(Card::backgroundPixmap()));
 
     if( !m_terminated && m_game->gameInfo()->isValid() )
         lblCurGame->setText(i18n("<qt>Current Game:<br><b>") + m_game->gameInfo()->toString() + "</b></qt>");

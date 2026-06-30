@@ -118,7 +118,6 @@ void SelectGameTypeBox::setInfoText(const QString& Text)
 void SelectGameTypeBox::updatePreview()
 {
     int i = 0;
-    int x=0, y = 0;
     CardList list;
     CardList trumpf;
     auto info = std::unique_ptr<GameInfo>(gameInfo());
@@ -130,26 +129,27 @@ void SelectGameTypeBox::updatePreview()
     trumpf.sort((eval_func)info->evalCard, (void *)info.get());
 
     Card c( Card::SAU, Card::EICHEL );
-    QPixmap pix(c.pixmap()->width()+(c.pixmap()->width()/2)*7,c.pixmap()->height()*(int(trumpf.count()/4)+(trumpf.count()%4)));
-    x=c.pixmap()->width()/2*(trumpf.count()-1);
+    QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.count() / 4) + (trumpf.count() % 4)));
+    int x = c.pixmap().width() / 2 * (trumpf.count() - 1);
     pix.fill( Qt::darkGreen );
     QPainter p( &pix );
+    int y = 0;
     for(i=0;i<=(int)trumpf.count()-1;i++)
     {
-        QPixmap* pixmap = trumpf.at(i)->pixmap();
-        p.drawPixmap( x, y, *pixmap );
-        x -= pixmap->width()/2;
+        const auto& pixmap = trumpf.at(i)->pixmap();
+        p.drawPixmap(x, y, pixmap);
+        x -= pixmap.width()/2;
 
         int pos = trumpf.count() + i;
         if(!(pos+1)%4)
         {
             x = 0;
-            y += pixmap->height();
+            y += pixmap.height();
         }
     }
 
     p.end();
-    pix = pix.copy( 0, 0, pix.width(), y + ( x == 0 ? 0 : c.pixmap()->height() ) );
+    pix = pix.copy(0, 0, pix.width(), y + ( x == 0 ? 0 : c.pixmap().height()));
     preview->setPixmap( pix );
     preview->setMinimumWidth(pix.width()+10);
 }

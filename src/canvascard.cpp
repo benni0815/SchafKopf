@@ -30,7 +30,7 @@ void CanvasCard::setCard( Card* card )
 
 void CanvasCard::reloadPixmaps()
 {
-    frontPixmap = *( m_card->pixmap() );
+    frontPixmap = m_card->pixmap();
 
     QImage forbiddenFrontImage = frontPixmap.toImage();
 
@@ -42,7 +42,7 @@ void CanvasCard::reloadPixmaps()
 
     forbiddenFrontPixmap.convertFromImage( forbiddenFrontImage );
 
-    backPixmap = *( Card::backgroundPixmap() );
+    backPixmap = Card::backgroundPixmap();
 
     float height = frontPixmap.height();
     float width = frontPixmap.width();

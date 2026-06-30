@@ -24,14 +24,13 @@ public:
 
   Card( const int id );
   Card( const enum EType t, const enum EColor c );
-  ~Card();
+  ~Card() = default;
 
   /// return a pixmap of the card
-  QPixmap* pixmap();
+  const QPixmap& pixmap();
 
   /// return a pixmap for the background of a card.
-  /// Do not delete the returned pixmap!
-  static QPixmap* backgroundPixmap();
+  static const QPixmap& backgroundPixmap();
 
   /// return how much points the card has.
   /// e.g. king = 4 points
@@ -88,6 +87,5 @@ private:
   int m_color{-1};
   int m_card{-1};
 
-  QPixmap* m_pixmap;
-  static QPixmap* m_background;
+  QPixmap m_pixmap;
 };

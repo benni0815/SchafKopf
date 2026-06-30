@@ -54,12 +54,12 @@ void StichDlg::changed(const QString& name, int* list, QStringList* playerlist)
         {
         Card* c = stich.at( stich.count() - PLAYERS + i );
         if( c )
-        cards[i]->setPixmap( *(c->pixmap()) );
+        cards[i]->setPixmap(c->pixmap());
             players[i]->setText( "<qt><b>"+(*playerlist)[i]+"</b></qt>" );
         }
         else
         {
-            cards[i]->setPixmap( *Card::backgroundPixmap() );
+            cards[i]->setPixmap(Card::backgroundPixmap());
             players[i]->setText( QString() );
         }
     }

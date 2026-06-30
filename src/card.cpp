@@ -9,8 +9,16 @@
 
 #include <QPixmap>
 
+namespace
+{
 
-QPixmap* Card::m_background = nullptr;
+QPixmap& background()
+{
+  static QPixmap pix;
+  return pix;
+}
+
+} // namespace
 
 Card::Card( const int id )
 {
@@ -36,15 +44,8 @@ Card::Card( const enum EType t, const enum EColor c )
     init( t, c );
 }
 
-Card::~Card()
-{
-    delete m_pixmap;
-}
-
 void Card::init( const enum EType t, const enum EColor c  )
 {
-    m_pixmap = nullptr;
-    
     m_card = t;
     m_color = c;
     switch( m_card ) {
@@ -67,18 +68,23 @@ void Card::init( const enum EType t, const enum EColor c  )
     };
 }
 
-QPixmap* Card::pixmap()
+const QPixmap& Card::pixmap()
 {
-    if( !m_pixmap ) m_pixmap = new QPixmap( Settings::instance()->cardCache()->frontside( kdeCardInfo() ) );
-
-    return m_pixmap;
+  if (m_pixmap.isNull())
+  {
+     m_pixmap = QPixmap(Settings::instance()->cardCache()->frontside(kdeCardInfo()));
+  }
+  return m_pixmap;
 }
 
-QPixmap* Card::backgroundPixmap()
+const QPixmap& Card::backgroundPixmap()
 {
-    if( !m_background ) m_background = new QPixmap( Settings::instance()->cardCache()->backside() );
+  if (background().isNull())
+  {
+    background() = QPixmap(Settings::instance()->cardCache()->backside());
+  }
 
-    return m_background;
+  return background();
 }
 
 KCardInfo Card::kdeCardInfo()
@@ -118,14 +124,8 @@ bool Card::isEqual(Card *othercard)
 
 void Card::cardDeckChanged()
 {
-    delete m_pixmap;
-    m_pixmap = nullptr;
-    
-    if( m_background ) 
-    {
-        delete m_background;
-        m_background = nullptr;
-    }
+  m_pixmap = QPixmap();
+  background() = QPixmap();
 }
 
 bool Card::operator< ( Card* c )
