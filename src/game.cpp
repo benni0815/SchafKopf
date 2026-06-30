@@ -208,16 +208,6 @@ void Game::endGame()
     return &m_gameinfo;
 }
 
-Player* Game::findId( unsigned int id ) const
-{
-    for( unsigned int i = 0; i < PLAYERS; i++)
-    {
-        if( id == m_players[i]->id() )
-            return m_players[i].get();
-    }
-    return nullptr;
-}
-
 Player* Game::findIndex( unsigned int index ) const
 {
     return (index < PLAYERS ? m_players[index].get() : nullptr);

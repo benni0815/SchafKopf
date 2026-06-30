@@ -31,7 +31,6 @@ class Game : public QThread
         const CardList& playedCards() const { return m_playedcards; }
         GameInfo *gameInfo();
 
-        Player* findId( unsigned int id ) const;
         Player* findIndex( unsigned int index ) const;
 
         /** @returns the player who is the next to play
