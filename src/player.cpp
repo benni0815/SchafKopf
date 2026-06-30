@@ -15,11 +15,6 @@ Player::Player(unsigned int id, Game* game)
   , m_id(id)
 {}
 
-Player::~ Player()
-{
-    delete m_cards;
-}
-
 const QString & Player::name() const
 {
     return m_name;
@@ -30,31 +25,39 @@ void Player::setName( const QString & n )
     m_name = n;
 }
 
-CardList *Player::cards() const
+const CardList& Player::cards() const
 {
     return m_cards;
 }
 
-void Player::setCards( CardList *cards )
+void Player::setCards(const CardList& cards)
 {
-    int i = 0;
-
-    delete m_cards;
-
     m_geklopft = false;
 
     m_cards=cards;
     // tell the card WHO owns them and WHOM they should serve! ;-)
-    for(i=0;i<m_cards->count();i++)
-        m_cards->at(i)->setOwner( this );
+    for (int i = 0; i < m_cards.count(); ++i)
+        m_cards.at(i)->setOwner(this);
 
-    m_game->postEvent(PlayerGotCards, id(), m_cards->toInts());
+    m_game->postEvent(PlayerGotCards, id(), m_cards.toInts());
+}
+
+void Player::removeCard(const Card* card)
+{
+  for (int i = 0; i < m_cards.size(); ++i)
+  {
+    if (m_cards.at(i) == card)
+    {
+      m_cards.removeAt(i);
+      break;
+    }
+  }
 }
 
 void Player::sortCards()
 {
-    m_cards->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-    m_game->postEvent(PlayerGotCards, id(), m_cards->toInts());
+    m_cards.sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
+    m_game->postEvent(PlayerGotCards, id(), m_cards.toInts());
 }
 
 void Player::klopfen()
@@ -117,7 +120,7 @@ bool Player::istTrumpf(Card* card)
 
 CardList* Player::PlayerCards()
 {
-    return  m_cards->FindCards(Card::NOCOLOR, Card::NOSTICH);
+    return m_cards.FindCards(Card::NOCOLOR, Card::NOSTICH);
 }
 
 Card* Player::firstPlayedCard()
@@ -195,7 +198,7 @@ CardList* Player::allowedCards()
                     delete Sau;
                 }
             }
-            else if (m_game->currStich().count() > 0 && m_cards->count() > 1)
+            else if (m_game->currStich().count() > 0 && m_cards.count() > 1)
             {
                 allowed->RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
                 delete Sau;

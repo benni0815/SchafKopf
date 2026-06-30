@@ -16,10 +16,7 @@ class Player
 
         Player(unsigned int id, Game* game);
         
-        // this destructor should be virtual
-        // but setting it to virtual makes everything
-        // crash. Seems to be a good lenz-job ;) ...
-        virtual ~Player();
+        virtual ~Player() = default;
 
         virtual void init() {};
         /** set m_geklopft to true in this function if the player wants to double
@@ -38,8 +35,9 @@ class Player
 
         const QString & name() const;
         void setName( const QString & n );
-        CardList *cards() const;
-        void setCards( CardList *cards);
+        const CardList& cards() const;
+        void setCards(const CardList& cards);
+        void removeCard(const Card* card);
         const CardList& stiche() const;
         void clearStiche();
         void addStich(const CardList& stich);
@@ -66,7 +64,7 @@ class Player
         bool hasTrumpf(CardList* liste);
 
     protected:
-        CardList* m_cards{};
+        CardList m_cards;
         CardList m_stiche;
         Game* m_game{};
 

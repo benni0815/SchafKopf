@@ -70,14 +70,12 @@ void Game::run()
 void Game::startGame()
 {
     unsigned int i = 0;
-    CardList *playercards[PLAYERS];
+    CardList playercards[PLAYERS];
 
     m_allcards.randomize();
-    for( i=0; i<PLAYERS; i++)
-        playercards[i]=new CardList();
 
     for( i=0; i<CARD_CNT; i++)
-        playercards[i%PLAYERS]->append(m_allcards.at(i));
+        playercards[i%PLAYERS].append(m_allcards.at(i));
 
     for( i=0;i<PLAYERS;i++)
     {
@@ -163,14 +161,7 @@ void Game::gameLoop()
                 if(terminated || c == nullptr)
                     return;
 
-                for( int z = 0; z<tmp[a]->cards()->count(); z++ )
-                {
-                    if(tmp[a]->cards()->at(z) == c)
-                    {
-                                tmp[a]->cards()->removeAt(z);
-                                break;
-                    }
-                }
+                tmp[a]->removeCard(c);
 
                 m_currstich.append(c);
                 m_playedcards.append(c);
@@ -402,7 +393,7 @@ bool Game::setupGameInfo(Player *players[])
         {
             for( unsigned int z=0; z < CARD_CNT/PLAYERS; z++ )
             {
-                if( players[i]->cards()->at(z)->isEqual( &sau ) )
+                if (players[i]->cards().at(z)->isEqual(&sau))
                 {
                     m_gameinfo.setMitspieler(players[i]);
                     break;
@@ -459,7 +450,7 @@ bool Game::setupGameInfoForced(Player *players[])
         // find player with eichel ober
         for( i=0;i<PLAYERS;i++ )
         {
-            if( players[i]->cards()->contains( Card::EICHEL, Card::OBER ) )
+            if (players[i]->cards().contains(Card::EICHEL, Card::OBER))
             {
                 postEvent(InfoMessage, 0, {}, i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()), true);
                 

@@ -293,9 +293,9 @@ int GameInfo::laufende()
 
   int l = 0;
   CardList all;
-  CardList laufend = *spieler()->cards();
+  CardList laufend = spieler()->cards();
   if (mitspieler())
-    laufend.appendList(*mitspieler()->cards());
+    laufend.appendList(mitspieler()->cards());
 
   all.init();
   all.setAutoDelete(false);

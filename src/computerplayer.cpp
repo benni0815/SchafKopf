@@ -53,7 +53,7 @@ void ComputerPlayer::klopfen()
 
     // are all cards in the same color?
     for( i=start;i<ende;i++ )
-        if( m_cards->at( i )->color() == m_cards->at( start )->color() )
+        if (m_cards.at(i)->color() == m_cards.at(start)->color())
             count++;
 
     if( count == anz )
@@ -69,7 +69,7 @@ void ComputerPlayer::klopfen()
     info->setColor( Card::HERZ );
     count = 0;
     for( i=start;i<ende;i++ )
-        if( m_cards->at( i )->card() == Card::SAU || info->istTrumpf( m_cards->at( i ) ) )
+        if (m_cards.at(i)->card() == Card::SAU || info->istTrumpf(m_cards.at(i)))
             count++;
 
     delete info;
@@ -174,7 +174,7 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
     {
         for( int z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
         {
-            if (!GameInfo::isAllowed(*m_cards, i, z ))
+            if (!GameInfo::isAllowed(m_cards, i, z ))
               continue;
          
             game_data d;
@@ -182,14 +182,14 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
             d.info.setMode( i );
             d.info.setColor( z );        
             
-            for( int c = 0; c < m_cards->count(); c++)
+            for (int c = 0; c < m_cards.count(); c++)
             {
-                d.weight += d.info.weight( m_cards->at(c) );
-                if( d.info.istTrumpf( m_cards->at(c) ) )
+                d.weight += d.info.weight(m_cards.at(c));
+                if (d.info.istTrumpf(m_cards.at(c)))
                     d.trumpf++;
-                else if( !d.info.istTrumpf( m_cards->at(c) ) && m_cards->at(c)->card() != Card::SAU )
+                else if (!d.info.istTrumpf(m_cards.at(c)) && m_cards.at(c)->card() != Card::SAU)
                 {
-                    CardList* list = m_cards->FindCards( m_cards->at(c)->color(), Card::SAU );
+                    CardList* list = m_cards.FindCards(m_cards.at(c)->color(), Card::SAU);
                     if( list->isEmpty() )
                         d.fehlfarbe++;
                     delete list;
@@ -441,9 +441,9 @@ Card *ComputerPlayer::highestTrumpfInGame()
         trumpfs->removeCard( playedCard );
     }
 
-    for( int i = 0; i < m_cards->count(); i++ )
+    for (int i = 0; i < m_cards.count(); ++i)
     {
-        c = m_cards->at( i );
+        c = m_cards.at(i);
         trumpfs->removeCard( c );
     }
 
@@ -461,9 +461,9 @@ int ComputerPlayer::myTrumpfs()
     int trumpfs=0;
     Card *c;
 
-    for( int i = 0; i < m_cards->count(); i++ )
+    for (int i = 0; i < m_cards.count(); ++i)
     {
-        c = m_cards->at( i );
+        c = m_cards.at( i );
         if( m_game->gameInfo()->istTrumpf( c ) )
             trumpfs++;
     }

@@ -66,7 +66,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
 {
     if( force )
     {
-        return (GameInfo*)m_game->postEvent( ForcedSelectGame, id(), m_cards->toInts(), QString(), true );
+        return (GameInfo*)m_game->postEvent(ForcedSelectGame, id(), m_cards.toInts(), QString(), true);
     }
     else
     {
@@ -74,7 +74,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
         if( *ret == YES )
         {
             delete ret;
-            return (GameInfo*)m_game->postEvent( SelectGame, id(), m_cards->toInts(), QString(), true );
+            return (GameInfo*)m_game->postEvent(SelectGame, id(), m_cards.toInts(), QString(), true);
         }
         else
             delete ret;
