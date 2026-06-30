@@ -8,7 +8,6 @@
 #include <QGraphicsPixmapItem>
 #include <QPixmap>
 
-#define CANVASCARD 1000
 
 class CanvasCard : public QObject, public QGraphicsPixmapItem
 {
@@ -29,8 +28,6 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
 
         void animatedMove();
         void setDestination( int x, int y );
-
-        int type() const override { return CANVASCARD; }
 
         /** mark this card as forbidden to play
           * in the UI

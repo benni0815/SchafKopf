@@ -23,11 +23,6 @@ class CanvasText : public QGraphicsSimpleTextItem
             setFont( f );
             setBrush( QBrush( Qt::yellow ) );
         }
-
-        int type() const override
-        {
-            return UserType + 1;
-        }
 };
 
 GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
@@ -211,10 +206,8 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
     if( item )
         item->setSelected( false );
 
-    if( item->type() == CANVASCARD )
+    if (auto* card = dynamic_cast<CanvasCard*>(item))
     {
-        CanvasCard* card = static_cast<CanvasCard*>(item);
-
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
             if (m_players[i].isHuman() && m_players[i].hasCard(card->card()))
@@ -344,9 +337,9 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
         for( int i=0;i<m_focus_list.count();i++ )
             if( m_focus_list[i]->isSelected() )
             {
-                if( m_focus_list[i]->type() == QGraphicsItem::UserType + 1 )
+                if (dynamic_cast<CanvasText*>(m_focus_list[i]))
                     yesNoClicked( m_focus_list[i] );
-                else if( m_focus_list[i]->type() == CANVASCARD )
+                else if (dynamic_cast<CanvasCard*>(m_focus_list[i]))
                     cardClicked( m_focus_list[i] );
             }
     }
@@ -358,7 +351,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
                 for( z=i+1;z<m_focus_list.count();z++ )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
+                        if (m_message->isVisible() && dynamic_cast<CanvasCard*>(m_focus_list[z]))
                             continue;
 
                         m_focus_list[i]->setSelected( false );
@@ -376,7 +369,7 @@ void GameCanvas::keyPressEvent(QKeyEvent* e)
                 for( z=i-1;z>=0;z-- )
                     if( m_focus_list[z]->isVisible() )
                     {
-                        if( m_message->isVisible() && m_focus_list[z]->type() == CANVASCARD )
+                        if (m_message->isVisible() && dynamic_cast<CanvasCard*>(m_focus_list[z]))
                             continue;
 
                         m_focus_list[i]->setSelected( false );
