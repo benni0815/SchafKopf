@@ -3,31 +3,30 @@
 
 #pragma once
 
-#define PLAYERS   4
-
-// If you do want to play with only 6 cards
-// like it is done in Franken, please comment this line:
-#define SCHAFKOPF_LANG
- 
-#ifdef SCHAFKOPF_LANG
-#define NUMCARDS  8
-#define NUMTRUMPF 4
-#define TURNS     8
-#define CARD_CNT  32
-#else
-#define NUMCARDS  6
-#define NUMTRUMPF 4
-#define TURNS     6
-#define CARD_CNT  24
-#endif // SCHAFKOPF_LANG
-
-/** Identify events from schafkopf in the Qt event loop
-  * using this ID.
-  */
-#define SCHAFKOPF_EVENT 1984
-
 #include <QString>
 #include <QStringList>
+
+
+constexpr int PLAYERS{4};
+
+/// If you do want to play with only 6 cards
+/// like it is done in Franken, please comment this line:
+#define SCHAFKOPF_LANG
+
+#ifdef SCHAFKOPF_LANG
+constexpr int NUMCARDS{8};
+constexpr int NUMTRUMPF{4};
+#else
+constexpr int NUMCARDS{6};
+constexpr int NUMTRUMPF{4};
+#endif // SCHAFKOPF_LANG
+
+constexpr int CARD_CNT{PLAYERS * NUMCARDS};
+constexpr int TURNS{NUMCARDS};
+
+/// Identify events from schafkopf in the Qt event loop
+/// using this ID.
+constexpr int SCHAFKOPF_EVENT{1984};
 
 class Card;
 class QSemaphore;
@@ -71,26 +70,22 @@ struct t_PlayerData {
   unsigned int lastid{};
 };
 
-/** Uncomment this line to make all cards
-  * user visible, this is useful for debugging
-  * and improving the AI.
-  * But it might cause problems in network mode for cheaters!!
-  */
+/// Uncomment this line to make all cards
+/// user visible, this is useful for debugging
+/// and improving the AI.
+/// But it might cause problems in network mode for cheaters!!
 //#define CHEAT
 
 #ifdef CHEAT
     #warning "CHEATING ENABLED!!!"
 #endif
 
-/** 
- * Enable the simulation mode, might be useful for training 
- * the neuro-net we will surely get soon.
- */
+/// Enable the simulation mode, might be useful for training
+/// the neuro-net we will surely get soon.
 //#define SIMULATION_MODE
-/**
- * How many games should be simulated in SIMULATION_MODE?
- */
-#define SIMULATION_MODE_MAX 10000
 
-// DISTANCE from the border used in CanvasPlayer
-#define DIST 20
+/// How many games should be simulated in SIMULATION_MODE?
+constexpr int SIMULATION_MODE_MAX{10000};
+
+/// DISTANCE from the border used in CanvasPlayer
+constexpr int DIST{20};
