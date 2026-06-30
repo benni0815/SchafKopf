@@ -8,6 +8,7 @@
 #include <KSharedConfig>
 
 #include <QObject>
+#include <QMutex>
 
 
 /** a small datatype which contains configureable 
@@ -45,7 +46,6 @@ struct t_Players {
 
 
 class Results;
-class QMutex;
 class QWidget;
 
 /**
@@ -109,11 +109,11 @@ class Settings : public QObject
 
     private:
         Settings(QObject* parent = nullptr);
-        ~Settings() override;
+        ~Settings() override = default;
 
         KSharedConfig::Ptr m_config;
 
-        QMutex* m_mutex{};
+        std::unique_ptr<QMutex> m_mutex;
 
         KCardCache m_cardCache;
 };
