@@ -23,5 +23,5 @@ class HumanPlayer : public Player
         void forbiddenCard(CardId cardId);
         void questionYesNo(const QString& question, int* result);
         void getCard(CardId* card);
-        void selectGame(GameVariant* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
+        void selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardIds, bool force = false);
 };

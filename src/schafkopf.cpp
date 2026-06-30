@@ -373,9 +373,11 @@ void SchafKopf::updateTableNames()
     m_table->setHorizontalHeaderLabels( Settings::instance()->playerNames() );
 }
 
-void SchafKopf::selectGame(GameVariant* gameInfo, const std::vector<CardId>& cardids, bool force)
+void SchafKopf::selectGame(std::optional<GameVariant>* gameInfo, const std::vector<CardId>& cardids, bool force)
 {
     SelectGameWizard sgw(force, cardids);
-    if (sgw.exec() != QDialog::Accepted) { return; }
-    *gameInfo = sgw.game();
+    if (sgw.exec() == QDialog::Accepted)
+    {
+      *gameInfo = sgw.game();
+    }
 }

@@ -46,7 +46,7 @@ std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
 {
     if( force )
     {
-      GameVariant game;
+      std::optional<GameVariant> game;
       emit selectGame(&game, Cards::toIds(m_cards), true);
       return game;
     }
@@ -56,7 +56,7 @@ std::optional<GameVariant> HumanPlayer::gameInfo(bool force)
       emit questionYesNo(i18n("Do you want to play?"), &result);
       if (result == YES)
       {
-        GameVariant game;
+        std::optional<GameVariant> game;
         emit selectGame(&game, Cards::toIds(m_cards));
         return game;
       }
