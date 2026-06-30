@@ -15,7 +15,7 @@ class ComputerPlayer : public Player
 {
     public:
         ComputerPlayer(unsigned int id,Game* game);
-        ~ComputerPlayer() override;
+        ~ComputerPlayer() override = default;
 
         void init() override;
         void klopfen() override;
@@ -79,7 +79,6 @@ class ComputerPlayer : public Player
             GameInfo info;
         };
 
-        CardList *m_angespielt;
         OpenBook m_openBook;
         int mitspieler{-1};
 };

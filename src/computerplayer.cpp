@@ -18,14 +18,7 @@
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
 : Player(id,game)
 , m_openBook(this, game)
-{
-    m_angespielt=new CardList();
-}
-
-ComputerPlayer::~ComputerPlayer()
-{
-    delete m_angespielt;
-}
+{}
 
 void ComputerPlayer::klopfen()
 {
@@ -74,7 +67,6 @@ void ComputerPlayer::klopfen()
 
 void ComputerPlayer::init()
 {
-    m_angespielt->clear();
     if(m_game->gameInfo()->mitspieler()==this)
     {
         for(mitspieler=0;mitspieler<PLAYERS;mitspieler++)
@@ -137,12 +129,7 @@ Card *ComputerPlayer::play()
     if (allowed.empty())
         allowed = allowedCards();
     
-    auto* ToPlay = findCardToPlay(allowed);
-    if (m_game->currStich().isEmpty())
-        m_angespielt->append(ToPlay);
-    else
-        m_angespielt->append(m_game->currStich().first());
-    return ToPlay;
+    return findCardToPlay(allowed);
 }
 
 GameInfo* ComputerPlayer::gameInfo( bool force )
