@@ -99,8 +99,6 @@ class Game : public QThread
         void run() override;
 
     private:
-        static unsigned int def_id;
-
         QSemaphore* m_semaphore{};
         bool terminated{true};
 
@@ -114,6 +112,4 @@ class Game : public QThread
         GameInfo m_gameinfo;
         int m_laufende{0};
         int m_timesThrownTogether{0};
-
-        QObject* m_parent{};
 };

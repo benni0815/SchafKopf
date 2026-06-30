@@ -20,25 +20,22 @@
 #include <string.h>
 
 
-unsigned int Game::def_id=0;
-
 Game::Game(QSemaphore* semaphore, QObject *parent )
-    : QThread()
+    : QThread(parent)
     , m_semaphore(semaphore)
-    , m_parent(parent)
 {
-    unsigned int i;
-    
+    int playerId{0};
+
 #ifndef SIMULATION_MODE
     // Create our player objects
     // delete these only in the destructor    
-    m_players[0] = new HumanPlayer( def_id++, this );
+    m_players[0] = new HumanPlayer(playerId++, this);
 
-    for( i=1;i<PLAYERS;i++)
-        m_players[i] = new ComputerPlayer( def_id++, this );
+    for (int i = 1; i < PLAYERS; ++i)
+        m_players[i] = new ComputerPlayer(playerId++, this);
 #else
-    for( i=0;i<PLAYERS;i++)
-        m_players[i] = new ComputerPlayer( def_id++, this );
+    for (int i = 0; i < PLAYERS; ++i)
+        m_players[i] = new ComputerPlayer(playerId++, this);
 #endif // SIMULATION_MODE    
 
     updatePlayerNames();
@@ -549,7 +546,7 @@ void* Game::postEvent(EAction action, unsigned int playerid, const std::vector<i
     data->returncode = nullptr;
     data->quitgame = false;
 
-    QCoreApplication::postEvent( m_parent, new SchafKopfEvent( data ) );
+    QCoreApplication::postEvent(parent(), new SchafKopfEvent(data));
     if( wait )
     {
         m_semaphore->acquire();
