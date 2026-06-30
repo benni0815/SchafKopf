@@ -95,10 +95,6 @@ void CanvasCard::reloadPixmaps()
 
   backside() = QPixmap(Settings::instance()->cardCache()->backside());
 
-  float height = frontPixmap.height();
-  float width = frontPixmap.width();
-  setTransformOriginPoint(height / 2, width / 2);
-
   updatePixmap();
 }
 

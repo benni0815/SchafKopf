@@ -106,9 +106,9 @@ void CanvasPlayer::position()
 
   case 1:
     x = DIST;
-    y = (h - ((cardh * cardoverlap) * (num - 1) + cardh)) / 2;
+    y = (h - ((cardh * cardoverlap) * (num - 1) - cardh)) / 2;
 
-    m_name->setPos(x, y - m_name->sceneBoundingRect().height());
+    m_name->setPos(x, y - m_name->sceneBoundingRect().height() - cardh);
     break;
 
   case 2:
@@ -120,10 +120,10 @@ void CanvasPlayer::position()
 
   case 3:
   default:
-    x = w - cardw - DIST;
+    x = w - DIST;
     y = (h - ((cardh * cardoverlap) * (num - 1) + cardh)) / 2;
 
-    m_name->setPos(x, y - m_name->sceneBoundingRect().height());
+    m_name->setPos(x - cardw, y - m_name->sceneBoundingRect().height());
     break;
   }
 

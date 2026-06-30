@@ -113,85 +113,29 @@ void GameCanvas::positionObjects()
 
 QPoint GameCanvas::getStichPosition(int player)
 {
-  QPoint p;
-  int w = scene()->width();  //-DIST;
-  int h = scene()->height(); //-DIST;
-  const auto& pix = CanvasCard::backsidePixmap();
-  int cardw = pix.width();
-  int cardh = pix.height();
-  int stichcanvasw = scene()->width() - (2 * DIST) - (2 * cardh) - 50;
-  int stichcanvash = scene()->height() - (2 * DIST) - (2 * cardh) - 50;
-  int cx = w / 2;
-  int cy = h / 2;
+  const int w = scene()->width();
+  const int h = scene()->height();
+  const int cardw = CanvasCard::backsidePixmap().width();
+  const auto center = QPoint(w / 2, h / 2);
 
   switch (player)
   {
   case 0:
-    if (stichcanvash > (2 * cardh - 20))
-    {
-      p = QPoint(cx - (cardw / 2) - 5, cy - 10);
-    }
-    else
-    {
-      p = QPoint(cx - (cardw / 2) - 5, cy + (stichcanvash / 2) - cardh);
-    }
-    break;
+    return center + QPoint(-(cardw / 2) - 5, -10);
   case 1:
-    if (stichcanvasw > (2 * cardh - 20))
-    {
-      p = QPoint(cx - cardh + 10, cy - (cardw / 2) - 5);
-    }
-    else
-    {
-      p = QPoint(cx - (stichcanvasw / 2), cy - (cardw / 2) - 5);
-    }
-    break;
+    return center + QPoint(10, -(cardw / 2) - 5);
   case 2:
-    if (stichcanvash > (2 * cardh - 20))
-    {
-      p = QPoint(cx - (cardw / 2) + 5, cy - cardh + 10);
-    }
-    else
-    {
-      p = QPoint(cx - (cardw / 2) + 5, cy - (stichcanvash / 2));
-    }
-    break;
+    return center + QPoint((cardw / 2) + 5, 10);
   case 3:
   default:
-    if (stichcanvasw > (2 * cardh - 20))
-    {
-      p = QPoint(cx - 10, cy - (cardw / 2) + 5);
-    }
-    else
-    {
-      p = QPoint(cx + (stichcanvasw / 2) - cardh, cy - (cardw / 2) + 5);
-    }
-    break;
+    return center + QPoint(-10, (cardw / 2) + 5);
   };
-
-  return p;
 }
 
 int GameCanvas::getStichRotation(int player)
 {
-  int r;
-  switch (player)
-  {
-  case 0:
-    r = 0;
-    break;
-  case 1:
-    r = 90;
-    break;
-  case 2:
-    r = 180;
-    break;
-  case 3:
-  default:
-    r = 270;
-    break;
-  };
-  return r;
+  const auto playerRotations = QList<int>{0, 90, 180, 270};
+  return playerRotations.value(player);
 }
 
 void GameCanvas::getCard(CardId* card)
