@@ -184,7 +184,7 @@ bool GameInfo::operator>(const GameInfo& info)
         return this->mode() < info.mode();
 }
 
-int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
+int GameInfo::evalCard(Card* card)
 {
     /* Not very nice. Try to find a better way */
 
@@ -206,7 +206,7 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
     int col = Card::NOCOLOR;
     int i, a;
 
-    switch( gameinfo->mode() )
+    switch (mode())
     {
         default:
         case GameInfo::RAMSCH:
@@ -220,20 +220,20 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
             trumpf_cnt=2;
             l_trumpf=l_trumpf_std;
             l_cards=l_cards_std;
-            col=gameinfo->color();
+            col = color();
             break;
         case GameInfo::GEIER:
             trumpf_cnt=1;
             l_trumpf=&l_trumpf_geier;
             l_cards=l_cards_geier;
-            col=gameinfo->color();
+            col = color();
             break;
         case GameInfo::WENZ:
             //qDebug("Wenz, color: "+ QString::number(gameinfo->color()));
             trumpf_cnt=1;
             l_trumpf=&l_trumpf_wenz;
             l_cards=l_cards_wenz;
-            col=gameinfo->color();
+            col = color();
             break;
         case GameInfo::DACHS:
             trumpf_cnt=2;
@@ -299,7 +299,7 @@ int GameInfo::laufende()
 
   all.init();
   all.setAutoDelete(false);
-  all.sort(reinterpret_cast<eval_func>(evalCard), (void *)this);
+  all.sort([this] (Card* card) { return evalCard(card); });
   all.setAutoDelete(true);
 
   for (int i = all.count() - 1; i >= 0; --i)

@@ -261,8 +261,8 @@ bool Game::isHigher( Card* card, Card* high )
     int cardVal, highVal;
     int colcnt;
 
-    cardVal=m_gameinfo.evalCard(card, &m_gameinfo);
-    highVal=m_gameinfo.evalCard(high, &m_gameinfo);
+    cardVal = m_gameinfo.evalCard(card);
+    highVal = m_gameinfo.evalCard(high);
     if( m_gameinfo.istTrumpf( card ) || m_gameinfo.istTrumpf( high ) )
         return highVal < cardVal;
     else

@@ -118,15 +118,15 @@ void SelectGameTypeBox::setInfoText(const QString& Text)
 void SelectGameTypeBox::updatePreview()
 {
     int i = 0;
-    CardList list;
-    CardList trumpf;
-    auto info = std::unique_ptr<GameInfo>(gameInfo());
+    GameInfo info = *gameInfo();
 
+    CardList list;
     list.init();
-    for(i=0;i<(int)list.count();i++)
-        if( info->istTrumpf( list.at(i) ) )
-            trumpf.append( list.at(i) );
-    trumpf.sort((eval_func)info->evalCard, (void *)info.get());
+    CardList trumpf;
+    for (int i = 0; i < (int)list.count(); i++)
+        if (info.istTrumpf(list.at(i)))
+            trumpf.append(list.at(i));
+    trumpf.sort([&] (Card* card) { return info.evalCard(card); });
 
     Card c( Card::SAU, Card::EICHEL );
     QPixmap pix(c.pixmap().width() + (c.pixmap().width() / 2) * 7, c.pixmap().height() * (int(trumpf.count() / 4) + (trumpf.count() % 4)));

@@ -5,7 +5,8 @@
 
 #include "card.h"
 
-typedef int (*eval_func)(Card *card, void *param);
+
+using EvalFunc = std::function<int(Card*)>;
 
 /**
  * By default CardList does not delete its children
@@ -54,7 +55,7 @@ class CardList : public QList<Card*>
         CardList FindCards(int color, int type);
         void RemoveCards(const CardList& itemsToRem);
 
-        void sort(eval_func eval, void *param);
+        void sort(EvalFunc eval);
 
         std::vector<int> toInts() const;
 

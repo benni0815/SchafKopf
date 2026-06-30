@@ -44,7 +44,7 @@ class GameInfo{
           *I.e. the highest card will get a value of 32 assigned
           * be sure that autodelete is turned of when using this function!
           */
-        static int evalCard(Card *card, GameInfo *gameinfo);
+        int evalCard(Card *card);
 
 
         /** calculate the number of "laufende" ticks

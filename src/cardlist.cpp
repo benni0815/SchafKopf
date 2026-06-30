@@ -122,7 +122,7 @@ void CardList::RemoveCards(const CardList& itemsToRem)
     }
 }
 
-void CardList::sort(eval_func eval, void *param)
+void CardList::sort(EvalFunc eval)
 {
     int i, n;
     int x, y;
@@ -134,8 +134,8 @@ void CardList::sort(eval_func eval, void *param)
         {
             //cmp=compareItems( at(i), at(i+1) );
             //if(cmp>0)
-            x=(*eval)(at(i), param);
-            y=(*eval)(at(i+1), param);
+            x = eval(at(i));
+            y = eval(at(i+1));
 //          qDebug("%d, %d: %d, %d\n", i, i+1, x, y);
             if(x>y)
             {
