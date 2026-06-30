@@ -22,7 +22,7 @@ class Player : public QObject
         /** set m_geklopft to true in this function if the player wants to double
           * and to false if not. 
           */
-        virtual void klopfen();
+        virtual void klopfen() = 0;
         virtual Card play() = 0;
         /** if @p force is true the player has to play wether he wants or not
           * a valid GameInfo object has to be returned in this case!

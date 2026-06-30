@@ -40,7 +40,7 @@ void ComputerPlayer::klopfen()
     if( count == anz )
     {
         m_geklopft = true;
-        Player::klopfen();
+        emit doubled(id());
         return;
     }
 
@@ -53,11 +53,11 @@ void ComputerPlayer::klopfen()
     if( count == anz )
     {
         m_geklopft = true;
-        Player::klopfen();
+        emit doubled(id());
         return;
     }
 
-    Player::klopfen();
+    emit doubled(id());
 }
 
 void ComputerPlayer::init()

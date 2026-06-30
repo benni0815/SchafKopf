@@ -19,7 +19,7 @@ void HumanPlayer::klopfen()
   emit questionYesNo(i18n("Do you want to double?"), &result);
   m_geklopft = ( result == YES );
 
-  Player::klopfen();
+  emit doubled(id());
 }
 
 Card HumanPlayer::play()

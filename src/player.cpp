@@ -52,11 +52,6 @@ void Player::sortCards()
   emit gotCards(id(), Cards::toIds(m_cards));
 }
 
-void Player::klopfen()
-{
-  emit doubled(id());
-}
-
 bool Player::isPlayer() const
 {
   return (m_game.gameInfo().spieler() == this || m_game.gameInfo().mitspieler() == this);
