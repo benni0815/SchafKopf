@@ -477,16 +477,12 @@ int Game::timesThrownTogether()
 
 void Game::updatePlayerNames()
 {
-    int i;
-    QStringList list = Settings::instance()->playerNames();
-    m_players[0]->setName( list[0] );
-    emit playerNameChanged(m_players[0]->id(), list[0]);
+  const auto names = Settings::instance()->playerNames();
 
-    for( i=1;i<PLAYERS;i++)
-    {
-        m_players[i]->setName( list[i] );
-        emit playerNameChanged(m_players[i]->id(), list[i]);
-    }
+  for (size_t i = 0; i < m_players.size(); ++i)
+  {
+    m_players[i]->setName(names.at(i));
+  }
 
-    emit redrawPlayers();
+  emit redrawPlayers();
 }

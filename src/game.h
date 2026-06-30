@@ -57,7 +57,6 @@ class Game : public QThread
     signals:
         void gameStarted();
         void gameEnded();
-        void playerNameChanged(unsigned int playerId, const QString& name);
         void playerDoubled(const QString& message);
         void playerIsLast(unsigned int playerId);
         void playerMadeStich(unsigned int playerId, std::vector<int> cardIds, const QString& playerName, const QStringList& playerNames);

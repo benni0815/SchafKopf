@@ -37,7 +37,7 @@ class Player : public QObject
         Game* game() const { return m_game; }
 
         const QString & name() const;
-        void setName( const QString & n );
+        void setName(const QString& name);
         const CardList& cards() const;
         void setCards(const CardList& cards);
         void removeCard(const Card* card);
@@ -67,6 +67,7 @@ class Player : public QObject
     signals:
         void gotCards(unsigned int playerId, const std::vector<int>& cardIds);
         void doubled(unsigned int playerId);
+        void nameChanged(unsigned int playerId, const QString& name);
 
     protected:
         CardList m_cards;

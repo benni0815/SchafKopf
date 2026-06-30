@@ -20,9 +20,10 @@ const QString & Player::name() const
     return m_name;
 }
 
-void Player::setName( const QString & n )
+void Player::setName(const QString& name)
 {
-    m_name = n;
+  m_name = name;
+  emit nameChanged(id(), m_name);
 }
 
 const CardList& Player::cards() const

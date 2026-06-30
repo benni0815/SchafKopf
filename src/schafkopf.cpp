@@ -58,6 +58,7 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     {
       connect(p.get(), &Player::gotCards, m_view, &GameCanvas::setPlayerCards);
       connect(p.get(), &Player::doubled, m_view, [this] (unsigned int playerId) { m_view->playerHasDoubled(playerId, true ); });
+      connect(p.get(), &Player::nameChanged, m_view, &GameCanvas::setPlayerName);
       if (auto* human = dynamic_cast<HumanPlayer*>(p.get()))
       {
         connect(human, &HumanPlayer::forbiddenCard, m_view, &GameCanvas::cardForbidden, Qt::BlockingQueuedConnection);
@@ -66,7 +67,6 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
         connect(human, &HumanPlayer::selectGame, this, &SchafKopf::selectGame, Qt::BlockingQueuedConnection);
       }
     }
-    connect(m_game, &Game::playerNameChanged, m_view, &GameCanvas::setPlayerName);
     connect(m_game, &Game::redrawPlayers, m_view, [this]
       {
         m_view->redrawPlayers();
