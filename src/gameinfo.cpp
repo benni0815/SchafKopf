@@ -283,43 +283,38 @@ int GameInfo::evalCard(Card *card, GameInfo *gameinfo)
 
 int GameInfo::laufende()
 {
-    if( m_mode == RAMSCH )
-        return 0;
+  if (m_mode == RAMSCH)
+    return 0;
 
-    /** TODO: jeder spieler sollte eine laufende property haben und
-      * selst zählen wie viele laufende er hat.
-      * danach können diese in results einfach addiert werden
-      */
+  /** TODO: jeder spieler sollte eine laufende property haben und
+    * selst zählen wie viele laufende er hat.
+    * danach können diese in results einfach addiert werden
+    */
 
-    int i = 0;
-    int l = 0;
-    CardList* all = new CardList();
-    CardList laufend = *(spieler()->cards());
-    if( mitspieler() )
-        laufend.appendList(*mitspieler()->cards());
+  int l = 0;
+  CardList all;
+  CardList laufend = *spieler()->cards();
+  if (mitspieler())
+    laufend.appendList(*mitspieler()->cards());
 
-    all->init();
-    all->setAutoDelete( false );
-    all->sort( (eval_func)evalCard, (void *)this);
-    all->setAutoDelete( true );
+  all.init();
+  all.setAutoDelete(false);
+  all.sort(reinterpret_cast<eval_func>(evalCard), (void *)this);
+  all.setAutoDelete(true);
 
-    for( i=all->count() - 1; i>=0; --i)
+  for (int i = all.count() - 1; i >= 0; --i)
+  {
+    Card* c = all.at(i);
+    CardList list = *laufend.FindCards(c->color(), c->card());
+    if (list.count() && (l > 0 || i == all.count() - 1))
+      l++;
+    else if ((!list.count() && l < 0) || i == all.count() - 1)
+      l--;
+    else
     {
-        Card* c = all->at( i );
-        CardList* list = laufend.FindCards( c->color(), c->card() );
-        if( list->count() && ( l>0 || i == all->count() - 1 ) )
-            l++;
-        else if( ( !list->count() && l<0 ) || i == all->count() - 1 )
-            l--;
-        else
-        {
-            delete list;
-            break;
-        }
-
-        delete list;
+      break;
     }
+  }
 
-    delete all;   
-    return l;
+  return l;
 }
