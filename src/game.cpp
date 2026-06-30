@@ -66,16 +66,13 @@ void Game::startGame()
 {
     m_allcards = Cards::randomize();
 
-    CardList playercards[PLAYERS];
-    for (int i = 0; i < CARD_CNT; ++i)
+    auto it = std::begin(m_allcards);
+    for (auto& player : m_players)
     {
-      playercards[i % PLAYERS].push_back(m_allcards.at(i));
-    }
-
-    for (int i = 0; i < PLAYERS; ++i)
-    {
-        m_players[i]->setCards(playercards[i]);
-        m_players[i]->clearStiche();
+      CardList cards;
+      it = std::for_each_n(it, NUMCARDS, [&] (Card& c) { c.owner = player.get(); cards.push_back(c); });
+      player->setCards(cards);
+      player->clearStiche();
     }
 
     m_playedcards.clear();
@@ -214,11 +211,6 @@ const GameInfo& Game::gameInfo() const
   return m_gameinfo;
 }
 
-Player* Game::findIndex( unsigned int index ) const
-{
-    return (index < PLAYERS ? m_players[index].get() : nullptr);
-}
-
 std::vector<Player*> Game::players() const
 {
   std::vector<Player*> ps;
@@ -233,9 +225,7 @@ Card Game::highestCardInStich() const
 
 void Game::gameResults()
 {
-    Results r;
-    r.setLaufende( m_laufende );
-    r.setGame( this );
+    Results r(*this);
 
     for (const auto& player : m_players)
     {
@@ -326,7 +316,6 @@ bool Game::setupGameInfo(const std::array<Player*, PLAYERS>& players)
       }
     }
 
-    m_laufende = m_gameinfo.laufende();
     emit infoMessage(m_gameinfo.toString());
 
     m_gameinfo.setValid( true );

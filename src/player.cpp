@@ -33,12 +33,6 @@ void Player::setCards(const CardList& cards)
     m_geklopft = false;
     m_cards = cards;
 
-    // tell the card WHO owns them and WHOM they should serve! ;-)
-    for (auto& card : m_cards)
-    {
-      card.owner = this;
-    }
-
     emit gotCards(id(), Cards::toIds(m_cards));
 }
 

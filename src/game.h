@@ -30,8 +30,6 @@ class Game : public QThread
         const CardList& playedCards() const { return m_playedcards; }
         const GameInfo& gameInfo() const;
 
-        Player* findIndex( unsigned int index ) const;
-
         /** @returns the player who is the next to play
          *  a card in this turn or NULL if there is no player left.
          *
@@ -117,6 +115,5 @@ class Game : public QThread
         CardList m_playedcards;
         CardList m_currstich;
         GameInfo m_gameinfo;
-        int m_laufende{0};
         int m_timesThrownTogether{0};
 };

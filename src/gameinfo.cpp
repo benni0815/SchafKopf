@@ -330,9 +330,9 @@ Card GameInfo::highestCard(const CardList &cards) const
   return Cards::maxElement(cards, less);
 }
 
-int GameInfo::laufende()
+int GameInfo::laufende(const CardList& cards) const
 {
-  if (m_game.mode == GameVariant::RAMSCH)
+  if (mode() == GameVariant::RAMSCH)
     return 0;
 
   /** TODO: jeder spieler sollte eine laufende property haben und
@@ -340,19 +340,18 @@ int GameInfo::laufende()
     * danach können diese in results einfach addiert werden
     */
 
-  auto laufend = spieler()->cards();
-  if (mitspieler())
-  {
-    laufend.append(mitspieler()->cards());
-  }
-
   auto all = Cards::initIds();
   std::sort(std::begin(all), std::end(all), [this] (CardId lhs, CardId rhs) { return evalCard(lhs) < evalCard(rhs); });
 
   int l{0};
   for (auto it = std::rbegin(all); it != std::rend(all); ++it)
   {
-    const auto card = Cards::find(laufend, *it);
+    if (!istTrumpf(*it))
+    {
+      break;
+    }
+
+    const auto card = Cards::find(cards, *it);
     if (card && (l > 0 || it == std::rbegin(all)))
       l++;
     else if ((!card && l < 0) || it == std::rbegin(all))
@@ -363,5 +362,13 @@ int GameInfo::laufende()
     }
   }
 
-  return l;
+  // Laufende are only counted if >= 3. Except for colorless Geier and Wenz (>= 2).
+  int laufendThreshold{3};
+  if (color() == CardId::NoColor
+      && (mode() == GameVariant::GEIER || mode() == GameVariant::WENZ))
+  {
+    laufendThreshold = 2;
+  }
+
+  return std::abs(l) >= laufendThreshold ? l : 0;
 }

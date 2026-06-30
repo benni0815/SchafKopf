@@ -20,30 +20,24 @@ or money who has to give to whom.
 
 class Results{
     public:
-        Results();
+        Results(const Game& game);
         ~Results() = default;
-        
-        void setLaufende( int l ) { m_laufende = l; }
-        void setGame( Game* game );
-        
+
         /** get a message of the game results, which can be displayed
           * to the user.
           */
         QString result();
-        double points( Player* player );
+        double points(const Player* player);
         QString formatedPoints( Player* player );
 
     private:
-        void init();
         void parse();
-    
-    private:        
+        int determineLaufende() const;
 
         QList<Player*> m_winners;
         QList<Player*> m_losers;
         
-        const GameInfo* m_gameinfo{};
-        Game* m_game{};
+        const Game& m_game;
         
         int m_laufende{0};
         

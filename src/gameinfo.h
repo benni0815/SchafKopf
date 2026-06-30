@@ -56,7 +56,7 @@ class GameInfo{
 
         /** calculate the number of "laufende" ticks
           */
-        int laufende();
+        int laufende(const CardList& cards) const;
 
         /** Is a player with the cards @p cards allowed to playe
           * the game @p mode with the color @p color.

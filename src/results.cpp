@@ -15,30 +15,19 @@
 
 #include <QLocale>
 
-
-Results::Results()
-{
-    init();
-}
-
-void Results::init()
-{
-    m_schneider = false;
-    m_schwarz = false;
-    
-    m_winners.clear();
-    m_losers.clear();
-}
+Results::Results(const Game& game)
+: m_game(game)
+{}
 
 QString Results::result()
 {
     parse();
-    bool positive = m_laufende > 0;
+    const bool positive = m_laufende > 0;
    
     QString s;
-    QString schneider = m_schneider ? i18n(" schneider") : QString();
-    QString schwarz = m_schwarz ? i18n(" no-trick") : QString();
-    Player* winner = m_gameinfo->spieler();
+    const QString schneider = m_schneider ? i18n(" schneider") : QString();
+    const QString schwarz = m_schwarz ? i18n(" no-trick") : QString();
+    Player* winner = m_game.gameInfo().spieler();
     bool won = m_points > 60;
     
     if( !winner )
@@ -54,10 +43,11 @@ QString Results::result()
     
     if( m_laufende )
     {
+        s += "\n";
         if( positive )
-            s += "\n" + winner->name() + i18n(" got %1 cards in a row.", m_laufende);
+            s += i18n("%1 got %2 cards in a row.", winner->name(), m_laufende);
         else
-            s += "\n" + winner->name() + i18n(" played without %1 cards in a row.", m_laufende);
+            s += i18n("%1 played without %2 cards in a row.", winner->name(), std::abs(m_laufende));
     }
     
     return s;
@@ -65,112 +55,97 @@ QString Results::result()
 
 void Results::parse()
 {
-    int i;
+    m_schneider = false;
+    m_schwarz = false;
+    m_winners.clear();
+    m_losers.clear();
+    m_laufende = determineLaufende();
 
-    init();
-        
-    if (m_gameinfo->mode() == GameVariant::RAMSCH)
+    const auto players = m_game.players();
+
+    auto createList = [&] (std::function<bool(Player*)> func)
     {
-        // suche den spieler mit den meisten punkten, denn er hat verloren
-        // oder wenn er alle stiche hat, dann hat er mit durchmarsch gewonnen
-        int highest = 0;
-        for( i=0;i<PLAYERS;i++ )
-            if (Cards::calcPoints(m_game->findIndex(i)->stiche()) > Cards::calcPoints(m_game->findIndex(highest)->stiche()))
-                highest = i;
+      QList<Player*> p;
+      std::copy_if(std::begin(players), std::end(players), std::back_inserter(p), func);
+      return p;
+    };
 
-        m_points = Cards::calcPoints(m_game->findIndex(highest)->stiche());
-        if (m_game->findIndex(highest)->stiche().size() == TURNS)
+    const auto& gameInfo = m_game.gameInfo();
+    if (gameInfo.mode() == GameVariant::RAMSCH)
+    {
+        // suche den spieler mit den meisten punkten, denn er hat verloren...
+        auto lessPoints = [] (Player* lhs, Player* rhs) { return Cards::calcPoints(lhs->stiche()) < Cards::calcPoints(rhs->stiche()); };
+        auto it = std::max_element(std::begin(players), std::end(players), lessPoints);
+        if (it == std::end(players))
         {
-            m_winners.append( m_game->findIndex( highest ) );
-            for( i=0;i<PLAYERS;i++ )
-                if( i!=highest )
-                    m_losers.append( m_game->findIndex( i ) );
+          return;
         }
-        else
+
+        const auto mostPointsPlayer = *it;
+        m_points = Cards::calcPoints(mostPointsPlayer->stiche());
+        m_losers = {mostPointsPlayer};
+        m_winners = createList([&] (Player* p) { return p != mostPointsPlayer; });
+
+        // ... oder wenn er alle stiche hat, dann hat er mit durchmarsch gewonnen
+        if (mostPointsPlayer->stiche().size() == TURNS)
         {
-            m_losers.append( m_game->findIndex( highest ) );
-            for( i=0;i<PLAYERS;i++ )
-                if( i!=highest )
-                    m_winners.append( m_game->findIndex( i ) );
+          std::swap(m_losers, m_winners);
         }
     }
     else
     {
-        auto stiche = m_gameinfo->spieler()->stiche();
-        if( m_gameinfo->mitspieler() )
-            stiche.append(m_gameinfo->mitspieler()->stiche());
-       
+        auto isSpieler = [] (const Player* p) { return p->isPlayer(); };
+
+        const auto spielerList = createList(isSpieler);
+        CardList stiche;
+        for (Player* p : spielerList)
+        {
+          stiche.append(p->stiche());
+        }
+
         m_points = Cards::calcPoints(stiche);
         m_schwarz = (stiche.empty() || stiche.size() == NUMCARDS * PLAYERS);
         m_schneider = (m_points < 31 || m_points >= 91 );
-    
-        if( m_points > 60 )
+        m_winners = spielerList;
+        m_losers = createList(std::not_fn(isSpieler));
+        if (m_points <= 60)
         {
-            m_winners.append( m_gameinfo->spieler() );
-            if( m_gameinfo->mitspieler() )
-                m_winners.append( m_gameinfo->mitspieler() );
-                
-            for( i=0;i<PLAYERS;i++ )
-                if( m_game->findIndex( i ) != m_gameinfo->spieler() && 
-                    m_game->findIndex( i ) != m_gameinfo->mitspieler() )
-                    m_losers.append( m_game->findIndex( i ) );
+          std::swap(m_losers, m_winners);
         }
-        else
-        {
-            m_losers.append( m_gameinfo->spieler() );
-            if( m_gameinfo->mitspieler() )
-                m_losers.append( m_gameinfo->mitspieler() );
-                
-            for( i=0;i<PLAYERS;i++ )
-                if( m_game->findIndex( i ) != m_gameinfo->spieler() && 
-                    m_game->findIndex( i ) != m_gameinfo->mitspieler() )
-                    m_winners.append( m_game->findIndex( i ) );
-        }
-                
-        // ab 2 laufende bei wenz und geier
-        if (m_gameinfo->mode() == GameVariant::GEIER || m_gameinfo->mode() == GameVariant::WENZ)
-            m_laufende = ( m_laufende >= 2 || m_laufende <= -2 ) ? m_laufende : 0;
-        // sonst ab 3 laufenden
-        else if (m_gameinfo->mode() == GameVariant::STICHT || m_gameinfo->mode() == GameVariant::RAMSCH
-                || m_gameinfo->mode() == GameVariant::DACHS || m_gameinfo->mode() == GameVariant::RUFSPIEL)
-            m_laufende = ( m_laufende >= 3 || m_laufende <= -3 ) ? m_laufende : 0;
-
-        m_laufende = m_laufende < 0 ? m_laufende * -1 : m_laufende;
     }
 }
 
-void Results::setGame( Game* game )
-{ 
-    m_game = game;
-    m_gameinfo = &game->gameInfo();
+int Results::determineLaufende() const
+{
+  const auto allCards = m_game.allCards();
+  CardList spielerCards;
+  std::copy_if(std::begin(allCards), std::end(allCards), std::back_inserter(spielerCards), [] (const Card& c) { return c.owner->isPlayer(); });
+  return m_game.gameInfo().laufende(spielerCards);
 }
 
-double Results::points( Player* player )
+double Results::points(const Player* player)
 {
     ResultValues r = (Settings::instance()->resultsType() == Settings::MONEY) ? Settings::instance()->moneyResults()
                                                                               : Settings::instance()->pointResults();
     double m = 0.0;
     
     parse();
-        
-    if (m_gameinfo->mode() != GameVariant::RUFSPIEL && m_gameinfo->mode() != GameVariant::RAMSCH)
+
+    const auto& gameMode = m_game.gameInfo().mode();
+    if (gameMode != GameVariant::RUFSPIEL && gameMode != GameVariant::RAMSCH)
         m = r.solo; // SOLO = 20cent
-    else if (m_gameinfo->mode() == GameVariant::RUFSPIEL)
+    else if (gameMode == GameVariant::RUFSPIEL)
         m = r.rufspiel;
-    else if (m_gameinfo->mode() == GameVariant::RAMSCH)
+    else if (gameMode == GameVariant::RAMSCH)
         m = r.ramsch;
         
     m += m_schneider ? r.schneider : 0.0;
     m += m_schwarz ? r.schwarz : 0.0;
     m += m_laufende * r.laufende;
-    m *= pow(2, m_game->timesDoubled());
+    m *= pow(2, m_game.timesDoubled());
     
-    //if( player == m_gameinfo->spieler() || player == m_gameinfo->mitspieler() )
     if( !m_winners.contains( player ) )
         m *= -1.0;
-        
-    //if( player == m_gameinfo->spieler() && !m_gameinfo->mitspieler() )
-    //        m *= 3;
 
     if( m_winners.count() == 1 )
     {
