@@ -16,6 +16,28 @@
 namespace
 {
 
+QList<CardId::Type> getTrumpfTypes(GameVariant::Mode gameMode)
+{
+  const auto map = QMap<GameVariant::Mode, QList<CardId::Type>>{
+    {GameVariant::WENZ, {CardId::Unter}},
+    {GameVariant::GEIER, {CardId::Ober}},
+    {GameVariant::DACHS, {CardId::Sau, CardId::Zehn}},
+  };
+  const auto defaultTrumpf = QList<CardId::Type>{CardId::Ober, CardId::Unter};
+  return map.value(gameMode, defaultTrumpf);
+}
+
+CardId::Color getTrumpfColor(GameVariant game)
+{
+  using Color = CardId::Color;
+  const auto map = QMap<GameVariant::Mode, Color>{
+    {GameVariant::RUFSPIEL, Color::Herz},
+    {GameVariant::RAMSCH, Color::Herz},
+    {GameVariant::DACHS, Color::NoColor},
+  };
+  return map.value(game.mode, game.color);
+}
+
 QString toString(GameVariant::Mode gameMode)
 {
   const auto gameMap = QMap<GameVariant::Mode, QString>{
@@ -91,49 +113,8 @@ int GameInfo::weight(CardId card, GameVariant game)
 
 bool GameInfo::istTrumpf(CardId card, GameVariant game)
 {
-  switch (game.mode)
-  {
-  case GameVariant::RUFSPIEL:
-  case GameVariant::RAMSCH:
-    if (card.type == CardId::Ober || card.type == CardId::Unter || card.color == CardId::Herz)
-    {
-      return true;
-    }
-    break;
-
-  case GameVariant::STICHT:
-    if (card.type == CardId::Ober || card.type == CardId::Unter || card.color == game.color)
-    {
-      return true;
-    }
-    break;
-
-  case GameVariant::GEIER:
-    if (card.type == CardId::Ober || card.color == game.color)
-    {
-      return true;
-    }
-    break;
-
-  case GameVariant::WENZ:
-    if (card.type == CardId::Unter || card.color == game.color)
-    {
-      return true;
-    }
-    break;
-
-  case GameVariant::DACHS:
-    if (card.type == CardId::Sau || card.type == CardId::Zehn)
-    {
-      return true;
-    }
-    break;
-
-  default:
-    break;
-  };
-
-  return false;
+  const auto trumpfTypes = getTrumpfTypes(game.mode);
+  return getTrumpfColor(game) == card.color || trumpfTypes.contains(card.type);
 }
 
 bool GameInfo::istTrumpf(CardId card) const
@@ -222,106 +203,39 @@ bool GameInfo::operator>(const GameInfo& info)
 
 int GameInfo::evalCard(CardId card) const
 {
-  /* Not very nice. Try to find a better way */
+  const auto map = QMap<GameVariant::Mode, QList<CardId::Type>>{
+    {GameVariant::GEIER, {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Unter, CardId::Neun, CardId::Acht, CardId::Sieben}},
+    {GameVariant::WENZ,  {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Ober, CardId::Neun, CardId::Acht, CardId::Sieben}},
+    {GameVariant::DACHS, {CardId::Koenig, CardId::Ober, CardId::Unter, CardId::Neun, CardId::Acht, CardId::Sieben}},
+  };
 
-  int* l_trumpf;
-  int* l_cards;
-  int l_trumpf_std[] = {CardId::Ober, CardId::Unter};
-  int l_trumpf_geier = CardId::Ober;
-  int l_trumpf_wenz = CardId::Unter;
-  int l_trumpf_dachs[] = {CardId::Sau, CardId::Zehn};
-  int l_cards_std[] = {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Neun, CardId::Acht, CardId::Sieben, CardId::NoStich};
-  int l_cards_geier[] = {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Unter, CardId::Neun, CardId::Acht, CardId::Sieben};
-  int l_cards_wenz[] = {CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Ober, CardId::Neun, CardId::Acht, CardId::Sieben};
-  int l_cards_dachs[] = {CardId::Koenig, CardId::Ober, CardId::Unter, CardId::Neun, CardId::Acht, CardId::Sieben, CardId::NoStich};
-  int l_colors[4];
-  int trumpf_index = -1;
-  int cards_index = -1;
-  int colors_index = -1;
-  int trumpf_cnt;
-  int col = CardId::NoColor;
-  int i, a;
+  const auto defaultCards = QList<CardId::Type>{CardId::Sau, CardId::Zehn, CardId::Koenig, CardId::Neun, CardId::Acht, CardId::Sieben};
+  const auto cards = map.value(mode(), defaultCards);
 
-  switch (mode())
+  CardId::Color trumpfColor = getTrumpfColor(m_game);
+  if (trumpfColor == CardId::NoColor)
   {
-  default:
-  case GameVariant::RAMSCH:
-  case GameVariant::RUFSPIEL:
-    trumpf_cnt = 2;
-    l_trumpf = l_trumpf_std;
-    l_cards = l_cards_std;
-    col = CardId::Herz;
-    break;
-  case GameVariant::STICHT:
-    trumpf_cnt = 2;
-    l_trumpf = l_trumpf_std;
-    l_cards = l_cards_std;
-    col = color();
-    break;
-  case GameVariant::GEIER:
-    trumpf_cnt = 1;
-    l_trumpf = &l_trumpf_geier;
-    l_cards = l_cards_geier;
-    col = color();
-    break;
-  case GameVariant::WENZ:
-    //qDebug("Wenz, color: "+ QString::number(gameinfo->color()));
-    trumpf_cnt = 1;
-    l_trumpf = &l_trumpf_wenz;
-    l_cards = l_cards_wenz;
-    col = color();
-    break;
-  case GameVariant::DACHS:
-    trumpf_cnt = 2;
-    l_trumpf = l_trumpf_dachs;
-    l_cards = l_cards_dachs;
-    col = CardId::NoColor;
-    break;
+    trumpfColor = CardId::Eichel;
   }
-  if (col == CardId::NoColor)
+
+  QList<CardId::Color> colors{trumpfColor};
+  for (const auto color : {CardId::Eichel, CardId::Gras, CardId::Herz, CardId::Schellen})
   {
-    col = CardId::Eichel;
-  }
-  l_colors[0] = col;
-  for (i = 0, a = 1; i < 4; i++)
-  {
-    if (col == i)
+    if (trumpfColor != color)
     {
-      continue;
-    }
-    else
-    {
-      l_colors[a++] = i;
+      colors.push_back(color);
     }
   }
-  for (i = 0; i < trumpf_cnt; i++)
+  const auto trumpfTypes = getTrumpfTypes(mode());
+  const int trumpfIndex = trumpfTypes.indexOf(card.type);
+  const int cards_index = cards.indexOf(card.type);
+  const int colors_index = colors.indexOf(card.color);
+
+  if (trumpfIndex != -1)
   {
-    if (card.type == l_trumpf[i])
-    {
-      trumpf_index = i;
-      break;
-    }
+    return CARD_CNT - (trumpfIndex * NUMTRUMPF + card.color);
   }
-  for (i = 0; i < 7; i++)
-  {
-    if (card.type == l_cards[i])
-    {
-      cards_index = i;
-      break;
-    }
-  }
-  for (i = 0; i < 4; i++)
-  {
-    if (card.color == l_colors[i])
-    {
-      colors_index = i;
-      break;
-    }
-  }
-  if (trumpf_index != -1)
-  {
-    return CARD_CNT - (trumpf_index * NUMTRUMPF + card.color);
-  }
+  const auto trumpf_cnt = trumpfTypes.size();
   return CARD_CNT - (trumpf_cnt * NUMTRUMPF + colors_index * (NUMCARDS - trumpf_cnt) + cards_index);
 }
 
