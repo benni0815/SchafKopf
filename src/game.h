@@ -105,7 +105,7 @@ class Game : public QThread
         void run() override;
 
     private:
-        bool terminated{true};
+        std::atomic<bool> terminated{true};
 
         std::array<std::shared_ptr<Player>, PLAYERS> m_players;
         // player who is the next to play a card (for nextPlayer() )

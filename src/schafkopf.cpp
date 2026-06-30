@@ -103,8 +103,6 @@ SchafKopf::SchafKopf(QWidget *parent) : KXmlGuiWindow(parent)
     connect(m_game, &Game::bubble, m_view, &GameCanvas::Bubble, Qt::BlockingQueuedConnection);
     connect(m_game, &Game::playerResults, this, &SchafKopf::slotPlayerResult, Qt::BlockingQueuedConnection);
 
-    connect(this, &SchafKopf::terminate, m_game, &Game::terminate);
-
     QLabel* label = new QLabel(i18n("Results:"));
     label->setAlignment( Qt::AlignHCenter );
 
@@ -158,6 +156,7 @@ SchafKopf::~SchafKopf()
     saveConfig();
     // make sure the thread is really not running
     endGame();
+    m_game->wait();
 }
 
 KAboutData SchafKopf::aboutData()
@@ -276,7 +275,7 @@ void SchafKopf::endGame()
     //m_game->endGame();
     if( !m_terminated )
     {
-        emit terminate();
+        m_game->endGame();
         m_terminated = true;
         m_view->exitLoop();
     }

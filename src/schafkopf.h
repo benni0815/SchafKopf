@@ -38,9 +38,6 @@ class SchafKopf : public KXmlGuiWindow
 
         static KAboutData aboutData();
 
-    signals:
-        void terminate();
-
     private slots:
         /** Configure the carddeck to be used
           */
