@@ -183,7 +183,7 @@ CardList* StrategyBook::possibleCards()
     if( unser_stich )
     {
         // unser stich: suche die karte mit den meisten punkten
-        Card* c = m_self->findSchmiere( allowed );
+        Card* c = m_self->findSchmiere(*allowed);
         // nur karten die hoeher als ein koenig sind schmieren
         if( c && c->points() >= 4 )
             list->append( c );
@@ -197,7 +197,7 @@ CardList* StrategyBook::possibleCards()
         // 2. feststellen ob sich der stich lohnen wuerde
         Card* c = allowed->at( m_game->highestCard( allowed ) );
         if (c && m_game->isHigher(c, highest) && stiche.points() > 6)
-            list->append( m_self->findLowestPossibleCard( highest, allowed ) );
+            list->append(m_self->findLowestPossibleCard(highest, *allowed));
         else
             abspatzen = true;
     }
@@ -206,7 +206,7 @@ CardList* StrategyBook::possibleCards()
     {
         // nichts zum schmieren gefunden
         // abspatzen:
-        Card* c = m_self->findCheapestCard( allowed );
+        Card* c = m_self->findCheapestCard(*allowed );
         if( c && c->points() == 0 )
             list->append( c );
     }

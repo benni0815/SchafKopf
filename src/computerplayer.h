@@ -24,13 +24,13 @@ class ComputerPlayer : public Player
         int rtti() const override { return COMPUTER; }
 
         Card* findHighestCard(const CardList& cards) const;
-        Card *findSchmiere(CardList *cards);        // Nice name, isn't it? :)
+        Card* findSchmiere(const CardList& cards) const;
 
-        Card *findCheapestCard(CardList *cards);
+        Card* findCheapestCard(const CardList& cards) const;
 
         /** Finde die niedrigste Karte aus @p cards um @p highest zu stechen
           */
-        Card *findLowestPossibleCard(Card* highest, CardList *cards);
+        Card* findLowestPossibleCard(Card* highest, const CardList& cards) const;
 
         /** gibt zurueck wievile karten eines typs noch im
           * spiel sind.
@@ -42,8 +42,8 @@ class ComputerPlayer : public Player
         int cardsStillInGame( int c );
 
     private:
-        Card *findCardToPlay(CardList *cards);
-        bool canMakeStich(CardList *cards);
+        Card* findCardToPlay(const CardList& cards);
+        bool canMakeStich(const CardList& cards);
 
         /** Prueft ob der aktuelle Stich der eigenen Spieler Partei
          *  gehoert oder nicht. Dabei werden nur die aktuell

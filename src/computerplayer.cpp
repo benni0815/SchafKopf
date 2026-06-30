@@ -157,7 +157,7 @@ Card *ComputerPlayer::play()
 //    if( allowed->count() == 1 )
 //        return allowed->first();
 
-    auto* ToPlay = findCardToPlay(allowed);
+    auto* ToPlay = findCardToPlay(*allowed);
     if (m_game->currStich().isEmpty())
         m_angespielt->append(ToPlay);
     else
@@ -233,7 +233,7 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
     return nullptr;
 }
 
-Card *ComputerPlayer::findCardToPlay(CardList *cards)
+Card* ComputerPlayer::findCardToPlay(const CardList& cards)
 {
         Card* highestTrump = highestTrumpfInGame();
 
@@ -275,7 +275,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
             }
         }*/
 
-    if(canMakeStich(cards))
+    if (canMakeStich(cards))
     {
         const auto& stich = m_game->currStich();
         bool gestochen = false;
@@ -295,26 +295,27 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
             log("Versuche so niedrig wie möglich zu stechen.");
-            return findLowestPossibleCard(findHighestCard(stich),cards);
+            return findLowestPossibleCard(findHighestCard(stich), cards);
         }
         else
         {
           log("Versuche zu stechen.");
           // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
           if (m_game->currStich().count() == PLAYERS - 1)
-            {
-          return findLowestPossibleCard(findHighestCard(stich),cards);
-
-            } else {
-          return findHighestCard(*cards);
-            }
+          {
+            return findLowestPossibleCard(findHighestCard(stich), cards);
+          }
+          else
+          {
+            return findHighestCard(cards);
+          }
         }
     }
     log("Spiele billigste karte.");
     return findCheapestCard(cards);
 }
 
-Card *ComputerPlayer::findHighestCard(const CardList& cards) const
+Card* ComputerPlayer::findHighestCard(const CardList& cards) const
 {
   Card* high{};
   if (!cards.empty()) high = cards.first();
@@ -332,14 +333,14 @@ Card *ComputerPlayer::findHighestCard(const CardList& cards) const
   return high;
 }
 
-Card *ComputerPlayer::findLowestPossibleCard(Card* highest, CardList *cards)
+Card* ComputerPlayer::findLowestPossibleCard(Card* highest, const CardList& cards) const
 {
-    Card* high = findHighestCard(*cards);
+    Card* high = findHighestCard(cards);
     Card* card;
 
-    for( int i = 0; i < cards->count(); i++)
+    for (int i = 0; i < cards.count(); ++i)
     {
-        card = cards->at( i );
+        card = cards.at(i);
         if( m_game->isHigher( card, highest ) && !m_game->isHigher( card, high ) )
             high = card;
     }
@@ -347,15 +348,15 @@ Card *ComputerPlayer::findLowestPossibleCard(Card* highest, CardList *cards)
     return high;
 }
 
-Card *ComputerPlayer::findSchmiere(CardList *cards)
+Card* ComputerPlayer::findSchmiere(const CardList& cards) const
 {
     Card* schmiere{};
-    if( !cards->empty() ) schmiere = cards->first();
+    if (!cards.empty()) { schmiere = cards.first(); }
     Card* card{};
 
-    for( int i = 0; i < cards->count(); i++)
+    for (int i = 0; i < cards.count(); i++)
     {
-        card = cards->at( i );
+        card = cards.at(i);
         if( card->points() > schmiere->points() )
         {
             schmiere = card;
@@ -366,15 +367,15 @@ Card *ComputerPlayer::findSchmiere(CardList *cards)
     return schmiere;
 }
 
-Card *ComputerPlayer::findCheapestCard(CardList *cards)
+Card* ComputerPlayer::findCheapestCard(const CardList& cards) const
 {
     Card* low{};
-    if( !cards->empty() ) low = cards->first();
+    if (!cards.empty()) { low = cards.first(); }
     Card* card{};
 
-    for( int i = 0; i < cards->count(); i++)
+    for (int i = 0; i < cards.count(); ++i)
     {
-        card = cards->at( i );
+        card = cards.at(i);
         if(card->points()<low->points() )
         {
             low = card;
@@ -384,18 +385,18 @@ Card *ComputerPlayer::findCheapestCard(CardList *cards)
     return low;
 }
 
-bool ComputerPlayer::canMakeStich(CardList *cards)
+bool ComputerPlayer::canMakeStich(const CardList& cards)
 {
     Card* highestCard{};
     Card* card{};
 
     if (!m_game->currStich().empty()) highestCard = m_game->currStich().at(m_game->highestCard());
-    if( !cards->empty() ) card = cards->first();
+    if (!cards.empty()) { card = cards.first(); }
     if(!highestCard)
         return true;
-    for( int i = 0; i < cards->count(); i++)
+    for (int i = 0; i < cards.count(); ++i)
     {
-        card = cards->at( i );
+        card = cards.at(i);
         if(m_game->isHigher(card, highestCard))
             return true;
     }
