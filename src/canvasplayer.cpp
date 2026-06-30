@@ -169,24 +169,23 @@ void CanvasPlayer::init()
                 c->setRotation(270);
             else if(m_position==3)
                 c->setRotation(90);
-    #ifdef CHEAT
-            c->setFrontVisible( true );
-    #else            
-            if( m_is_human )
+
+            if constexpr (DebugMode)
             {
-                if( m_has_doubled )
-                    c->setFrontVisible( true );
-                else
-                {
-                    if( m_is_last )
-                        c->setFrontVisible( z >= NUMCARDS/2 );
-                    else
-                        c->setFrontVisible( z < NUMCARDS/2 );
-                }
+              c->setFrontVisible(true);
             }
             else
-                c->setFrontVisible( false );
-    #endif
+            {
+              if (!m_is_human)
+              {
+                c->setFrontVisible(false);
+                continue;
+              }
+
+              auto visible = m_has_doubled || (m_is_last ? z >= NUMCARDS / 2
+                                                         : z < NUMCARDS / 2);
+              c->setFrontVisible(visible);
+            }
         }
         m_name->show();
     }

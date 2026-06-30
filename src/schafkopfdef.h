@@ -27,11 +27,7 @@ enum { YES, NO };
 /// user visible, this is useful for debugging
 /// and improving the AI.
 /// But it might cause problems in network mode for cheaters!!
-//#define CHEAT
-
-#ifdef CHEAT
-    #warning "CHEATING ENABLED!!!"
-#endif
+constexpr bool DebugMode{false};
 
 /// Enable the simulation mode, might be useful for training
 /// the neuro-net we will surely get soon.
