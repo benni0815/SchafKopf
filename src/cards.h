@@ -13,6 +13,7 @@ namespace Cards
 
 QString toString(CardId::Type type);
 QString toString(CardId::Color color);
+QString toString(const CardId& card);
 QString toString(const Card& card);
 
 int getPoints(const Card& card);

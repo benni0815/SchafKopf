@@ -41,9 +41,14 @@ QString toString(CardId::Type type)
   return typeMap.value(type, i18n("Unknown"));
 }
 
+QString toString(const CardId& card)
+{
+  return QString("%1 %2").arg(toString(card.color)).arg(toString(card.type));
+}
+
 QString toString(const Card& card)
 {
-  return QString("%1 %2").arg(toString(card.id.color)).arg(toString(card.id.type));
+  return toString(card.id);
 }
 
 int getPoints(const Card& card)
