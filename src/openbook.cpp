@@ -117,7 +117,7 @@ CardList* OpenBook::possibleCards()
             CardList* l = r.rule( allowed, m_game );
             if( l )
             {
-                list->appendList( l );
+                list->appendList(*l);
                 if( !l->isEmpty() )
                 {
                     delete l;
@@ -151,8 +151,8 @@ CardList* StrategyBook::possibleCards()
 {
     // the strategy book works only when it is called
     // for the last player    
-    CardList* stiche = m_game->currStich();
-    if( stiche && stiche->count() != 3 )
+    const auto& stiche = m_game->currStich();
+    if (stiche.count() != 3 )
         return nullptr;
         
     CardList* allowed = m_self->allowedCards();
@@ -169,7 +169,7 @@ CardList* StrategyBook::possibleCards()
      *    - stechen
      *    - abspatzen
      */
-    highest = stiche->at( m_game->highestCard() );
+    highest = stiche.at(m_game->highestCard());
     if( highest->owner()->isPlayer() )
     {
         // der stich gehört der spieler partei
@@ -196,7 +196,7 @@ CardList* StrategyBook::possibleCards()
         // 1. feststellen ob wir den stich ueberhaupt machen koennen
         // 2. feststellen ob sich der stich lohnen wuerde
         Card* c = allowed->at( m_game->highestCard( allowed ) );
-        if( c && m_game->isHigher( c, highest ) && stiche->points() > 6 )
+        if (c && m_game->isHigher(c, highest) && stiche.points() > 6)
             list->append( m_self->findLowestPossibleCard( highest, allowed ) );
         else
             abspatzen = true;

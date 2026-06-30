@@ -258,7 +258,7 @@ void CanvasPlayer::setCards( CardList* cards )
     }
 
     m_cards->clear();
-    m_cards->appendList( cards );
+    m_cards->appendList(*cards);
 }
 
 void CanvasPlayer::say( const QString & message, unsigned int )

@@ -40,7 +40,7 @@ class CardList : public QList<Card*>
 
         /** append CardList @p list to this CardList
           */
-        void appendList( CardList* list );
+        void appendList(const CardList& list);
 
         /** returns wether the card color and typedef
           * is in the list

@@ -13,14 +13,11 @@
 Player::Player(unsigned int id, Game* game)
   : m_game(game)
   , m_id(id)
-{
-    m_stiche = new CardList();
-}
+{}
 
 Player::~ Player()
 {
     delete m_cards;
-    delete m_stiche;
 }
 
 const QString & Player::name() const
@@ -73,15 +70,20 @@ bool Player::isPlayer() const
         return false;
 }
 
-CardList* Player::stiche() const
+const CardList& Player::stiche() const
 {
     return m_stiche;
 }
 
+void Player::clearStiche()
+{
+  m_stiche.clear();
+}
+
 void Player::addStich(const CardList& stich)
 {
-    for( int i = 0; i < stich.count(); i++ )
-        m_stiche->append( stich.at( i ) );
+    for (int i = 0; i < stich.count(); ++i)
+        m_stiche.append(stich.at(i));
 }
 
 void Player::removeTrumpf(CardList* liste)
@@ -120,10 +122,10 @@ CardList* Player::PlayerCards()
 
 Card* Player::firstPlayedCard()
 {
-    if(m_game->currStich()->isEmpty()==true)
+    if (m_game->currStich().isEmpty())
         return nullptr;
     else
-        return (const_cast<CardList *>(m_game->currStich())->first());
+        return m_game->currStich().first();
 }
 
 CardList* Player::cardsOfSameType(Card* card)
@@ -184,7 +186,7 @@ CardList* Player::allowedCards()
                 delete allowed;
                 allowed=Sau;
             }
-            else if(m_game->currStich()->count()==0)
+            else if (m_game->currStich().isEmpty())
             {
                 if(Spielfarbe->count()<4)
                 {
@@ -193,7 +195,7 @@ CardList* Player::allowedCards()
                     delete Sau;
                 }
             }
-            else if(m_game->currStich()->count()>0 && m_cards->count()>1)
+            else if (m_game->currStich().count() > 0 && m_cards->count() > 1)
             {
                 allowed->RemoveCards(Sau);      // Rufsau darf nicht geschmiert werden
                 delete Sau;

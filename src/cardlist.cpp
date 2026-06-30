@@ -42,10 +42,12 @@ int CardList::points() const
     return tmp;
 }
 
-void CardList::appendList( CardList* list )
+void CardList::appendList(const CardList& list)
 {
-    for( int i=0;i<list->count();i++)
-        append( list->at( i ) );
+  for (int i = 0; i < list.count(); ++i)
+  {
+    append(list.at(i));
+  }
 }
 
 void CardList::randomize()

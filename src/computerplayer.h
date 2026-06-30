@@ -23,7 +23,7 @@ class ComputerPlayer : public Player
 
         int rtti() const override { return COMPUTER; }
 
-        Card *findHighestCard(CardList *cards);
+        Card* findHighestCard(const CardList& cards) const;
         Card *findSchmiere(CardList *cards);        // Nice name, isn't it? :)
 
         Card *findCheapestCard(CardList *cards);

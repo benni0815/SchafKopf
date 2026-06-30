@@ -82,7 +82,7 @@ void Game::startGame()
     for( i=0;i<PLAYERS;i++)
     {
         m_players[i]->setCards( playercards[i] );
-        m_players[i]->stiche()->clear();
+        m_players[i]->clearStiche();
     }
 
     m_playedcards.clear();
@@ -222,9 +222,9 @@ void Game::gameLoop()
     }
 }
 
-/*const*/ CardList *Game::currStich() //const
+const CardList& Game::currStich() const
 {
-    return &m_currstich;
+  return m_currstich;
 }
 
 void Game::endGame(void)

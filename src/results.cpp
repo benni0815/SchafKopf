@@ -75,11 +75,11 @@ void Results::parse()
         // oder wenn er alle stiche hat, dann hat er mit durchmarsch gewonnen
         int highest = 0;
         for( i=0;i<PLAYERS;i++ )
-            if( m_game->findIndex( i )->stiche()->points() > m_game->findIndex( highest )->stiche()->points() )
+            if (m_game->findIndex(i)->stiche().points() > m_game->findIndex(highest)->stiche().points())
                 highest = i;
 
-        m_points = m_game->findIndex( highest )->stiche()->points();
-        if( m_game->findIndex( highest )->stiche()->count() == TURNS )
+        m_points = m_game->findIndex(highest)->stiche().points();
+        if (m_game->findIndex(highest)->stiche().count() == TURNS)
         {
             m_winners.append( m_game->findIndex( highest ) );
             for( i=0;i<PLAYERS;i++ )
@@ -96,7 +96,7 @@ void Results::parse()
     }
     else
     {
-        CardList stiche( *(m_gameinfo->spieler()->stiche()) );
+        auto stiche = m_gameinfo->spieler()->stiche();
         if( m_gameinfo->mitspieler() )
             stiche.appendList( m_gameinfo->mitspieler()->stiche() );
        

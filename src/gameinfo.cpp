@@ -296,7 +296,7 @@ int GameInfo::laufende()
     CardList* all = new CardList();
     CardList laufend = *(spieler()->cards());
     if( mitspieler() )
-        laufend.appendList( mitspieler()->cards() );
+        laufend.appendList(*mitspieler()->cards());
 
     all->init();
     all->setAutoDelete( false );

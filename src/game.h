@@ -26,9 +26,9 @@ class Game : public QThread
         ~Game() override;
 
         void gameLoop();
-        CardList *currStich();
+        const CardList& currStich() const;
         inline CardList *allCards() { return &m_allcards; }
-        inline CardList *playedCards() { return &m_playedcards; }
+        const CardList& playedCards() const { return m_playedcards; }
         GameInfo *gameInfo();
 
         Player* findId( unsigned int id ) const;

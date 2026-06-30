@@ -2,9 +2,10 @@
 
 #include <QString>
 
+#include "cardlist.h"
+
 
 class Card;
-class CardList;
 class Game;
 class GameInfo;
 
@@ -39,7 +40,8 @@ class Player
         void setName( const QString & n );
         CardList *cards() const;
         void setCards( CardList *cards);
-        CardList* stiche() const;
+        const CardList& stiche() const;
+        void clearStiche();
         void addStich(const CardList& stich);
         inline bool isLast() const { return m_last; }
         inline void setLast( bool b ) { m_last = b; }
@@ -65,7 +67,7 @@ class Player
 
     protected:
         CardList* m_cards{};
-        CardList* m_stiche{};
+        CardList m_stiche;
         Game* m_game{};
 
         QString m_name;
