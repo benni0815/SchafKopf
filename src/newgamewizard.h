@@ -19,7 +19,7 @@ class newgamewizard : public QWizard
 
 public:
     enum __gameType {GAME_LOCAL, GAME_NETWORK_CLIENT, GAME_NETWORK_SERVER};
-    newgamewizard( QWidget *parent = 0 );
+    newgamewizard(QWidget* parent = nullptr);
     int getGame();
 
 protected:

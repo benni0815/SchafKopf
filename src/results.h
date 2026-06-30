@@ -44,8 +44,8 @@ class Results{
         QList<Player*> m_winners;
         QList<Player*> m_losers;
         
-        GameInfo* m_gameinfo;
-        Game* m_game;
+        GameInfo* m_gameinfo{};
+        Game* m_game{};
         
         int m_laufende;
         

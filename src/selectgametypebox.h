@@ -20,7 +20,7 @@ class SelectGameTypeBox : public QWizardPage
 {
     Q_OBJECT
 public:
-    SelectGameTypeBox(QWidget *parent = 0 );
+    SelectGameTypeBox(QWidget* parent = nullptr);
 
     ~SelectGameTypeBox() = default;
     GameInfo* gameInfo() const;

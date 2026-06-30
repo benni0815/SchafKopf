@@ -47,7 +47,7 @@ class CanvasCard : public QObject, public QGraphicsPixmapItem
         int toy;
         QTimer *timer;
 
-        Card* m_card;
+        Card* m_card{};
 
     private slots:
         void disableForbidden();

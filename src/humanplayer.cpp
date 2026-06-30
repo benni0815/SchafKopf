@@ -12,10 +12,7 @@
 
 HumanPlayer::HumanPlayer(unsigned int id, Game* game)
  : Player(id,game)
-{
-    m_allowed = NULL;
-    m_card = NULL;
-}
+{}
 
 HumanPlayer::~HumanPlayer()
 {
@@ -24,7 +21,7 @@ HumanPlayer::~HumanPlayer()
 
 void HumanPlayer::klopfen()
 {
-    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), 0, i18n("Do you want to double?"), true);
+    int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), nullptr, i18n("Do you want to double?"), true);
     m_geklopft = ( *ret == YES );
     delete ret;
     
@@ -39,9 +36,9 @@ Card *HumanPlayer::play()
     int i;
     
     m_allowed = allowedCards();
-    m_card=NULL;
+    m_card = nullptr;
     
-    ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString(), true );
+    ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), nullptr, QString(), true);
     cpy = *ret;
     delete ret;
     
@@ -52,7 +49,7 @@ Card *HumanPlayer::play()
         cpylist[1] = 0;
         m_game->postEvent( ForbiddenCard, id(), cpylist, QString(), true );
 
-        ret=(int*)m_game->postEvent( HumanPlayerGetCard, id(), NULL, QString(), true );
+        ret = (int*)m_game->postEvent(HumanPlayerGetCard, id(), nullptr, QString(), true);
         cpy = *ret;
         delete ret;
     }
@@ -65,7 +62,7 @@ Card *HumanPlayer::play()
         }
            
     delete m_allowed;
-    m_allowed = NULL;
+    m_allowed = nullptr;
     return m_card;
 }
 
@@ -77,7 +74,7 @@ GameInfo* HumanPlayer::gameInfo( bool force )
     }
     else
     {
-        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), NULL, i18n("Do you want to play?"), true);
+        int* ret = (int*)m_game->postEvent(QuestionYesNo, id(), nullptr, i18n("Do you want to play?"), true);
         if( *ret == YES )
         {
             delete ret;
@@ -87,7 +84,5 @@ GameInfo* HumanPlayer::gameInfo( bool force )
             delete ret;
     }
     
-    return NULL;
+    return nullptr;
 }
-
-

@@ -41,7 +41,7 @@ class Game : public QThread
         inline Player* nextPlayer() const { return m_nextPlayer; };
 
         bool isTerminated() const { return terminated; }
-        int highestCard( CardList* list = 0 );
+        int highestCard(CardList* list = nullptr);
         bool isHigher( Card* card, Card* high );
 
         /** returns how many players have doubled
@@ -51,8 +51,8 @@ class Game : public QThread
 
         /** post a event to the parent object
           */
-        void* postEvent( EAction action, unsigned int playerid = 0, int* cardids = NULL,
-                        QString data = QString(), bool wait = false, QStringList* names = NULL );
+        void* postEvent(EAction action, unsigned int playerid = 0, int* cardids = nullptr,
+                        const QString& data = QString(), bool wait = false, QStringList* names = nullptr);
 
         void endGame(void);
 

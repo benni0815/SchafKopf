@@ -139,7 +139,7 @@ CardList* OpenBook::possibleCards()
     else
     {
         delete list;
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -158,11 +158,11 @@ CardList* StrategyBook::possibleCards()
     // for the last player    
     CardList* stiche = m_game->currStich();
     if( stiche && stiche->count() != 3 )
-        return NULL;
+        return nullptr;
         
     CardList* allowed = m_self->allowedCards();
     CardList* list = new CardList();
-    Card* highest = NULL;
+    Card* highest{};
     bool unser_stich = false;
     bool abspatzen = false;
     
@@ -222,6 +222,6 @@ CardList* StrategyBook::possibleCards()
     else
     {
         delete list;
-        return NULL;
+        return nullptr;
     }
 }

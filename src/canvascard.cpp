@@ -12,7 +12,6 @@
 CanvasCard::CanvasCard()
  :  QGraphicsPixmapItem()
 {
-    m_card = NULL;
     m_forbidden = false;
     setFlag( QGraphicsItem::ItemIsSelectable );
     setTransformationMode( Qt::SmoothTransformation );

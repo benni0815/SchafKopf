@@ -19,7 +19,7 @@
 class CanvasText : public QGraphicsSimpleTextItem
 {
     public:
-        CanvasText( const QString & t, const QFont & f, QGraphicsItem *parent = 0 )
+        CanvasText(const QString& t, const QFont& f, QGraphicsItem* parent = nullptr)
             : QGraphicsSimpleTextItem( t, parent )
         {
             setFlag( QGraphicsItem::ItemIsSelectable );
@@ -43,9 +43,7 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
         scene()->addItem( m_stich[i] );
         m_players[i]=new CanvasPlayer( i, scene() );
     }
-    
-    m_item = NULL;
-        
+
     QFont f( "Helvetica", 24 );
     
     m_message = new QGraphicsSimpleTextItem();
@@ -197,7 +195,7 @@ int GameCanvas::getStichRotation( int player )
 int GameCanvas::getCard()
 {
     CanvasPlayer* human = humanPlayer();
-    CanvasCard* c = NULL;
+    CanvasCard* c{};
     unsigned int i;
 
     connect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
@@ -236,7 +234,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
                 disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
 
                 // be sure that focusOutEvent does not use its parameter
-                focusOutEvent( NULL );
+                focusOutEvent(nullptr);
                 m_loop.exit();
             }
         }
@@ -246,7 +244,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
 void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
 {
     unsigned int i=0;
-    CanvasCard* card = 0;
+    CanvasCard* card{};
     for(i=0;i<PLAYERS;i++) {
         if( m_players[i]->id() == player )
         {
@@ -332,7 +330,7 @@ void GameCanvas::redrawPlayers()
 
 void GameCanvas::mousePressEvent(QMouseEvent* e)
 {
-    m_item = NULL;
+    m_item = nullptr;
     double z = 0;
     bool first=true;
     if( e->button() == Qt::LeftButton )
@@ -361,7 +359,7 @@ void GameCanvas::mouseReleaseEvent(QMouseEvent* e)
 {
     if( e->button() == Qt::LeftButton && m_item ) {
         emit clicked( m_item );
-        m_item = NULL;
+        m_item = nullptr;
     }
 }
 
@@ -597,7 +595,7 @@ CanvasPlayer* GameCanvas::humanPlayer() const
     for( i = 0; i < PLAYERS; i++ ) 
         if( m_players[i]->isHuman() )
             return m_players[i];
-    return NULL;
+    return nullptr;
 }
 
 void GameCanvas::exitLoop()

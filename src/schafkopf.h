@@ -34,7 +34,7 @@ class SchafKopf : public KXmlGuiWindow
 {
     Q_OBJECT
     public:
-        SchafKopf(QWidget *parent=0);
+        SchafKopf(QWidget* parent = nullptr);
         ~SchafKopf();
 
         static KAboutData aboutData();

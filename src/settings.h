@@ -68,7 +68,7 @@ class Settings : public QObject
         void setPlayerNames( const QStringList & names );
 
         void loadCardDeck();
-        void configureCardDecks( QWidget* parent = 0 );
+        void configureCardDecks(QWidget* parent = nullptr);
 
         QList<int> splitterSizes( int width );
         void setSplitterSizes( QList<int> list );
@@ -108,7 +108,7 @@ class Settings : public QObject
         void playerNamesChanged();
 
     private:
-        Settings( QObject *parent = 0 );
+        Settings(QObject* parent = nullptr);
         ~Settings();
 
         KSharedConfig::Ptr m_config;

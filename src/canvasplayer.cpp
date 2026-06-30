@@ -222,13 +222,13 @@ void CanvasPlayer::init()
 CanvasCard* CanvasPlayer::canvasCard( int index )
 {
     if( index < 0 || index >= NUMCARDS )
-        return NULL;
+        return nullptr;
 
     CanvasCard* card = m_items[index];
     if( card->isVisible() )
         return card;
     else 
-        return NULL;
+        return nullptr;
 }
 
 CanvasCard* CanvasPlayer::hasCard( int cardid ) const
@@ -239,7 +239,7 @@ CanvasCard* CanvasPlayer::hasCard( int cardid ) const
         if(card->card()->id() == cardid )
             return card;
     }
-    return NULL;
+    return nullptr;
 }
         
 void CanvasPlayer::cardPlayed( Card* c )
@@ -256,7 +256,7 @@ void CanvasPlayer::setCards( CardList* cards )
     int i;
     for( i = 0; i < NUMCARDS; i++ ) 
     {
-        m_items[i]->setCard( NULL );
+        m_items[i]->setCard(nullptr);
     }
 
     m_cards->clear();

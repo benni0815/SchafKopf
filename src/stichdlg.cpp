@@ -42,7 +42,7 @@ StichDlg::~StichDlg()
 {
 }
 
-void StichDlg::changed( const QString & name, int* list, QStringList* playerlist )
+void StichDlg::changed(const QString& name, int* list, QStringList* playerlist)
 {
     CardList stich( list );
     stich.setAutoDelete( true );
@@ -71,5 +71,5 @@ void StichDlg::changed( const QString & name, int* list, QStringList* playerlist
 
 void StichDlg::reset()
 {
-    changed( 0, NULL, NULL );
+  changed({}, nullptr, nullptr);
 }

@@ -480,5 +480,5 @@ GameInfo* SchafKopf::selectGame( bool force, int* cardids )
     if( sgw.exec() == QDialog::Accepted )
         return sgw.gameInfo();
     else
-        return NULL;
+        return nullptr;
 }

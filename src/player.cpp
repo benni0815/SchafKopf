@@ -16,7 +16,6 @@ Player::Player(unsigned int id, Game* game)
     m_stiche = new CardList();
     m_points = 0.0;
     m_id=id;
-    m_cards = NULL;
 
     m_has_doubled = false;
     m_geklopft = false;
@@ -127,7 +126,7 @@ CardList* Player::PlayerCards()
 Card* Player::firstPlayedCard()
 {
     if(m_game->currStich()->isEmpty()==true)
-        return NULL;
+        return nullptr;
     else
         return (const_cast<CardList *>(m_game->currStich())->first());
 }
@@ -138,7 +137,7 @@ CardList* Player::cardsOfSameType(Card* card)
     CardList* SpielerFarbe;
     CardList* AntiMaske;
 
-    if(card==NULL)
+    if (!card)
         return SpielerKarten; // müssen alle Karten zurückgegeben werden
     else
     {

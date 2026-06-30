@@ -64,9 +64,9 @@ class Player
         bool hasTrumpf(CardList* liste);
 
     protected:
-        CardList *m_cards;
-        CardList *m_stiche;
-        Game *m_game;
+        CardList* m_cards{};
+        CardList* m_stiche{};
+        Game* m_game{};
 
         QString m_name;
 

@@ -10,7 +10,7 @@
 #include <QPixmap>
 
 
-QPixmap* Card::m_background = 0;
+QPixmap* Card::m_background = nullptr;
 
 Card::Card( const int id )
 {
@@ -43,8 +43,8 @@ Card::~Card()
 
 void Card::init( const enum EType t, const enum EColor c  )
 {
-    m_pixmap = NULL;
-    m_owner = NULL;
+    m_pixmap = nullptr;
+    m_owner = nullptr;
     
     m_card = t;
     m_color = c;
@@ -120,12 +120,12 @@ bool Card::isEqual(Card *othercard)
 void Card::cardDeckChanged()
 {
     delete m_pixmap;
-    m_pixmap = NULL;
+    m_pixmap = nullptr;
     
     if( m_background ) 
     {
         delete m_background;
-        m_background = NULL;
+        m_background = nullptr;
     }
 }
 

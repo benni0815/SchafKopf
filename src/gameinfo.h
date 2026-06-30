@@ -61,6 +61,6 @@ class GameInfo{
         bool m_valid;
         int m_color;
         __mode m_mode;
-        Player *m_spieler;
-        Player *m_mitspieler;
+        Player* m_spieler{};
+        Player* m_mitspieler{};
 };

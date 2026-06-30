@@ -26,7 +26,7 @@ class PreferencesDlg : public KPageDialog
 {
     Q_OBJECT
     public:
-        PreferencesDlg(QWidget *parent = 0 );
+        PreferencesDlg(QWidget* parent = nullptr);
         ~PreferencesDlg();
 
     protected:

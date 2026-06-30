@@ -106,8 +106,7 @@ void ComputerPlayer::init()
 
 Card *ComputerPlayer::play()
 {
-    CardList* allowed=NULL;
-    Card* ToPlay;
+    CardList* allowed{};
     int i;
 
     if( m_game->currStich()->isEmpty() )
@@ -156,7 +155,7 @@ Card *ComputerPlayer::play()
 //    if( allowed->count() == 1 )
 //        return allowed->first();
 
-    ToPlay=findCardToPlay(allowed);
+    auto* ToPlay = findCardToPlay(allowed);
     if(m_game->currStich()->isEmpty())
         m_angespielt->append(ToPlay);
     else
@@ -229,7 +228,7 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
         return gi;
     }
     
-    return NULL;
+    return nullptr;
 }
 
 Card *ComputerPlayer::findCardToPlay(CardList *cards)
@@ -315,9 +314,9 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
 
 Card *ComputerPlayer::findHighestCard(CardList *cards)
 {
-    Card* high = 0;
+  Card* high{};
     if( !cards->empty() ) high = cards->first();
-    Card* card = 0;
+    Card* card{};
 
     for( int i = 0; i < cards->count(); i++)
     {
@@ -348,9 +347,9 @@ Card *ComputerPlayer::findLowestPossibleCard(Card* highest, CardList *cards)
 
 Card *ComputerPlayer::findSchmiere(CardList *cards)
 {
-    Card *schmiere = 0;
+    Card* schmiere{};
     if( !cards->empty() ) schmiere = cards->first();
-    Card *card = 0;
+    Card* card{};
 
     for( int i = 0; i < cards->count(); i++)
     {
@@ -367,9 +366,9 @@ Card *ComputerPlayer::findSchmiere(CardList *cards)
 
 Card *ComputerPlayer::findCheapestCard(CardList *cards)
 {
-    Card* low = 0;
+    Card* low{};
     if( !cards->empty() ) low = cards->first();
-    Card* card = 0;
+    Card* card{};
 
     for( int i = 0; i < cards->count(); i++)
     {
@@ -385,7 +384,8 @@ Card *ComputerPlayer::findCheapestCard(CardList *cards)
 
 bool ComputerPlayer::canMakeStich(CardList *cards)
 {
-    Card *highestCard = 0, *card = 0;
+    Card* highestCard{};
+    Card* card{};
 
     if( !m_game->currStich()->empty() ) highestCard = m_game->currStich()->at( m_game->highestCard() );
     if( !cards->empty() ) card = cards->first();
@@ -402,7 +402,7 @@ bool ComputerPlayer::canMakeStich(CardList *cards)
 
 bool ComputerPlayer::ownStich()
 {
-    Card* highestCard = 0;
+    Card* highestCard{};
     if( !m_game->currStich()->empty() ) highestCard = m_game->currStich()->at(m_game->highestCard());
 
     /* The stich cannot belong to us if we are to play
@@ -449,7 +449,7 @@ Card *ComputerPlayer::highestTrumpfInGame()
     if( trumpfs->count() )
         c = trumpfs->at(trumpfs->count()-1);
     else
-        c = 0;
+        c = nullptr;
     delete trumpfs;
     return c;
 }

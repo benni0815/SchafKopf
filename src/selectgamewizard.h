@@ -24,7 +24,7 @@ class SelectGameWizard : public QWizard
 
 public:
 
-    SelectGameWizard(bool force, CardList* list, QWidget *parent = 0 );
+    SelectGameWizard(bool force, CardList* list, QWidget* parent = nullptr);
     ~SelectGameWizard();
     CardList* getCardList();
     GameInfo* gameInfo();

@@ -17,8 +17,6 @@ GameInfo::GameInfo()
 {
     m_color=Card::NOCOLOR;
     m_mode=GameInfo::STICHT;
-    m_spieler=0;
-    m_mitspieler=0;
     m_valid = false;
 }
 

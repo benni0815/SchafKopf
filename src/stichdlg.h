@@ -19,10 +19,10 @@ class StichDlg : public QDialog
 {
     Q_OBJECT
     public:
-        StichDlg(QWidget *parent = 0 );
+        StichDlg(QWidget* parent = nullptr);
         ~StichDlg();
         
-        void changed( const QString & name, int* list, QStringList* players );
+        void changed(const QString& name, int* list, QStringList* players);
         
     private:
         void reset();

@@ -18,6 +18,6 @@ class HumanPlayer : public Player
         int rtti() const { return HUMAN; }        
         
     private:
-        Card* m_card;
-        CardList* m_allowed;
+        Card* m_card{};
+        CardList* m_allowed{};
 };

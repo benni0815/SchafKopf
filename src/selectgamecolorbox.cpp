@@ -24,8 +24,6 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
 {
     setTitle(i18n("Step 2/2: Select Color"));
 
-    m_gameinfo=0;
-
     this->parent=(SelectGameWizard*)parent;
 
     labelEichel = new QPushButton( this );
@@ -117,7 +115,7 @@ void SelectGameColorBox::colorChanged()
 
 void SelectGameColorBox::statusChanged()
 {
-    if(m_gameinfo!=0)
+    if (m_gameinfo)
     {
         switch(m_gameinfo->mode())
         {
@@ -236,10 +234,10 @@ GameInfo* SelectGameColorBox::getGameInfo()
 
 void SelectGameColorBox::cleanGameInfo()
 {
-    if(m_gameinfo!=0)
+    if (m_gameinfo)
     {
         delete m_gameinfo;
-        m_gameinfo=0;
+        m_gameinfo = nullptr;
     }
 }
 

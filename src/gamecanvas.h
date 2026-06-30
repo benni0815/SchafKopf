@@ -22,7 +22,7 @@ class GameCanvas : public QGraphicsView
     Q_OBJECT
     
     public:
-        GameCanvas(QGraphicsScene* gs, QWidget *parent = 0 );
+        GameCanvas(QGraphicsScene* gs, QWidget *parent = nullptr);
         ~GameCanvas();
         
         /** the user has to click a card to play
@@ -103,7 +103,8 @@ class GameCanvas : public QGraphicsView
         CanvasPlayer* m_players[PLAYERS];
         CanvasCard* m_stich[PLAYERS];
         
-        QGraphicsItem* m_item; // currently clicked item
+        // currently clicked item
+        QGraphicsItem* m_item{};
 
         QGraphicsSimpleTextItem* m_message;
         CanvasText* m_yes;

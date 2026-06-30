@@ -24,7 +24,7 @@ class SelectGameColorBox : public QWizardPage
     Q_OBJECT
 
 public:
-    SelectGameColorBox( QWidget *parent = 0 );
+    SelectGameColorBox(QWidget* parent = nullptr);
     void cleanGameInfo();
 
     ~SelectGameColorBox() = default;
@@ -33,7 +33,7 @@ public:
     bool getFinish();
 
 protected:
-    GameInfo* m_gameinfo;
+    GameInfo* m_gameinfo{};
     QRadioButton* checkFarblos;
     QRadioButton* checkEichel;
     QRadioButton* checkGras;

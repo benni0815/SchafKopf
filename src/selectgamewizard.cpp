@@ -33,7 +33,7 @@ GameInfo* SelectGameWizard::gameInfo()
 {
     if(box2)
        return(box2->getGameInfo());
-    return NULL;
+    return nullptr;
 }
 
 void SelectGameWizard::pageChanged( int id )
