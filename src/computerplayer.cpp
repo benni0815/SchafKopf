@@ -43,7 +43,6 @@ void ComputerPlayer::klopfen()
     int start = ( isLast() ? anz : 0 );
     int ende = start + anz;
     int count = 0;
-    GameInfo* info;
     m_geklopft = false;
     
     /** check 2 possibilities:
@@ -64,15 +63,13 @@ void ComputerPlayer::klopfen()
     }
 
     // are all cards trump?
-    info = new GameInfo;
-    info->setMode( GameInfo::STICHT );
-    info->setColor( Card::HERZ );
+    GameInfo info;
+    info.setMode(GameInfo::STICHT);
+    info.setColor(Card::HERZ);
     count = 0;
-    for( i=start;i<ende;i++ )
-        if (m_cards.at(i)->card() == Card::SAU || info->istTrumpf(m_cards.at(i)))
+    for (int i = start; i < ende; ++i)
+        if (m_cards.at(i)->card() == Card::SAU || info.istTrumpf(m_cards.at(i)))
             count++;
-
-    delete info;
 
     if( count == anz )
     {
