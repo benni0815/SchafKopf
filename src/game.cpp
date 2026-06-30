@@ -27,16 +27,18 @@ Game::Game(QSemaphore* semaphore, QObject *parent )
     int playerId{0};
 
 #ifndef SIMULATION_MODE
-    // Create our player objects
-    // delete these only in the destructor    
-    m_players[0] = new HumanPlayer(playerId++, this);
+    m_players[0] = std::make_shared<HumanPlayer>(playerId++, this);
 
-    for (int i = 1; i < PLAYERS; ++i)
-        m_players[i] = new ComputerPlayer(playerId++, this);
+    for (size_t i = 1; i < m_players.size(); ++i)
+    {
+      m_players[i] = std::make_shared<ComputerPlayer>(playerId++, this);
+    }
 #else
-    for (int i = 0; i < PLAYERS; ++i)
-        m_players[i] = new ComputerPlayer(playerId++, this);
-#endif // SIMULATION_MODE    
+    for (auto& player : m_players)
+    {
+      player = std::make_shared<ComputerPlayer>(playerId++, this);
+    }
+#endif // SIMULATION_MODE
 
     updatePlayerNames();
     
@@ -45,18 +47,6 @@ Game::Game(QSemaphore* semaphore, QObject *parent )
       connect( Settings::instance(), SIGNAL( resultsTypeChanged() ), this, SLOT( resetGameResults() ) );
       connect( Settings::instance(), SIGNAL( playerNamesChanged() ), this, SLOT( updatePlayerNames() ) );
     */
-}
-
-Game::~Game()
-{
-    unsigned int i;
-
-    m_currstich.clear();
-    for(i=0;i<PLAYERS;i++)
-    {
-        delete m_players[i];
-        m_players[i] = nullptr;
-    }
 }
 
 void Game::run()
@@ -107,7 +97,7 @@ void Game::gameLoop()
         // doubling when gameStarted is emited.
         for(i=0;i<PLAYERS;i++)
         {
-            tmp[i]=m_players[(i+gamecnt)%PLAYERS];
+            tmp[i] = m_players[(i + gamecnt) % PLAYERS].get();
             if (i == PLAYERS - 1)
                 postEvent( PlayerIsLast, tmp[i]->id() );
         }
@@ -185,11 +175,11 @@ void Game::gameLoop()
             // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
             {
-                if(m_players[realindex]==tmp[index])
+                if (m_players[realindex].get() == tmp[index])
                     break;
             }
             for( a = 0; a < PLAYERS; a++ )
-                tmp[a]=m_players[(a+realindex)%PLAYERS];
+                tmp[a] = m_players[(a + realindex) % PLAYERS].get();
         }
 
         if(!terminated)
@@ -230,14 +220,14 @@ Player* Game::findId( unsigned int id ) const
     for( unsigned int i = 0; i < PLAYERS; i++)
     {
         if( id == m_players[i]->id() )
-            return m_players[i];
+            return m_players[i].get();
     }
     return nullptr;
 }
 
 Player* Game::findIndex( unsigned int index ) const
 {
-    return (index < PLAYERS ? m_players[index] : nullptr);
+    return (index < PLAYERS ? m_players[index].get() : nullptr);
 }
 
 int Game::highestCard( CardList* list )
@@ -307,7 +297,7 @@ void Game::gameResults()
 
     for( unsigned int i=0;i<PLAYERS;i++)
     {
-        postEvent(PlayerResults, m_players[i]->id(), {}, r.formatedPoints(m_players[i]), true);
+        postEvent(PlayerResults, m_players[i]->id(), {}, r.formatedPoints(m_players[i].get()), true);
         // emit playerResult( m_players[i]->name(), r->formatedPoints(m_players[i])  );
     }
 

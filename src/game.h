@@ -23,7 +23,7 @@ class Game : public QThread
 
     public:
         Game(QSemaphore* semaphore, QObject *parent);
-        ~Game() override;
+        ~Game() override = default;
 
         void gameLoop();
         const CardList& currStich() const;
@@ -102,7 +102,7 @@ class Game : public QThread
         QSemaphore* m_semaphore{};
         bool terminated{true};
 
-        Player *m_players[PLAYERS];
+        std::array<std::shared_ptr<Player>, PLAYERS> m_players;
         // player who is the next to play a card (for nextPlayer() )
         Player *m_nextPlayer{};
 
