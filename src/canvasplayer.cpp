@@ -32,12 +32,15 @@ CanvasPlayer::CanvasPlayer(int i, QGraphicsScene* scene)
     m_bubbleTimer.setInterval(std::chrono::seconds(1));
     QObject::connect(&m_bubbleTimer, &QTimer::timeout, [this]() { m_bubble->hide(); });
 
-#ifndef SIMULATION_MODE
-    // TODO: This should be passed as flag depending on Player::isHuman();
-    m_is_human = (m_id == 0);
-#else
-    m_is_human = false;
-#endif // SIMULATION_MODE
+    if constexpr (SIMULATION_MODE)
+    {
+      m_is_human = false;
+    }
+    else
+    {
+      // TODO: This should be passed as flag depending on Player::isHuman();
+      m_is_human = (m_id == 0);
+    }
 
 }
 
