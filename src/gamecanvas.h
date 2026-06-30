@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "card.h"
 #include "schafkopfdef.h"
 
 #include <QGraphicsView>
@@ -10,7 +11,6 @@
 
 
 class CanvasCard;
-class Card;
 class Game;
 class CanvasPlayer;
 class CanvasText;
@@ -27,12 +27,12 @@ class GameCanvas : public QGraphicsView
         
         /** the user has to click a card to play
           */
-        void getCard(int* card);
+        void getCard(Card::Id* card);
 
         /** the user played card, which
           * is forbidden to play!
           */
-        void cardForbidden( int cardid );
+        void cardForbidden(Card::Id cardid);
 
         /** ask the user a question and allow him to make a decision
           */
@@ -64,10 +64,10 @@ class GameCanvas : public QGraphicsView
         void exitLoop();
 
     public slots:
-        void setPlayerCards(unsigned int id, const std::vector<int>& cardIds);
+        void setPlayerCards(unsigned int id, const std::vector<Card::Id>& cardIds);
         void setPlayerName(unsigned int id, const QString& name);
         void redrawPlayers();
-        void slotPlayerPlayedCard( unsigned int player, int cardid );
+        void slotPlayerPlayedCard(unsigned int player, Card::Id cardid);
         void slotPlayerMadeStich(unsigned int);
                 
     signals:
@@ -97,6 +97,7 @@ class GameCanvas : public QGraphicsView
         
     private:
         int m_result{0};
+        Card::Id m_resultCard{};
         
         QList<QGraphicsItem*> m_focus_list;
         CanvasPlayer* m_players[PLAYERS];

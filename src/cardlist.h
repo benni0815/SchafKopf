@@ -19,10 +19,7 @@ class CardList : public QList<Card*>
     public:
         CardList() = default;
 
-        /** Creates a card list from a zero terminated list of integers
-          * as you can create it using toIntList()
-          */
-        CardList(const std::vector<int>& cardIds);
+        CardList(const std::vector<Card::Id>& cardIds);
 
         /** initialize this card list with a default card
           * deck of 32 cards.
@@ -43,11 +40,7 @@ class CardList : public QList<Card*>
           */
         void appendList(const CardList& list);
 
-        /** returns wether the card color and typedef
-          * is in the list
-          */
-        bool contains(int color, int type) const;
-        bool contains(int cardid) const;
+        bool contains(Card::Id cardid) const;
 
         void removeCard( uint index );
         void removeCard( Card* card );
@@ -57,7 +50,7 @@ class CardList : public QList<Card*>
 
         void sort(EvalFunc eval);
 
-        std::vector<int> toInts() const;
+        std::vector<Card::Id> toIds() const;
 
         void setAutoDelete( bool autoDelete ) { m_autoDelete = autoDelete; }
 

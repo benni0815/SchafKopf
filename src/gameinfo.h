@@ -54,7 +54,7 @@ class GameInfo{
         /** Is a player with the cards @p cards allowed to playe
           * the game @p mode with the color @p color.
           */
-        static bool isAllowed(const CardList& cards, int mode, int color );
+        static bool isAllowed(const CardList& cards, int mode, Card::Color color);
 
         bool operator>(const GameInfo& info);
 

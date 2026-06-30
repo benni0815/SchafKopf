@@ -59,8 +59,8 @@ class Game : public QThread
         void gameEnded();
         void playerDoubled(const QString& message);
         void playerIsLast(unsigned int playerId);
-        void playerMadeStich(unsigned int playerId, std::vector<int> cardIds, const QString& playerName, const QStringList& playerNames);
-        void cardPlayed(unsigned int playerId, int cardId);
+        void playerMadeStich(unsigned int playerId, std::vector<Card::Id> cardIds, const QString& playerName, const QStringList& playerNames);
+        void cardPlayed(unsigned int playerId, Card::Id cardId);
         void redrawPlayers();
         void gameInfoSetup();
         void playerResults(unsigned int playerId, const QString& formattedPoints);

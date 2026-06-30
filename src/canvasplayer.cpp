@@ -4,7 +4,6 @@
 #include "canvasplayer.h"
 
 #include "canvascard.h"
-#include "card.h"
 #include "cardlist.h"
 #include "settings.h"
 
@@ -232,7 +231,7 @@ CanvasCard* CanvasPlayer::canvasCard( int index )
         return nullptr;
 }
 
-CanvasCard* CanvasPlayer::hasCard( int cardid ) const
+CanvasCard* CanvasPlayer::hasCard(Card::Id cardid) const
 {
     for(unsigned int i=0;i<NUMCARDS;i++)
     {

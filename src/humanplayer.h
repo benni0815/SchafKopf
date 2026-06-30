@@ -18,10 +18,10 @@ class HumanPlayer : public Player
         std::optional<GameInfo> gameInfo(bool force = false) override;
         
     signals:
-        void forbiddenCard(unsigned int cardId);
+        void forbiddenCard(Card::Id cardId);
         void questionYesNo(const QString& question, int* result);
-        void getCard(int* card);
-        void selectGame(GameInfo* gameInfo, const std::vector<int> cardIds, bool force = false);
+        void getCard(Card::Id* card);
+        void selectGame(GameInfo* gameInfo, const std::vector<Card::Id>& cardIds, bool force = false);
 
     private:
         Card* m_card{};

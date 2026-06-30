@@ -117,7 +117,7 @@ bool GameInfo::istTrumpf(Card *card) const
   * 1. is it allowed to play this game with this cards (needed for callgames)
   * 2. is it allowed to play this game according to the users preferences
   */
-bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
+bool GameInfo::isAllowed(const CardList& cards, int mode, Card::Color color)
 {
   // it is never allowed to decide to play Ramsch
   if (mode == GameInfo::RAMSCH)
@@ -125,7 +125,7 @@ bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
 
   if (mode == GameInfo::RUFSPIEL)
   {
-    if (cards.contains(color, Card::Sau) || color == Card::Herz)
+    if (cards.contains({Card::Sau, color}) || color == Card::Herz)
       return false;
 
     // ok now we have to test if we have a card in this color with is no trumpf_index

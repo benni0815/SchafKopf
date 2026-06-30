@@ -8,7 +8,7 @@
 #include <QRandomGenerator>
 
 
-CardList::CardList(const std::vector<int>& cardIds)
+CardList::CardList(const std::vector<Card::Id>& cardIds)
 {
   for (const auto id : cardIds)
   {
@@ -91,19 +91,10 @@ CardList CardList::FindCards(Card::Color color, Card::Type type)
     return found;
 }
 
-bool CardList::contains(int color, int type) const
+bool CardList::contains(Card::Id cardid) const
 {
-    return contains( color + type );
-}
-
-bool CardList::contains(int cardid) const
-{
-    for( int i = 0; i < this->count(); i++ )
-    {
-        if( at(i)->id() == cardid )
-            return true;
-    }
-    return false;
+  return std::any_of(begin(), end(),
+                     [&] (Card* c) { return c->id() == cardid; });
 }
 
 void CardList::RemoveCards(const CardList& itemsToRem)
@@ -147,14 +138,11 @@ void CardList::sort(EvalFunc eval)
     }
 }
 
-std::vector<int> CardList::toInts() const
+std::vector<Card::Id> CardList::toIds() const
 {
-  std::vector<int> ints;
-  for (int i = 0; i < count(); ++i)
-  {
-    ints.push_back(at(i)->id());
-  }
-  return ints;
+  std::vector<Card::Id> ids;
+  std::transform(std::begin(*this), std::end(*this), std::back_inserter(ids), [] (Card* card) { return card->id(); });
+  return ids;
 }
 
 void CardList::removeCard( uint index )

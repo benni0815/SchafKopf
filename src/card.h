@@ -26,7 +26,7 @@ public:
     Color color{NoColor};
   };
 
-  Card( const int id );
+  Card(const Id& id);
   Card(const Type t, const Color c);
   ~Card() = default;
 
@@ -39,6 +39,8 @@ public:
   /// return how much points the card has.
   /// e.g. king = 4 points
   int points() const;
+
+  Id id() const;
 
   /// return the color of the card.
   /// e.g. heart.
@@ -69,10 +71,6 @@ public:
 
   bool isEqual(const Card* const othercard) const;
 
-  /// a id(). Using this id the card can be quickly identified
-  /// as the id() is calculated using color and type.
-  int id() const;
-
   /// Call this whenever the carddeck has changed and
   /// the internal pixmap should be reloaded.
   void cardDeckChanged();
@@ -82,10 +80,18 @@ public:
   QString toString() const;
 
 private:
-  void init(const Type t, const Color c);
-
   Id m_id{Type::NoStich, Color::NoColor};
   Player* m_owner{};
 
   QPixmap m_pixmap;
 };
+
+inline bool operator==(const Card::Id& lhs, const Card::Id& rhs)
+{
+  return lhs.type == rhs.type && lhs.color == rhs.color;
+}
+
+inline bool operator!=(const Card::Id& lhs, const Card::Id& rhs)
+{
+  return !(lhs == rhs);
+}

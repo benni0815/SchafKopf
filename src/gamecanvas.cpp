@@ -102,7 +102,7 @@ GameCanvas::~GameCanvas()
     }
 }
 
-void GameCanvas::cardForbidden( int cardid )
+void GameCanvas::cardForbidden(Card::Id cardid)
 {
     for(unsigned int z=0;z<PLAYERS;z++)
     {
@@ -191,14 +191,14 @@ int GameCanvas::getStichRotation( int player )
     return r;
 }
 
-void GameCanvas::getCard(int* card)
+void GameCanvas::getCard(Card::Id* card)
 {
     CanvasPlayer* human = humanPlayer();
     CanvasCard* c{};
     unsigned int i;
 
     connect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
-    m_result = -1;
+    m_resultCard = Card::Id{};
 
     if( hasFocus() && human )
         for( i=0;i<NUMCARDS;i++)
@@ -215,7 +215,7 @@ void GameCanvas::getCard(int* card)
 
     if (card)
     {
-      *card = m_result;
+      *card = m_resultCard;
     }
 }
 
@@ -232,7 +232,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
         {
             if( m_players[i]->isHuman() && m_players[i]->hasCard( card->card()->id() ) )
             {
-                m_result = card->card()->id();
+                m_resultCard = card->card()->id();
                 disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
 
                 // be sure that focusOutEvent does not use its parameter
@@ -243,7 +243,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
     }
 }
 
-void GameCanvas::slotPlayerPlayedCard( unsigned int player, int cardid )
+void GameCanvas::slotPlayerPlayedCard(unsigned int player, Card::Id cardid)
 {
     unsigned int i=0;
     CanvasCard* card{};
@@ -588,7 +588,7 @@ void GameCanvas::resetPlayerCards()
         m_players[i]->setCards( &list );
 }
 
-void GameCanvas::setPlayerCards(unsigned int id, const std::vector<int>& cards)
+void GameCanvas::setPlayerCards(unsigned int id, const std::vector<Card::Id>& cards)
 {
     int i;
     CardList list( cards );

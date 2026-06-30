@@ -65,7 +65,7 @@ class Player : public QObject
         void removeTrumpf(CardList& liste);
 
     signals:
-        void gotCards(unsigned int playerId, const std::vector<int>& cardIds);
+        void gotCards(unsigned int playerId, const std::vector<Card::Id>& cardIds);
         void doubled(unsigned int playerId);
         void nameChanged(unsigned int playerId, const QString& name);
 

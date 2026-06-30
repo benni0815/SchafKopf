@@ -28,10 +28,10 @@ Card *HumanPlayer::play()
     auto allowed = allowedCards();
     m_card = nullptr;
 
-    int cpy{};
+    Card::Id cpy;
     emit getCard(&cpy);
 
-    while( cpy != -1 && !allowed.contains( cpy ) )
+    while( cpy != Card::Id{Card::Type::NoStich} && !allowed.contains( cpy ) )
     {
         emit forbiddenCard(cpy);
         emit getCard(&cpy);
@@ -53,7 +53,7 @@ std::optional<GameInfo> HumanPlayer::gameInfo(bool force)
     if( force )
     {
       GameInfo gameInfo;
-      emit selectGame(&gameInfo, m_cards.toInts(), true);
+      emit selectGame(&gameInfo, m_cards.toIds(), true);
       return gameInfo;
     }
     else
@@ -63,7 +63,7 @@ std::optional<GameInfo> HumanPlayer::gameInfo(bool force)
       if (result == YES)
       {
         GameInfo gameInfo;
-        emit selectGame(&gameInfo, m_cards.toInts());
+        emit selectGame(&gameInfo, m_cards.toIds());
         return gameInfo;
       }
     }

@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "card.h"
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -85,7 +87,7 @@ class SchafKopf : public KXmlGuiWindow
 
     private:
         void setupActions();
-        void selectGame(GameInfo* gameInfo, const std::vector<int>& cardids, bool force = false);
+        void selectGame(GameInfo* gameInfo, const std::vector<Card::Id>& cardids, bool force = false);
 
         bool m_terminated{true};
 

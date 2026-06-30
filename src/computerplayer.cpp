@@ -140,7 +140,7 @@ std::optional<GameInfo> ComputerPlayer::gameInfo(bool force)
     {
         for (int z = Card::NoColor; z <= Card::Schellen; z++)
         {
-            if (!GameInfo::isAllowed(m_cards, i, z ))
+            if (!GameInfo::isAllowed(m_cards, i, Card::Color(z)))
               continue;
          
             game_data d;

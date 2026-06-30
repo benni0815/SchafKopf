@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "card.h"
 #include "schafkopfdef.h"
 
 #include <QTimer>
@@ -45,8 +46,8 @@ class CanvasPlayer{
         
         CanvasCard* canvasCard( int index );
         void cardPlayed( Card* c );
-        CanvasCard* hasCard( int cardid ) const; 
-        
+        CanvasCard* hasCard(Card::Id cardid) const;
+
     private:
         void create();
 

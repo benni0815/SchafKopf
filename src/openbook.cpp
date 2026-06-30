@@ -41,7 +41,7 @@ namespace OpeningRules
     
     RULE( player1, "davon-laufen - haegt von allowedCards ab und laeuft nicht mit dem zehner davon",
         ( info->mode() == GameInfo::RUFSPIEL &&
-          !allowed->contains(info->color(), Card::Sau)),
+          !allowed->contains({Card::Sau, info->color()})),
         (!info->istTrumpf(c) && c->color() == info->color() && c->card() != Card::Sau && c->card() != Card::Zehn)
     )
     

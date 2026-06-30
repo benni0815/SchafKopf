@@ -3,7 +3,6 @@
 
 #include "stichdlg.h"
 
-#include "card.h"
 #include "cardlist.h"
 
 #include <KLocalizedString>
@@ -38,7 +37,7 @@ StichDlg::StichDlg(QWidget *parent )
     reset();
 }
 
-void StichDlg::changed(const QString& name, const std::vector<int>& cardIds, const QStringList& playerlist)
+void StichDlg::changed(const QString& name, const std::vector<Card::Id>& cardIds, const QStringList& playerlist)
 {
     CardList stich(cardIds);
     stich.setAutoDelete(true);

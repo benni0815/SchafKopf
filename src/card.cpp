@@ -37,35 +37,13 @@ int getPoints(Card::Type t)
 
 } // namespace
 
-Card::Card( const int id )
-{
-    Type t = Type::NoStich;
-    Color c = Color::NoColor;
-    
-    // try to calculate the type and color from the id
-    for (int i = Card::Eichel; i <= Card::Schellen; i++ )
-        if( (id - i - 1) % 4 == 0 )
-        {
-            t = (Card::Type)(id - i);
-            c = (Card::Color)i;
-            
-            break;
-        }
-    
-    init( t, c );
-}
+Card::Card(const Id& id)
+: m_id(id)
+{}
 
 Card::Card(const Type t, const Color c)
-{
-    init( t, c );
-}
-
-void Card::init(const Type t, const Color c)
-{
-  m_id.type = t;
-  m_id.color = c;
-  cardDeckChanged();
-}
+: m_id({t, c})
+{}
 
 const QPixmap& Card::pixmap() const
 {
@@ -145,9 +123,9 @@ bool Card::operator<(const Card* const c) const
     return false;
 }
 
-int Card::id() const
+Card::Id Card::id() const
 {
-    return m_id.type + m_id.color;
+  return m_id;
 }
 
 

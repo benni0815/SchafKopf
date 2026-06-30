@@ -42,7 +42,7 @@ void Player::setCards(const CardList& cards)
       card->setOwner(this);
     }
 
-    emit gotCards(id(), m_cards.toInts());
+    emit gotCards(id(), m_cards.toIds());
 }
 
 void Player::removeCard(const Card* card)
@@ -58,7 +58,7 @@ void Player::removeCard(const Card* card)
 void Player::sortCards()
 {
     m_cards.sort([this] (Card* card) { return m_game->gameInfo()->evalCard(card); });
-    emit gotCards(id(), m_cards.toInts());
+    emit gotCards(id(), m_cards.toIds());
 }
 
 void Player::klopfen()

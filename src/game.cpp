@@ -175,7 +175,7 @@ void Game::gameLoop()
             for( a = 0; a < PLAYERS; a++ )
                 playernames.append(m_currstich.at(a)->owner()->name());
 
-            emit playerMadeStich(tmp[index]->id(), m_currstich.toInts(), tmp[index]->name(), playernames);
+            emit playerMadeStich(tmp[index]->id(), m_currstich.toIds(), tmp[index]->name(), playernames);
 
             // Sortiere so, dass der stecher nächste karte spielt
             for( realindex = 0; realindex < PLAYERS; realindex++ )
@@ -426,7 +426,7 @@ bool Game::setupGameInfoForced(Player *players[])
         // find player with eichel ober
         for( i=0;i<PLAYERS;i++ )
         {
-            if (players[i]->cards().contains(Card::Ober, Card::Eichel))
+            if (players[i]->cards().contains({Card::Ober, Card::Eichel}))
             {
                 emit infoMessage(i18n("%1 has got the Eichel Ober\nand has to play.", players[i]->name()));
                 
