@@ -27,7 +27,7 @@ class Game : public QThread
 
         void gameLoop();
         const CardList& currStich() const;
-        inline CardList *allCards() { return &m_allcards; }
+        const CardList& allCards() const { return m_allcards; }
         const CardList& playedCards() const { return m_playedcards; }
         GameInfo *gameInfo();
 

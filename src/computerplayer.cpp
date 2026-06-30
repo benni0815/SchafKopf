@@ -389,34 +389,27 @@ bool ComputerPlayer::ownStich()
 
 Card *ComputerPlayer::highestTrumpfInGame()
 {
-    CardList *trumpfs=new CardList();
-    Card *c;
-    for( int i = 0; i < m_game->allCards()->count(); i++)
+    CardList trumpfs;
+
+    auto istTrumpf = [this] (auto card) { return m_game->gameInfo()->istTrumpf(card); };
+
+    const auto& allCards = m_game->allCards();
+    std::copy_if(std::begin(allCards), std::end(allCards), std::back_inserter(trumpfs), istTrumpf);
+
+    auto removeCardsFromTrumpfs = [&] (Card* card) { trumpfs.removeCard(card); };
+
+    const auto& played = m_game->playedCards();
+    std::for_each(std::begin(played), std::end(played), removeCardsFromTrumpfs);
+
+    std::for_each(std::begin(m_cards), std::end(m_cards), removeCardsFromTrumpfs);
+
+    trumpfs.sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
+    if (trumpfs.empty())
     {
-        c = m_game->allCards()->at( i );
-        if(m_game->gameInfo()->istTrumpf(c))
-            trumpfs->append(c);
+      return {};
     }
 
-    for (int i = 0; i < m_game->playedCards().count(); i++)
-    {
-        Card* playedCard = m_game->playedCards().at(i);
-        trumpfs->removeCard( playedCard );
-    }
-
-    for (int i = 0; i < m_cards.count(); ++i)
-    {
-        c = m_cards.at(i);
-        trumpfs->removeCard( c );
-    }
-
-    trumpfs->sort((eval_func)m_game->gameInfo()->evalCard, (void *)m_game->gameInfo());
-    if( trumpfs->count() )
-        c = trumpfs->at(trumpfs->count()-1);
-    else
-        c = nullptr;
-    delete trumpfs;
-    return c;
+    return trumpfs.back();
 }
 
 int ComputerPlayer::myTrumpfs()
@@ -451,43 +444,19 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
     }
 }
 
-int ComputerPlayer::cardsStillInGame( int c )
+int ComputerPlayer::cardsStillInGame(int c)
 {
-    int n = 0, n2 = 0;
-    CardList list;
-    CardList* all = m_game->allCards();
-    
-    list.appendList( m_game->playedCards() );
-    list.appendList( m_game->currStich() );
-    for( int i=0; i<list.count();i++ )
-    {
-        if( m_game->gameInfo()->istTrumpf( list.at( i ) ) )
-        {
-            if( Card::NOCOLOR == c )
-                n++;
-        }
-        else
-        {
-            if( list.at( i )->color() == c )
-                n++;
-        }
-    }
-    
-    for( int i=0; i<all->count();i++ )
-    {
-        if( m_game->gameInfo()->istTrumpf( all->at( i ) ) )
-        {
-            if( Card::NOCOLOR == c )
-                n2++;
-        }
-        else
-        {
-            if( all->at( i )->color() == c )
-                n2++;
-        }
-    }
-    
-    return n2 - n;
+    const CardList all = m_game->allCards();
+
+    CardList played;
+    played.appendList(m_game->playedCards());
+    played.appendList(m_game->currStich());
+
+    auto istTrumpf = [this] (auto card) { return m_game->gameInfo()->istTrumpf(card); };
+    auto matches = [&] (auto card) { return (istTrumpf(card) && Card::NOCOLOR == c) || card->color() == c; };
+
+    return std::count_if(std::begin(all), std::end(all), matches) -
+           std::count_if(std::begin(played), std::end(played), matches);
 }
 
 void ComputerPlayer::log(const QString& msg) const
