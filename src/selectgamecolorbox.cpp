@@ -47,10 +47,10 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     checkSchellen = new QRadioButton(i18n("&Schellen"), this);
     checkFarblos = new QRadioButton(i18n("&Farblos"), this);
 
-    Card* herz=new Card(Card::SAU, Card::HERZ);
-    Card* schelle=new Card(Card::SAU, Card::SCHELLEN);
-    Card* eichel=new Card(Card::SAU, Card::EICHEL);
-    Card* gras=new Card(Card::SAU, Card::GRAS);
+    const auto herz    = Card(Card::SAU, Card::HERZ);
+    const auto schelle = Card(Card::SAU, Card::SCHELLEN);
+    const auto eichel  = Card(Card::SAU, Card::EICHEL);
+    const auto gras    = Card(Card::SAU, Card::GRAS);
 
     QButtonGroup *myGroup = new QButtonGroup(this);
     myGroup->addButton( checkEichel );
@@ -60,14 +60,14 @@ SelectGameColorBox::SelectGameColorBox( QWidget *parent )
     myGroup->addButton( checkFarblos );
     connect(myGroup, &QButtonGroup::buttonClicked, this, &SelectGameColorBox::colorChanged);
 
-    labelHerz->setIcon(herz->pixmap());
-    labelGras->setIcon(gras->pixmap());
-    labelEichel->setIcon(eichel->pixmap());
-    labelSchellen->setIcon(schelle->pixmap());
-    labelHerz->setIconSize(herz->pixmap().size());
-    labelGras->setIconSize(gras->pixmap().size());
-    labelEichel->setIconSize(eichel->pixmap().size() );
-    labelSchellen->setIconSize(schelle->pixmap().size());
+    labelHerz->setIcon(herz.pixmap());
+    labelGras->setIcon(gras.pixmap());
+    labelEichel->setIcon(eichel.pixmap());
+    labelSchellen->setIcon(schelle.pixmap());
+    labelHerz->setIconSize(herz.pixmap().size());
+    labelGras->setIconSize(gras.pixmap().size());
+    labelEichel->setIconSize(eichel.pixmap().size() );
+    labelSchellen->setIconSize(schelle.pixmap().size());
 
     QGroupBox* color_group = new QGroupBox(i18n("Color:"), this);
     QVBoxLayout* eichelLayout = new QVBoxLayout;
