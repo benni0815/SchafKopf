@@ -6,7 +6,6 @@
 #include <QObject>
 
 
-class Card;
 class CardList;
 class Game;
 class ComputerPlayer;

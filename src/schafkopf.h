@@ -15,10 +15,8 @@
 #include <QPointer>
 
 
-class CardList;
 class GameCanvas;
 class Game;
-class GameInfo;
 class QLabel;
 class QSplitter;
 class QTableWidget;

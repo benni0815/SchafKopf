@@ -13,7 +13,6 @@ class QLineEdit;
 class QPushButton;
 class QRadioButton;
 class SelectGameWizard;
-class GameInfo;
 
 
 /**
