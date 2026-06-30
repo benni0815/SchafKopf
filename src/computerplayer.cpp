@@ -174,8 +174,8 @@ GameInfo* ComputerPlayer::gameInfo( bool force )
     {
         for( int z=Card::NOCOLOR;z<=Card::SCHELLEN;z++)
         {
-            if( !GameInfo::isAllowed( m_cards, i, z ) )
-                continue;
+            if (!GameInfo::isAllowed(*m_cards, i, z ))
+              continue;
          
             game_data d;
             d.trumpf = d.fehlfarbe = d.weight = 0;

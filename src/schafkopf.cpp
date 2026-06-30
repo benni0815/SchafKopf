@@ -474,7 +474,7 @@ GameInfo* SchafKopf::selectGame( bool force, int* cardids )
     CardList list( cardids );
     list.setAutoDelete( true );
     
-    SelectGameWizard sgw( force, &list );    
+    SelectGameWizard sgw( force, list );
     if( sgw.exec() == QDialog::Accepted )
         return sgw.gameInfo();
     else

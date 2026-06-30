@@ -5,12 +5,10 @@
 
 #include "selectgametypebox.h"
 #include "selectgamecolorbox.h"
-#include "cardlist.h"
 
 #include <QAbstractButton>
 
-
-SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent )
+SelectGameWizard::SelectGameWizard(bool force, const CardList &list, QWidget *parent)
 : QWizard(parent)
 , m_list(list)
 , m_force(force)
@@ -23,7 +21,7 @@ SelectGameWizard::SelectGameWizard( bool force, CardList* list, QWidget *parent 
     connect(this, &SelectGameWizard::currentIdChanged, this, &SelectGameWizard::pageChanged);
 }
 
-CardList* SelectGameWizard::getCardList()
+const CardList& SelectGameWizard::getCardList()
 {
     return m_list;
 }

@@ -117,51 +117,51 @@ bool GameInfo::istTrumpf(Card *card) const
   * 1. is it allowed to play this game with this cards (needed for callgames)
   * 2. is it allowed to play this game according to the users preferences
   */
-bool GameInfo::isAllowed( CardList* cards, int mode, int color )
+bool GameInfo::isAllowed(const CardList& cards, int mode, int color)
 {
-    // it is never allowed to decide to play Ramsch
-    if( mode == GameInfo::RAMSCH )
-        return false;
+  // it is never allowed to decide to play Ramsch
+  if (mode == GameInfo::RAMSCH)
+      return false;
 
-    if( mode==GameInfo::RUFSPIEL ) 
+  if (mode == GameInfo::RUFSPIEL)
+  {
+    if (cards.contains(color, Card::SAU) || color == Card::HERZ)
+      return false;
+
+    // ok now we have to test if we have a card in this color with is no trumpf_index
+    for (int i = 0; i < cards.count(); ++i)
     {
-        if( cards->contains( color, Card::SAU ) || color == Card::HERZ )
-            return false;
-
-        // ok now we have to test if we have a card in this color with is no trumpf_index
-        for( int i = 0; i < cards->count(); i++ )
-        {
-            Card* c = cards->at(i);
-            if( c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER )
-            {
-                return true;
-            }
-        }
-
-        return false;
-    } else if( mode==GameInfo::STICHT && color==Card::NOCOLOR )
-        return false;
-
-    // check for the users preferences now
-    const AllowedGames allowed = Settings::instance()->allowedGames();
-    if( mode == GameInfo::DACHS && !allowed.dachs )
-    {
-        return false;
+      Card* c = cards.at(i);
+      if (c->color() == color && c->card() != Card::OBER && c->card() != Card::UNTER)
+      {
+        return true;
+      }
     }
+    return false;
+  }
+  else if (mode == GameInfo::STICHT && color == Card::NOCOLOR)
+      return false;
 
-    if( (mode == GameInfo::WENZ && !allowed.wenz) ||
-        (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed.farb_wenz) )
-    {
-        return false;
-    }
+  // check for the users preferences now
+  const AllowedGames allowed = Settings::instance()->allowedGames();
+  if (mode == GameInfo::DACHS && !allowed.dachs)
+  {
+    return false;
+  }
 
-    if( (mode == GameInfo::GEIER && !allowed.geier) ||
-        (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed.farb_geier) )
-    {
-        return false;
-    }
+  if ((mode == GameInfo::WENZ && !allowed.wenz) ||
+      (mode == GameInfo::WENZ && color != Card::NOCOLOR && !allowed.farb_wenz))
+  {
+    return false;
+  }
 
-    return true;
+  if ((mode == GameInfo::GEIER && !allowed.geier) ||
+      (mode == GameInfo::GEIER && color != Card::NOCOLOR && !allowed.farb_geier))
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool GameInfo::operator>(const GameInfo& info)

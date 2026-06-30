@@ -3,6 +3,8 @@
 
 #pragma once
 
+#include "cardlist.h"
+
 #include <QWizard>
 
 
@@ -12,7 +14,6 @@ class QLabel;
 class QRadioButton;
 class SelectGameTypeBox;
 class SelectGameColorBox;
-class CardList;
 class GameInfo;
 
 /**
@@ -23,9 +24,9 @@ class SelectGameWizard : public QWizard
     Q_OBJECT
 
 public:
-    SelectGameWizard(bool force, CardList* list, QWidget* parent = nullptr);
+    SelectGameWizard(bool force, const CardList& list, QWidget* parent = nullptr);
     ~SelectGameWizard() override;
-    CardList* getCardList();
+    const CardList& getCardList();
     GameInfo* gameInfo();
 
     void reject() override;
@@ -34,7 +35,7 @@ public slots:
     void pageChanged( int id );
 
 protected:
-    CardList* m_list;
+    CardList m_list;
     bool m_closing{false};
     bool m_force{false};
     SelectGameTypeBox *box1{};
