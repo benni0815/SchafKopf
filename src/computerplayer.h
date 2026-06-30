@@ -69,6 +69,8 @@ class ComputerPlayer : public Player
         void cardPlayed(unsigned int player, Card *c);
 
     private:
+        void log(const QString& msg) const;
+
         struct game_data {
             int trumpf;
             int fehlfarbe;

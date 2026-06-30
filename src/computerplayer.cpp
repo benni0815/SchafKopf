@@ -12,6 +12,8 @@
 #include <QDebug>
 #include <QString>
 
+#include <iostream>
+
 
 ComputerPlayer::ComputerPlayer(unsigned int id,Game* game)
     : Player(id,game)
@@ -134,7 +136,7 @@ Card *ComputerPlayer::play()
             else
                 i++;
         }
-        qDebug() << name() << ": allowed->count() :" << allowed->count();
+        log(QString("allowed cards: %1").arg(allowed->count()));
     }
     /*
       // The AI is more intelligent, let the AI decide
@@ -249,7 +251,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
                 ( m_game->currStich()->count() == PLAYERS - 2 && 
                   m_game->nextPlayer()->isPlayer() == this->isPlayer() ) )
             {
-                qDebug() << name() << ": schmiere!";
+                log("schmiere!");
                 return findSchmiere(cards);
             }
     }
@@ -292,12 +294,12 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
         {
             // falls der computer spieler farbfrei ist und noch genügend karten von dieser farbe im spieler
             // sind versucht er so niedrig wie möglich zu stechen
-            qDebug() << name() << ": versuche so niedrig wie möglich zu stechen";
+            log("Versuche so niedrig wie möglich zu stechen.");
             return findLowestPossibleCard(findHighestCard(stich),cards);
         }
         else
         {
-          qDebug() << name() << ": versuche zu stechen";
+          log("Versuche zu stechen.");
           // Wenn ich letzter Spieler bin reicht der kleinste Trumpf
           if (m_game->currStich()->count() == PLAYERS - 1)
             {
@@ -308,7 +310,7 @@ Card *ComputerPlayer::findCardToPlay(CardList *cards)
             }
         }
     }
-    qDebug() << name() << ": spiele billigste karte";
+    log("Spiele billigste karte.");
     return findCheapestCard(cards);
 }
 
@@ -415,7 +417,7 @@ bool ComputerPlayer::ownStich()
      * We can only check if the card belongs to the player party, so we check afterwars
      * if we are part of the player part!! Think about it... it does really work :)
      */
-    qDebug() << name() << "ist" << ( this->isPlayer() ? "":"nicht") << "Spieler.";
+    std::cout << QString("%1 ist %2Spieler.").arg(name()).arg(this->isPlayer() ? "" : "Nicht-").toStdString() << std::endl;
     if( highestCard->owner()->isPlayer() )
         return ( this->isPlayer() ? true : false );
     else
@@ -483,7 +485,7 @@ void ComputerPlayer::cardPlayed(unsigned int player, Card *c)
             mitspieler=player;
         else
             mitspieler=0+1+2+3-(id()+m_game->gameInfo()->spieler()->id()+player);
-        qDebug() << name() << ": Mitspieler gefunden:" << m_game->findIndex(mitspieler)->name();
+        log(QString("Mitspieler gefunden: %1").arg(m_game->findIndex(mitspieler)->name()));
     }
 }
 
@@ -526,3 +528,7 @@ int ComputerPlayer::cardsStillInGame( int c )
     return n2 - n;
 }
 
+void ComputerPlayer::log(const QString& msg) const
+{
+  std::cout << QString("%1: %2").arg(name()).arg(msg).toStdString() << std::endl;
+}
