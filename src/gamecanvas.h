@@ -95,14 +95,14 @@ class GameCanvas : public QGraphicsView
         void focusOutEvent(QFocusEvent*) override;
         QPoint getStichPosition( int player );
         int getStichRotation( int player );
-        CanvasPlayer* humanPlayer() const;
+        CanvasPlayer* humanPlayer();
         
     private:
         int m_result{0};
         CardId m_resultCard{};
         
         QList<QGraphicsItem*> m_focus_list;
-        CanvasPlayer* m_players[PLAYERS];
+        std::array<CanvasPlayer, PLAYERS> m_players;
         CanvasCard* m_stich[PLAYERS];
         
         // currently clicked item

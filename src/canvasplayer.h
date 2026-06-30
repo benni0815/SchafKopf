@@ -24,6 +24,7 @@ Represents a player on the canvas
 */
 class CanvasPlayer{
     public:
+        CanvasPlayer() = default;
         CanvasPlayer( int i, QGraphicsScene* scene );
         ~CanvasPlayer() = default;
         

@@ -37,7 +37,7 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     {
         m_stich[i] = new CanvasCard();
         scene()->addItem( m_stich[i] );
-        m_players[i]=new CanvasPlayer( i, scene() );
+        m_players[i] = CanvasPlayer(i, scene());
     }
 
     QFont f( "Helvetica", 24 );
@@ -84,7 +84,7 @@ GameCanvas::GameCanvas(QGraphicsScene* gs, QWidget *parent )
     m_focus_list.append( m_ok );
     for (int i = 0; i < NUMCARDS; ++i)
     {
-      m_focus_list.append(m_players[0]->canvasCard(i));
+      m_focus_list.append(m_players[0].canvasCard(i));
     }
 }
 
@@ -93,7 +93,6 @@ GameCanvas::~GameCanvas()
     for( unsigned int i = 0; i < PLAYERS; i++ )
     {
         delete m_stich[i];
-        delete m_players[i];
     }
 }
 
@@ -101,7 +100,7 @@ void GameCanvas::cardForbidden(CardId cardid)
 {
     for(unsigned int z=0;z<PLAYERS;z++)
     {
-        CanvasCard* c = m_players[z]->hasCard( cardid );
+        CanvasCard* c = m_players[z].hasCard( cardid );
         if( c )            
         {
             c->forbidden();
@@ -113,7 +112,7 @@ void GameCanvas::cardForbidden(CardId cardid)
 void GameCanvas::positionObjects()
 {
     for( unsigned int i = 0; i < PLAYERS; i++ )
-        m_players[i]->position();
+        m_players[i].position();
     
     for( unsigned int i = 0; i < PLAYERS; i++ ) 
     {
@@ -226,7 +225,7 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
 
         for( unsigned int i = 0; i < PLAYERS; i++ ) 
         {
-            if (m_players[i]->isHuman() && m_players[i]->hasCard(card->card()))
+            if (m_players[i].isHuman() && m_players[i].hasCard(card->card()))
             {
                 m_resultCard = card->card();
                 disconnect(this, &GameCanvas::clicked, this, &GameCanvas::cardClicked);
@@ -241,15 +240,15 @@ void GameCanvas::cardClicked( QGraphicsItem* item )
 
 void GameCanvas::slotPlayerPlayedCard(unsigned int player, CardId cardid)
 {
-    auto playerIt = std::find_if(std::begin(m_players), std::end(m_players), [&] (auto& cp) { return cp->id() == player; });
-    CanvasCard* card = (playerIt != std::end(m_players)) ? (*playerIt)->hasCard(cardid)
+    auto playerIt = std::find_if(std::begin(m_players), std::end(m_players), [&] (const CanvasPlayer& p) { return p.id() == player; });
+    CanvasCard* card = (playerIt != std::end(m_players)) ? (*playerIt).hasCard(cardid)
                                                          : nullptr;
 
     if( card )
     {
-        m_players[player]->cardPlayed(card->card());
+        m_players[player].cardPlayed(card->card());
         if(Settings::instance()->rearrangeCards())
-            m_players[player]->position();
+            m_players[player].position();
 
         CanvasCard* stich = m_stich[player];
         stich->setCard(card->card());
@@ -310,7 +309,7 @@ void GameCanvas::updateBackground()
 
 void GameCanvas::redrawPlayers()
 {
-  for (auto& p : m_players) { p->init(); }
+  for (auto& p : m_players) { p.init(); }
   for (auto& card : m_stich) { card->hide(); }
 }
 
@@ -480,7 +479,7 @@ void GameCanvas::yesNoClicked( QGraphicsItem* item )
             m_loop.exit();
             for(int i=0;i<PLAYERS;i++)
             {
-                m_players[i]->hideBubble();
+                m_players[i].hideBubble();
             }
         }
     }
@@ -518,16 +517,16 @@ void GameCanvas::information( const QString & message )
 
 void GameCanvas::Bubble(unsigned int playerid, const QString & message)
 {
-    m_players[playerid]->say(message, playerid);
+    m_players[playerid].say(message, playerid);
 }
 
 void GameCanvas::playerHasDoubled( unsigned int id, bool value )
 {
     int i;
     for(i=0;i<PLAYERS;i++)
-        if( m_players[i]->id() == id )
+        if (m_players[i].id() == id)
         {
-            m_players[i]->setHasDoubled( value );
+            m_players[i].setHasDoubled( value );
         }
 }
 
@@ -535,11 +534,11 @@ void GameCanvas::playerIsLast( unsigned int id )
 {
     int i;
     for(i=0;i<PLAYERS;i++)
-        if( m_players[i]->id() == id )
+        if (m_players[i].id() == id)
         {
-            m_players[i]->setLast( true );
+            m_players[i].setLast( true );
             // TODO: init is not a good name for this function...
-            m_players[i]->init();
+            m_players[i].init();
         }
 }
 
@@ -547,7 +546,7 @@ void GameCanvas::setPlayerName( unsigned int id, const QString & name )
 {
   for (auto& p : m_players)
   {
-    if (p->id() == id) { p->setName(name); }
+    if (p.id() == id) { p.setName(name); }
   }
 }
 
@@ -555,8 +554,8 @@ void GameCanvas::resetPlayers()
 {
   for (auto& p : m_players)
   {
-    p->setHasDoubled(false);
-    p->setLast(false);
+    p.setHasDoubled(false);
+    p.setLast(false);
   }
 }
 
@@ -564,7 +563,7 @@ void GameCanvas::resetPlayerCards()
 {
   for (auto& p : m_players)
   {
-    p->setCards({});
+    p.setCards({});
   }
 }
 
@@ -572,18 +571,18 @@ void GameCanvas::setPlayerCards(unsigned int id, const std::vector<CardId>& card
 {
   for (auto& p : m_players)
   {
-    if (p->id() == id)
+    if (p.id() == id)
     {
-      p->setCards(cardIds);
+      p.setCards(cardIds);
     }
   }
 }
 
-CanvasPlayer* GameCanvas::humanPlayer() const
+CanvasPlayer* GameCanvas::humanPlayer()
 {
   for (auto& p : m_players)
   {
-    if (p->isHuman()) { return p; }
+    if (p.isHuman()) { return &p; }
   }
   return nullptr;
 }
